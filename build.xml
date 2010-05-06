@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="gb2312"?>
+
+<project name="jabb-core" default="usage" basedir=".">
+	<property name="project.short.name" value="jabb-core-1.0"/>
+	<property file="../../commonbuild.properties"/>
+	
+	<path id="compile.libs.ref">
+		<fileset dir="${lib.path}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+    
+	<import file="../../commonbuild.xml"/>
+	
+	<target name="war" depends=""/>
+
+</project>
+

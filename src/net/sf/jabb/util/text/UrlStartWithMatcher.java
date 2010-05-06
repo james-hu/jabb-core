@@ -24,49 +24,111 @@ import java.util.Map;
 
 
 /**
- * 快速对“URL以什么开头”进行匹配。
- * 具体使用方法可参考main()方法的代码和输出。
+ * 给定一个待检查的URL字符串，以及一批开头匹配字符串，看看待检查的URL字符串以哪个匹配字符串开头。
+ * 匹配时对大小写敏感。如果匹配字符串之间互相饱含，则匹配其中最长的。
+ * <p>
+ * Given a text string to be tested, and list of matching strings, find out which matching string the
+ * text string starts with. The matching is case sensitive. If one matching string starts with another,
+ * and the text string starts with them, then the longer one will be considered to be matched. 
  * 
- * 匹配用的字符串支持在可开头使用通配符“*.”，表示匹配一个或多个域名段。
- * 比如，*.sina.com可以匹配www.sina.com, news.sina.com, image.news.sina.com, h1.image.news.sina.com。
- * 匹配用的字符串不应包含协议头（比如“http://”），而且不支持正则表达式语法。
- * 被匹配的URL可以包含协议头，也可以不包含。
+ * <p>
+ * <ul>
+ * 	<li>被匹配的URL可以包含协议头（比如“http://”），也可以不包含。</li>
+ * 	<li>匹配用的字符串不应包含协议头。</li>
+ * 	<li>匹配用的字符串在可开头使用通配符“*.”，表示匹配一个或多个域名段。比如，*.sina.com可以匹配
+ * 		www.sina.com, news.sina.com, image.news.sina.com, h1.image.news.sina.com。</li>
+ * </ul>
+ * <p>
+ * <ul>
+ * 	<li>The URL to be tested can start with protocol string (such as "http://"), or not.</li>
+ * 	<li>Matching strings should not contain protocol string.</li>
+ * 	<li>"*" can be used at the beginning of matching string as wide card to match one or more
+ * 		domain segments. For example, *.sina.com matches
+ * 		www.sina.com, news.sina.com, image.news.sina.com, h1.image.news.sina.com。</li>
+ * </ul>
+ * 
  * @author Zhengmao HU (James)
  *
  */
 public class UrlStartWithMatcher extends StartWithMatcher {
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5100527858549916995L;
 
-	public UrlStartWithMatcher(Map<String, Object> patterns) {
-		super(normalizeMatchingDefinitions(patterns, true));
+	/**
+	 * 根据匹配字符串、匹配字符串所对应的附件对象，创建一个新的实例。
+	 * 在创建内部数据结构的时候，选择占用更多内存，而换取速度上的提升。
+	 * <p>
+	 * Create a new instance according to matching strings and their corresponding attachment objects.
+	 * When initializing internal data structure, choose to consume more memory for better matching speed.
+	 * 
+	 * @param matchingDefinitions	Key是匹配字符串，Value是附件对象。
+	 * 					当进行匹配检查的时候，返回附件对象来标识哪一个匹配字符串被匹配上了。
+	 * 					<br>
+	 * 					Key is the matching string, Value is its associated attachment object.
+	 * 					When the heading string is matched, the attachment object will be returned
+	 * 					as identifier.
+	 */
+	public UrlStartWithMatcher(Map<String, Object> matchingDefinitions) {
+		super(normalizeMatchingDefinitions(matchingDefinitions, true));
 	}
 
-	public UrlStartWithMatcher(Map<String, Object> patterns, boolean moreSpaceForSpeed) {
-		super(normalizeMatchingDefinitions(patterns, moreSpaceForSpeed), moreSpaceForSpeed);
+	/**
+	 * 根据匹配字符串、匹配字符串所对应的附件对象，创建一个新的实例。
+	 * <p>
+	 * Create a new instance according to matching strings and their corresponding attachment objects.
+	 * 
+	 * @param matchingDefinitions	Key是匹配字符串，Value是附件对象。
+	 * 					当进行匹配检查的时候，返回附件对象来标识哪一个匹配字符串被匹配上了。
+	 * 					<br>
+	 * 					Key is the matching string, Value is its associated attachment object.
+	 * 					When the heading string is matched, the attachment object will be returned
+	 * 					as identifier.
+	 * @param moreSpaceForSpeed  是否占用更多内存，而换取速度上的提升。
+	 * 								<br>Whether or not to consume
+	 * 								more memory for better matching speed.
+	 */
+	public UrlStartWithMatcher(Map<String, Object> matchingDefinitions, boolean moreSpaceForSpeed) {
+		super(normalizeMatchingDefinitions(matchingDefinitions, moreSpaceForSpeed), moreSpaceForSpeed);
 	}
 	
 	/**
 	 * 创建一个副本，这个副本与原先的对象具有完全相同匹配方式。
-	 * 由于这个类的对象不是线程安全的，所以如果要在多线程下用，每个线程
-	 * 必须使用单独的副本。
-	 * @param toBeCopied	原本
+	 * <p>
+	 * Create a copy, the copy will have exactly the same matching 
+	 * definitions as the original copy.
+	 * 
+	 * @param toBeCopied	原本。<br>The original copy.
 	 */
 	public UrlStartWithMatcher(UrlStartWithMatcher toBeCopied) {
 		super(toBeCopied);
 	}
 
-	static protected List<MatchingDefinition> normalizeMatchingDefinitions(Map<String, Object> patterns, boolean moreSpaceForSpeed){
+	/**
+	 * 根据{@link StartWithMatcher}的需要来规范化匹配条件定义。
+	 * 
+	 * <p>
+	 * Normalize matching definitions according to requirements of {@link StartWithMatcher}.
+	 * 
+	 * @param matchingDefinitions	Key是匹配字符串，Value是附件对象。
+	 * 					当进行匹配检查的时候，返回附件对象来标识哪一个匹配字符串被匹配上了。
+	 * 					<br>
+	 * 					Key is the matching string, Value is its associated attachment object.
+	 * 					When the matching string is matched, the attachment object will be returned
+	 * 					as identifier.
+	 * @return	{@link StartWithMatcher}所需的匹配条件定义。
+	 * 			<br>Matching definitions for usage of {@link StartWithMatcher}.
+	 * @param moreSpaceForSpeed  是否占用更多内存，而换取速度上的提升。
+	 * 								<br>Whether or not to consume
+	 * 								more memory for better matching speed.
+	 * @return
+	 */
+	static protected List<MatchingDefinition> normalizeMatchingDefinitions(Map<String, Object> matchingDefinitions, boolean moreSpaceForSpeed){
 		//先分成两个匹配步骤
-		Map<String, MatchingStep2> step1 = new HashMap<String, MatchingStep2>();
-		for (String p: patterns.keySet()){
-			List<String> splited = splitURL(p);
-			String reversedBeforePart = splited.get(0);
-			String afterPart = splited.get(1);
-			Object attachment = patterns.get(p);
+		Map<String, UrlStartWithMatcherStep2> step1 = new HashMap<String, UrlStartWithMatcherStep2>();
+		for (String p: matchingDefinitions.keySet()){
+			String[] splited = splitURL(p);
+			String reversedBeforePart = splited[0];
+			String afterPart = splited[1];
+			Object attachment = matchingDefinitions.get(p);
 			
 			String step1Pattern;
 			String step1PatternUnescaped;
@@ -84,10 +146,10 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 				step1PatternUnescaped = step1Example;
 			}
 			
-			MatchingStep2 step2;
+			UrlStartWithMatcherStep2 step2;
 			step2 = step1.get(step1Pattern);
 			if (step2 == null){
-				step2 = new MatchingStep2(moreSpaceForSpeed);
+				step2 = new UrlStartWithMatcherStep2(moreSpaceForSpeed);
 				step1.put(step1Pattern, step2);
 				step2.step1Example = step1Example;
 				step2.step1PatternUnescapged = step1PatternUnescaped;
@@ -103,10 +165,10 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 		}
 		
 		// 如果本pattern能被其他pattern所匹配，则要额外设置
-		for (MatchingStep2 step2 : step1.values()){
+		for (UrlStartWithMatcherStep2 step2 : step1.values()){
 			String example = step2.step1Example;
 				for (String otherStep2Pattern: step1.keySet()){
-					MatchingStep2 otherStep2 = step1.get(otherStep2Pattern);
+					UrlStartWithMatcherStep2 otherStep2 = step1.get(otherStep2Pattern);
 					if (step2 != otherStep2){
 						String otherExample = otherStep2.step1Example;
 						boolean matched = false; //这里无需考虑性能
@@ -133,9 +195,9 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 		}
 		
 
-		List<MatchingDefinition> l = new ArrayList<MatchingDefinition>(patterns.size());
+		List<MatchingDefinition> l = new ArrayList<MatchingDefinition>(matchingDefinitions.size());
 		for (String p: step1.keySet()){
-			MatchingStep2 step2 = step1.get(p);
+			UrlStartWithMatcherStep2 step2 = step1.get(p);
 			step2.buildMatcher();
 			
 			MatchingDefinition c = new MatchingDefinition();
@@ -156,15 +218,21 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 
 	/**
 	 * 进行匹配判断，URL可以包含协议头，也可以不包含，匹配时对大小写不敏感。
-	 * @param url	需要进行匹配判断的URL
-	 * @return	匹配了哪一个条件
+	 * <p>
+	 * Find out which matching string matches the URL. URL can start with protocol (such as "http://"), or not.
+	 * Matching is case insensitive.
+	 * 
+	 * @param url	需要进行匹配判断的URL<br>The URL need to be tested.
+	 * @return	匹配到的字符串所对应的附件，如果找不到任何匹配，则返回null
+	 * 			<br>The corresponding attachment object of the matching string that matches the URL.
+	 * 			Return null if no matching found.
 	 */
 	public Object match(String url){
-		List<String> splited = splitURL(url);
-		String reversedBeforePart = splited.get(0);
-		String afterPart = splited.get(1);
+		String[] splited = splitURL(url);
+		String reversedBeforePart = splited[0];
+		String afterPart = splited[1];
 		
-		MatchingStep2 step2 = (MatchingStep2) super.match(reversedBeforePart + "$");
+		UrlStartWithMatcherStep2 step2 = (UrlStartWithMatcherStep2) super.match(reversedBeforePart + "$");
 		if (step2 == null){
 			return null;
 		}else{
@@ -180,10 +248,10 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 	 * @param url	URL，可以带http://，也可不带
 	 * @return	第一项是反序后的斜线前面的，第二项是斜线后面的。而且已经被转为小写。
 	 */
-	static protected List<String> splitURL(String url){
+	static protected String[] splitURL(String url){
 		String beforePart;
 		String afterPart;
-		List<String> l = new ArrayList<String>(2);
+		String[] l = new String[2];
 		int protocolEnd = url.indexOf("://");
 		if (protocolEnd == -1){	//如果没有协议信息
 			protocolEnd = -3;
@@ -198,8 +266,8 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 		beforePart = url.substring(protocolEnd + 3, pathStart).toLowerCase();	// 斜线前的主机、端口和帐号
 		
 		String reversedBeforePart = new StringBuffer(beforePart).reverse().toString();
-		l.add(reversedBeforePart);
-		l.add(afterPart);
+		l[0] = reversedBeforePart;
+		l[1] = afterPart;
 		return l;
 	}
 
@@ -207,10 +275,10 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 
 /**
  * 第二阶段的匹配。第一阶段是对斜线前面的进行匹配，第二阶段是针对斜线后面的。
- * @author zhengmah
  *
+ * @author Zhengmao HU (James)
  */
-class MatchingStep2 implements Serializable{
+class UrlStartWithMatcherStep2 implements Serializable{
 	private static final long serialVersionUID = 2909200683816055940L;
 	boolean moreSpaceForSpeed;
 	boolean noStep2;	// 是否不再需要进行第二步匹配
@@ -223,7 +291,7 @@ class MatchingStep2 implements Serializable{
 	StringStartWithMatcher matcher;
 	StringStartWithMatcher additionalStep1Matcher;
 	
-	MatchingStep2(boolean moreSpaceForSpeed){
+	UrlStartWithMatcherStep2(boolean moreSpaceForSpeed){
 		this.moreSpaceForSpeed = moreSpaceForSpeed;
 		noStep2 = false;
 		patterns = new HashMap<String, Object>();

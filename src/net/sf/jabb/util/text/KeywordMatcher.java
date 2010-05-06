@@ -24,8 +24,8 @@ import org.apache.commons.lang.mutable.MutableInt;
 
 /**
  * 检查文本当中匹配了哪些关键词，每个关键词匹配了多少次。
- * 
- * <p>To check which keywords a text matches, and for each keyword how many occurrences can
+ * <p>
+ * To check which keywords a text matches, and for each keyword how many occurrences can
  * be found.
  *  
  * @author Zhengmao HU (James)
@@ -37,44 +37,72 @@ public class KeywordMatcher implements Serializable{
 	protected StringStartWithMatcher matcher;
 	
 	/**
-	 * 创建一个副本，这个副本与原先的对象具有完全相同匹配方式。
-	 * 由于这个类的对象不是线程安全的，所以如果要在多线程下用，每个线程
-	 * 必须使用单独的副本。
-	 * @param toBeCopied	原本
+	 * 创建一个副本，这个副本与原先的对象具有完全相同匹配方式定义。
+	 * <p>
+	 * Create a copy which has exactly the same matching definition as original one.
+	 * 
+	 * @param toBeCopied	原本<br>original object
 	 */
 	public KeywordMatcher(KeywordMatcher toBeCopied){
 		this.matcher = new StringStartWithMatcher(toBeCopied.matcher);
 	}
 	
-	public KeywordMatcher(Map<String, Object> patterns) {
-		this(patterns, true);
+	/**
+	 * 根据关键词列表，创建一个匹配器。
+	 * 在创建内部数据结构的时候，选择占用更多内存，而换取速度上的提升。
+	 * <p>
+	 * Create a matcher object with specified keywords, when creating internal
+	 * data structure, choose to consume more memory for better matching speed
+	 * 
+	 * @param keywordDefinitions	关键词以及与之对应的结果标识附件对象。
+	 * 								<br>Keywords and their associated attachment as identifier.
+	 */
+	public KeywordMatcher(Map<String, Object> keywordDefinitions) {
+		this(keywordDefinitions, true);
 	}
 
-	public KeywordMatcher(Map<String, Object> patterns, boolean moreSpaceForSpeed) {
-		Map<String, Object> newPatterns = new HashMap<String, Object>(patterns.size());
-		for (Map.Entry<String, Object> entry : patterns.entrySet()){
-			newPatterns.put(entry.getKey(), new WrappedPattern(entry.getKey(), entry.getValue()));
+	/**
+	 * 根据关键词列表，创建一个匹配器。
+	 * <p>
+	 * Create a matcher object with specified keywords.
+	 * 
+	 * @param keywordDefinitions	关键词以及与之对应的结果标识附件对象。
+	 * 								<br>Keywords and their associated attachment as identifier.
+	 * @param moreSpaceForSpeed		是否占用更多内存，而换取速度上的提升。
+	 * 								<br>Whether or not to consume
+	 * 								more memory for better matching speed.
+	 */
+	public KeywordMatcher(Map<String, Object> keywordDefinitions, boolean moreSpaceForSpeed) {
+		Map<String, Object> newDefinitions = new HashMap<String, Object>(keywordDefinitions.size());
+		for (Map.Entry<String, Object> entry : keywordDefinitions.entrySet()){
+			newDefinitions.put(entry.getKey(), new KeywordDefinition(entry.getKey(), entry.getValue()));
 		}
-		matcher = new StringStartWithMatcher(newPatterns, moreSpaceForSpeed);
+		matcher = new StringStartWithMatcher(newDefinitions, moreSpaceForSpeed);
 	}
 
 	/**
 	 * 进行匹配，返回所匹配上的关键词，以及匹配的次数。
-	 * @param s 待匹配的文本
-	 * @return	返回匹配上的关键词所对应的attachment（在Map的key中），以及它们出现的次数（在Map的value中）
+	 * <p>
+	 * Do the matching test, find out which keywords can be matched, and how many occurrences of each
+	 * keyword can be found.
+	 *   
+	 * @param text 待匹配的文本<br>the text string to be tested
+	 * @return	返回匹配上的关键词所对应的attachment（在Map的Key中），以及它们出现的次数（在Map的Value中）
+	 * 			<br>For each keywords that find in the text, return its attachment (as the Key
+	 * 			in the Map) and occurrences count (as the Value in the Map).
 	 */
-	public Map<Object, MutableInt> match(CharSequence s){
+	public Map<Object, MutableInt> match(CharSequence text){
 		Map<Object, MutableInt> result = null;
-		if (s != null && s.length() > 0){
+		if (text != null && text.length() > 0){
 			int i = 0;
-			while (i < s.length()){
-				Object o = matcher.match(s, i);
+			while (i < text.length()){
+				Object o = matcher.match(text, i);
 				if (o == null){
 					i ++;
 				}else{
-					WrappedPattern wrappedPattern = (WrappedPattern) o;
-					String word = wrappedPattern.getPattern();
-					Object attachment = wrappedPattern.getAttachement();
+					KeywordDefinition keyword = (KeywordDefinition) o;
+					String word = keyword.getKeyword();
+					Object attachment = keyword.getAttachement();
 					i += word.length();
 					if (result == null){
 						result = new HashMap<Object, MutableInt>(); 
@@ -92,19 +120,24 @@ public class KeywordMatcher implements Serializable{
 	
 }
 
-class WrappedPattern implements Serializable{
+/**
+ * 
+ * @author Zhengmao HU (James)
+ *
+ */
+class KeywordDefinition implements Serializable{
 	private static final long serialVersionUID = 2347734264779990056L;
 
-	String pattern;
+	String keyword;
 	Object attachement;
 	
-	WrappedPattern(String p, Object a){
-		this.pattern = p;
-		this.attachement = a;
+	KeywordDefinition(String keyword, Object attachment){
+		this.keyword = keyword;
+		this.attachement = attachment;
 	}
 	
-	public String getPattern() {
-		return pattern;
+	public String getKeyword() {
+		return keyword;
 	}
 
 	public Object getAttachement() {

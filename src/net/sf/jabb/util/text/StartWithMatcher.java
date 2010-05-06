@@ -33,7 +33,6 @@ import dk.brics.automaton.RunAutomaton;
 /**
  * 用来检查某一个字符串能同一组正则表达式中的哪一个符合“以此开头”形式的匹配。
  * 匹配从字符串的第一个字符开始，只要开头一段完整匹配某个正则表达式，就算是匹配成功。
- * 
  * <p>
  * To test which regular expression among several others can be matched by a given string
  * in the manner of "start with". If one of the regular expression can be matched from 
@@ -56,14 +55,12 @@ import dk.brics.automaton.RunAutomaton;
  * <p>
  * 一般来说不需要直接用这个类，应该使用它的子类，比如{@link StringStartWithMatcher}或
  * {@link UrlStartWithMatcher}。
- * 
  * <p>
  * Normally you don't need to use this class directly, using of its subclasses like
  * {@link StringStartWithMatcher} or {@link UrlStartWithMatcher} is preferred.
  * 
  * <p>
  * 底层实现基于dk.brics.automaton.RunAutomaton。
- * 
  * <p>
  * It's underlying implementation is based on dk.brics.automaton.RunAutomaton
  * 
@@ -101,7 +98,6 @@ public class StartWithMatcher implements Serializable{
 	/**
 	 * 根据匹配方式定义创建一个新的对象实例。
 	 * 在创建内部数据结构的时候，选择占用更多内存，而换取速度上的提升。
-	 * 
 	 * <p>
 	 * Create an instance according to matching definitions, when creating internal
 	 * data structure, choose to consume more memory for better matching speed.
@@ -114,7 +110,6 @@ public class StartWithMatcher implements Serializable{
 
 	/**
 	 * 根据匹配方式定义创建一个新的对象实例。
-	 * 
 	 * <p>
 	 * Create an instance according to matching definitions.
 	 * 
@@ -130,7 +125,6 @@ public class StartWithMatcher implements Serializable{
 	
 	/**
 	 * 初始化状态机（dk.brics.automaton.RunAutomaton）。
-	 * 
 	 * <p>
 	 * Initialize the state machine (dk.brics.automaton.RunAutomaton).
 	 * 
@@ -203,7 +197,6 @@ public class StartWithMatcher implements Serializable{
 
 	/**
 	 * 利用状态机（dk.brics.automaton.RunAutomaton），取得最后一个匹配到的状态。
-	 * 
 	 * <p>
 	 * By utilizing the state machine (dk.brics.automaton.RunAutomaton), get the last accepted matching state.
 	 * 
@@ -217,7 +210,6 @@ public class StartWithMatcher implements Serializable{
 
 	/**
 	 * 利用状态机（dk.brics.automaton.RunAutomaton），取得最后一个匹配到的状态。从指定位置开始进行匹配检查。
-	 * 
 	 * <p>
 	 * By utilizing the state machine (dk.brics.automaton.RunAutomaton), get the last accepted matching state.
 	 * The matching test starts at specified position.
@@ -250,7 +242,6 @@ public class StartWithMatcher implements Serializable{
 	
 	/**
 	 * 从指定位置开始判断文本字符串是否可以被任意一个正则表达式所匹配，注意：只要开头匹配了就算匹配。
-	 * 
 	 * <p>
 	 * Test if the text string can be matched by any of the regular expression. The test
 	 * starts from the specified position.
@@ -269,7 +260,6 @@ public class StartWithMatcher implements Serializable{
 
 	/**
 	 * 判断文本字符串是否可以被任意一个正则表达式所匹配，注意：只要开头匹配了就算匹配。
-	 * 
 	 * <p>
 	 * Test if the text string can be matched by any of the regular expression. 
 	 * Caution: if the beginning part matches, the whole text is considered to match. 
@@ -285,7 +275,6 @@ public class StartWithMatcher implements Serializable{
 
 	/**
 	 * 按正则表达式语法，对字符串进行escape。
-	 * 
 	 * <p>
 	 * Escape special characters according to syntax of regular expression.
 	 * 
@@ -306,7 +295,6 @@ public class StartWithMatcher implements Serializable{
 	
 	/**
 	 * 把自己内部的状态机（dk.brics.automaton.RunAutomaton）对象复制一份。
-	 * 
 	 * <p>
 	 * Make a copy of the internal state machine (dk.brics.automaton.RunAutomaton) of this instance.
 	 * 

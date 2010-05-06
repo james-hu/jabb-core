@@ -48,7 +48,6 @@ public class StringStartWithMatcher extends StartWithMatcher {
 	/**
 	 * 根据开头匹配字符串、开头匹配字符串所对应的附件对象，创建一个新的实例。
 	 * 在创建内部数据结构的时候，选择占用更多内存，而换取速度上的提升。
-	 * 
 	 * <p>
 	 * Create a new instance according to heading strings and their corresponding attachment objects.
 	 * When initializing internal data structure, choose to consume more memory for better matching speed.
@@ -66,7 +65,6 @@ public class StringStartWithMatcher extends StartWithMatcher {
 
 	/**
 	 * 根据开头匹配字符串、开头匹配字符串所对应的附件对象，创建一个新的实例。
-	 * 
 	 * <p>
 	 * Create a new instance according to heading strings and their corresponding attachment objects.
 	 * 
