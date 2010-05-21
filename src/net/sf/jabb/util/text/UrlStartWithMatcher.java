@@ -67,7 +67,7 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 	 * 					When the heading string is matched, the attachment object will be returned
 	 * 					as identifier.
 	 */
-	public UrlStartWithMatcher(Map<String, Object> matchingDefinitions) {
+	public UrlStartWithMatcher(Map<String, ? extends Object> matchingDefinitions) {
 		super(normalizeMatchingDefinitions(matchingDefinitions, true));
 	}
 
@@ -86,7 +86,7 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 	 * 								<br>Whether or not to consume
 	 * 								more memory for better matching speed.
 	 */
-	public UrlStartWithMatcher(Map<String, Object> matchingDefinitions, boolean moreSpaceForSpeed) {
+	public UrlStartWithMatcher(Map<String, ? extends Object> matchingDefinitions, boolean moreSpaceForSpeed) {
 		super(normalizeMatchingDefinitions(matchingDefinitions, moreSpaceForSpeed), moreSpaceForSpeed);
 	}
 	
@@ -121,7 +121,7 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 	 * 								more memory for better matching speed.
 	 * @return
 	 */
-	static protected List<MatchingDefinition> normalizeMatchingDefinitions(Map<String, Object> matchingDefinitions, boolean moreSpaceForSpeed){
+	static protected List<MatchingDefinition> normalizeMatchingDefinitions(Map<String, ? extends Object> matchingDefinitions, boolean moreSpaceForSpeed){
 		//先分成两个匹配步骤
 		Map<String, UrlStartWithMatcherStep2> step1 = new HashMap<String, UrlStartWithMatcherStep2>();
 		for (String p: matchingDefinitions.keySet()){

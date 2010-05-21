@@ -57,7 +57,7 @@ public class KeywordMatcher implements Serializable{
 	 * @param keywordDefinitions	关键词以及与之对应的结果标识附件对象。
 	 * 								<br>Keywords and their associated attachment as identifier.
 	 */
-	public KeywordMatcher(Map<String, Object> keywordDefinitions) {
+	public KeywordMatcher(Map<String, ? extends Object> keywordDefinitions) {
 		this(keywordDefinitions, true);
 	}
 
@@ -72,9 +72,9 @@ public class KeywordMatcher implements Serializable{
 	 * 								<br>Whether or not to consume
 	 * 								more memory for better matching speed.
 	 */
-	public KeywordMatcher(Map<String, Object> keywordDefinitions, boolean moreSpaceForSpeed) {
+	public KeywordMatcher(Map<String, ? extends Object> keywordDefinitions, boolean moreSpaceForSpeed) {
 		Map<String, Object> newDefinitions = new HashMap<String, Object>(keywordDefinitions.size());
-		for (Map.Entry<String, Object> entry : keywordDefinitions.entrySet()){
+		for (Map.Entry<String, ? extends Object> entry : keywordDefinitions.entrySet()){
 			newDefinitions.put(entry.getKey(), new KeywordDefinition(entry.getKey(), entry.getValue()));
 		}
 		matcher = new StringStartWithMatcher(newDefinitions, moreSpaceForSpeed);

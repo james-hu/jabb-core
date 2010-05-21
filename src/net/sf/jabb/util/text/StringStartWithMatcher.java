@@ -59,7 +59,7 @@ public class StringStartWithMatcher extends StartWithMatcher {
 	 * 					When the heading string is matched, the attachment object will be returned
 	 * 					as identifier.
 	 */
-	public StringStartWithMatcher(Map<String, Object> headingDefinitions) {
+	public StringStartWithMatcher(Map<String, ? extends Object> headingDefinitions) {
 		super(normalizeMatchingDefinitions(headingDefinitions));
 	}
 
@@ -78,7 +78,7 @@ public class StringStartWithMatcher extends StartWithMatcher {
 	 * 								<br>Whether or not to consume
 	 * 								more memory for better matching speed.
 	 */
-	public StringStartWithMatcher(Map<String, Object> headingDefinitions, boolean moreSpaceForSpeed) {
+	public StringStartWithMatcher(Map<String, ? extends Object> headingDefinitions, boolean moreSpaceForSpeed) {
 		super(normalizeMatchingDefinitions(headingDefinitions), moreSpaceForSpeed);
 	}
 	
@@ -109,7 +109,7 @@ public class StringStartWithMatcher extends StartWithMatcher {
 	 * @return	{@link StartWithMatcher}所需的匹配条件定义。
 	 * 			<br>Matching definitions for usage of {@link StartWithMatcher}.
 	 */
-	static protected List<MatchingDefinition> normalizeMatchingDefinitions(Map<String, Object> headingDefinitions){
+	static protected List<MatchingDefinition> normalizeMatchingDefinitions(Map<String, ? extends Object> headingDefinitions){
 		// exactMatchExample自动设置为与regularExpression相同
 		List<MatchingDefinition> l = new ArrayList<MatchingDefinition>(headingDefinitions.size());
 		for (String p: headingDefinitions.keySet()){
