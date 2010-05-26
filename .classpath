@@ -9,6 +9,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/struts2-core-2.1.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.5.jar" sourcepath="lib/src-ref/commons-lang-2.5-sources.jar"/>
 	<classpathentry kind="lib" path="lib/ci-bayes-1.0.8.jar" sourcepath="lib/src-ref/ci-bayes-1.0.8-sources.jar"/>
-	<classpathentry kind="lib" path="lib/javolution-5.5.1.jar" sourcepath="lib/src-ref/javolution-5.5.1-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/javolution-5.5.1.jar" sourcepath="lib/src-ref/javolution-5.5.1-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/mmseg4j-all-1.8.2.jar" sourcepath="lib/src-ref/mmseg4j-1.8.2-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

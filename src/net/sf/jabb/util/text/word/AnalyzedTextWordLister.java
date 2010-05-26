@@ -19,6 +19,8 @@ package net.sf.jabb.util.text.word;
 import java.util.Collection;
 import java.util.Set;
 
+import javolution.util.FastSet;
+
 import com.enigmastation.extractors.WordLister;
 
 /**
@@ -32,20 +34,18 @@ import com.enigmastation.extractors.WordLister;
  */
 public class AnalyzedTextWordLister implements WordLister {
 	
-	protected AnalyzedText ensureAnalyzedText(Object document){
-		if (! (document instanceof AnalyzedText)){
-			throw new IllegalArgumentException("Only instances of AnalyzedText can be handled.");
-		}
-		return (AnalyzedText)document;
-	}
-
 	/* (non-Javadoc)
 	 * @see com.enigmastation.extractors.WordLister#addWords(java.lang.Object, java.util.Collection)
 	 */
 	@Override
 	public void addWords(Object document, Collection<String> collection) {
-		AnalyzedText aText = ensureAnalyzedText(document);
-		collection.addAll(aText.getUniqueWords());
+		if (document instanceof Collection<?>){
+			collection.addAll((Collection<String>)document);
+		}else if (document instanceof AnalyzedText){
+			collection.addAll(((AnalyzedText)document).getWords());
+		}else {
+			throw new IllegalArgumentException("Only instances of AnalyzedText can be handled.");
+		}
 	}
 
 	/* (non-Javadoc)
@@ -53,8 +53,13 @@ public class AnalyzedTextWordLister implements WordLister {
 	 */
 	@Override
 	public Set<String> getUniqueWords(Object document) {
-		AnalyzedText aText = ensureAnalyzedText(document);
-        return aText.getUniqueWords();
+		if (document instanceof AnalyzedText){
+	        return ((AnalyzedText)document).getUniqueWords();
+		}else{
+	        Set<String> features = new FastSet<String>();
+	        addWords(document, features);
+	        return features;
+		}
 	}
 
 }

@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javolution.util.FastMap;
-
 import org.apache.commons.lang.mutable.MutableInt;
 
 /**
@@ -33,12 +31,17 @@ import org.apache.commons.lang.mutable.MutableInt;
  *
  */
 public class AnalyzedText {
+	protected TextAnalyzer analyzer;
 	protected String text;
-	protected boolean analyzed;
 	protected List<String> words;
 	protected Set<String> uniqueWords;
 	protected Object lengthCategory;
 	protected Map<Object, MutableInt> matchedKeywords;
+	
+	public AnalyzedText(TextAnalyzer analyzer, String text){
+		this.analyzer = analyzer;
+		this.text = text;
+	}
 	
 	/**
 	 * @return 供分析的原始文本
@@ -48,31 +51,15 @@ public class AnalyzedText {
 		return text;
 	}
 	/**
-	 * @param text 供分析的原始文本
-	 * 			<br>Original text for analysis.
-	 */
-	public void setText(String text) {
-		this.text = text;
-	}
-	/**
-	 * @return 是否已经经过分析了
-	 * 		<br>Had the original text been analyzed?
-	 */
-	public boolean isAnalyzed() {
-		return analyzed;
-	}
-	/**
-	 * @param analyzed 是否已经经过分析了
-	 * 		<br>Had the original text been analyzed?
-	 */
-	void setAnalyzed(boolean analyzed) {
-		this.analyzed = analyzed;
-	}
-	/**
 	 * @return 组成原文的全部词、字，按出现的次序排列。
 	 * 		<br>All words that consist the original text, in the order of appearance.
 	 */
 	public List<String> getWords() {
+		synchronized(this){
+			if (words == null){
+				analyzer.analyzeWords(this);
+			}
+		}
 		return words;
 	}
 	/**
@@ -87,6 +74,11 @@ public class AnalyzedText {
 	 * 		<br>Unique words that consist the original text.
 	 */
 	public Set<String> getUniqueWords() {
+		synchronized(this){
+			if (uniqueWords == null){
+				analyzer.analyzeWords(this);
+			}
+		}
 		return uniqueWords;
 	}
 	/**
@@ -101,6 +93,11 @@ public class AnalyzedText {
 	 * 		<br>Category according to the length of the original text.
 	 */
 	public Object getLengthCategory() {
+		synchronized(this){
+			if (lengthCategory == null){
+				analyzer.analyzeLength(this);
+			}
+		}
 		return lengthCategory;
 	}
 	/**
@@ -118,7 +115,7 @@ public class AnalyzedText {
 	public Map<Object, MutableInt> getMatchedKeywords() {
 		synchronized(this){
 			if (matchedKeywords == null){
-				matchedKeywords = new FastMap<Object, MutableInt>();
+				analyzer.analyzeKeywords(this);
 			}
 		}
 		return matchedKeywords;
