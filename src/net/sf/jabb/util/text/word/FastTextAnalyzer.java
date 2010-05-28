@@ -16,15 +16,10 @@ limitations under the License.
 
 package net.sf.jabb.util.text.word;
 
-import java.io.StringReader;
 import java.util.Map;
 
 import net.sf.jabb.util.text.KeywordMatcher;
 
-import com.chenlb.mmseg4j.ComplexSeg;
-import com.chenlb.mmseg4j.MMSeg;
-import com.chenlb.mmseg4j.MaxWordSeg;
-import com.chenlb.mmseg4j.SimpleSeg;
 
 /**
  * 基于KeywordMatcher分词的文本分析器。

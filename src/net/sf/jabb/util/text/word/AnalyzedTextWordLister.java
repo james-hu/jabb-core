@@ -37,6 +37,7 @@ public class AnalyzedTextWordLister implements WordLister {
 	/* (non-Javadoc)
 	 * @see com.enigmastation.extractors.WordLister#addWords(java.lang.Object, java.util.Collection)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addWords(Object document, Collection<String> collection) {
 		if (document instanceof Collection<?>){

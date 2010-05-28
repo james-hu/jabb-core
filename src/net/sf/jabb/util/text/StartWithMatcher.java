@@ -23,6 +23,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import dk.brics.automaton.Automaton;
@@ -104,7 +105,7 @@ public class StartWithMatcher implements Serializable{
 	 * 
 	 * @param definitionList  一组匹配方式定义。<br>Matching definitions
 	 */
-	public StartWithMatcher(List<MatchingDefinition> definitionList){
+	public StartWithMatcher(Collection<MatchingDefinition> definitionList){
 		this.initialize(definitionList, true);
 	}
 
@@ -118,7 +119,7 @@ public class StartWithMatcher implements Serializable{
 	 * 								<br>Whether or not to consume
 	 * 								more memory for better matching speed.
 	 */
-	public StartWithMatcher(List<MatchingDefinition> definitionList, boolean moreSpaceForSpeed){
+	public StartWithMatcher(Collection<MatchingDefinition> definitionList, boolean moreSpaceForSpeed){
 		this.initialize(definitionList, moreSpaceForSpeed);
 	}
 
@@ -133,7 +134,7 @@ public class StartWithMatcher implements Serializable{
 	 * 								<br>Whether or not to consume
 	 * 								more memory for better matching speed.
 	 */
-	protected void initialize(List<MatchingDefinition> definitionList, boolean moreSpaceForSpeed){
+	protected void initialize(Collection<MatchingDefinition> definitionList, boolean moreSpaceForSpeed){
 		// 把所有正则表达式union起来
 		List<Automaton> list = new ArrayList<Automaton>(definitionList.size());
 		for (MatchingDefinition c: definitionList) {

@@ -16,12 +16,10 @@ limitations under the License.
 
 package net.sf.jabb.util.text.word;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.mutable.MutableInt;
 
-import com.chenlb.mmseg4j.Seg;
 
 import net.sf.jabb.util.text.StringStartWithMatcher;
 
@@ -42,8 +40,6 @@ public class TestTextAnalyzer {
 	}
 	
 	protected void scan(AnalyzedText aText){
-		int lastMatchBegin = 0;
-		int lastMatchEnd = 0;
 		String text = aText.text;
 		if (text != null && text.length() > 0){
 			int i = 0;
@@ -52,7 +48,6 @@ public class TestTextAnalyzer {
 				if (word == null){
 					i ++;
 				}else{
-					lastMatchBegin = i;
 					int types = word.getTypes();
 					if ((types & Word.TYPE_IGNORE) != 0){
 						

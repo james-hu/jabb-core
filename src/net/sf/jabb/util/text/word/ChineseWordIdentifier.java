@@ -7,7 +7,6 @@ import javolution.util.FastList;
 import com.chenlb.mmseg4j.Chunk;
 import com.chenlb.mmseg4j.Sentence;
 import com.chenlb.mmseg4j.SimpleSeg;
-import com.chenlb.mmseg4j.Word;
 
 public class ChineseWordIdentifier extends SimpleSeg {
 

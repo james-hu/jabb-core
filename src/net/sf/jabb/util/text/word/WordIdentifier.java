@@ -8,7 +8,6 @@ import java.util.List;
 import javolution.util.FastList;
 
 import com.chenlb.mmseg4j.MMSeg;
-import com.chenlb.mmseg4j.Seg;
 import com.chenlb.mmseg4j.Word;
 
 public class WordIdentifier extends MMSeg {
