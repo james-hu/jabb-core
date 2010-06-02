@@ -59,9 +59,9 @@ public class PackagedFrequencyCounter extends FrequencyCounter{
 	}
 
 	@Override
-	public void record(long when, int times) {
+	public void count(long when, int times) {
 		for (BasicFrequencyCounter counter: counters.values()){
-			counter.record(when, times);
+			counter.count(when, times);
 		}
 		
 	}
@@ -97,7 +97,6 @@ public class PackagedFrequencyCounter extends FrequencyCounter{
 			sb.append("\" ");
 			sb.append(counters.get(id));
 		}
-		sb.setLength(sb.length() - 1);
 		return sb.toString();
 	}
 	

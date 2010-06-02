@@ -33,6 +33,15 @@ import com.enigmastation.extractors.WordLister;
  *
  */
 public class AnalyzedTextWordLister implements WordLister {
+	protected boolean includeLengthCategory;
+	
+	public AnalyzedTextWordLister(){
+		this(false);
+	}
+	
+	public AnalyzedTextWordLister(boolean includeLengthCategory){
+		this.includeLengthCategory = includeLengthCategory;
+	}
 	
 	/* (non-Javadoc)
 	 * @see com.enigmastation.extractors.WordLister#addWords(java.lang.Object, java.util.Collection)
@@ -54,13 +63,16 @@ public class AnalyzedTextWordLister implements WordLister {
 	 */
 	@Override
 	public Set<String> getUniqueWords(Object document) {
+        Set<String> features = new FastSet<String>();
 		if (document instanceof AnalyzedText){
-	        return ((AnalyzedText)document).getUniqueWords();
+	        features.addAll(((AnalyzedText)document).getUniqueWords());
+		    if (includeLengthCategory){
+		       	features.add(((AnalyzedText)document).getLengthCategory().toString());
+		    }
 		}else{
-	        Set<String> features = new FastSet<String>();
 	        addWords(document, features);
-	        return features;
 		}
+	    return features;
 	}
 
 }

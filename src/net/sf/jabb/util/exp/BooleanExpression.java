@@ -219,7 +219,6 @@ public class BooleanExpression {
 			sb.append("NOT ");
 			sb.append(children.get(0));
 		}else{
-			
 			boolean isFirst = true;
 			for (BooleanExpression e: children){
 				if (isFirst){

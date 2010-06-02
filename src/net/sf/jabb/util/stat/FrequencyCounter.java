@@ -33,7 +33,7 @@ public abstract class FrequencyCounter {
 	 * @param when		发生的时刻
 	 * @param times		发生的次数
 	 */
-	public abstract void record(long when, int times);
+	public abstract void count(long when, int times);
 
 	/**
 	 * 获得某时刻的统计数
@@ -64,39 +64,39 @@ public abstract class FrequencyCounter {
 	 * @param when	发生时间
 	 * @param times	发生次数
 	 */
-	public void record(Date when, int times) {
-		record(when.getTime(), times);
+	public void count(Date when, int times) {
+		count(when.getTime(), times);
 	}
 
 	/**
 	 * 记录在某个时间发生了一次
 	 * @param when	发生的时间
 	 */
-	public void record(long when) {
-		record(when, 1);
+	public void count(long when) {
+		count(when, 1);
 	}
 	
 	/**
 	 * 记录在当前时间发生了一次
 	 */
-	public void record(){
-		record(System.currentTimeMillis(), 1);
+	public void count(){
+		count(System.currentTimeMillis(), 1);
 	}
 
 	/**
 	 * 记录在当前时间发生了几次
 	 * @param times	发生的次数
 	 */
-	public void record(int times){
-		record(System.currentTimeMillis(), times);
+	public void count(int times){
+		count(System.currentTimeMillis(), times);
 	}
 
 	/**
 	 * 记录在某个时间发生了几次
 	 * @param when
 	 */
-	public void record(Date when) {
-		record(when.getTime(), 1);
+	public void count(Date when) {
+		count(when.getTime(), 1);
 	}
 
 	/**
