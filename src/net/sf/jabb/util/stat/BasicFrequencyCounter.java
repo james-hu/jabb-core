@@ -22,8 +22,9 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.commons.lang.mutable.MutableLong;
+import net.sf.jabb.util.col.PutOnGetMap;
 
 /**
  * 频次计数器
@@ -32,7 +33,7 @@ import org.apache.commons.lang.mutable.MutableLong;
  *
  */
 public class BasicFrequencyCounter extends FrequencyCounter {
-	protected ConcurrentCounters<Long> counters;
+	protected PutOnGetMap<Long, AtomicLong> counters;
 	protected long granularity;
 	protected long purgeBefore;
 	protected Object recordLock = new Object();
@@ -47,7 +48,8 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	 */
 	public BasicFrequencyCounter(long granularity, TimeUnit unit,
 			long purgePeriod, TimeUnit purgeUnit){
-		counters = new ConcurrentCounters<Long>();
+		counters = new PutOnGetMap<Long, AtomicLong>(
+				new ConcurrentSkipListMap<Long, AtomicLong>(), AtomicLong.class);
 		this.granularity = TimeUnit.MILLISECONDS.convert(granularity, unit);
 		if (purgePeriod == 0){
 			this.purgeBefore = 0;
@@ -82,7 +84,7 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	@Override
 	public void count(long when, int times){
 		long recWhen = when - (when % granularity);
-		counters.count(recWhen, times);
+		counters.get(recWhen).addAndGet(times);
 		if (purgeBefore != 0){
 			purge(when - purgeBefore);
 		}
@@ -92,8 +94,8 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	 * 获得全部计数统计
 	 * @return	返回的Map的Key是以毫秒为单位的时间，value是计数值。
 	 */
-	public Map<Long, MutableLong> getCounts(){
-		return counters.getCounterMap();
+	public Map<Long, AtomicLong> getCounts(){
+		return counters.getMap();
 	}
 	
 	/**
@@ -104,7 +106,7 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	@Override
 	public long getCount(long when){
 		Long recWhen = new Long (when - (when % granularity));
-		MutableLong times = counters.get(recWhen);
+		AtomicLong times = counters.get(recWhen);
 		return times == null ? 0 : times.longValue(); 
 	}
 	
@@ -118,9 +120,9 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	 */
 	@Override
 	public long getCount(long fromWhen, long toWhen,  boolean fromInclusive, boolean toInclusive){
-		NavigableMap<Long, MutableLong> range = counters.getCounterMap().subMap(fromWhen, fromInclusive, toWhen, toInclusive);
+		NavigableMap<Long, AtomicLong> range = counters.subMap(fromWhen, fromInclusive, toWhen, toInclusive);
 		long count = 0;
-		for(MutableLong c: range.values()){
+		for(AtomicLong c: range.values()){
 			count += c.longValue();
 		}
 		return count;
@@ -133,9 +135,8 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	@Override
 	public void purge(long tillWhen){
 		Long t;
-		ConcurrentSkipListMap<Long, MutableLong> stats = counters.getCounterMap();
-		while((t = stats.firstKey()) != null && t < tillWhen){
-			stats.remove(t);
+		while((t = counters.firstKey()) != null && t < tillWhen){
+			counters.remove(t);
 		}
 	}
 	

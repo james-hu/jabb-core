@@ -19,21 +19,22 @@ package net.sf.jabb.util.col;
 import java.io.Serializable;
 
 /**
- * 把多个long类型的值封装在这一个对象里，适合用来作为Map的key。
+ * 把多个Number（比如Integer, Long, Double）类型的值封装在这一个对象里，适合用来作为Map的key。
  * 
  * @author Zhengmao HU (James)
  *
+ * @param <T extends Number>
  */
-public class MultipleLong implements Comparable<Object>, Serializable{
-	private static final long serialVersionUID = -8516762858218377073L;
-	
-	protected long[] values;
+public class NumberArray<T extends Number> implements Comparable<Object>, Serializable{
+	private static final long serialVersionUID = 3101324164832289477L;
+
+	protected T[] values;
 	
 	/**
 	 * 创建一个包含这些长整型值的实例
 	 * @param values	一批长整型值
 	 */
-	public MultipleLong(long... values){
+	public NumberArray(T... values){
 		this.values = values;
 	}
 	
@@ -41,7 +42,7 @@ public class MultipleLong implements Comparable<Object>, Serializable{
 	 * 获得所有值
 	 * @return
 	 */
-	public long[] getValues(){
+	public T[] getValues(){
 		return values;
 	}
 	
@@ -50,8 +51,17 @@ public class MultipleLong implements Comparable<Object>, Serializable{
 	 * @param index
 	 * @return
 	 */
-	public long getValue(int index){
+	public T getValue(int index){
 		return values[index];
+	}
+
+	/**
+	 * 获得指定位置的值，以整型返回
+	 * @param index
+	 * @return
+	 */
+	public int getIntValue(int index){
+		return values[index].intValue();
 	}
 	
 	/**
@@ -59,25 +69,62 @@ public class MultipleLong implements Comparable<Object>, Serializable{
 	 * @param index
 	 * @return
 	 */
-	public int getIntValue(int index){
-		return (int)values[index];
+	public long getLongValue(int index){
+		return values[index].longValue();
 	}
 	
+	/**
+	 * 获得指定位置的值，以整型返回
+	 * @param index
+	 * @return
+	 */
+	public double getDoubleValue(int index){
+		return values[index].doubleValue();
+	}
+
+	/**
+	 * 获得指定位置的值，以整型返回
+	 * @param index
+	 * @return
+	 */
+	public float getFloatValue(int index){
+		return values[index].floatValue();
+	}
+
+	/**
+	 * 获得指定位置的值，以整型返回
+	 * @param index
+	 * @return
+	 */
+	public short getShortValue(int index){
+		return values[index].shortValue();
+	}
+
+	/**
+	 * 获得指定位置的值，以整型返回
+	 * @param index
+	 * @return
+	 */
+	public byte getByteValue(int index){
+		return values[index].byteValue();
+	}
+
 	public int hashCode(){
 		long result = 0;
-		for (long l: values){
-			result += l << 32;
-			result ^= l * 31;
+		for (T l: values){
+			result += l.hashCode();
+			result ^= l.hashCode() * 31;
 		}
 		return (int) result;
 	}
 
+
 	@Override
 	public int compareTo(Object obj) {
-		if (! (obj instanceof MultipleLong)){
-			throw new IllegalArgumentException("Only comparing to MultipleLong is supported.");
+		if (! (obj instanceof NumberArray<?>)){
+			throw new IllegalArgumentException("Only comparing to MultipleNumbers is supported.");
 		}
-		MultipleLong to = (MultipleLong) obj;
+		NumberArray<?> to = (NumberArray<?>) obj;
 		
 		if (this.values.length < to.values.length){
 			return -1;
@@ -88,9 +135,9 @@ public class MultipleLong implements Comparable<Object>, Serializable{
 		int result = 0;
 		int i = 0;
 		while (result == 0 && i < this.values.length){
-			if (this.values[i] < to.values[i]){
+			if (this.values[i].doubleValue() < to.values[i].doubleValue()){
 				result = -1;
-			}else if (this.values[i] > to.values[i]){
+			}else if (this.values[i].doubleValue() > to.values[i].doubleValue()){
 				result = 1;
 			}
 			i ++;
@@ -100,6 +147,9 @@ public class MultipleLong implements Comparable<Object>, Serializable{
 	
 	@Override
 	public boolean equals(Object obj){
+		if (obj == null){
+			throw new NullPointerException(".equals(null) happened.");
+		}
 		return compareTo(obj) == 0;
 	}
 	
@@ -107,7 +157,7 @@ public class MultipleLong implements Comparable<Object>, Serializable{
 		StringBuilder sb = new StringBuilder();
 		sb.append('(');
 		boolean isFirst = true;
-		for (long l: values){
+		for (T l: values){
 			if (isFirst){
 				isFirst = false;
 			}else{
@@ -118,5 +168,6 @@ public class MultipleLong implements Comparable<Object>, Serializable{
 		sb.append(')');
 		return sb.toString();
 	}
+
 
 }

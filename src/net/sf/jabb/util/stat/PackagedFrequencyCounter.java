@@ -19,6 +19,8 @@ package net.sf.jabb.util.stat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * 打包封装好的频次计数工具
@@ -82,11 +84,14 @@ public class PackagedFrequencyCounter extends FrequencyCounter{
 	/**
 	 * 转为字符串
 	 */
+	@SuppressWarnings("unchecked")
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
+		Set keySet = new TreeSet();
+		keySet.addAll(counters.keySet());
 		
 		boolean isFirst = true;
-		for (Object id: counters.keySet()){
+		for (Object id: keySet){
 			if (isFirst){
 				isFirst = false;
 			}else{
