@@ -16,7 +16,6 @@ limitations under the License.
 
 package net.sf.jabb.util.stat;
 
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 支持同步的设置最大、最小的操作
