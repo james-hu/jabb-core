@@ -22,28 +22,13 @@ package net.sf.jabb.util.stat;
  * @author Zhengmao HU (James)
  *
  */
-public class AtomicMinMaxLong {
+abstract class AtomicMinMaxLong {
 	protected long value;
-	protected Object updateLock = new Object();
+	protected Object updateLock;
 	
 	protected AtomicMinMaxLong(long initialValue){
 		value = initialValue;
-	}
-	
-	/**
-	 * 创建一个实例，用来保存最小值
-	 * @return
-	 */
-	static public AtomicMinMaxLong newInstanceForMin(){
-		return new AtomicMinMaxLong(Long.MAX_VALUE);
-	}
-	
-	/**
-	 * 创建一个实例，用来保存最大值
-	 * @return
-	 */
-	static public AtomicMinMaxLong newInstanceForMax(){
-		return new AtomicMinMaxLong(Long.MIN_VALUE);
+		updateLock = new Object();
 	}
 	
 	/**
@@ -70,64 +55,5 @@ public class AtomicMinMaxLong {
 		return (int) value;
 	}
 	
-	/**
-	 * 设置为当前值与新值之间的最小的一个
-	 * @param newValue
-	 * @return			最小值
-	 */
-	public long minAndGet(long newValue){
-		synchronized(updateLock){
-			if (newValue < value){
-				value = newValue;
-			}
-			return value;
-		}
-	}
-	
-	/**
-	 * 设置为当前值与新值之间最大的一个
-	 * @param newValue
-	 * @return		最大值
-	 */
-	public long maxAndGet(long newValue){
-		synchronized(updateLock){
-			if (newValue > value){
-				value = newValue;
-			}
-			return value;
-		}
-	}
-
-	/**
-	 * 设置为当前值与新值之间的最小的一个
-	 * @param newValue
-	 * @return		原来的值
-	 */
-	public long getAndMin(long newValue){
-		long oldValue;
-		synchronized(updateLock){
-			oldValue = value;
-			if (newValue < value){
-				value = newValue;
-			}
-			return oldValue;
-		}
-	}
-	
-	/**
-	 * 设置为当前值与新值之间最大的一个
-	 * @param newValue
-	 * @return		原来的值
-	 */
-	public long getAndMax(long newValue){
-		long oldValue;
-		synchronized(updateLock){
-			oldValue = value;
-			if (newValue > value){
-				value = newValue;
-			}
-			return oldValue;
-		}
-	}
 
 }

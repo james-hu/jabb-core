@@ -79,6 +79,15 @@ public abstract class TextAnalyzer {
 	}
 	
 	/**
+	 * 对文本进行分析。立刻分析，不用lazy方式。
+	 * @param text	待分析的文本
+	 * @return
+	 */
+	public AnalyzedText analyze(String text){
+		return analyze(text, false);
+	}
+	
+	/**
 	 * 分析长度落在哪个区间
 	 * @param aText
 	 */

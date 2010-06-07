@@ -19,21 +19,21 @@ package net.sf.jabb.util.col;
 import java.io.Serializable;
 
 /**
- * 把多个long类型的值封装在这一个对象里，适合用来作为Map的key。
+ * 把多个int类型的值封装在这一个对象里，适合用来作为Map的key。
  * 
  * @author Zhengmao HU (James)
  *
  */
-public class LongArray implements Comparable<Object>, Serializable{
-	private static final long serialVersionUID = -8516762858218377073L;
-	
-	protected long[] values;
+public class IntArray implements Comparable<Object>, Serializable{
+	private static final long serialVersionUID = -8135093635897238532L;
+
+	protected int[] values;
 	
 	/**
-	 * 创建一个包含这些长整型值的实例
-	 * @param values	一批长整型值
+	 * 创建一个包含这些整型值的实例
+	 * @param values	一批整型值
 	 */
-	public LongArray(long... values){
+	public IntArray(int... values){
 		this.values = values;
 	}
 	
@@ -41,7 +41,7 @@ public class LongArray implements Comparable<Object>, Serializable{
 	 * 获得所有值
 	 * @return
 	 */
-	public long[] getValues(){
+	public int[] getValues(){
 		return values;
 	}
 	
@@ -50,7 +50,7 @@ public class LongArray implements Comparable<Object>, Serializable{
 	 * @param index
 	 * @return
 	 */
-	public long getValue(int index){
+	public int getValue(int index){
 		return values[index];
 	}
 	
@@ -69,7 +69,7 @@ public class LongArray implements Comparable<Object>, Serializable{
 	 * @return
 	 */
 	public int getIntValue(int index){
-		return (int)values[index];
+		return values[index];
 	}
 	
 	public int hashCode(){
@@ -83,10 +83,10 @@ public class LongArray implements Comparable<Object>, Serializable{
 
 	@Override
 	public int compareTo(Object obj) {
-		if (! (obj instanceof LongArray)){
-			throw new IllegalArgumentException("Only comparing to LongArray is supported.");
+		if (! (obj instanceof IntArray)){
+			throw new IllegalArgumentException("Only comparing to IntArray is supported.");
 		}
-		LongArray to = (LongArray) obj;
+		IntArray to = (IntArray) obj;
 		
 		if (this.values.length < to.values.length){
 			return -1;
@@ -119,7 +119,7 @@ public class LongArray implements Comparable<Object>, Serializable{
 		StringBuilder sb = new StringBuilder();
 		sb.append('(');
 		boolean isFirst = true;
-		for (long l: values){
+		for (int l: values){
 			if (isFirst){
 				isFirst = false;
 			}else{
