@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
 
 import net.sf.jabb.util.text.NameDeduplicator;
 
@@ -34,45 +35,81 @@ import net.sf.jabb.util.text.NameDeduplicator;
 public class QueueConsumerGroup<E> {
 	protected BlockingQueue<E> queue;
 	protected Map<String, QueueConsumer<E>> consumers;
+	protected ExecutorService threadPool;
 	
 	/**
-	 * 创建实例
+	 * 创建实例，使用各个QueueConsumer自己的线程池
 	 * @param workQueue		工作队列
 	 */
-	public QueueConsumerGroup(BlockingQueue<E> workQueue){
+	protected QueueConsumerGroup(BlockingQueue<E> workQueue){
 		queue = workQueue;
 		consumers = new TreeMap<String, QueueConsumer<E>>();
 	}
+
+	/**
+	 * 创建实例，统一使用指定的线程池
+	 * @param workQueue
+	 * @param executorService
+	 */
+	protected QueueConsumerGroup(BlockingQueue<E> workQueue, ExecutorService executorService){
+		this(workQueue);
+		threadPool = executorService;
+	}
 	
 	/**
-	 * 创建实例
+	 * 创建实例，统一使用指定的线程池
+	 * @param workQueue
+	 * @param executorService
+	 * @param queueConsumers
+	 */
+	public QueueConsumerGroup(BlockingQueue<E> workQueue, ExecutorService executorService, QueueConsumer<E>... queueConsumers){
+		this(workQueue, executorService);
+		NameDeduplicator ndd = new NameDeduplicator();
+		for (QueueConsumer<E> c: queueConsumers){
+			String newName = ndd.deduplicate(c.getName());
+			c.setName(newName);
+			if (threadPool != null){
+				c.setExecutorService(threadPool);
+			}
+			consumers.put(newName, c);
+		}
+	}
+	
+	/**
+	 * 创建实例，使用各个QueueConsumer自己的线程池
 	 * @param workQueue		工作队列
 	 * @param queueConsumers	现成的Consumer
 	 */
 	public QueueConsumerGroup(BlockingQueue<E> workQueue, QueueConsumer<E>... queueConsumers){
-		this(workQueue);
+		this(workQueue, null, queueConsumers);
+	}
+	
+	/**
+	 * 创建实例，统一使用指定的线程池
+	 * @param workQueue		工作队列
+	 * @param queueConsumers	现成的Consumer
+	 */
+	public QueueConsumerGroup(BlockingQueue<E> workQueue, ExecutorService executorService, Collection<QueueConsumer<E>> queueConsumers){
+		this(workQueue, executorService);
 		NameDeduplicator ndd = new NameDeduplicator();
 		for (QueueConsumer<E> c: queueConsumers){
 			String newName = ndd.deduplicate(c.getName());
 			c.setName(newName);
+			if (threadPool != null){
+				c.setExecutorService(threadPool);
+			}
 			consumers.put(newName, c);
 		}
 	}
 	
 	/**
-	 * 创建实例
-	 * @param workQueue		工作队列
-	 * @param queueConsumers	现成的Consumer
+	 * 创建实例，使用各个QueueConsumer自己的线程池
+	 * @param workQueue
+	 * @param queueConsumers
 	 */
 	public QueueConsumerGroup(BlockingQueue<E> workQueue, Collection<QueueConsumer<E>> queueConsumers){
-		this(workQueue);
-		NameDeduplicator ndd = new NameDeduplicator();
-		for (QueueConsumer<E> c: queueConsumers){
-			String newName = ndd.deduplicate(c.getName());
-			c.setName(newName);
-			consumers.put(newName, c);
-		}
-	}
+		this(workQueue, null, queueConsumers);
+	}	
 	
 	/**
 	 * 按名称寻找得到QueueConsumer

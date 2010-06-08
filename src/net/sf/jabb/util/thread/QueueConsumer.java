@@ -22,7 +22,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 从队列中取数据，进行处理。
+ * 从队列中取数据，进行处理。它所启动的线程是从内部的线程池取的。
  * 
  * @author Zhengmao HU (James)
  * 
@@ -43,11 +43,12 @@ public abstract class QueueConsumer<E> implements Runnable{
 	static protected final int MODE_STOP_WHEN_EMPTY = 4;
 	static protected final int MODE_STOPPED = 5;
 	
+	static protected ExecutorService defaultThreadPool;
 	
-	static protected ExecutorService threadPool;
+	protected ExecutorService threadPool;
 	
 	static{
-		threadPool = Executors.newCachedThreadPool();
+		defaultThreadPool = Executors.newCachedThreadPool();
 	}
 	
 	public void setName(String name) {
@@ -58,25 +59,41 @@ public abstract class QueueConsumer<E> implements Runnable{
 		return name;
 	}
 	
+	public void setExecutorService(ExecutorService threadPool) {
+		this.threadPool = threadPool;
+	}
+
 	/**
-	 * 创建一个实例
-	 * @param name	名称，会被用在线程名里
-	 * @param workQueue	从这个队列取得待处理数据
-	 * 
+	 * 创建一个实例。
+	 * @param name			名称，会被用在线程名里
+	 * @param workQueue			从这个队列取得待处理数据
+	 * @param executorService	指定从这里获得线程
 	 */
-	public QueueConsumer(String name, BlockingQueue<E> workQueue){
+	public QueueConsumer(BlockingQueue<E> workQueue, String name, ExecutorService executorService){
+		threadPool = executorService;
 		startStopLock = new Object();
 		this.name = name;
 		queue = workQueue;
 		mode = new AtomicInteger(MODE_INIT);
 	}
 	
+	
 	/**
-	 * 创建一个实例
+	 * 创建一个实例，使用缺省的线程池。
+	 * @param name	名称，会被用在线程名里
+	 * @param workQueue	从这个队列取得待处理数据
+	 * 
+	 */
+	public QueueConsumer(BlockingQueue<E> workQueue, String name){
+		this(workQueue, name, defaultThreadPool);
+	}
+	
+	/**
+	 * 创建一个实例，使用缺省的线程名称和缺省的线程池。
 	 * @param workQueue	从这个队列取得待处理数据
 	 */
 	public QueueConsumer(BlockingQueue<E> workQueue){
-		this(QueueConsumer.class.getSimpleName(), workQueue);
+		this(workQueue, QueueConsumer.class.getSimpleName());
 	}
 	
 	/**
