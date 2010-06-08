@@ -17,6 +17,9 @@ limitations under the License.
 package net.sf.jabb.util.thread;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 从队列中取数据，进行处理。
@@ -30,13 +33,22 @@ public abstract class QueueConsumer<E> implements Runnable{
 	protected BlockingQueue<E> queue;
 	protected Thread thread;
 	protected Object startStopLock;
-	protected int mode;
+	protected AtomicInteger mode;
 	protected String name;
 
 	static protected final int MODE_INIT = 0;
-	static protected final int MODE_RUN = 1;
-	static protected final int MODE_STOP_ASAP = 2;
-	static protected final int MODE_STOP_WHEN_EMPTY = 3;
+	static protected final int MODE_START = 1;
+	static protected final int MODE_RUNNING = 2;
+	static protected final int MODE_STOP_ASAP = 3;
+	static protected final int MODE_STOP_WHEN_EMPTY = 4;
+	static protected final int MODE_STOPPED = 5;
+	
+	
+	static protected ExecutorService threadPool;
+	
+	static{
+		threadPool = Executors.newCachedThreadPool();
+	}
 	
 	public void setName(String name) {
 		this.name = name;
@@ -56,7 +68,7 @@ public abstract class QueueConsumer<E> implements Runnable{
 		startStopLock = new Object();
 		this.name = name;
 		queue = workQueue;
-		mode = MODE_INIT;
+		mode = new AtomicInteger(MODE_INIT);
 	}
 	
 	/**
@@ -79,12 +91,8 @@ public abstract class QueueConsumer<E> implements Runnable{
 	 * 启动处理线程，这个方法立即返回。
 	 */
 	public void start(){
-		synchronized(startStopLock){
-			if (thread == null){
-				thread = new Thread(this, name);
-				mode = MODE_RUN;
-				thread.start();
-			}
+		if (mode.compareAndSet(MODE_INIT, MODE_START)){
+			threadPool.execute(this);
 		}
 	}
 	
@@ -100,29 +108,30 @@ public abstract class QueueConsumer<E> implements Runnable{
 	 * @param afterQueueEmpty	如果为true，则等队列处理空了才返回，否则就尽早返回。
 	 */
 	public void stop(boolean afterQueueEmpty){
-		synchronized(startStopLock){
-			if (thread != null){
-				mode = afterQueueEmpty ? MODE_STOP_WHEN_EMPTY : MODE_STOP_ASAP;
-				while(thread.isAlive()){
-					thread.interrupt();
-					try {
-						// 也存在这种可能性：在while作判断的时候，queue.size()>0，
-						// 而take()的时候已经没东西取了，所以join之后也不能死等，要反复interrupt。
-						thread.join(1000);
-					} catch (InterruptedException e) {
-						// do nothing
-					}
+		if (mode.compareAndSet(MODE_RUNNING, afterQueueEmpty ? MODE_STOP_WHEN_EMPTY : MODE_STOP_ASAP)){
+			while(! mode.compareAndSet(MODE_STOPPED, MODE_INIT)){
+				thread.interrupt();
+				try {
+					// 也存在这种可能性：在while作判断的时候，queue.size()>0，
+					// 而take()的时候已经没东西取了，所以join之后也不能死等，要反复interrupt。
+					thread.join(1000);
+				} catch (InterruptedException e) {
+					// do nothing
 				}
-				thread = null;
-				mode = MODE_INIT;
 			}
 		}
 	}
 
 	@Override
 	public void run() {
+		thread = Thread.currentThread();	// run from thread in executor
+		thread.setName(name);
+		if (!mode.compareAndSet(MODE_START, MODE_RUNNING)){
+			throw new IllegalStateException("Should be in state MODE_START, but actully not.");
+		}
+		
 		int m;	//保证值一致
-		while(((m = mode) == MODE_RUN) || (m == MODE_STOP_WHEN_EMPTY && queue.size() > 0)){
+		while(((m = mode.get()) == MODE_RUNNING) || (m == MODE_STOP_WHEN_EMPTY && queue.size() > 0)){
 			E obj = null;
 			try {
 				obj = queue.take();
@@ -132,7 +141,9 @@ public abstract class QueueConsumer<E> implements Runnable{
 			}
 			process(obj);
 		}
-		
+		if (!mode.compareAndSet(MODE_STOP_WHEN_EMPTY, MODE_STOPPED) && !mode.compareAndSet(MODE_STOP_ASAP, MODE_STOPPED)){
+			throw new IllegalStateException("Should be in state MODE_STOP_WHEN_EMPTY or MODE_STOP_ASAP, but actully not.");
+		}
 	}
 	
 	/**
