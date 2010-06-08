@@ -43,7 +43,24 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	 * @param originalMap	被封装进来的Map
 	 * @param valueClazz	Map的value的类
 	 */
-	public PutOnGetMap(Map<K, V> originalMap, Class<?> valueClazz){
+	public PutOnGetMap(Map<K, V> originalMap, Class<? extends V> valueClazz){
+		map = originalMap;
+		valueClass = valueClazz;
+	}
+	
+	/**
+	 * 把一个普通的Map封装成“每次get的时候，如果没有，就自动put”
+	 * @param mapClazz		被封装进来的Map的类
+	 * @param valueClazz	Map的value的类
+	 */
+	@SuppressWarnings("unchecked")
+	public PutOnGetMap(Class<? extends Map> mapClazz, Class<? extends V> valueClazz){
+		Map<K, V> originalMap = null;
+		try {
+			originalMap = mapClazz.newInstance();
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Cannot create instance for class: " + mapClazz.getCanonicalName(), e);
+		} 
 		map = originalMap;
 		valueClass = valueClazz;
 	}
@@ -57,6 +74,10 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	}
 	
 
+	/**
+	 * 取得key所对应的value，如果目前没有，则新建一个。
+	 * @param key
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public V get(Object key) {

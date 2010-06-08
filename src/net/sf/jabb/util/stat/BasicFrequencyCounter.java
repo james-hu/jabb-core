@@ -68,6 +68,14 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	}
 	
 	/**
+	 * 创建一个不对历史数据进行自动清除，且不针对时间颗粒度
+	 * （比如，对于一批短信，对不同长度短信各有多少条进行统计）的实例。
+	 */
+	public BasicFrequencyCounter(){
+		this(1, TimeUnit.MILLISECONDS, 0, null);
+	}
+
+	/**
 	 * 根据配置信息创建一个实例。
 	 * @param definition	配置信息
 	 */
