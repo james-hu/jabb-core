@@ -34,7 +34,7 @@ import java.util.TimeZone;
  * @author Zhengmao HU (James)
  *
  */
-public class DurationFormater {
+public class DurationFormatter {
 	protected static DateFormat df;
 	protected static final long ONE_DAY = 1000L*3600*24;
 
