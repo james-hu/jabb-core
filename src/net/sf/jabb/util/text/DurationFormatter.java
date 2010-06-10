@@ -28,8 +28,8 @@ import java.util.TimeZone;
  *   ...
  *   long t1 = System.currentTimeMillis();
  *   ...
- *   System.out.println(DurationFormater.formatSince(t0));
- *   System.out.println(t1-t0);
+ *   System.out.println(DurationFormatter.formatSince(t0));
+ *   System.out.println(DurationFormatter.format(t1-t0));
  * </pre>
  * @author Zhengmao HU (James)
  *
