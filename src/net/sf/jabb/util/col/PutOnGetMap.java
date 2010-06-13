@@ -16,6 +16,7 @@ limitations under the License.
 
 package net.sf.jabb.util.col;
 
+import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
@@ -36,6 +37,8 @@ import java.util.SortedMap;
 public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMap<K,V>{
 	protected Map<K, V> map;
 	protected Class<?> valueClass;
+	protected Constructor<?> valueConstructor;
+	protected Object valueParameter;
 	protected Object structureLock = new Object();
 	
 	/**
@@ -66,6 +69,32 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	}
 	
 	/**
+	 * 把一个普通的Map封装成“每次get的时候，如果没有，就自动put”
+	 * @param mapClazz		被封装进来的Map的类
+	 * @param valueClazz	Map的value的类
+	 * @param valueParam	Map的value的类的构造方法所需要的参数
+	 */
+	@SuppressWarnings("unchecked")
+	public PutOnGetMap(Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object valueParam){
+		Map<K, V> originalMap = null;
+		try {
+			originalMap = mapClazz.newInstance();
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Cannot create instance for class: " + mapClazz.getCanonicalName(), e);
+		} 
+		map = originalMap;
+
+		try {
+			valueConstructor = valueClazz.getConstructor(valueParam.getClass());
+			valueParameter = valueParam;
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Cannot find correct constuctor for '" + valueClazz.getCanonicalName()
+					+ "' with parameter type'" + valueParam == null? "null" : valueParam.getClass().getCanonicalName() + "'.", e);
+		}
+		
+	}
+
+	/**
 	 * 获得最初被封装的那个Map
 	 * @return
 	 */
@@ -87,7 +116,11 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 			synchronized(structureLock){
 				if (!map.containsKey(key)){
 					try {
-						result = (V)(valueClass.newInstance());
+						if (valueConstructor != null){
+							result = (V)(valueConstructor.newInstance(valueParameter));
+						}else{
+							result = (V)(valueClass.newInstance());
+						}
 						map.put((K)key, result);
 					} catch (Exception e) {
 						throw new IllegalArgumentException("Error putting key and new instance of " + valueClass.getCanonicalName(), e);

@@ -44,6 +44,18 @@ public class PackagedFrequencyCounter extends FrequencyCounter{
 	}
 	
 	/**
+	 * 创建包含多个BasicFrequencyCounter对象的计数器组合
+	 * @param counterDefinitions	各个BasicFrequencyCounter的配置信息，请注意它们的ID必须设置
+	 */
+	public PackagedFrequencyCounter(FrequencyCounterDefinition... counterDefinitions){
+		counters = new HashMap<Object, BasicFrequencyCounter>(counterDefinitions.length);
+		for (FrequencyCounterDefinition def: counterDefinitions){
+			BasicFrequencyCounter counter = new BasicFrequencyCounter(def);
+			counters.put(def.getId(), counter);
+		}
+	}
+
+	/**
 	 * 根据ID，获取ID所对应的BasicFrequencyCounter
 	 * @param id
 	 * @return

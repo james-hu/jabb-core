@@ -149,14 +149,7 @@ public abstract class QueueConsumer<E> implements Runnable{
 		
 		int m;	//保证值一致
 		while(((m = mode.get()) == MODE_RUNNING) || (m == MODE_STOP_WHEN_EMPTY && queue.size() > 0)){
-			E obj = null;
-			try {
-				obj = queue.take();
-			} catch (InterruptedException e) {
-				//thread.isInterrupted();
-				continue;
-			}
-			process(obj);
+			consume();
 		}
 		if (!mode.compareAndSet(MODE_STOP_WHEN_EMPTY, MODE_STOPPED) && !mode.compareAndSet(MODE_STOP_ASAP, MODE_STOPPED)){
 			throw new IllegalStateException("Should be in state MODE_STOP_WHEN_EMPTY or MODE_STOP_ASAP, but actully not.");
@@ -164,23 +157,8 @@ public abstract class QueueConsumer<E> implements Runnable{
 	}
 	
 	/**
-	 * 这个方法在运行过程中可能会遇到线程的interrupt，所以如果有以下情况要注意正确处理：
-	 * <p>
-	 *  If this thread is blocked in an invocation of the wait(), wait(long), or wait(long, int) 
-	 *  methods of the Object  class, or of the join(), join(long), join(long, int), sleep(long), 
-	 *  or sleep(long, int), methods of this class, then its interrupt status will be cleared and 
-	 *  it will receive an InterruptedException.
-	 *  <p>
-	 *  If this thread is blocked in an I/O operation upon an interruptible channel then the channel 
-	 *  will be closed, the thread's interrupt status will be set, and the thread will receive a 
-	 *  ClosedByInterruptException.
-	 *  <p>
-	 *  If this thread is blocked in a Selector then the thread's interrupt status will be set and 
-	 *  it will return immediately from the selection operation, possibly with a non-zero value, 
-	 *  just as if the selector's wakeup method were invoked. 
-	 *  
-	 * @param obj
+	 * 使用队列中的数据
 	 */
-	abstract public void process(E obj );
-
+	abstract protected void consume();  
+	
 }
