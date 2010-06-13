@@ -24,7 +24,7 @@ import java.io.Serializable;
  * @author Zhengmao HU (James)
  *
  */
-public class IntArray implements Comparable<Object>, Serializable{
+public class IntegerArray implements Comparable<Object>, Serializable{
 	private static final long serialVersionUID = -8135093635897238532L;
 
 	protected int[] values;
@@ -33,7 +33,7 @@ public class IntArray implements Comparable<Object>, Serializable{
 	 * 创建一个包含这些整型值的实例
 	 * @param values	一批整型值
 	 */
-	public IntArray(int... values){
+	public IntegerArray(int... values){
 		this.values = values;
 	}
 	
@@ -83,10 +83,10 @@ public class IntArray implements Comparable<Object>, Serializable{
 
 	@Override
 	public int compareTo(Object obj) {
-		if (! (obj instanceof IntArray)){
+		if (! (obj instanceof IntegerArray)){
 			throw new IllegalArgumentException("Only comparing to IntArray is supported.");
 		}
-		IntArray to = (IntArray) obj;
+		IntegerArray to = (IntegerArray) obj;
 		
 		if (this.values.length < to.values.length){
 			return -1;
