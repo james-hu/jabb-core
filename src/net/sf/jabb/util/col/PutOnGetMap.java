@@ -67,9 +67,10 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 		map = originalMap;
 		valueClass = valueClazz;
 	}
+
 	
 	/**
-	 * 把一个普通的Map封装成“每次get的时候，如果没有，就自动put”
+	 * 把一个普通的Map封装成“每次get的时候，如果没有，就自动put
 	 * @param mapClazz		被封装进来的Map的类
 	 * @param valueClazz	Map的value的类
 	 * @param valueParam	Map的value的类的构造方法所需要的参数
@@ -85,14 +86,52 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 		map = originalMap;
 
 		try {
+			// for single non-array argument
 			valueConstructor = valueClazz.getConstructor(valueParam.getClass());
 			valueParameter = valueParam;
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Cannot find correct constuctor for '" + valueClazz.getCanonicalName()
 					+ "' with parameter type'" + valueParam == null? "null" : valueParam.getClass().getCanonicalName() + "'.", e);
 		}
-		
 	}
+
+	
+	/**
+	 * 把一个普通的Map封装成“每次get的时候，如果没有，就自动put”
+	 * @param mapClazz		被封装进来的Map的类
+	 * @param valueClazz	Map的value的类
+	 * @param valueParam	Map的value的类的构造方法所需要的参数
+	 */
+	@SuppressWarnings("unchecked")
+	public PutOnGetMap(Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object... valueParam){
+		Map<K, V> originalMap = null;
+		try {
+			originalMap = mapClazz.newInstance();
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Cannot create instance for class: " + mapClazz.getCanonicalName(), e);
+		} 
+		map = originalMap;
+
+		try {
+			try{
+				// for single array argument
+				valueConstructor = valueClazz.getConstructor(valueParam.getClass());
+				valueParameter = valueParam;
+			}catch (NoSuchMethodException nsme){
+				// for multiple argument
+				Class<?>[] paramTypes = new Class<?>[valueParam.length];
+				for (int i = 0; i < valueParam.length; i ++){
+					paramTypes[i] = valueParam[i].getClass();
+				}
+				valueConstructor = valueClazz.getConstructor(paramTypes);
+				valueParameter = valueParam;
+			}
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Cannot find correct constuctor for '" + valueClazz.getCanonicalName()
+					+ "' with parameter: " + valueParam, e);
+		}
+	}
+
 
 	/**
 	 * 获得最初被封装的那个Map

@@ -136,7 +136,7 @@ public class StringStartWithMatcher extends StartWithMatcher {
 	 * @param end	结束号码 <br> last/ending number
 	 * @param attachment	匹配附件<br>attachment to identify that the segment matches a string
 	 */
-	public static void expandNumberMatchingRange(Map<String, Object> headingDefinitions, String start, String end, Object attachment){
+	public static <T> void expandNumberMatchingRange(Map<String, T> headingDefinitions, String start, String end, T attachment){
 		int firstDiff; //第一个不相同字符的位置
 		int lastDiff;  //末尾0:9对应段开始的位置
 		
