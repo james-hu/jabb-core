@@ -96,10 +96,9 @@ public class PackagedFrequencyCounter extends FrequencyCounter{
 	/**
 	 * ×ªÎª×Ö·û´®
 	 */
-	@SuppressWarnings("unchecked")
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
-		Set keySet = new TreeSet();
+		Set<Object> keySet = new TreeSet<Object>();
 		keySet.addAll(counters.keySet());
 		
 		boolean isFirst = true;

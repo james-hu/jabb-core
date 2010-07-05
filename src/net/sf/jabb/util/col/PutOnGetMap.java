@@ -57,7 +57,7 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	 * @param valueClazz	Map的value的类
 	 */
 	@SuppressWarnings("unchecked")
-	public PutOnGetMap(Class<? extends Map> mapClazz, Class<? extends V> valueClazz){
+	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz){
 		Map<K, V> originalMap = null;
 		try {
 			originalMap = mapClazz.newInstance();
@@ -76,7 +76,7 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	 * @param valueParam	Map的value的类的构造方法所需要的参数
 	 */
 	@SuppressWarnings("unchecked")
-	public PutOnGetMap(Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object valueParam){
+	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object valueParam){
 		Map<K, V> originalMap = null;
 		try {
 			originalMap = mapClazz.newInstance();
@@ -103,7 +103,7 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	 * @param valueParam	Map的value的类的构造方法所需要的参数
 	 */
 	@SuppressWarnings("unchecked")
-	public PutOnGetMap(Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object... valueParam){
+	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object... valueParam){
 		Map<K, V> originalMap = null;
 		try {
 			originalMap = mapClazz.newInstance();
