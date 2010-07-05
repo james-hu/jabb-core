@@ -20,6 +20,12 @@ package net.sf.jabb.util.thread;
  * 序列值生成器，保证不重复渐增，支持最大最小值的范围设定。
  * 它是线程安全的，而且性能高。
  * 但是每当获取了Long.MAX_VALUE个值之后，下一个取得值可能会出现一次跳跃（从当前值跳到最小值）。
+ * <p>
+ * It generates sequence of incremental numbers, with a range that can be specified, 
+ * without repeating or missing of any number.
+ * It is multi-thread safe, and has high performance.
+ * After Long.MAX_VALUE of numbers generated, the next generated number may jump from
+ * the-next-value-should-be to the low boundary of the specified range.
  * 
  * @author Zhengmao HU (James)
  *
@@ -30,9 +36,12 @@ public class RangedSequencer extends Sequencer {
 	
 	/**
 	 * 创建一个实例，指定最小、最大、初始值。
-	 * @param min	最小值
-	 * @param max	最大值
-	 * @param init	初始值
+	 * <p>
+	 * Constructs an instance, with specified range and initial number.
+	 * 
+	 * @param min	最小值<br>low boundary of the range
+	 * @param max	最大值<br>high boundary of the range
+	 * @param init	初始值<br>the first number that will be returned by next()
 	 */
 	public RangedSequencer(long min, long max, long init){
 		super(init-min);
@@ -51,8 +60,12 @@ public class RangedSequencer extends Sequencer {
 	
 	/**
 	 * 创建一个实例，指定最小、最大值，初始值就是最小值。
-	 * @param min	最小值
-	 * @param max	最大值
+	 * <p>
+	 * Constructs an instance, with specified range, 
+	 * and use the low boundary as initial number.  
+	 * 
+	 * @param min	最小值<br>low boundary of the range
+	 * @param max	最大值<br>high boundary of the range
 	 */
 	public RangedSequencer(long min, long max){
 		this(min, max, min);
@@ -60,7 +73,10 @@ public class RangedSequencer extends Sequencer {
 	
 	/**
 	 * 创建一个实例，指定初始值。最小值是0，最大值是Long.MAX_VALUE。
-	 * @param init	初始值
+	 * <p>
+	 * Constructs an instance with a range of [0, Long.MAX_VALUE] and specified initial number.
+	 * 
+	 * @param init	初始值<br>the first number that will be returned by next()
 	 */
 	public RangedSequencer(long init){
 		this(0, Long.MAX_VALUE, init);
@@ -68,11 +84,21 @@ public class RangedSequencer extends Sequencer {
 
 	/**
 	 * 创建一个实例，指定初始值和最小值都是0，最大值是Long.MAX_VALUE。
+	 * <p>
+	 * Constructs an instance with a range of [0, Long.MAX_VALUE] and 0 as the initial number.
+	 * 
 	 */
 	public RangedSequencer(){
 		this(0, Long.MAX_VALUE, 0);
 	}
 
+	/**
+	 * 获得下一个序列值。
+	 * <p>
+	 * Get the next number in sequence.
+	 * @return	the next number in sequence
+	 */
+	@Override
 	public long next(){
 		long l = super.next();
 		return offset + l % range;

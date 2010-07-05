@@ -20,6 +20,11 @@ import java.io.Serializable;
 
 /**
  * 把多个int类型的值封装在这一个对象里，适合用来作为Map的key。
+ * 支持hashCode(), toString(), equals(), compareTo()方法。
+ * <p>
+ * Encapsulates multiple int type values into one object, which
+ * is very suitable to be used as key object of Map. 
+ * It supports hashCode(), toString(), equals(), compareTo() methods.
  * 
  * @author Zhengmao HU (James)
  *
@@ -30,48 +35,69 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 	protected int[] values;
 	
 	/**
-	 * 创建一个包含这些整型值的实例
-	 * @param values	一批整型值
+	 * 创建一个包含这些整型值的实例。
+	 * <p>
+	 * Constructs an IntegerArray that encapsulates specified int values.
+	 * 
+	 * @param values	一批整型值<br>int values that will be encapsulated
 	 */
 	public IntegerArray(int... values){
 		this.values = values;
 	}
 	
 	/**
-	 * 获得所有值
-	 * @return
+	 * 获得所有值。
+	 * <p>
+	 * Gets all the values encapsulated in this object.
+	 * 
+	 * @return	array of values
 	 */
 	public int[] getValues(){
 		return values;
 	}
 	
 	/**
-	 * 获得指定位置的值
-	 * @param index
-	 * @return
+	 * 获得指定位置的值。
+	 * <p>
+	 * Gets the value in specified position.
+	 * 
+	 * @param index	position (position of the first one is 0)
+	 * @return	the value
 	 */
 	public int getValue(int index){
 		return values[index];
 	}
 	
 	/**
-	 * 获得指定位置的值
-	 * @param index
-	 * @return
+	 * 获得指定位置的值。
+	 * <p>
+	 * Gets the value in specified position.
+	 * 
+	 * @param index	position (position of the first one is 0)
+	 * @return	the value as long
 	 */
 	public long getLongValue(int index){
 		return values[index];
 	}
 	
 	/**
-	 * 获得指定位置的值，以整型返回
-	 * @param index
-	 * @return
+	 * 获得指定位置的值。
+	 * <p>
+	 * Gets the value in specified position.
+	 * 
+	 * @param index	position (position of the first one is 0)
+	 * @return	the value as int
 	 */
 	public int getIntValue(int index){
 		return values[index];
 	}
 	
+	/**
+	 * 获得计算得到的hash值。
+	 * <p>
+	 * Gets the calculated hash code.
+	 */
+	@Override
 	public int hashCode(){
 		long result = 0;
 		for (long l: values){
@@ -81,6 +107,14 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 		return (int) result;
 	}
 
+	/**
+	 * 比较。
+	 * <p>
+	 * Compare
+	 * 
+	 * @param obj	
+	 * @return	-1 if little than obj, 0 if equals, 1 if greater.
+	 */
 	@Override
 	public int compareTo(Object obj) {
 		if (! (obj instanceof IntegerArray)){
@@ -115,6 +149,7 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 		return compareTo(obj) == 0;
 	}
 	
+	@Override
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append('(');

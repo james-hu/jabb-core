@@ -20,6 +20,9 @@ import java.io.Serializable;
 
 /**
  * 把多个Number（比如Integer, Long, Double）类型的值封装在这一个对象里，适合用来作为Map的key。
+ * <p>
+ * Encapsulates multiple objects of Number(such as Integer, Long, Double) into one object,
+ * which is suitable to be used as the key object of Map.
  * 
  * @author Zhengmao HU (James)
  *
@@ -31,84 +34,117 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	protected T[] values;
 	
 	/**
-	 * 创建一个包含这些长整型值的实例
-	 * @param values	一批长整型值
+	 * 创建一个包含这些数值对象的实例。
+	 * <p>
+	 * Constructs a NumberArray with specified value objects.
+	 * 
+	 * @param values	一批数值对象<br>value objects of Number type
 	 */
 	public NumberArray(T... values){
 		this.values = values;
 	}
 	
 	/**
-	 * 获得所有值
-	 * @return
+	 * 获得所有值。
+	 * <p>
+	 * Gets all value objects.
+	 * 
+	 * @return array of value objects
 	 */
 	public T[] getValues(){
 		return values;
 	}
 	
 	/**
-	 * 获得指定位置的值
-	 * @param index
-	 * @return
+	 * 获得指定位置的值。
+	 * <p>
+	 * Gets the value in specified position.
+	 * 
+	 * @param index	position (position of the first one is 0)
+	 * @return	the value
 	 */
 	public T getValue(int index){
 		return values[index];
 	}
 
 	/**
-	 * 获得指定位置的值，以整型返回
-	 * @param index
-	 * @return
+	 * 获得指定位置的值。
+	 * <p>
+	 * Gets the value in specified position.
+	 * 
+	 * @param index	position (position of the first one is 0)
+	 * @return	the value as int
 	 */
 	public int getIntValue(int index){
 		return values[index].intValue();
 	}
 	
 	/**
-	 * 获得指定位置的值，以整型返回
-	 * @param index
-	 * @return
+	 * 获得指定位置的值。
+	 * <p>
+	 * Gets the value in specified position.
+	 * 
+	 * @param index	position (position of the first one is 0)
+	 * @return	the value as long
 	 */
 	public long getLongValue(int index){
 		return values[index].longValue();
 	}
 	
 	/**
-	 * 获得指定位置的值，以整型返回
-	 * @param index
-	 * @return
+	 * 获得指定位置的值。
+	 * <p>
+	 * Gets the value in specified position.
+	 * 
+	 * @param index	position (position of the first one is 0)
+	 * @return	the value as double
 	 */
 	public double getDoubleValue(int index){
 		return values[index].doubleValue();
 	}
 
 	/**
-	 * 获得指定位置的值，以整型返回
-	 * @param index
-	 * @return
+	 * 获得指定位置的值。
+	 * <p>
+	 * Gets the value in specified position.
+	 * 
+	 * @param index	position (position of the first one is 0)
+	 * @return	the value as float
 	 */
 	public float getFloatValue(int index){
 		return values[index].floatValue();
 	}
 
 	/**
-	 * 获得指定位置的值，以整型返回
-	 * @param index
-	 * @return
+	 * 获得指定位置的值。
+	 * <p>
+	 * Gets the value in specified position.
+	 * 
+	 * @param index	position (position of the first one is 0)
+	 * @return	the value as short
 	 */
 	public short getShortValue(int index){
 		return values[index].shortValue();
 	}
 
 	/**
-	 * 获得指定位置的值，以整型返回
-	 * @param index
-	 * @return
+	 * 获得指定位置的值。
+	 * <p>
+	 * Gets the value in specified position.
+	 * 
+	 * @param index	position (position of the first one is 0)
+	 * @return	the value as byte
 	 */
 	public byte getByteValue(int index){
 		return values[index].byteValue();
 	}
 
+	/**
+	 * 获得计算得到的hash值。
+	 * <p>
+	 * Gets the calculated hash code.
+	 */
+	@Override
 	public int hashCode(){
 		long result = 0;
 		for (T l: values){
@@ -119,6 +155,14 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	}
 
 
+	/**
+	 * 比较。
+	 * <p>
+	 * Compare
+	 * 
+	 * @param obj	
+	 * @return	-1 if little than obj, 0 if equals, 1 if greater.
+	 */
 	@Override
 	public int compareTo(Object obj) {
 		if (! (obj instanceof NumberArray<?>)){
@@ -153,6 +197,7 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 		return compareTo(obj) == 0;
 	}
 	
+	@Override
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append('(');
