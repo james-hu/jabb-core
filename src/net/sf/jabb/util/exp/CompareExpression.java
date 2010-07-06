@@ -21,17 +21,10 @@ package net.sf.jabb.util.exp;
  * @author Zhengmao HU (James)
  *
  */
-abstract public class CompareExpression extends BooleanExpression {
+abstract public class CompareExpression extends BooleanExpression implements CompareOperation {
 	protected Object leftOperand;
 	protected Object rightOperand;
 	protected int operation;
-	
-	static public final int GE = 1;
-	static public final int GT = 2;
-	static public final int LE = 3;
-	static public final int LT = 4;
-	static public final int EQ = 5;
-	static public final int NE = 6;
 	
 	public CompareExpression(Object leftOperand, int operation, Object rightOperand){
 		super(OPERAND);

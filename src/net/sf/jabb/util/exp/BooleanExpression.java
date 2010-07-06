@@ -210,6 +210,14 @@ public class BooleanExpression {
 	}
 	
 	/**
+	 * 用null作为context获得表达式的结果。子类不必重载这个方法。
+	 * @return	evaluate(null)
+	 */
+	public boolean evaluate(){
+		return evaluate(null);
+	}
+	
+	/**
 	 * 转成字符串表示。子类可以重载这个方法。
 	 */
 	public String toString(){
