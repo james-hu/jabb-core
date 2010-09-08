@@ -64,7 +64,7 @@ public class Word {
 	 * @param original
 	 */
 	public Word(Word original){
-		this.word = new String(original.word);
+		this.word = original.word;  // 共用一个String的实例不会有问题
 		this.types = original.types;
 		this.keywordAttachment = original.keywordAttachment;
 	}

@@ -113,7 +113,7 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	 */
 	@Override
 	public long getCount(long when){
-		Long recWhen = new Long (when - (when % granularity));
+		Long recWhen = when - (when % granularity);
 		AtomicLong times = counters.get(recWhen);
 		return times == null ? 0 : times.longValue(); 
 	}

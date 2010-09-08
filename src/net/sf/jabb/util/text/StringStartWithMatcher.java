@@ -112,11 +112,11 @@ public class StringStartWithMatcher extends StartWithMatcher {
 	static protected List<MatchingDefinition> normalizeMatchingDefinitions(Map<String, ? extends Object> headingDefinitions){
 		// exactMatchExample自动设置为与regularExpression相同
 		List<MatchingDefinition> l = new ArrayList<MatchingDefinition>(headingDefinitions.size());
-		for (String p: headingDefinitions.keySet()){
+		for (Map.Entry<String, ? extends Object> e: headingDefinitions.entrySet()){
 			MatchingDefinition c = new MatchingDefinition();
-			c.setRegularExpression(escapeForRegExp(p));
-			c.setAttachment(headingDefinitions.get(p));
-			c.setExactMatchExample(p);
+			c.setRegularExpression(escapeForRegExp(e.getKey()));
+			c.setAttachment(e.getValue());
+			c.setExactMatchExample(e.getKey());
 			l.add(c);
 		}
 		return l;

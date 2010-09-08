@@ -35,20 +35,16 @@ import java.util.TimeZone;
  *
  */
 public class DurationFormatter {
-	protected static DateFormat df;
 	protected static final long ONE_DAY = 1000L*3600*24;
 
-	static{
-		df = new SimpleDateFormat("HH:mm:ss.SSS");
-		df.setTimeZone(TimeZone.getTimeZone("GMT"));
-	}
-	
 	/**
 	 * 格式化时间长度
 	 * @param duration	以毫秒为单位的时间长度
 	 * @return
 	 */
 	public static String format(long duration){
+		DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
+		df.setTimeZone(TimeZone.getTimeZone("GMT"));
 		if (duration >= ONE_DAY){
 			long days = duration/ONE_DAY;
 			return String.format("%dd, %s", days, df.format(duration));

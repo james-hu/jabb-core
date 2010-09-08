@@ -11,5 +11,15 @@
 	<classpathentry kind="lib" path="lib/ci-bayes-1.0.8.jar" sourcepath="lib/src-ref/ci-bayes-1.0.8-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/javolution-5.5.1.jar" sourcepath="lib/src-ref/javolution-5.5.1-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/mmseg4j-all-1.8.2.jar" sourcepath="lib/src-ref/mmseg4j-1.8.2-src.zip"/>
+	<classpathentry kind="lib" path="lib/fscontext.jar"/>
+	<classpathentry kind="lib" path="lib/providerutil.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate3.jar" sourcepath="lib/src-ref/hibernate3-src.zip"/>
+	<classpathentry kind="lib" path="lib/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="lib/proxool-0.9.1.jar" sourcepath="lib/src-ref/proxool-0.9.1-src.zip"/>
+	<classpathentry kind="lib" path="lib/proxool-cglib.jar"/>
+	<classpathentry kind="lib" path="lib/c3p0-0.9.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-beanutils-1.8.3.jar" sourcepath="lib/src-ref/commons-beanutils-1.8.3-sources.jar"/>
+	<classpathentry kind="lib" path="lib/commons-dbcp-1.4.jar" sourcepath="lib/src-ref/commons-dbcp-1.4-sources.jar"/>
+	<classpathentry kind="lib" path="lib/commons-pool-1.5.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

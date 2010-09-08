@@ -143,9 +143,19 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 	
 	@Override
 	public boolean equals(Object obj){
-		if (obj == null){
-			throw new NullPointerException(".equals(null) happened.");
-		}
+		//check for self-comparison
+	    if ( this == obj ) 
+	    	return true;
+	    
+	    //use instanceof instead of getClass here for two reasons
+	    //1. if need be, it can match any supertype, and not just one class;
+	    //2. it renders an explict check for "that == null" redundant, since
+	    //it does the check for null already - "null instanceof [type]" always
+	    //returns false. (See Effective Java by Joshua Bloch.)
+
+	    if ( !(obj instanceof IntegerArray) ) 
+	    	return false;
+
 		return compareTo(obj) == 0;
 	}
 	

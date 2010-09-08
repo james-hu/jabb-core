@@ -17,6 +17,7 @@ limitations under the License.
 package net.sf.jabb.util.col;
 
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
@@ -128,7 +129,7 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 			}
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Cannot find correct constuctor for '" + valueClazz.getCanonicalName()
-					+ "' with parameter: " + valueParam, e);
+					+ "' with parameter: " + Arrays.toString(valueParam), e);
 		}
 	}
 

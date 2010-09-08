@@ -124,11 +124,11 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 	static protected List<MatchingDefinition> normalizeMatchingDefinitions(Map<String, ? extends Object> matchingDefinitions, boolean moreSpaceForSpeed){
 		//先分成两个匹配步骤
 		Map<String, UrlStartWithMatcherStep2> step1 = new HashMap<String, UrlStartWithMatcherStep2>();
-		for (String p: matchingDefinitions.keySet()){
-			String[] splited = splitURL(p);
+		for (Map.Entry<String, ? extends Object> e: matchingDefinitions.entrySet()){
+			String[] splited = splitURL(e.getKey());
 			String reversedBeforePart = splited[0];
 			String afterPart = splited[1];
-			Object attachment = matchingDefinitions.get(p);
+			Object attachment = e.getValue();
 			
 			String step1Pattern;
 			String step1PatternUnescaped;
@@ -167,8 +167,8 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 		// 如果本pattern能被其他pattern所匹配，则要额外设置
 		for (UrlStartWithMatcherStep2 step2 : step1.values()){
 			String example = step2.step1Example;
-				for (String otherStep2Pattern: step1.keySet()){
-					UrlStartWithMatcherStep2 otherStep2 = step1.get(otherStep2Pattern);
+				for (UrlStartWithMatcherStep2 otherStep2: step1.values()){
+					//UrlStartWithMatcherStep2 otherStep2 = step1.get(otherStep2Pattern);
 					if (step2 != otherStep2){
 						String otherExample = otherStep2.step1Example;
 						boolean matched = false; //这里无需考虑性能
@@ -196,16 +196,16 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 		
 
 		List<MatchingDefinition> l = new ArrayList<MatchingDefinition>(matchingDefinitions.size());
-		for (String p: step1.keySet()){
-			UrlStartWithMatcherStep2 step2 = step1.get(p);
+		for (Map.Entry<String, UrlStartWithMatcherStep2> e: step1.entrySet()){
+			UrlStartWithMatcherStep2 step2 = e.getValue();
 			step2.buildMatcher();
 			
 			MatchingDefinition c = new MatchingDefinition();
-			c.setRegularExpression(p);
-			c.setAttachment(step1.get(p));
+			c.setRegularExpression(e.getKey());
+			c.setAttachment(e.getValue());
 			
 			List<String> examples = new ArrayList<String>(1);
-			examples.add(step1.get(p).step1Example);
+			examples.add(e.getValue().step1Example);
 			c.setExactMatchExamples(examples);
 			l.add(c);
 			
