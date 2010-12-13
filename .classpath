@@ -22,5 +22,6 @@
 	<classpathentry kind="lib" path="lib/commons-dbcp-1.4.jar" sourcepath="lib/src-ref/commons-dbcp-1.4-sources.jar"/>
 	<classpathentry kind="lib" path="lib/commons-pool-1.5.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/netty-3.2.3.Final.jar" sourcepath="lib/src-ref/netty-3.2.3.Final-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/camel-core-2.5.0.jar" sourcepath="lib/src-ref/apache-camel-core-2.5.0-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

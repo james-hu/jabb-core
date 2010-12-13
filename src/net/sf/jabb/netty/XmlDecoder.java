@@ -86,6 +86,9 @@ public class XmlDecoder {
 			byte[] tagBytes = new byte[nameBytes.length + 3];
 			tagBytes[0] = 0x3C; //  '<'
 			tagBytes[1] = 0x2F; //  '/'
+			for (int j=0; j < nameBytes.length; j ++){
+				tagBytes[j+2] = nameBytes[j];
+			}
 			tagBytes[tagBytes.length - 1] = space;
 			delimiters[i++] = ChannelBuffers.wrappedBuffer(tagBytes);
 		}
