@@ -53,7 +53,7 @@ public class RegistryUtility {
 			try{
 				encoders = (List<ChannelDownstreamHandler>)o;
 			}catch(Exception e){
-				throw new IllegalArgumentException("Preserved name '" + NAME_ENCODERS + "' is already in use in at least one of the registries.");
+				throw new IllegalArgumentException("Preserved name '" + NAME_ENCODERS + "' is already being used by others in at least one of the registries.");
 			}
 		}
 		encoders.add(encoder);
@@ -78,7 +78,7 @@ public class RegistryUtility {
 			try{
 				decoders = (List<ChannelUpstreamHandler>)o;
 			}catch(Exception e){
-				throw new IllegalArgumentException("Preserved name '" + NAME_DECODERS + "' is already in use in at least one of the registries.");
+				throw new IllegalArgumentException("Preserved name '" + NAME_DECODERS + "' is already being used by others in at least one of the registries.");
 			}
 		}
 		decoders.add(decoder);
@@ -86,12 +86,14 @@ public class RegistryUtility {
 	
 	/**
 	 * 仅仅把codec直接加入到Registry中，而不处理加入到Registry里的encoders或decoders列表中。
+	 * 如果Registry中原先已经有同名的别的codec，则抛出IllegalArgumentException。
 	 * @param registry
 	 * @param name
 	 * @param codec
 	 */
 	static protected void addCodecOnly(CombinedRegistry registry, String name, ChannelHandler codec){
-		if (registry.lookup(name) != null){
+		Object oldValue = registry.lookup(name);
+		if (oldValue != null && oldValue != codec){
 			throw new IllegalArgumentException("Codec name '" + name + "' is already in use in at least one of the registries.");
 		}
 		registry.getDefaultSimpleRegistry().put(name, codec);
