@@ -16,7 +16,6 @@ limitations under the License.
 
 package net.sf.jabb.util.col;
 
-import java.io.StringWriter;
 import java.util.Map;
 import java.util.TreeMap;
 
