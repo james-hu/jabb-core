@@ -35,7 +35,7 @@ import org.apache.commons.logging.LogFactory;
 public class CamelContextController implements Runnable{
 	static final Log log = LogFactory.getLog(CamelContextController.class);
 	
-	protected CamelContext myContext;
+	protected DefaultCamelContext myContext;
 	protected CamelContext context;
 	protected BlockingQueue<String> commandQueue;
 	
@@ -50,6 +50,7 @@ public class CamelContextController implements Runnable{
 		commandQueue = new LinkedBlockingQueue<String>();
 		
 		myContext = new DefaultCamelContext();
+		myContext.setName("Controller of '" + context.getName() + "'");
 		myContext.addRoutes(new RouteBuilder(){
 			@Override
 			public void configure(){
