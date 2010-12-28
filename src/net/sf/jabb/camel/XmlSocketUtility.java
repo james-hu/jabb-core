@@ -86,5 +86,14 @@ public class XmlSocketUtility {
 		});
 		
 	}
+	
+	/**
+	 * 从XML字符串中去掉最上层的Tag。
+	 * @param xmlString
+	 * @return
+	 */
+	static public String stripTopLevelTag(String xmlString){
+		return xmlString.substring(xmlString.indexOf('>') + 1, xmlString.lastIndexOf('<'));
+	}
 
 }
