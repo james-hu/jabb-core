@@ -57,7 +57,7 @@ public class CamelContextController implements Runnable{
 				StringBuilder sb = new StringBuilder();
 				sb.append("netty:").append(serverUri);
 				sb.append(serverUri.contains("?")? '&' : '?');
-				sb.append("sync=true&textline=true&disconnect=false");
+				sb.append("sync=true&textline=true&disconnect=true");
 				from(sb.toString()).process(
 						new Processor(){
 							@Override
@@ -81,18 +81,19 @@ public class CamelContextController implements Runnable{
 		cmd = cmd.trim().toLowerCase();
 		if ("status".equals(cmd)){
 			log.info("CamelContext '" + context.getName() + "' received 'status' command.");
-			return "Status: " + context.getStatus().toString() 
+			return "Ok.\n" 
+				+ "Status: " + context.getStatus().toString() 
 				+ "   Uptime: " + context.getUptime();
 		}else if ("exit".equals(cmd)){
 			commandQueue.add("stop");
 			commandQueue.add("exit");
-			return "";
+			return "Ok.";
 		}else if ("stop".equals(cmd)
 				|| "start".equals(cmd)
 				|| "suspend".equals(cmd)
 				|| "resume".equals(cmd)){
 			commandQueue.add(cmd);
-			return "";
+			return "Ok.";
 		} else{
 			return "Unknown command.";
 		}

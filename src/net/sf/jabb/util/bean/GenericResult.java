@@ -47,6 +47,17 @@ public class GenericResult {
 		this.attachment = att;
 	}
 	
+	public GenericResult(boolean successful, String errorMsg){
+		this(successful, errorMsg, null);
+	}
+
+	public GenericResult(boolean successful){
+		this(successful, null, null);
+	}
+
+	public GenericResult(){
+	}
+	
 	public boolean isSuccessful() {
 		return successful;
 	}
