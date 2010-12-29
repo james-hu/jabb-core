@@ -23,8 +23,6 @@ import net.sf.jabb.util.thread.Sequencer;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.impl.PropertyPlaceholderDelegateRegistry;
-import org.apache.camel.spi.Registry;
 import org.jboss.netty.handler.codec.string.StringEncoder;
 
 /**
@@ -44,13 +42,13 @@ public class XmlSocketUtility {
 	 * @param camelContext		Camel的Context，它必须用的是CombinedRegistry，因为要往Registry里放东西。
 	 * @param serverUri			服务器的URI，它将被Camel的Netty组件用来创建一个Endpoint。比如“tcp://localhost:9000”
 	 * @param syncFlag			传递给Camel-Netty的sync参数，true表示同步，false表示异步。
-	 * @param toPipeName		接收到的消息都会被送给这个Pipe，一般来说它要么是direct，要么是seda。
+	 * @param toUri				接收到的消息都会被送给这个Pipe，一般来说它要么是direct，要么是seda。
 	 * @param topLevelTagName	标识XML消息开头和结尾的标签名称
 	 * @param messageCharset	XML消息的字符编码方式
 	 * @param maxMessageBytes	接收到的XML消息的最大可能长度
 	 * @throws Exception 		Exception if the routes could not be created for whatever reason
 	 */
-	static public void addServer(CamelContext camelContext, final String serverUri, final boolean syncFlag, final String toPipeName, 
+	static public void addServer(CamelContext camelContext, final String serverUri, final boolean syncFlag, final String toUri, 
 			String topLevelTagName, Charset messageCharset, int maxMessageBytes) throws Exception {
 		// Netty 用的encoder/decoder
 		XmlDecoder xmlDecoder = new XmlDecoder(maxMessageBytes, topLevelTagName, messageCharset);
@@ -60,16 +58,9 @@ public class XmlSocketUtility {
 		final String xmlStringDecoderName = "xmlStringDecoder" + xmlStringDecoderSeq.next();
 		final String stringEncoderName = "stringEncoder" + stringEncoderSeq.next();
 
-		Registry reg = camelContext.getRegistry();
-		CombinedRegistry registry = null;
-		if (reg instanceof PropertyPlaceholderDelegateRegistry){
-			registry = (CombinedRegistry) ((PropertyPlaceholderDelegateRegistry)reg).getRegistry();
-		}else{ // should not go here
-			registry = (CombinedRegistry) reg;
-		}
-		RegistryUtility.addDecoder(registry, xmlFrameDecoderName, xmlDecoder.getFrameDecoder());
-		RegistryUtility.addDecoder(registry, xmlStringDecoderName, xmlDecoder.getStringDecoder());
-		RegistryUtility.addEncoder(registry, stringEncoderName, stringEncoder);
+		RegistryUtility.addDecoder(camelContext, xmlFrameDecoderName, xmlDecoder.getFrameDecoder());
+		RegistryUtility.addDecoder(camelContext, xmlStringDecoderName, xmlDecoder.getStringDecoder());
+		RegistryUtility.addEncoder(camelContext, stringEncoderName, stringEncoder);
 
 		camelContext.addRoutes(new RouteBuilder(){
 			@Override
@@ -81,7 +72,7 @@ public class XmlSocketUtility {
 				sb.append("&decoders=#").append(xmlFrameDecoderName)
 					.append(",#").append(xmlStringDecoderName)
 					.append("&encoders=#").append(stringEncoderName);
-				from(sb.toString()).to(toPipeName);
+				from(sb.toString()).to(toUri);
 			}
 		});
 		

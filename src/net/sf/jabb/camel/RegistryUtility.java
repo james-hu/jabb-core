@@ -19,6 +19,9 @@ package net.sf.jabb.camel;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.camel.CamelContext;
+import org.apache.camel.impl.PropertyPlaceholderDelegateRegistry;
+import org.apache.camel.spi.Registry;
 import org.jboss.netty.channel.ChannelDownstreamHandler;
 import org.jboss.netty.channel.ChannelHandler;
 import org.jboss.netty.channel.ChannelUpstreamHandler;
@@ -35,13 +38,30 @@ public class RegistryUtility {
 	static public final String NAME_DECODERS = "decoders";
 	
 	/**
+	 * 从CamelContext中得到CombinedRegistry类型的Registry。
+	 * @param camelContext	这个context必须是采用CombinedRegistry类型的Registry的，否则会抛出格式转换异常。
+	 * @return
+	 */
+	static public CombinedRegistry getCombinedRegistry(CamelContext camelContext){
+		Registry reg = camelContext.getRegistry();
+		CombinedRegistry registry = null;
+		if (reg instanceof PropertyPlaceholderDelegateRegistry){
+			registry = (CombinedRegistry) ((PropertyPlaceholderDelegateRegistry)reg).getRegistry();
+		}else{ // should not go here
+			registry = (CombinedRegistry) reg;
+		}
+		return registry;
+	}
+	
+	/**
 	 * 向Registry中增加一个给Netty用的encoder。
-	 * @param registry
+	 * @param context	这个context必须是采用CombinedRegistry类型的Registry的，否则会抛出格式转换异常。
 	 * @param name
 	 * @param encoder
 	 */
 	@SuppressWarnings("unchecked")
-	static public void addEncoder(CombinedRegistry registry, String name, ChannelDownstreamHandler encoder){
+	static public void addEncoder(CamelContext context, String name, ChannelDownstreamHandler encoder){
+		CombinedRegistry registry = getCombinedRegistry(context);
 		addCodecOnly(registry, name, encoder);
 		
 		List<ChannelDownstreamHandler> encoders;
@@ -61,12 +81,13 @@ public class RegistryUtility {
 
 	/**
 	 * 向Registry中增加一个给Netty用的decoder。
-	 * @param registry
+	 * @param context	这个context必须是采用CombinedRegistry类型的Registry的，否则会抛出格式转换异常。
 	 * @param name
 	 * @param decoder
 	 */
 	@SuppressWarnings("unchecked")
-	static public void addDecoder(CombinedRegistry registry, String name, ChannelUpstreamHandler decoder){
+	static public void addDecoder(CamelContext context, String name, ChannelUpstreamHandler decoder){
+		CombinedRegistry registry = getCombinedRegistry(context);
 		addCodecOnly(registry, name, decoder);
 		
 		List<ChannelUpstreamHandler> decoders;
