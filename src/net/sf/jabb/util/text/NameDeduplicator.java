@@ -16,7 +16,7 @@ limitations under the License.
 
 package net.sf.jabb.util.text;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.mutable.MutableLong;
 
@@ -27,7 +27,7 @@ import org.apache.commons.lang.mutable.MutableLong;
  *
  */
 public class NameDeduplicator {
-	protected HashMap<String, MutableLong> names;
+	protected ConcurrentHashMap<String, MutableLong> names;
 	protected String renamePattern;
 	
 	/**
@@ -36,7 +36,7 @@ public class NameDeduplicator {
 	 */
 	public NameDeduplicator(String postfixPattern){
 		this.renamePattern = "%s" + postfixPattern;
-		names = new HashMap<String, MutableLong>();
+		names = new ConcurrentHashMap<String, MutableLong>();
 	}
 	
 	/**

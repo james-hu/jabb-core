@@ -58,6 +58,11 @@ public class GenericResult {
 	public GenericResult(){
 	}
 	
+	@Override
+	public String toString(){
+		return "successful = " + successful + "\nerrorMessage = " + errorMessage + "\nattachment = " + attachment;
+	}
+	
 	public boolean isSuccessful() {
 		return successful;
 	}
