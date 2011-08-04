@@ -28,21 +28,42 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * 控制CamelContext的启动、停止等。
+ * As a wrapper, it controls the CamelContext, for example, start, stop, suspend and resume.<br>
+ * 作为一个包装层，它控制CamelContext的启动、停止、暂停、继续等。
+ * <p>
+ * Its runtime logging information are sent to commons-logging.<br>
+ * 它的运行时log信息被送给commons-logging。 
+ * 
  * @author Zhengmao HU (James)
  *
  */
 public class CamelContextController implements Runnable{
-	static final Log log = LogFactory.getLog(CamelContextController.class);
+	private static final Log log = LogFactory.getLog(CamelContextController.class);
 	
+	/**
+	 * The CamelContext that hosts the CamelContextController.
+	 */
 	protected DefaultCamelContext myContext;
+	/**
+	 * The CamelContext that the CamelContextController controls.
+	 */
 	protected CamelContext context;
+	/**
+	 * The queue for control commands.
+	 */
 	protected BlockingQueue<String> commandQueue;
 	
 	/**
-	 * 创建一个关联在指定CamelContext上，并绑定在指定端口上的实例。
-	 * @param camelContext
-	 * @param serverUri		端口URI，向这个端口发送命令就可以控制CamelContext。
+	 * Creates an instance which wraps a specified CamelContext, 
+	 * listens at a specified port and controls the CamelContext according to 
+	 * commands received from that port.<br>
+	 * 创建一个实例，它包装指定的某个CamelContext，在指定的端口上监听，并根据接受到的命令对包装的CamelContext进行控制。
+	 * 
+	 * @param camelContext	The CamelContext that will be controlled.<br>
+	 * 						将被控制的CamelContext。
+	 * @param serverUri		The listening port in Camel Netty URI format, for example: <br>
+	 * 						监听端口的URI，向这个端口发送命令就可以控制CamelContext。它遵循Camel中Netty组件的URI格式，比如：
+	 * 						<p><code>tcp://localhost:99999?keepAlive=true</code> 
 	 * @throws Exception
 	 */
 	public CamelContextController(final CamelContext camelContext, final String serverUri) throws Exception{
@@ -74,8 +95,15 @@ public class CamelContextController implements Runnable{
 	}
 	
 	/**
-	 * 对CamelContext发送控制。
-	 * @param cmd	控制命令，比如start, stop, suspend, resume, status。
+	 * Sends command to the control command queue.<br>
+	 * 向待处理的控制命令队列中发送一个命令。
+	 * <p>
+	 * Usually this method should not be called from external directly, 
+	 * commands should be sent to the listening port instead.
+	 * 一般不从外部直接调用这个方法，而是向监听端口发送命令。
+	 * 
+	 * @param cmd	Control commands, for example, start, stop, suspend, resume, and status.<br>
+	 * 				控制命令，比如start, stop, suspend, resume, status。
 	 */
 	public String command(String cmd){
 		cmd = cmd.trim().toLowerCase();
@@ -100,6 +128,7 @@ public class CamelContextController implements Runnable{
 	}
 	
 	/**
+	 * Starts the command processing loop, exit until "exit" command was received.<br>
 	 * 循环处理控制命令，直到收到“exit”命令。
 	 */
 	@Override
@@ -132,7 +161,11 @@ public class CamelContextController implements Runnable{
 	}
 	
 	/**
-	 * 启动Context，直到收到exit命令才退出
+	 * Starts the CamelContext and the CamelContextController.<br>
+	 * 启动CamelContext及CamelContextController。
+	 * <p>
+	 * They will not exit until the "exit" command was received by CamelContextController.<br>
+	 * 它们直到收到exit命令才一起退出。
 	 */
 	public void start(){
 		command("start");
