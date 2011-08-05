@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -31,7 +31,12 @@ import org.apache.commons.logging.LogFactory;
  * As a wrapper, it controls the CamelContext, for example, start, stop, suspend and resume.<br>
  * 作为一个包装层，它控制CamelContext的启动、停止、暂停、继续等。
  * <p>
- * Its runtime logging information are sent to commons-logging.<br>
+ * The CamelContextController opens a server socket port and receives control commands from the port.
+ * It controls the CamelContext according to the commands received.
+ * Its runtime logging information are sent to commons-logging.
+ * <p>
+ * CamelContextController打开一个服务端口并且从这个端口接收控制命令，根据获得的命令，
+ * 对所包装的CamelContext进行控制。
  * 它的运行时log信息被送给commons-logging。 
  * 
  * @author Zhengmao HU (James)
@@ -57,7 +62,8 @@ public class CamelContextController implements Runnable{
 	 * Creates an instance which wraps a specified CamelContext, 
 	 * listens at a specified port and controls the CamelContext according to 
 	 * commands received from that port.<br>
-	 * 创建一个实例，它包装指定的某个CamelContext，在指定的端口上监听，并根据接受到的命令对包装的CamelContext进行控制。
+	 * 创建一个实例，它包装指定的某个CamelContext，在指定的端口上监听，
+	 * 并根据接受到的命令对包装的CamelContext进行控制。
 	 * 
 	 * @param camelContext	The CamelContext that will be controlled.<br>
 	 * 						将被控制的CamelContext。
@@ -100,6 +106,7 @@ public class CamelContextController implements Runnable{
 	 * <p>
 	 * Usually this method should not be called from external directly, 
 	 * commands should be sent to the listening port instead.
+	 * <p>
 	 * 一般不从外部直接调用这个方法，而是向监听端口发送命令。
 	 * 
 	 * @param cmd	Control commands, for example, start, stop, suspend, resume, and status.<br>
@@ -164,7 +171,8 @@ public class CamelContextController implements Runnable{
 	 * Starts the CamelContext and the CamelContextController.<br>
 	 * 启动CamelContext及CamelContextController。
 	 * <p>
-	 * They will not exit until the "exit" command was received by CamelContextController.<br>
+	 * They will not exit until the "exit" command was received by CamelContextController.
+	 * <p>
 	 * 它们直到收到exit命令才一起退出。
 	 */
 	public void start(){

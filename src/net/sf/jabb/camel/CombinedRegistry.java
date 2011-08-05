@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,8 +25,15 @@ import org.apache.camel.impl.SimpleRegistry;
 import org.apache.camel.spi.Registry;
 
 /**
- * 它使得你可以把好几个Registry合并在一起，当查找东西的时候，它会逐个尝试这些个Registry。而且，
- * 它内置一个SimpleRegistry，作为最后一个尝试的Registry。你还可以通过内置的SimpleRegistry来利用
+ * It enables you to combine several Registry(s) into one.<br>
+ * 它使得你可以把好几个Registry合并在一起。
+ * <p>
+ * When looking up something in it, it will try those encapsulated Registry(s) one by one. 
+ * And it has an internal SimpleRegistry, as the last one to try. You can also write code to
+ * add entries to the internal SimpleRegistry.
+ * <p>
+ * 当查找东西的时候，它会逐个尝试这些个Registry。而且，它内置一个SimpleRegistry，
+ * 作为最后一个尝试的Registry。你还可以通过内置的SimpleRegistry来利用
  * 程序添加自己额外的内容。
  * 
  * @author Zhengmao HU (James)
@@ -37,6 +44,7 @@ public class CombinedRegistry implements Registry {
 	protected List<Registry> registryList;
 	
 	/**
+	 * Constructs an instance that contains only an internal SimpleRegistry.<br>
 	 * 创建一个实例，它仅含有内置的SimpleRegistry。
 	 */
 	public CombinedRegistry(){
@@ -46,8 +54,11 @@ public class CombinedRegistry implements Registry {
 	}
 	
 	/**
+	 * Constructs an instance that contains not only an internal SimpleRegistry, 
+	 * but also the Registry specified.<br>
 	 * 创建一个除了内置的SimpleRegistry之外，还包含指定Registry的实例。
-	 * @param registry
+	 * 
+	 * @param registry	The Registry that will be encapsulated.
 	 */
 	public CombinedRegistry(Registry registry){
 		this();
@@ -55,8 +66,11 @@ public class CombinedRegistry implements Registry {
 	}
 	
 	/**
+	 * Constructs an instance that contains not only an internal SimpleRegistry, 
+	 * but also several Registry(s) specified.<br>
 	 * 创建一个除了内置的SimpleRegistry之外，还包含指定的一些Registry的实例。
-	 * @param registries
+	 * 
+	 * @param registries	The Registry(s) that will be encapsulated.
 	 */
 	public CombinedRegistry(Registry... registries){
 		this();
@@ -64,14 +78,16 @@ public class CombinedRegistry implements Registry {
 	}
 	
 	/**
-	 * 添加一个Registry，它的位置会为与其他Registry之后，但是在缺省的SimpleRegistry之前。
+	 * Adds a Registry which will be put after all others but just before the internal SimpleRegistry.<br>
+	 * 添加一个Registry，它的位置会位于其他Registry之后，但是在缺省的SimpleRegistry之前。
 	 */
 	public void addRegistry(Registry registry){
 		registryList.add(registryList.size()-1, registry);
 	}
 	
 	/**
-	 * 添加一些Registry，它们的位置会为与其他Registry之后，但是在缺省的SimpleRegistry之前。
+	 * Adds several Registry(s) which will be put after all others but just before the internal SimpleRegistry.<br>
+	 * 添加一些Registry，它们的位置会位于其他Registry之后，但是在缺省的SimpleRegistry之前。
 	 */
 	public void addRegistry(Registry... registries){
 		for (Registry registry: registries){
@@ -80,7 +96,14 @@ public class CombinedRegistry implements Registry {
 	}
 	
 
-	/* (non-Javadoc)
+	/** 
+	 * Looks up from all encapsulated Registry(s) one by one, and returns the first result found.<br>
+	 * 按次序从所封装的Registry中查找，返回第一个找到的结果。
+	 * <p>
+	 * If no result can be found, null will be returned.
+	 * <p>
+	 * 如果全都找不到，则返回null。
+	 * 
 	 * @see org.apache.camel.spi.Registry#lookup(java.lang.String)
 	 */
 	@Override
@@ -95,7 +118,14 @@ public class CombinedRegistry implements Registry {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Looks up from all encapsulated Registry(s) one by one, and returns the first result found.<br>
+	 * 按次序从所封装的Registry中查找，返回第一个找到的结果。
+	 * <p>
+	 * If no result can be found, null will be returned.
+	 * <p>
+	 * 如果全都找不到，则返回null。
+	 * 
 	 * @see org.apache.camel.spi.Registry#lookup(java.lang.String, java.lang.Class)
 	 */
 	@Override
@@ -110,7 +140,14 @@ public class CombinedRegistry implements Registry {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Looks up from all encapsulated Registry(s) one by one, and returns the first result found.<br>
+	 * 按次序从所封装的Registry中查找，返回第一个找到的结果。
+	 * <p>
+	 * If no result can be found, null will be returned.
+	 * <p>
+	 * 如果全都找不到，则返回null。
+	 * 
 	 * @see org.apache.camel.spi.Registry#lookupByType(java.lang.Class)
 	 */
 	@Override
@@ -124,8 +161,10 @@ public class CombinedRegistry implements Registry {
 	}
 
 	/**
-	 * 获得其内置的缺省SimpleRegistry。获得之后可以向它添加内容。
-	 * @return
+	 * Gets the internal SimpleRegistry which can be manipulated later.<br>
+	 * 获得其内置的缺省SimpleRegistry，其后可以向它进行增删改查操作。
+	 * 
+	 * @return	The internal SimpleRegistry.
 	 */
 	public SimpleRegistry getDefaultSimpleRegistry() {
 		return defaultSimpleRegistry;

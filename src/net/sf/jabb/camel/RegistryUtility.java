@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -27,8 +27,15 @@ import org.jboss.netty.channel.ChannelHandler;
 import org.jboss.netty.channel.ChannelUpstreamHandler;
 
 /**
- * 提供方便地向CombinedRegistry中添加Netty所需的Codec的方法。
- * 但是注意，它不保证对Registry的操作是同步的。
+ * This utility provides convenient methods to work on Camel Registry, 
+ * however CombinedRegistry is required in most of the cases.<br> 
+ * 提供方便地对Camel的Registry进行操作的方法，不过大部分的时候只有CombinedRegistry才被支持。
+ * <p>
+ * For example, it provides methods to add Codec(s) required by Netty to Registry.<br>
+ * 比如说，它提供向Registry中添加Netty所需的Codec的方法。
+ * <p>
+ * But you should be aware that it does not ensure multi-threads safe on the manipulation of Registry.<br>
+ * 但是注意，它不保证对Registry的操作是多线程安全的。
  * 
  * @author Zhengmao HU (James)
  *
@@ -38,9 +45,12 @@ public class RegistryUtility {
 	static public final String NAME_DECODERS = "decoders";
 	
 	/**
+	 * Gets CombinedRegistry from CamelContext.<br>
 	 * 从CamelContext中得到CombinedRegistry类型的Registry。
-	 * @param camelContext	这个context必须是采用CombinedRegistry类型的Registry的，否则会抛出格式转换异常。
-	 * @return
+	 * 
+	 * @param camelContext	The CamelContext must be based on CombinedRegistry, otherwise ClassCastException will be thrown.<br>
+	 * 						这个context必须是采用CombinedRegistry类型的Registry的，否则会抛出格式转换异常。
+	 * @return	The Registry that is of CombinedRegistry type.
 	 */
 	static public CombinedRegistry getCombinedRegistry(CamelContext camelContext){
 		Registry reg = camelContext.getRegistry();
@@ -54,10 +64,14 @@ public class RegistryUtility {
 	}
 	
 	/**
+	 * Adds an Netty encoder to Registry.<br>
 	 * 向Registry中增加一个给Netty用的encoder。
-	 * @param context	这个context必须是采用CombinedRegistry类型的Registry的，否则会抛出格式转换异常。
-	 * @param name
-	 * @param encoder
+	 * @param context	The CamelContext must be based on CombinedRegistry, otherwise ClassCastException will be thrown.<br>
+	 * 					这个context必须是采用CombinedRegistry类型的Registry的，否则会抛出格式转换异常。
+	 * @param name		Name of the encoder in Registry.<br>
+	 * 					encoder在Registry中的名字。
+	 * @param encoder	The encoder that will be used by Netty.<br>
+	 * 					将被Netty用到的encoder。
 	 */
 	@SuppressWarnings("unchecked")
 	static public void addEncoder(CamelContext context, String name, ChannelDownstreamHandler encoder){
@@ -80,10 +94,14 @@ public class RegistryUtility {
 	}
 
 	/**
+	 * Adds an Netty decoder to Registry.<br>
 	 * 向Registry中增加一个给Netty用的decoder。
-	 * @param context	这个context必须是采用CombinedRegistry类型的Registry的，否则会抛出格式转换异常。
-	 * @param name
-	 * @param decoder
+	 * @param context	The CamelContext must be based on CombinedRegistry, otherwise ClassCastException will be thrown.<br>
+	 * 					这个context必须是采用CombinedRegistry类型的Registry的，否则会抛出格式转换异常。
+	 * @param name		Name of the decoder in Registry.<br>
+	 * 					decoder在Registry中的名字。
+	 * @param decoder	The decoder that will be used by Netty.<br>
+	 * 					将被Netty用到的decoder。
 	 */
 	@SuppressWarnings("unchecked")
 	static public void addDecoder(CamelContext context, String name, ChannelUpstreamHandler decoder){
@@ -106,11 +124,18 @@ public class RegistryUtility {
 	}
 	
 	/**
+	 * Adds codec to Registry only, it will not handle the manipulating of encoders or decoders list in Registry.<br>
 	 * 仅仅把codec直接加入到Registry中，而不处理加入到Registry里的encoders或decoders列表中。
+	 * <p>
+	 * If a codec with the same name already exists in the Registry, IllegalArgumentException will be thrown.<br>
 	 * 如果Registry中原先已经有同名的别的codec，则抛出IllegalArgumentException。
-	 * @param registry
-	 * @param name
-	 * @param codec
+	 * 
+	 * @param registry	The CombinedRegistry that the codec will be added into.<br>
+	 * 					codec将要被加入的CombinedRegistry。
+	 * @param name		Name of the codec in Registry.<br>
+	 * 					codec在Registry中的名字。
+	 * @param codec		The codec that will be used by Netty.<br>
+	 * 					将被Netty使用的codec。
 	 */
 	static protected void addCodecOnly(CombinedRegistry registry, String name, ChannelHandler codec){
 		Object oldValue = registry.lookup(name);

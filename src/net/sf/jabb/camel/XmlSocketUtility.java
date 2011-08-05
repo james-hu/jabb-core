@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -26,7 +26,10 @@ import org.apache.camel.builder.RouteBuilder;
 import org.jboss.netty.handler.codec.string.StringEncoder;
 
 /**
- * 提供一些方便利用Camel提供基于XML的Socket接口的方法。
+ * This utility makes it convenient to provide XML protocol based socket interface 
+ * (for example, SOAP over TCP rather than HTTP) in Camel.<br>
+ * 这个工具提供一些方便使用的方法，从而可以利用Camel提供基于XML的Socket接口
+ * （比如SOAP over TCP而不是HTTP）。
  * 
  * @author Zhengmao HU (James)
  *
@@ -38,14 +41,27 @@ public class XmlSocketUtility {
 
 	
 	/**
+	 * Creates a XML protocol based socket server in Camel.<br>
 	 * 在Camel中，创建一个基于XML的Socket接口服务器。
-	 * @param camelContext		Camel的Context，它必须用的是CombinedRegistry，因为要往Registry里放东西。
-	 * @param serverUri			服务器的URI，它将被Camel的Netty组件用来创建一个Endpoint。比如“tcp://localhost:9000”
-	 * @param syncFlag			传递给Camel-Netty的sync参数，true表示同步，false表示异步。
-	 * @param toUri				接收到的消息都会被送给这个Pipe，一般来说它要么是direct，要么是seda。
-	 * @param topLevelTagName	标识XML消息开头和结尾的标签名称
-	 * @param messageCharset	XML消息的字符编码方式
-	 * @param maxMessageBytes	接收到的XML消息的最大可能长度
+	 * 
+	 * @param camelContext		CamelContext which must be based on CombinedRegistry, because additional entries must
+	 * 							be added to the Registry.<br>
+	 * 							Camel的Context，它必须用的是CombinedRegistry，因为要往Registry里放东西。
+	 * @param serverUri			URI of the socket server which will be used by Camel Netty component
+	 * 							to create an Endpoint.<br>
+	 * 							服务器的URI，它将被Camel的Netty组件用来创建一个Endpoint。
+	 *							 <p>For example: <code>tcp://localhost:9000</code>
+	 * @param syncFlag			The sync parameter that will be send to Camel Netty component, 
+	 * 							true means sync and false means async.<br>
+	 * 							传递给Camel Netty组件的sync参数，true表示同步，false表示异步。
+	 * @param toUri				The Pipe that receives the messages, usually it should be either direct or seda.<br>
+	 * 							接收到的消息都会被送给这个Pipe，一般来说它要么是direct，要么是seda。
+	 * @param topLevelTagName	Name of the top level tag that will be used to find the boundaries of XML messages.<br> 
+	 * 							标识XML消息开头和结尾的标签名称。
+	 * @param messageCharset	Charset that the XML messages received are supposed to be encoded in.<br>
+	 * 							XML消息的字符编码方式
+	 * @param maxMessageBytes	The maximum possible length of the XML messages received.<br>
+	 * 							接收到的XML消息的最大可能长度
 	 * @throws Exception 		Exception if the routes could not be created for whatever reason
 	 */
 	static public void addServer(CamelContext camelContext, final String serverUri, final boolean syncFlag, final String toUri, 
@@ -79,9 +95,11 @@ public class XmlSocketUtility {
 	}
 	
 	/**
+	 * Strips off the top level tag from XML string.<br>
 	 * 从XML字符串中去掉最上层的Tag。
-	 * @param xmlString
-	 * @return
+	 * 
+	 * @param xmlString	The XMl string to be processed
+	 * @return	The result string with top level tag removed.
 	 */
 	static public String stripTopLevelTag(String xmlString){
 		return xmlString.substring(xmlString.indexOf('>') + 1, xmlString.lastIndexOf('<'));
