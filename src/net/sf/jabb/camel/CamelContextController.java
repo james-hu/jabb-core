@@ -70,9 +70,11 @@ public class CamelContextController implements Runnable{
 	 * @param serverUri		The listening port in Camel Netty URI format, for example: <br>
 	 * 						监听端口的URI，向这个端口发送命令就可以控制CamelContext。它遵循Camel中Netty组件的URI格式，比如：
 	 * 						<p><code>tcp://localhost:99999?keepAlive=true</code> 
+	 * @param autoDisconnect	Whether disconnect the socket connection from server side after each control command was received.<br>
+	 * 							是否在收到每个控制命令之后就自动从服务器端断开socket连接。
 	 * @throws Exception
 	 */
-	public CamelContextController(final CamelContext camelContext, final String serverUri) throws Exception{
+	public CamelContextController(final CamelContext camelContext, final String serverUri, final boolean autoDisconnect) throws Exception{
 		context = camelContext;
 		commandQueue = new LinkedBlockingQueue<String>();
 		
@@ -84,7 +86,8 @@ public class CamelContextController implements Runnable{
 				StringBuilder sb = new StringBuilder();
 				sb.append("netty:").append(serverUri);
 				sb.append(serverUri.contains("?")? '&' : '?');
-				sb.append("sync=true&textline=true&disconnect=true");
+				sb.append("sync=true&textline=true&disconnect=");
+				sb.append(autoDisconnect? "true" : "false");
 				from(sb.toString()).process(
 						new Processor(){
 							@Override
@@ -98,6 +101,28 @@ public class CamelContextController implements Runnable{
 			}
 		});
 		myContext.start();
+	}
+	
+	/**
+	 * Creates an instance which wraps a specified CamelContext, 
+	 * listens at a specified port and controls the CamelContext according to 
+	 * commands received from that port.<br>
+	 * 创建一个实例，它包装指定的某个CamelContext，在指定的端口上监听，
+	 * 并根据接受到的命令对包装的CamelContext进行控制。
+	 * <p>
+	 * The socket connection will be disconnected from server side after each command
+	 * is received from client side.<br>
+	 * 每当从客户端接收到一个命令，服务器端就会自动断开socket连接。  
+	 * 
+	 * @param camelContext	The CamelContext that will be controlled.<br>
+	 * 						将被控制的CamelContext。
+	 * @param serverUri		The listening port in Camel Netty URI format, for example: <br>
+	 * 						监听端口的URI，向这个端口发送命令就可以控制CamelContext。它遵循Camel中Netty组件的URI格式，比如：
+	 * 						<p><code>tcp://localhost:99999?keepAlive=true</code> 
+	 * @throws Exception
+	 */
+	public CamelContextController(final CamelContext camelContext, final String serverUri) throws Exception{
+		this(camelContext, serverUri, true);
 	}
 	
 	/**
@@ -116,21 +141,22 @@ public class CamelContextController implements Runnable{
 		cmd = cmd.trim().toLowerCase();
 		if ("status".equals(cmd)){
 			log.info("CamelContext '" + context.getName() + "' received 'status' command.");
-			return "Ok.\n" 
-				+ "Status: " + context.getStatus().toString() 
-				+ "   Uptime: " + context.getUptime();
+			return "Ok.\r\n" 
+				+ "  Status: " + context.getStatus().toString() 
+				+ "   Uptime: " + context.getUptime()
+				+ "\r\n";
 		}else if ("exit".equals(cmd)){
 			commandQueue.add("stop");
 			commandQueue.add("exit");
-			return "Ok.";
+			return "Ok.\r\n";
 		}else if ("stop".equals(cmd)
 				|| "start".equals(cmd)
 				|| "suspend".equals(cmd)
 				|| "resume".equals(cmd)){
 			commandQueue.add(cmd);
-			return "Ok.";
+			return "Ok.\r\n";
 		} else{
-			return "Unknown command.";
+			return "Unknown command.\r\n";
 		}
 	}
 	

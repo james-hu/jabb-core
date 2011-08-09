@@ -23,5 +23,7 @@
 	<classpathentry kind="lib" path="lib/commons-pool-1.5.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/netty-3.2.3.Final.jar" sourcepath="lib/src-ref/netty-3.2.3.Final-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/camel-core-2.5.0.jar" sourcepath="lib/src-ref/apache-camel-core-2.5.0-src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-management-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/camel-netty-2.5.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

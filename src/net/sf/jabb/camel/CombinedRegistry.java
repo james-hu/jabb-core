@@ -141,12 +141,12 @@ public class CombinedRegistry implements Registry {
 	}
 
 	/**
-	 * Looks up from all encapsulated Registry(s) one by one, and returns the first result found.<br>
-	 * 按次序从所封装的Registry中查找，返回第一个找到的结果。
+	 * Looks up from all encapsulated Registry(s) one by one, and returns all the result found.<br>
+	 * 按次序从所封装的Registry中查找，并返回所有能找到的结果。
 	 * <p>
-	 * If no result can be found, null will be returned.
+	 * If no result can be found, an empty Map will be returned.
 	 * <p>
-	 * 如果全都找不到，则返回null。
+	 * 如果全都找不到，则返回一个空的Map。
 	 * 
 	 * @see org.apache.camel.spi.Registry#lookupByType(java.lang.Class)
 	 */
