@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,18 +22,30 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 从队列中取数据，进行处理。它所启动的线程是从内部的线程池取的。
+ * A template for processing data from a queue.<br>
+ * 一个从队列中取数据进行处理的模板。
+ * <p>
+ * One working thread will be created for one instance of this class.
+ * <p>
+ * 本类的每个实例相应的会有一个工作线程。
  * 
  * @author Zhengmao HU (James)
  * 
- * @param <E>	队列中元素的类型
+ * @param <E>	Type of the data in the queue.<br>队列中数据的类型
  *
  */
 public abstract class QueueConsumer<E> implements Runnable{
 	protected BlockingQueue<E> queue;
+	/**
+	 * The working thread.<br>
+	 * 工作线程。
+	 */
 	protected Thread thread;
-	protected Object startStopLock;
 	protected AtomicInteger mode;
+	/**
+	 * Name of this instance, which determines the naming of working thread.<br>
+	 * 本个实例的名字，它决定了工作线程的名字。
+	 */
 	protected String name;
 
 	static protected final int MODE_INIT = 0;
@@ -43,8 +55,20 @@ public abstract class QueueConsumer<E> implements Runnable{
 	static protected final int MODE_STOP_WHEN_EMPTY = 4;
 	static protected final int MODE_STOPPED = 5;
 	
+	/**
+	 * If no ExecutorService is specified in constructor,
+	 * then the working thread will come from this thread pool.<br>
+	 * 如果在构造方法中没有指定ExecutorService，则它的工作线程
+	 * 将取自这个线程池。
+	 * <p>
+	 * defaultThreadPool = Executors.newCachedThreadPool()
+	 */
 	static protected ExecutorService defaultThreadPool;
 	
+	/**
+	 * Effective thread pool of this instance.<br>
+	 * 本个实例实际使用的线程池。
+	 */
 	protected ExecutorService threadPool;
 	
 	static{
@@ -64,14 +88,18 @@ public abstract class QueueConsumer<E> implements Runnable{
 	}
 
 	/**
+	 * Constructor to create an instance.<br>
 	 * 创建一个实例。
-	 * @param name			名称，会被用在线程名里
-	 * @param workQueue			从这个队列取得待处理数据
-	 * @param executorService	指定从这里获得线程
+	 * 
+	 * @param name			Name of this instance, which determines the naming of working thread.<br>
+	 * 						本个实例的名称，会被用在工作线程名里。
+	 * @param workQueue			The queue that data for processing will be fetched from.<br>
+	 * 							本实例将从这个队列取得待处理数据。
+	 * @param executorService	Thread pool that working thread will be get from.<br>
+	 * 							指定让本实例从这里获得工作线程。
 	 */
 	public QueueConsumer(BlockingQueue<E> workQueue, String name, ExecutorService executorService){
 		threadPool = executorService;
-		startStopLock = new Object();
 		this.name = name;
 		queue = workQueue;
 		mode = new AtomicInteger(MODE_INIT);
@@ -79,33 +107,46 @@ public abstract class QueueConsumer<E> implements Runnable{
 	
 	
 	/**
-	 * 创建一个实例，使用缺省的线程池。
-	 * @param name	名称，会被用在线程名里
-	 * @param workQueue	从这个队列取得待处理数据
+	 * Constructor to create an instance using default thread pool.<br>
+	 * 创建一个使用缺省线程池的实例。
 	 * 
+	 * @param name			Name of this instance, which determines the naming of working thread.<br>
+	 * 						本个实例的名称，会被用在工作线程名里。
+	 * @param workQueue			The queue that data for processing will be fetched from.<br>
+	 * 							本实例将从这个队列取得待处理数据。
 	 */
 	public QueueConsumer(BlockingQueue<E> workQueue, String name){
 		this(workQueue, name, defaultThreadPool);
 	}
 	
 	/**
-	 * 创建一个实例，使用缺省的线程名称和缺省的线程池。
-	 * @param workQueue	从这个队列取得待处理数据
+	 * Constructor to create an instance with default name and using default thread pool.<br>
+	 * 创建一个实例，使用缺省的名称和缺省的线程池。
+	 * 
+	 * @param workQueue			The queue that data for processing will be fetched from.<br>
+	 * 							本实例将从这个队列取得待处理数据。
 	 */
 	public QueueConsumer(BlockingQueue<E> workQueue){
 		this(workQueue, QueueConsumer.class.getSimpleName());
 	}
 	
 	/**
-	 * 把待处理数据放入队列，这个方法会立即返回而不是等待处理完成。
-	 * @param obj
+	 * Put data into the queue for processing, 
+	 * this method will return immediately 
+	 * without waiting for the data to be actually processed.<br>
+	 * 把待处理数据放入队列，这个方法会立即返回而不是等待实际处理完成。
+	 * 
+	 * @param obj	Data need to be processed<br>
+	 * 				待处理的数据。
 	 */
 	public void queue(E obj){
 		queue.add(obj);
 	}
 	
 	/**
-	 * 启动处理线程，这个方法立即返回。
+	 * Start working thread; This method will return immediately 
+	 * without waiting for anything to be actually processed.<br>
+	 * 启动工作处理线程，这个方法立即返回，而不等待任何实际处理发生。
 	 */
 	public void start(){
 		if (mode.compareAndSet(MODE_INIT, MODE_START)){
@@ -114,15 +155,23 @@ public abstract class QueueConsumer<E> implements Runnable{
 	}
 	
 	/**
-	 * 等待队列处理空了之后停止处理线程，这个方法会等到处理线程结束才返回。
+	 * Stop working thread after the queue is empty; 
+	 * This method will not return until working thread finishes.<br>
+	 * 等待队列处理空了之后停止处理线程，这个方法会等到工作处理线程结束才返回。
 	 */
 	public void stop(){
 		stop(true);
 	}
 
 	/**
-	 * 停止处理线程，这个方法会等到处理线程结束才返回。
-	 * @param afterQueueEmpty	如果为true，则等队列处理空了才返回，否则就尽早返回。
+	 * Stop working thread; 
+	 * This method will not return until working thread finishes.<br>
+	 * 停止处理线程，这个方法会等到工作处理线程结束才返回。
+	 * 
+	 * @param afterQueueEmpty	true if working thread should keep processing until the queue is empty;<br>
+	 * 							false if working thread should stop after finished current work;<br>
+	 * 							如果为true，则工作线程要等到队列处理空了才结束；<br>
+	 * 							如果为false，则工作线程处理完当前数据就结束。
 	 */
 	public void stop(boolean afterQueueEmpty){
 		if (mode.compareAndSet(MODE_RUNNING, afterQueueEmpty ? MODE_STOP_WHEN_EMPTY : MODE_STOP_ASAP)){
@@ -157,7 +206,8 @@ public abstract class QueueConsumer<E> implements Runnable{
 	}
 	
 	/**
-	 * 使用队列中的数据
+	 * Process the data in queue - this method should be override in subclass.<br>
+	 * 处理队列中的数据——这个方法应该在子类中被重载。
 	 */
 	abstract protected void consume();  
 	

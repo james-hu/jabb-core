@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,15 +17,16 @@ limitations under the License.
 package net.sf.jabb.util.thread;
 
 /**
+ * It generates sequence of incremental numbers, within a range that can be specified, 
+ * without repeating or missing of any number.<br>
  * 序列值生成器，保证不重复渐增，支持最大最小值的范围设定。
+ * <p>
+ * It is multi-thread safe, and has high performance.
+ * After Long.MAX_VALUE of numbers generated, the next generated number may jump 
+ * to the low boundary of the specified range.
+ * <p>
  * 它是线程安全的，而且性能高。
  * 但是每当获取了Long.MAX_VALUE个值之后，下一个取得值可能会出现一次跳跃（从当前值跳到最小值）。
- * <p>
- * It generates sequence of incremental numbers, with a range that can be specified, 
- * without repeating or missing of any number.
- * It is multi-thread safe, and has high performance.
- * After Long.MAX_VALUE of numbers generated, the next generated number may jump from
- * the-next-value-should-be to the low boundary of the specified range.
  * 
  * @author Zhengmao HU (James)
  *
@@ -35,9 +36,8 @@ public class RangedSequencer extends Sequencer {
 	protected long range;
 	
 	/**
+	 * Constructs an instance, with specified range and initial number.<br>
 	 * 创建一个实例，指定最小、最大、初始值。
-	 * <p>
-	 * Constructs an instance, with specified range and initial number.
 	 * 
 	 * @param min	最小值<br>low boundary of the range
 	 * @param max	最大值<br>high boundary of the range
@@ -59,10 +59,9 @@ public class RangedSequencer extends Sequencer {
 	}
 	
 	/**
-	 * 创建一个实例，指定最小、最大值，初始值就是最小值。
-	 * <p>
 	 * Constructs an instance, with specified range, 
-	 * and use the low boundary as initial number.  
+	 * and use the low boundary as initial number.<br>
+	 * 创建一个实例，指定最小、最大值，初始值就是最小值。
 	 * 
 	 * @param min	最小值<br>low boundary of the range
 	 * @param max	最大值<br>high boundary of the range
@@ -72,9 +71,8 @@ public class RangedSequencer extends Sequencer {
 	}	
 	
 	/**
+	 * Constructs an instance with a range of [0, Long.MAX_VALUE] and specified initial number.<br>
 	 * 创建一个实例，指定初始值。最小值是0，最大值是Long.MAX_VALUE。
-	 * <p>
-	 * Constructs an instance with a range of [0, Long.MAX_VALUE] and specified initial number.
 	 * 
 	 * @param init	初始值<br>the first number that will be returned by next()
 	 */
@@ -83,19 +81,17 @@ public class RangedSequencer extends Sequencer {
 	}	
 
 	/**
+	 * Constructs an instance with a range of [0, Long.MAX_VALUE] and 0 as the initial number.<br>
 	 * 创建一个实例，指定初始值和最小值都是0，最大值是Long.MAX_VALUE。
-	 * <p>
-	 * Constructs an instance with a range of [0, Long.MAX_VALUE] and 0 as the initial number.
-	 * 
 	 */
 	public RangedSequencer(){
 		this(0, Long.MAX_VALUE, 0);
 	}
 
 	/**
+	 * Get the next number in sequence.<br>
 	 * 获得下一个序列值。
-	 * <p>
-	 * Get the next number in sequence.
+	 * 
 	 * @return	the next number in sequence
 	 */
 	@Override
