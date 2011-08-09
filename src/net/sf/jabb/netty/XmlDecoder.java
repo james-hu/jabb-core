@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -27,25 +27,31 @@ import org.jboss.netty.handler.codec.frame.DelimiterBasedFrameDecoder;
 import org.jboss.netty.handler.codec.oneone.OneToOneDecoder;
 
 /**
- * 用来处理Netty如何对XML文本消息进行分段的问题。
+ * A decoder for Netty to handle XML messages.<br>
+ * 使得Netty能够对XML文本消息进行分段的decoder。
  * <p>
- * 代码举例：
+ * The usage is as the following:<br>
+ * 使用方法如下：
  * <pre>
  * {@link ChannelPipeline} pipeline = ...;
  * 
- * XmlDecoder xmlDecoder = new XmlDecoder(10000, "env:Envelope", CharsetUtil.UTF_8);
+ * // construct a decoder 
+ * XmlDecoder xmlDecoder = new XmlDecoder(
+ * 		10000, 				// maximum length of the XML messages
+ * 		"env:Envelope", 	// top level tag of the XML messages
+ * 		CharsetUtil.UTF_8);	// character encoding of the messages
  *
- * // Decoders
+ * // setup the pipeline to use the decoder
  * pipeline.addLast("frameDecoder", xmlDecoder.{@link #getFrameDecoder()});
  * pipeline.addLast("stringDecoder", xmlDecoder.{@link #getStringDecoder()});
  *
  * </pre>
  * and then you can use a {@link String} instead of a {@link ChannelBuffer}
- * as a message:
+ * when processing messages:
  * <pre>
  * void messageReceived({@link ChannelHandlerContext} ctx, {@link MessageEvent} e) {
  *     String msg = (String) e.getMessage();
- *     ch.write("The XML body is '" + msg + "'\n");
+ *     System.out.print("The XML body is '" + msg + "'\n");
  * }
  * </pre>
  * 
@@ -61,10 +67,17 @@ public class XmlDecoder {
 	protected XmlStringDecoder stringDecoder;
 	
 	/**
-	 * 创建一个实例。创建好之后，应该用它的getFrameDecoder()方法和getStringDecoder()方法来获得给Netty用的decoder。
-	 * @param maxFrameLength
-	 * @param topLevelTagName
-	 * @param charset
+	 * Constructor after which both its getFrameDecoder() and getStringDecoder() methods should be
+	 * called to get two decoders for Netty.<br>
+	 * 创建一个实例，创建好之后，它的getFrameDecoder()方法和getStringDecoder()方法都应该被调用
+	 * 以获得给Netty用的两个decoder。
+	 * 
+	 * @param maxFrameLength	Maximum length of XML text messages that might be received.<br>
+	 * 							可能接收到的XML消息的最大长度。
+	 * @param topLevelTagName	Top level XML tag that marks the beginning and ending of XML messages.<br>
+	 * 							用来标记每段XML消息开头与结束的顶层XML标签。
+	 * @param charset			Character set that the text messages are encoded in.<br>
+	 * 							所接收到的消息的编码字符集。
 	 */
 	public XmlDecoder(int maxFrameLength, String topLevelTagName, Charset charset){
 		frameDecoder = new DelimiterBasedFrameDecoder(maxFrameLength, true, 
@@ -73,10 +86,15 @@ public class XmlDecoder {
 	}
 	
 	/**
+	 * Creates delimiters that will be used to construct DelimiterBasedFrameDecoder.<br>
 	 * 根据XML标签的名称，生成适合DelimiterBasedFrameDecoder用的delimiters。
-	 * @param tagName	XML标签的名称（不包括尖括号、斜杠这些）
-	 * @param charset	待解析的XML文本所采用的字符集编码方式
-	 * @return 共4个delimiter放在一个数组里，都以“</”开头，然后是tag的名称，再接着分别是空格、制表符（TAB）、回车、换行
+	 * 
+	 * @param tagName	Name of the top level XML tag (not including &lt;, /, etc).<br>
+	 * 					XML标签的名称（不包括尖括号、斜杠这些）
+	 * @param charset	Character set encoding of the messages to be processed.<br>
+	 * 					待解析的XML文本所采用的字符集编码方式
+	 * @return 			Four delimiters in an array.<br>
+	 * 					共4个delimiter放在一个数组里，都以“&lt;/”开头，然后是tag的名称，再接着分别是空格、制表符（TAB）、回车、换行
 	 */
 	protected ChannelBuffer[] buildDelimiters(String tagName, Charset charset){
 		byte[] nameBytes = tagName.getBytes(charset);
@@ -96,23 +114,42 @@ public class XmlDecoder {
 	}
 
 	/**
+	 * Get the frame decoder to be used by Netty.<br>
+	 * 获得给Netty用的frame decoder。
+	 * <p>
+	 * Always use this method together with getStringDecoder().<br>
 	 * 这个方法总是与getStringDecoder()方法结合起来一起用。
-	 * @return
+	 * 
+	 * @return	The decoder that separates XML messages.<br>
+	 * 			用来把XML消息区分开来的decoder。
 	 */
 	public DelimiterBasedFrameDecoder getFrameDecoder() {
 		return frameDecoder;
 	}
 
 	/**
+	 * Get the string decoder to be used by Netty.<br>
+	 * 获得给Netty用的string decoder。
+	 * <p>
+	 * Always use this method together with getFrameDecoder().<br>
 	 * 这个方法总是与getFrameDecoder()方法结合起来一起用。
-	 * @return
+	 * 
+	 * @return the decoder that do final clean up for XML messages.<br>
+	 * 			用来对XML消息进行最终清理的decoder。
 	 */
 	public OneToOneDecoder getStringDecoder() {
 		return stringDecoder;
 	}
 	
 	/**
+	 * Further process the messages already processed by 
+	 * FrameDecoder to make it clean XML text messages.<br>
 	 * 把经过FrameDecoder处理过后的消息，进一步加工为头尾完整干净的XML文本。
+	 * <p>
+	 * Don't use this class directly. It is a supporting class for XmlDecoder.
+	 * <p>
+	 * 不要直接用这个类，它是支撑XmlDecoder的。
+	 * 
 	 * @author Zhengmao HU (James)
 	 *
 	 */
@@ -122,6 +159,7 @@ public class XmlDecoder {
 		private final String endTag;
 		
 		/**
+		 * Constructor.<br>
 		 * 创建一个实例。
 		 * @param tagName
 		 * @param charset
@@ -137,6 +175,7 @@ public class XmlDecoder {
 		}
 
 		/**
+		 * Get the text and process its beginning and ending to make it a clean XML text.<br>
 		 * 先取到字符串，然后把取得的字符串进一步加工，以形成头尾完整干净的XML文本。
 		 */
 	    @Override

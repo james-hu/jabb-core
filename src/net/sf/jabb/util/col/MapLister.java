@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,23 +20,23 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
+ * An utility to list the content of the Map in a formatted manner.<br>
  * 把Map里的内容格式化输出的工具。
- * <p>
- * The utility to list the content of Map in a formatted manner. 
  * 
  * @author Zhengmao HU (James)
  *
  */
 public class MapLister {
 	/**
-	 * 把Map里的内容列在String里，Map里的每个entry占一行，按key排序，每行的格式为“key\t= value\n”。
-	 * <p>
-	 * List the content of Map to a newly created String, entries are sorted by key,  formatted as "key\t= value\n".
+	 * Print the content of the Map in a newly created String, 
+	 * entries are sorted by key,  formatted as "key\t= value\n".<br>
+	 * 把Map里的内容列在String里，Map里的每个entry占一行，按key排序，
+	 * 每行的格式为“key\t= value\n”。
 	 * 
-	 * @param map	需要列出内容的Map对象
-	 * 				<br>The Map object for which the content need to be listed
-	 * @return 含有格式化过的Map内容的String
-	 * 			<br>A String that holds formated content of the Map
+	 * @param map	The Map object for which the content need to be listed.<br>
+	 * 				需要列出内容的Map对象
+	 * @return 		A String that holds formated content of the Map.<br>
+	 * 				含有格式化过的Map内容的String
 	 */
 	public static String listToString(Map<?, ?> map){
 		TreeMap<?, ?> tm = new TreeMap<Object, Object>(map);

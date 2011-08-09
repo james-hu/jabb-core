@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,12 +19,13 @@ package net.sf.jabb.util.col;
 import java.io.Serializable;
 
 /**
- * 把多个int类型的值封装在这一个对象里，适合用来作为Map的key。
- * 支持hashCode(), toString(), equals(), compareTo()方法。
- * <p>
  * Encapsulates multiple int type values into one object, which
- * is very suitable to be used as key object of Map. 
+ * is suitable to be used as key object of Map.<br>
+ * 把多个int类型的值封装在这一个对象里，适合用来作为Map的key。
+ * <p>
  * It supports hashCode(), toString(), equals(), compareTo() methods.
+ * <p>
+ * 它支持hashCode(), toString(), equals(), compareTo()方法。
  * 
  * @author Zhengmao HU (James)
  *
@@ -35,31 +36,28 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 	protected int[] values;
 	
 	/**
+	 * Constructs an IntegerArray that encapsulates specified int values.<br>
 	 * 创建一个包含这些整型值的实例。
-	 * <p>
-	 * Constructs an IntegerArray that encapsulates specified int values.
 	 * 
-	 * @param values	一批整型值<br>int values that will be encapsulated
+	 * @param values	int values that will be encapsulated.<br>一批将被封装的整型值。
 	 */
 	public IntegerArray(int... values){
 		this.values = values;
 	}
 	
 	/**
+	 * Gets all the values encapsulated in this object.<br>
 	 * 获得所有值。
-	 * <p>
-	 * Gets all the values encapsulated in this object.
 	 * 
-	 * @return	array of values
+	 * @return	array of values encapsulated.
 	 */
 	public int[] getValues(){
 		return values;
 	}
 	
 	/**
+	 * Gets the value in specified position.<br>
 	 * 获得指定位置的值。
-	 * <p>
-	 * Gets the value in specified position.
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value
@@ -69,9 +67,8 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 	}
 	
 	/**
+	 * Gets the value in specified position.<br>
 	 * 获得指定位置的值。
-	 * <p>
-	 * Gets the value in specified position.
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as long
@@ -81,9 +78,8 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 	}
 	
 	/**
+	 * Gets the value in specified position.<br>
 	 * 获得指定位置的值。
-	 * <p>
-	 * Gets the value in specified position.
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as int
@@ -93,9 +89,8 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 	}
 	
 	/**
+	 * Gets the calculated hash code.<br>
 	 * 获得计算得到的hash值。
-	 * <p>
-	 * Gets the calculated hash code.
 	 */
 	@Override
 	public int hashCode(){
@@ -108,12 +103,11 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 	}
 
 	/**
+	 * Compare.<br>
 	 * 比较。
-	 * <p>
-	 * Compare
 	 * 
-	 * @param obj	
-	 * @return	-1 if little than obj, 0 if equals, 1 if greater.
+	 * @param obj	The object to be compared with
+	 * @return	-1 if little than obj, 0 if equals, 1 if greater than.
 	 */
 	@Override
 	public int compareTo(Object obj) {

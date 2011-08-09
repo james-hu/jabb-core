@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -27,13 +27,26 @@ import java.util.Set;
 import java.util.SortedMap;
 
 /**
+ * Encapsulates Map so that a new entry is put in to the Map whenever
+ * there is a get for a non-existing entry.<br>
  * 把Map进一步封装，使得每次get的时候，如果没有，就自动put。
+ * <p>
+ * Please note that only these methods are synchronized: get/put/putAll/remove/clear.
+ * <p>
  * 注意只有这几个方法是同步的：get/put/putAll/remove/clear。
+ * <p>
+ * Although PutOnGetMap implemented SortedMap and NavigableMap, 
+ * if the encapsulated Map does not support those interfaces, 
+ * then if any method of those interfaces was called, Exception will be thrown.
+ * <p>
+ * 虽然PutOnGetMap实现了SortedMap与NavigableMap接口，
+ * 但是如果被封装的Map本身不支持这些接口，
+ * 那么当运行时调用这些接口所特有的方法的时候，会抛出Exception。
  * 
  * @author Zhengmao HU (James)
  *
- * @param <K>	Map的key的类型
- * @param <V>	Map的value的类型
+ * @param <K>	Type of the key of the Map entries<br>Map的key的类型
+ * @param <V>	Type of the value of the Map entries<br>Map的value的类型
  */
 public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMap<K,V>{
 	protected Map<K, V> map;
@@ -43,9 +56,13 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	protected Object structureLock = new Object();
 	
 	/**
-	 * 把一个普通的Map封装成“每次get的时候，如果没有，就自动put”
-	 * @param originalMap	被封装进来的Map
-	 * @param valueClazz	Map的value的类
+	 * Constructs an instance with specified Map instance and value Class.<br>
+	 * 给定Map实例以及value的类，把一个普通的Map实例封装成“每次get的时候，如果没有，就自动put”。
+	 * 
+	 * @param originalMap	The Map instance that will be encapsulated.<br>
+	 * 						被封装进来的Map实例。
+	 * @param valueClazz	Class of the value of the Map entry.<br>
+	 * 						Map的value的类。
 	 */
 	public PutOnGetMap(Map<K, V> originalMap, Class<? extends V> valueClazz){
 		map = originalMap;
@@ -53,9 +70,13 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	}
 	
 	/**
-	 * 把一个普通的Map封装成“每次get的时候，如果没有，就自动put”
-	 * @param mapClazz		被封装进来的Map的类
-	 * @param valueClazz	Map的value的类
+	 * Constructs an instance with specified Map Class and value Class.<br>
+	 * 给定Map的类以及value的类，封装出一个“每次get的时候，如果没有，就自动put”的实例。
+	 * 
+	 * @param mapClazz		The Map Class that its instance will be created and encapsulated.<br>
+	 * 						被封装进来的Map的类
+	 * @param valueClazz	Class of the value of the Map entry.<br>
+	 * 						Map的value的类。
 	 */
 	@SuppressWarnings("unchecked")
 	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz){
@@ -71,10 +92,16 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 
 	
 	/**
-	 * 把一个普通的Map封装成“每次get的时候，如果没有，就自动put
-	 * @param mapClazz		被封装进来的Map的类
-	 * @param valueClazz	Map的value的类
-	 * @param valueParam	Map的value的类的构造方法所需要的参数
+	 * Constructs an instance with specified Map Class, value Class 
+	 * and the constructor parameter of the value Class.<br>
+	 * 给定Map的类、value的类以及value类构造方法的参数，封装出一个“每次get的时候，如果没有，就自动put”的实例。
+	 * 
+	 * @param mapClazz		The Map Class that its instance will be created and encapsulated.<br>
+	 * 						被封装进来的Map的类
+	 * @param valueClazz	Class of the value of the Map entry.<br>
+	 * 						Map的value的类。
+	 * @param valueParam	Constructor parameter for the value Class.<br>	
+	 * 						value的类的构造方法所需要的参数。
 	 */
 	@SuppressWarnings("unchecked")
 	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object valueParam){
@@ -98,13 +125,19 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 
 	
 	/**
-	 * 把一个普通的Map封装成“每次get的时候，如果没有，就自动put”
-	 * @param mapClazz		被封装进来的Map的类
-	 * @param valueClazz	Map的value的类
-	 * @param valueParam	Map的value的类的构造方法所需要的参数
+	 * Constructs an instance with specified Map Class, value Class 
+	 * and the constructor parameter of the value Class.<br>
+	 * 给定Map的类、value的类以及value类构造方法的参数，封装出一个“每次get的时候，如果没有，就自动put”的实例。
+	 * 
+	 * @param mapClazz		The Map Class that its instance will be created and encapsulated.<br>
+	 * 						被封装进来的Map的类
+	 * @param valueClazz	Class of the value of the Map entry.<br>
+	 * 						Map的value的类。
+	 * @param valueParams	Constructor parameter for the value Class.<br>	
+	 * 						value的类的构造方法所需要的参数。
 	 */
 	@SuppressWarnings("unchecked")
-	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object... valueParam){
+	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object... valueParams){
 		Map<K, V> originalMap = null;
 		try {
 			originalMap = mapClazz.newInstance();
@@ -116,27 +149,28 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 		try {
 			try{
 				// for single array argument
-				valueConstructor = valueClazz.getConstructor(valueParam.getClass());
-				valueParameter = valueParam;
+				valueConstructor = valueClazz.getConstructor(valueParams.getClass());
+				valueParameter = valueParams;
 			}catch (NoSuchMethodException nsme){
 				// for multiple argument
-				Class<?>[] paramTypes = new Class<?>[valueParam.length];
-				for (int i = 0; i < valueParam.length; i ++){
-					paramTypes[i] = valueParam[i].getClass();
+				Class<?>[] paramTypes = new Class<?>[valueParams.length];
+				for (int i = 0; i < valueParams.length; i ++){
+					paramTypes[i] = valueParams[i].getClass();
 				}
 				valueConstructor = valueClazz.getConstructor(paramTypes);
-				valueParameter = valueParam;
+				valueParameter = valueParams;
 			}
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Cannot find correct constuctor for '" + valueClazz.getCanonicalName()
-					+ "' with parameter: " + Arrays.toString(valueParam), e);
+					+ "' with parameter: " + Arrays.toString(valueParams), e);
 		}
 	}
 
 
 	/**
-	 * 获得最初被封装的那个Map
-	 * @return
+	 * Get the encapsulated Map instance.<br>
+	 * 获得最初被封装的那个Map。
+	 * @return The map instance that is encapsulated inside.
 	 */
 	public Map<K, V> getMap(){
 		return map;
@@ -144,8 +178,13 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	
 
 	/**
-	 * 取得key所对应的value，如果目前没有，则新建一个。
-	 * @param key
+	 * Get the value object corresponding to the key object specified, 
+	 * if such entry does not exist in the Map, then create one and put
+	 * into the Map and return the value object in the newly created entry.<br>
+	 * 取得key所对应的value，如果目前在Map里没有，则在Map里新建一个并返回新建
+	 * 的这个value对象。
+	 * 
+	 * @param key	The key object that will be used to look for the value object.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override

@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,29 +17,35 @@ limitations under the License.
 package net.sf.jabb.util.bean;
 
 /**
- * 一般的返回结果。
+ * Generic bean to contain result/response information.<br>
+ * 通用的存放返回结果的Bean。
+ * 
  * @author Zhengmao HU (James)
  *
  */
 public class GenericResult {
 	/**
-	 * 是否操作成功。
+	 * Whether the request was processed successfully.<br>
+	 * 是否成功处理了请求。
 	 */
 	protected boolean successful;
 	/**
+	 * Detail of the error if there is any.<br>
 	 * 出错消息（仅针对操作不成功的情况）
 	 */
 	protected String errorMessage;
 	/**
-	 * 附件对象。
+	 * Any further information.<be>
+	 * 更进一步的信息。
 	 */
 	protected Object attachment;
 	
 	/**
+	 * Constructor.<br>
 	 * 创建一个对象实例。
-	 * @param successful
-	 * @param errorMsg
-	 * @param att
+	 * @param successful	Successful or not
+	 * @param errorMsg		Error message
+	 * @param att			Attachement
 	 */
 	public GenericResult(boolean successful, String errorMsg, Object att){
 		this.successful = successful;
@@ -47,6 +53,12 @@ public class GenericResult {
 		this.attachment = att;
 	}
 	
+	/**
+	 * Constructor without the need of attachment parameter.
+	 * 
+	 * @param successful	Successful or not
+	 * @param errorMsg		Error message
+	 */
 	public GenericResult(boolean successful, String errorMsg){
 		this(successful, errorMsg, null);
 	}

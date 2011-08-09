@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,14 +19,17 @@ package net.sf.jabb.util.col;
 import java.io.Serializable;
 
 /**
+ * Encapsulates multiple objects of Number(such as Integer, Long, Double) into one object,
+ * which is suitable to be used as the key object of Map.<br>
  * 把多个Number（比如Integer, Long, Double）类型的值封装在这一个对象里，适合用来作为Map的key。
  * <p>
- * Encapsulates multiple objects of Number(such as Integer, Long, Double) into one object,
- * which is suitable to be used as the key object of Map.
+ * It supports hashCode(), toString(), equals(), compareTo() methods.
+ * <p>
+ * 它支持hashCode(), toString(), equals(), compareTo()方法。
  * 
  * @author Zhengmao HU (James)
  *
- * @param <T extends Number>
+ * @param <T extends Number>	Number类型
  */
 public class NumberArray<T extends Number> implements Comparable<Object>, Serializable{
 	private static final long serialVersionUID = 3101324164832289477L;
@@ -34,20 +37,19 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	protected T[] values;
 	
 	/**
+	 * Constructs a NumberArray with specified value objects.<br>
 	 * 创建一个包含这些数值对象的实例。
-	 * <p>
-	 * Constructs a NumberArray with specified value objects.
 	 * 
-	 * @param values	一批数值对象<br>value objects of Number type
+	 * @param values	value objects of Number type that will be encapsulated.<br>
+	 * 					一批将被封装的数值对象。
 	 */
 	public NumberArray(T... values){
 		this.values = values;
 	}
 	
 	/**
+	 * Gets all the values encapsulated in this object.<br>
 	 * 获得所有值。
-	 * <p>
-	 * Gets all value objects.
 	 * 
 	 * @return array of value objects
 	 */
@@ -56,9 +58,8 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	}
 	
 	/**
+	 * Gets the value in specified position.<br>
 	 * 获得指定位置的值。
-	 * <p>
-	 * Gets the value in specified position.
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value
@@ -68,9 +69,8 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	}
 
 	/**
+	 * Gets the value in specified position.<br>
 	 * 获得指定位置的值。
-	 * <p>
-	 * Gets the value in specified position.
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as int
@@ -80,9 +80,8 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	}
 	
 	/**
+	 * Gets the value in specified position.<br>
 	 * 获得指定位置的值。
-	 * <p>
-	 * Gets the value in specified position.
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as long
@@ -92,9 +91,8 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	}
 	
 	/**
+	 * Gets the value in specified position.<br>
 	 * 获得指定位置的值。
-	 * <p>
-	 * Gets the value in specified position.
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as double
@@ -104,9 +102,8 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	}
 
 	/**
+	 * Gets the value in specified position.<br>
 	 * 获得指定位置的值。
-	 * <p>
-	 * Gets the value in specified position.
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as float
@@ -116,9 +113,8 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	}
 
 	/**
+	 * Gets the value in specified position.<br>
 	 * 获得指定位置的值。
-	 * <p>
-	 * Gets the value in specified position.
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as short
@@ -128,9 +124,8 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	}
 
 	/**
+	 * Gets the value in specified position.<br>
 	 * 获得指定位置的值。
-	 * <p>
-	 * Gets the value in specified position.
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as byte
@@ -140,9 +135,8 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	}
 
 	/**
+	 * Gets the calculated hash code.<br>
 	 * 获得计算得到的hash值。
-	 * <p>
-	 * Gets the calculated hash code.
 	 */
 	@Override
 	public int hashCode(){
@@ -156,12 +150,11 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 
 
 	/**
+	 * Compare.<br>
 	 * 比较。
-	 * <p>
-	 * Compare
 	 * 
-	 * @param obj	
-	 * @return	-1 if little than obj, 0 if equals, 1 if greater.
+	 * @param obj	The object to be compared with
+	 * @return	-1 if little than obj, 0 if equals, 1 if greater than.
 	 */
 	@Override
 	public int compareTo(Object obj) {
