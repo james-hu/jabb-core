@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,7 +17,9 @@ limitations under the License.
 package net.sf.jabb.util.stat;
 
 /**
- * 存放最大值，修改时是同步的，所以是多线程安全的。
+ * It stores the maximum value; 
+ * the compare-and-change procedure is synchronized so that multi-thread safe is ensured.<br>
+ * 存放最大值，“比较然后交换”的过程是同步的，所以它是多线程安全的。
  * 
  * @author Zhengmao HU (James)
  *
@@ -25,16 +27,20 @@ package net.sf.jabb.util.stat;
 public class AtomicMaxLong extends AtomicMinMaxLong {
 	
 	/**
-	 * 创建一个实例，用来保存最大值
+	 * Constructs an instance to store the maximum value.<br>
+	 * 创建一个实例，用来保存最大值。
 	 */
 	public AtomicMaxLong(){
 		super(Long.MIN_VALUE);
 	}
 	
 	/**
-	 * 设置为当前值与新值之间最大的一个
-	 * @param newValue
-	 * @return		最大值
+	 * Compare a value with current maximum value and make the greater one the new maximum value;
+	 * New maximum value after comparison is returned.<br>
+	 * 拿一个值同当前值比较，把其中大的那个设置为新的最大值，返回比较之后的新的最大值。
+	 * 
+	 * @param newValue	拿来作比较的值。
+	 * @return		New maximum value after comparison<br>比较之后的新的最大值
 	 */
 	public long maxAndGet(long newValue){
 		synchronized(updateLock){
@@ -46,9 +52,12 @@ public class AtomicMaxLong extends AtomicMinMaxLong {
 	}
 
 	/**
-	 * 设置为当前值与新值之间最大的一个
-	 * @param newValue
-	 * @return		原来的值
+	 * Compare a value with current maximum value and make the greater one the new maximum value;
+	 * Previous maximum value before comparison is returned.<br>
+	 * 拿一个值同当前值比较，把其中大的那个设置为新的最大值，返回比较之前的老的最大值。
+	 * 
+	 * @param newValue	拿来作比较的值。
+	 * @return		Previous maximum value before comparison<br>比较之前的老的最大值
 	 */
 	public long getAndMax(long newValue){
 		long oldValue;
@@ -62,8 +71,10 @@ public class AtomicMaxLong extends AtomicMinMaxLong {
 	}
 	
 	/**
-	 * 设置为当前值与新值之间最大的一个
-	 * @param newValue
+	 * Compare a value with current maximum value and make the greater one the new maximum value.<br>
+	 * 拿一个值同当前值比较，把其中大的那个设置为新的最大值。
+	 * 
+	 * @param newValue	拿来作比较的值。
 	 */
 	public void max(long newValue){
 		maxAndGet(newValue);

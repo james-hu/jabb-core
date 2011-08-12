@@ -22,12 +22,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * A template for processing data from a queue.<br>
+ * A template for consuming data from a queue.<br>
  * 一个从队列中取数据进行处理的模板。
  * <p>
- * One working thread will be created for one instance of this class.
+ * One working thread will be created for each instance of this class when necessary.
  * <p>
- * 本类的每个实例相应的会有一个工作线程。
+ * 本类的每个实例相应的会有一个工作线程在需要的时候被创建。
  * 
  * @author Zhengmao HU (James)
  * 
@@ -206,8 +206,24 @@ public abstract class QueueConsumer<E> implements Runnable{
 	}
 	
 	/**
-	 * Process the data in queue - this method should be override in subclass.<br>
+	 * Consume the data in queue - this method should be overridden in subclass.<br>
 	 * 处理队列中的数据——这个方法应该在子类中被重载。
+	 * <p>
+	 * This method may be interrupted while running, so please note the following:<br>
+	 * 这个方法在运行过程中可能会遇到线程的interrupt，所以如果有以下情况要注意正确处理：
+	 * <p>
+	 *  If this thread is blocked in an invocation of the wait(), wait(long), or wait(long, int) 
+	 *  methods of the Object  class, or of the join(), join(long), join(long, int), sleep(long), 
+	 *  or sleep(long, int), methods of this class, then its interrupt status will be cleared and 
+	 *  it will receive an InterruptedException.
+	 *  <p>
+	 *  If this thread is blocked in an I/O operation upon an interruptible channel then the channel 
+	 *  will be closed, the thread's interrupt status will be set, and the thread will receive a 
+	 *  ClosedByInterruptException.
+	 *  <p>
+	 *  If this thread is blocked in a Selector then the thread's interrupt status will be set and 
+	 *  it will return immediately from the selection operation, possibly with a non-zero value, 
+	 *  just as if the selector's wakeup method were invoked. 
 	 */
 	abstract protected void consume();  
 	

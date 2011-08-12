@@ -22,11 +22,8 @@ package net.sf.jabb.util.thread;
  * 序列值生成器，保证不重复渐增，支持最大最小值的范围设定。
  * <p>
  * It is multi-thread safe, and has high performance.
- * After Long.MAX_VALUE of numbers generated, the next generated number may jump 
- * to the low boundary of the specified range.
  * <p>
  * 它是线程安全的，而且性能高。
- * 但是每当获取了Long.MAX_VALUE个值之后，下一个取得值可能会出现一次跳跃（从当前值跳到最小值）。
  * 
  * @author Zhengmao HU (James)
  *
@@ -34,6 +31,7 @@ package net.sf.jabb.util.thread;
 public class RangedSequencer extends Sequencer {
 	protected long offset;
 	protected long range;
+	protected long loopSpot;
 	
 	/**
 	 * Constructs an instance, with specified range and initial number.<br>
@@ -56,6 +54,7 @@ public class RangedSequencer extends Sequencer {
 		}
 		offset = min;
 		range = min - max - 1;   // negative value
+		loopSpot = Long.MAX_VALUE - (Long.MAX_VALUE % range);
 	}
 	
 	/**
@@ -96,7 +95,10 @@ public class RangedSequencer extends Sequencer {
 	 */
 	@Override
 	public long next(){
-		long l = super.next();
+		long l;
+		do{
+			l = super.next();
+		} while (l >= loopSpot);
 		return offset + l % range;
 	}
 

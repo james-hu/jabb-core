@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,22 +17,27 @@ limitations under the License.
 package net.sf.jabb.util.stat;
 
 /**
- * 存放最小值，修改时是同步的，所以是多线程安全的。
- * @author Zhengmao HU (James)
+ * It stores the minimum value; 
+ * the compare-and-change procedure is synchronized so that multi-thread safe is ensured.<br>
+ * 存放最小值，“比较然后交换”的过程是同步的，所以它是多线程安全的。
  *
  */
 public class AtomicMinLong extends AtomicMinMaxLong {
 	/**
-	 * 创建一个实例，用来保存最小值
+	 * Constructs an instance to store the minimum value.<br>
+	 * 创建一个实例，用来保存最小值。
 	 */
 	public AtomicMinLong(){
 		super(Long.MAX_VALUE);
 	}
 
 	/**
-	 * 设置为当前值与新值之间的最小的一个
-	 * @param newValue
-	 * @return			最小值
+	 * Compare a value with current minimal value and make the less one the new minimum value;
+	 * New minimum value after comparison is returned.<br>
+	 * 拿一个值同当前值比较，把其中小的那个设置为新的最小值，返回比较之后的新的最小值。
+	 * 
+	 * @param newValue	拿来作比较的值。
+	 * @return		New minimum value after comparison<br>比较之后的新的最小值
 	 */
 	public long minAndGet(long newValue){
 		synchronized(updateLock){
@@ -44,9 +49,12 @@ public class AtomicMinLong extends AtomicMinMaxLong {
 	}
 	
 	/**
-	 * 设置为当前值与新值之间的最小的一个
-	 * @param newValue
-	 * @return		原来的值
+	 * Compare a value with current minimal value and make the less one the new minimum value;
+	 * Old minimum value before comparison is returned.<br>
+	 * 拿一个值同当前值比较，把其中小的那个设置为新的最小值，返回比较之前的旧的最小值。
+	 * 
+	 * @param newValue	拿来作比较的值。
+	 * @return		Old minimum value before comparison<br>比较之前的旧的最小值
 	 */
 	public long getAndMin(long newValue){
 		long oldValue;
@@ -60,8 +68,10 @@ public class AtomicMinLong extends AtomicMinMaxLong {
 	}
 	
 	/**
-	 * 设置为当前值与新值之间的最小的一个
-	 * @param newValue
+	 * Compare a value with current minimum value and make the less one the new minimum value.<br>
+	 * 拿一个值同当前值比较，把其中小的那个设置为新的最小值。
+	 * 
+	 * @param newValue	拿来作比较的值。
 	 */
 	public void min(long newValue){
 		minAndGet(newValue);

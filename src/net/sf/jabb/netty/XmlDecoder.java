@@ -67,9 +67,9 @@ public class XmlDecoder {
 	protected XmlStringDecoder stringDecoder;
 	
 	/**
-	 * Constructor after which both its getFrameDecoder() and getStringDecoder() methods should be
+	 * Constructor after which both its {@link #getFrameDecoder()} and {@link #getStringDecoder()} methods should be
 	 * called to get two decoders for Netty.<br>
-	 * 创建一个实例，创建好之后，它的getFrameDecoder()方法和getStringDecoder()方法都应该被调用
+	 * 创建一个实例，创建好之后，它的{@link #getFrameDecoder()}方法和{@link #getStringDecoder()}方法都应该被调用
 	 * 以获得给Netty用的两个decoder。
 	 * 
 	 * @param maxFrameLength	Maximum length of XML text messages that might be received.<br>
@@ -86,8 +86,8 @@ public class XmlDecoder {
 	}
 	
 	/**
-	 * Creates delimiters that will be used to construct DelimiterBasedFrameDecoder.<br>
-	 * 根据XML标签的名称，生成适合DelimiterBasedFrameDecoder用的delimiters。
+	 * Creates delimiters that will be used to construct {@link DelimiterBasedFrameDecoder}.<br>
+	 * 根据XML标签的名称，生成适合{@link DelimiterBasedFrameDecoder}用的delimiters。
 	 * 
 	 * @param tagName	Name of the top level XML tag (not including &lt;, /, etc).<br>
 	 * 					XML标签的名称（不包括尖括号、斜杠这些）
@@ -117,8 +117,8 @@ public class XmlDecoder {
 	 * Get the frame decoder to be used by Netty.<br>
 	 * 获得给Netty用的frame decoder。
 	 * <p>
-	 * Always use this method together with getStringDecoder().<br>
-	 * 这个方法总是与getStringDecoder()方法结合起来一起用。
+	 * Always use this method together with {@link #getStringDecoder()}.<br>
+	 * 这个方法总是与{@link #getStringDecoder()}方法结合起来一起用。
 	 * 
 	 * @return	The decoder that separates XML messages.<br>
 	 * 			用来把XML消息区分开来的decoder。
@@ -131,8 +131,8 @@ public class XmlDecoder {
 	 * Get the string decoder to be used by Netty.<br>
 	 * 获得给Netty用的string decoder。
 	 * <p>
-	 * Always use this method together with getFrameDecoder().<br>
-	 * 这个方法总是与getFrameDecoder()方法结合起来一起用。
+	 * Always use this method together with {@link #getFrameDecoder()}.<br>
+	 * 这个方法总是与{@link #getFrameDecoder()}方法结合起来一起用。
 	 * 
 	 * @return the decoder that do final clean up for XML messages.<br>
 	 * 			用来对XML消息进行最终清理的decoder。

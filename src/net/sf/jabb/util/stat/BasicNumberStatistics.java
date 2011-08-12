@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class BasicNumberStatistics {
 	 */
 	protected void ensureDataExists(){
 		if (getCount() <= 0){
-			throw new IllegalStateException("No data for statistics.");
+			throw new IllegalStateException("No data input for statistics.");
 		}
 	}
 	

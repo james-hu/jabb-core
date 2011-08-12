@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,11 +25,16 @@ import java.util.concurrent.ExecutorService;
 import net.sf.jabb.util.text.NameDeduplicator;
 
 /**
- * 一批并行处理的QueueConsumer。
+ * A group of QueueConsumer(s) that work on on the same queue simultaneously.<br>
+ * 一批并行处理同一个队列的QueueConsumer。
+ * <p>
+ * One working thread will be created for each QueueConsumer when necessary.
+ * <p>
+ * 每个QueueConsumer相应的会有一个工作线程在需要的时候被创建。
  * 
  * @author Zhengmao HU (James)
  * 
- * @param <E>	队列中元素的类型
+ * @param <E>	Type of the data in the queue.<br>队列中数据的类型
  * 
  */
 public class QueueConsumerGroup<E> {
@@ -38,8 +43,11 @@ public class QueueConsumerGroup<E> {
 	protected ExecutorService threadPool;
 	
 	/**
-	 * 创建实例，使用各个QueueConsumer自己的线程池
-	 * @param workQueue		工作队列
+	 * Internal constructor, without specifying thread pool.<br>
+	 * （内部用）创建实例，不指定统一的线程池。
+	 * 
+	 * @param workQueue			The queue that data for processing will be fetched from.<br>
+	 * 							本实例将从这个队列取得待处理数据。
 	 */
 	protected QueueConsumerGroup(BlockingQueue<E> workQueue){
 		queue = workQueue;
@@ -47,9 +55,12 @@ public class QueueConsumerGroup<E> {
 	}
 
 	/**
-	 * 创建实例，统一使用指定的线程池
-	 * @param workQueue
-	 * @param executorService
+	 * Internal constructor, specifying one thread pool for all QueueConsumers to use.<br>
+	 * （内部用）创建实例，让所有的QueueConsumer统一使用指定的线程池。
+	 * @param workQueue			The queue that data for processing will be fetched from.<br>
+	 * 							本实例将从这个队列取得待处理数据。
+	 * @param executorService	Thread pool that working threads will be get from.<br>
+	 * 							指定让本实例从这里获得所有工作线程。
 	 */
 	protected QueueConsumerGroup(BlockingQueue<E> workQueue, ExecutorService executorService){
 		this(workQueue);
@@ -57,10 +68,19 @@ public class QueueConsumerGroup<E> {
 	}
 	
 	/**
-	 * 创建实例，统一使用指定的线程池
-	 * @param workQueue
-	 * @param executorService
-	 * @param queueConsumers
+	 * Constructor, specifying one thread pool for all QueueConsumers to use.<br>
+	 * 创建实例，让所有的QueueConsumer统一使用指定的线程池。
+	 * <p>
+	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
+	 * <p>
+	 * 当被加入这个QueueConsumerGroup的时候，QueueConsumer如果有名称重复，会被自动改名。
+	 * 
+	 * @param workQueue			The queue that data for processing will be fetched from.<br>
+	 * 							本实例将从这个队列取得待处理数据。
+	 * @param executorService	Thread pool that working threads will be get from.<br>
+	 * 							指定让本实例从这里获得所有工作线程。
+	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
+	 * 							会一起工作的QueueConsumer。
 	 */
 	public QueueConsumerGroup(BlockingQueue<E> workQueue, ExecutorService executorService, QueueConsumer<E>... queueConsumers){
 		this(workQueue, executorService);
@@ -76,18 +96,36 @@ public class QueueConsumerGroup<E> {
 	}
 	
 	/**
-	 * 创建实例，使用各个QueueConsumer自己的线程池
-	 * @param workQueue		工作队列
-	 * @param queueConsumers	现成的Consumer
+	 * Constructor, without specifying thread pool.<br>
+	 * 创建实例，不指定统一的线程池。
+	 * <p>
+	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
+	 * <p>
+	 * 当被加入这个QueueConsumerGroup的时候，QueueConsumer如果有名称重复，会被自动改名。
+	 * 
+	 * @param workQueue			The queue that data for processing will be fetched from.<br>
+	 * 							本实例将从这个队列取得待处理数据。
+	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
+	 * 							会一起工作的QueueConsumer。
 	 */
 	public QueueConsumerGroup(BlockingQueue<E> workQueue, QueueConsumer<E>... queueConsumers){
 		this(workQueue, null, queueConsumers);
 	}
 	
 	/**
-	 * 创建实例，统一使用指定的线程池
-	 * @param workQueue		工作队列
-	 * @param queueConsumers	现成的Consumer
+	 * Constructor, specifying one thread pool for all QueueConsumers to use.<br>
+	 * 创建实例，让所有的QueueConsumer统一使用指定的线程池。
+	 * <p>
+	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
+	 * <p>
+	 * 当被加入这个QueueConsumerGroup的时候，QueueConsumer如果有名称重复，会被自动改名。
+	 * 
+	 * @param workQueue			The queue that data for processing will be fetched from.<br>
+	 * 							本实例将从这个队列取得待处理数据。
+	 * @param executorService	Thread pool that working threads will be get from.<br>
+	 * 							指定让本实例从这里获得所有工作线程。
+	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
+	 * 							会一起工作的QueueConsumer。
 	 */
 	public QueueConsumerGroup(BlockingQueue<E> workQueue, ExecutorService executorService, Collection<QueueConsumer<E>> queueConsumers){
 		this(workQueue, executorService);
@@ -103,25 +141,36 @@ public class QueueConsumerGroup<E> {
 	}
 	
 	/**
-	 * 创建实例，使用各个QueueConsumer自己的线程池
-	 * @param workQueue
-	 * @param queueConsumers
+	 * Constructor, without specifying thread pool.<br>
+	 * 创建实例，不指定统一的线程池。
+	 * <p>
+	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
+	 * <p>
+	 * 当被加入这个QueueConsumerGroup的时候，QueueConsumer如果有名称重复，会被自动改名。
+	 * 
+	 * @param workQueue			The queue that data for processing will be fetched from.<br>
+	 * 							本实例将从这个队列取得待处理数据。
+	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
+	 * 							会一起工作的QueueConsumer。
 	 */
 	public QueueConsumerGroup(BlockingQueue<E> workQueue, Collection<QueueConsumer<E>> queueConsumers){
 		this(workQueue, null, queueConsumers);
 	}	
 	
 	/**
-	 * 按名称寻找得到QueueConsumer
-	 * @param name
-	 * @return
+	 * Get QueueConsumer instance by its name.<br>
+	 * 按名称寻找得到QueueConsumer。
+	 * 
+	 * @param name 	Name of the QueueConsumer
+	 * @return		The instance with the name specified
 	 */
 	public QueueConsumer<E> getConsumer(String name){
 		return consumers.get(name);
 	}
 	
 	/**
-	 * 逐个启动所有Consumer
+	 * Start all QueueConsumer(s) one by one.<br>
+	 * 逐个启动所有Consumer。
 	 */
 	public void start(){
 		for (QueueConsumer<E> c: consumers.values()){
@@ -130,16 +179,27 @@ public class QueueConsumerGroup<E> {
 	}
 	
 	/**
-	 * 把待处理数据放入队列，这个方法会立即返回而不是等待处理完成。
-	 * @param obj
+	 * Put data into the queue for processing, 
+	 * this method will return immediately 
+	 * without waiting for the data to be actually processed.<br>
+	 * 把待处理数据放入队列，这个方法会立即返回而不是等待实际处理完成。
+	 * 
+	 * @param obj	Data need to be processed<br>
+	 * 				待处理的数据。
 	 */
 	public void queue(E obj){
 		queue.add(obj);
 	}
 	
 	/**
-	 * 逐个停止所有处理线程，这个方法会等到处理线程结束才返回。
-	 * @param afterQueueEmpty  如果为true，则等队列处理空了才返回，否则就尽早返回。
+	 * Stop all the working threads one by one; 
+	 * This method will not return until all threads are stopped.<br>
+	 * 逐个停止所工作线程，这个方法会等到所有工作线程结束才返回。
+	 * 
+	 * @param afterQueueEmpty	true if working thread should keep processing until the queue is empty;<br>
+	 * 							false if working thread should stop after finished current work;<br>
+	 * 							如果为true，则工作线程要等到队列处理空了才结束；<br>
+	 * 							如果为false，则工作线程处理完当前数据就结束。
 	 */
 	public void stop(boolean afterQueueEmpty){
 		for (QueueConsumer<E> c: consumers.values()){
@@ -148,7 +208,9 @@ public class QueueConsumerGroup<E> {
 	}
 	
 	/**
-	 * 逐个等待队列处理空了之后停止所有处理线程，这个方法会等到处理线程结束才返回。
+	 * Stop working threads after the queue is empty; 
+	 * This method will not return until working thread finishes.<br>
+	 * 让所有处理线程在队列处理空了之后停止，这个方法会等到所有工作处理线程结束才返回。
 	 */
 	public void stop(){
 		stop(true);

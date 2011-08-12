@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,20 +20,29 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 
 /**
- * 从队列中取数据，进行处理。它所启动的线程是从内部的线程池取的。
- * 处理方式：一个一个取，一个一个处理。 
+ * A template for processing data one by one from a queue.<br>
+ * 一个从队列中逐个取得数据进行处理的模板，数据一个一个被取走并处理。
+ * <p>
+ * One working thread will be created for each instance of this class when necessary.
+ * <p>
+ * 本类的每个实例相应的会有一个工作线程在需要的时候被创建。
  * 
  * @author Zhengmao HU (James)
  *
- * @param <E>	队列中元素的类型
+ * @param <E>	Type of the data in the queue.<br>队列中数据的类型
  */
 abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 
 	/**
+	 * Constructor to create an instance.<br>
 	 * 创建一个实例。
-	 * @param name			名称，会被用在线程名里
-	 * @param workQueue			从这个队列取得待处理数据
-	 * @param executorService	指定从这里获得线程
+	 * 
+	 * @param name			Name of this instance, which determines the naming of working thread.<br>
+	 * 						本个实例的名称，会被用在工作线程名里。
+	 * @param workQueue			The queue that data for processing will be fetched from.<br>
+	 * 							本实例将从这个队列取得待处理数据。
+	 * @param executorService	Thread pool that working thread will be get from.<br>
+	 * 							指定让本实例从这里获得工作线程。
 	 */
 	public QueueProcessor(BlockingQueue<E> workQueue, String name, ExecutorService executorService){
 		super(workQueue, name, executorService);
@@ -41,24 +50,35 @@ abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 	
 	
 	/**
-	 * 创建一个实例，使用缺省的线程池。
-	 * @param name	名称，会被用在线程名里
-	 * @param workQueue	从这个队列取得待处理数据
+	 * Constructor to create an instance using default thread pool.<br>
+	 * 创建一个使用缺省线程池的实例。
 	 * 
+	 * @param name			Name of this instance, which determines the naming of working thread.<br>
+	 * 						本个实例的名称，会被用在工作线程名里。
+	 * @param workQueue			The queue that data for processing will be fetched from.<br>
+	 * 							本实例将从这个队列取得待处理数据。
 	 */
 	public QueueProcessor(BlockingQueue<E> workQueue, String name){
 		this(workQueue, name, defaultThreadPool);
 	}
 	
 	/**
-	 * 创建一个实例，使用缺省的线程名称和缺省的线程池。
-	 * @param workQueue	从这个队列取得待处理数据
+	 * Constructor to create an instance with default name and using default thread pool.<br>
+	 * 创建一个实例，使用缺省的名称和缺省的线程池。
+	 * 
+	 * @param workQueue			The queue that data for processing will be fetched from.<br>
+	 * 							本实例将从这个队列取得待处理数据。
 	 */
 	public QueueProcessor(BlockingQueue<E> workQueue){
 		this(workQueue, QueueConsumer.class.getSimpleName());
 	}
 	
 
+	/**
+	 * This method is overridden over parent class so that one piece of data is taken 
+	 * from the queue and {@link #process(Object)} is invoked.<br>
+	 * 这个方法被重载了，从而队列中的一份数据会被取出并调用{@link #process(Object)}方法。
+	 */
 	@Override
 	protected void consume() {
 		E obj = null;
@@ -72,7 +92,10 @@ abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 	}
 
 	/**
-	 * 具体的处理方法，一次处理一个对象。
+	 * Process one piece of data - this method should be overridden in subclass.<br>
+	 * 处理一份数据——这个方法应该在子类中被重载。
+	 * <p>
+	 * This method may be interrupted while running, so please note the following:<br>
 	 * 这个方法在运行过程中可能会遇到线程的interrupt，所以如果有以下情况要注意正确处理：
 	 * <p>
 	 *  If this thread is blocked in an invocation of the wait(), wait(long), or wait(long, int) 
@@ -88,7 +111,8 @@ abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 	 *  it will return immediately from the selection operation, possibly with a non-zero value, 
 	 *  just as if the selector's wakeup method were invoked. 
 	 *  
-	 * @param obj
+	 * @param obj	The data taken from queue, which needs to be processed<br>
+	 * 				从队列中取出的待处理数据。
 	 */
 	abstract public void process(E obj );
 

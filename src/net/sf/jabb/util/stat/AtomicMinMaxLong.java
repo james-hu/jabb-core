@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,7 +18,9 @@ package net.sf.jabb.util.stat;
 
 
 /**
- * 支持同步的设置最大、最小的操作
+ * The parent class for AtomicMinLong and AtomicMaxLong.<br>
+ * AtomicMinLong和AtomicMaxLong的公共的父类。
+ * 
  * @author Zhengmao HU (James)
  *
  */
@@ -32,24 +34,30 @@ abstract class AtomicMinMaxLong {
 	}
 	
 	/**
-	 * 获得当前值
-	 * @return
+	 * getCurrent value.<br>
+	 * 获得当前值。
+	 * 
+	 * @return Current value.
 	 */
 	public long get(){
 		return value;
 	}
 	
 	/**
-	 * 获得当前值
-	 * @return
+	 * getCurrent value.<br>
+	 * 获得当前值。
+	 * 
+	 * @return Current value.
 	 */
 	public long longValue(){
 		return value;
 	}
 	
 	/**
-	 * 获得当前值
-	 * @return
+	 * getCurrent value as int.<br>
+	 * 以int类型获得当前值。
+	 * 
+	 * @return Current value as int.
 	 */
 	public int intValue(){
 		return (int) value;
