@@ -24,26 +24,28 @@ import java.util.Map;
 
 
 /**
- * 给定一个待检查的URL字符串，以及一批开头匹配字符串，看看待检查的URL字符串以哪个匹配字符串开头。
- * 匹配时对大小写敏感。如果匹配字符串之间互相饱含，则匹配其中最长的。
- * <p>
  * Given a text string to be tested, and list of matching strings, find out which matching string the
- * text string starts with. The matching is case sensitive. If one matching string starts with another,
- * and the text string starts with them, then the longer one will be considered to be matched. 
- * 
+ * text string starts with.<br>
+ * 给定一个待检查的URL字符串，以及一批开头匹配字符串，看看待检查的URL字符串以哪个匹配字符串开头。
  * <p>
- * <ul>
- * 	<li>被匹配的URL可以包含协议头（比如“http://”），也可以不包含。</li>
- * 	<li>匹配用的字符串不应包含协议头。</li>
- * 	<li>匹配用的字符串在可开头使用通配符“*.”，表示匹配一个或多个域名段。比如，*.sina.com可以匹配
- * 		www.sina.com, news.sina.com, image.news.sina.com, h1.image.news.sina.com。</li>
- * </ul>
+ * The matching is case sensitive. If one matching string starts with another,
+ * and the text string starts with them, then the longer one will be considered to be matched. 
+ * <p>
+ * 匹配时对大小写敏感。如果匹配字符串之间互相饱含，则匹配其中最长的。
+ * 
  * <p>
  * <ul>
  * 	<li>The URL to be tested can start with protocol string (such as "http://"), or not.</li>
  * 	<li>Matching strings should not contain protocol string.</li>
  * 	<li>"*" can be used at the beginning of matching string as wide card to match one or more
  * 		domain segments. For example, *.sina.com matches
+ * 		www.sina.com, news.sina.com, image.news.sina.com, h1.image.news.sina.com。</li>
+ * </ul>
+ * <p>
+ * <ul>
+ * 	<li>被匹配的URL可以包含协议头（比如“http://”），也可以不包含。</li>
+ * 	<li>匹配用的字符串不应包含协议头。</li>
+ * 	<li>匹配用的字符串在可开头使用通配符“*.”，表示匹配一个或多个域名段。比如，*.sina.com可以匹配
  * 		www.sina.com, news.sina.com, image.news.sina.com, h1.image.news.sina.com。</li>
  * </ul>
  * 
@@ -54,15 +56,16 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 	private static final long serialVersionUID = 5100527858549916995L;
 
 	/**
+	 * Create a new instance according to matching strings and their corresponding attachment objects.<br>
 	 * 根据匹配字符串、匹配字符串所对应的附件对象，创建一个新的实例。
-	 * 在创建内部数据结构的时候，选择占用更多内存，而换取速度上的提升。
 	 * <p>
-	 * Create a new instance according to matching strings and their corresponding attachment objects.
 	 * When initializing internal data structure, choose to consume more memory for better matching speed.
+	 * <p>
+	 * 在创建内部数据结构的时候，选择占用更多内存，而换取速度上的提升。
 	 * 
 	 * @param matchingDefinitions	Key是匹配字符串，Value是附件对象。
 	 * 					当进行匹配检查的时候，返回附件对象来标识哪一个匹配字符串被匹配上了。
-	 * 					<br>
+	 * 					<p>
 	 * 					Key is the matching string, Value is its associated attachment object.
 	 * 					When the heading string is matched, the attachment object will be returned
 	 * 					as identifier.
@@ -72,13 +75,12 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 	}
 
 	/**
+	 * Create a new instance according to matching strings and their corresponding attachment objects.<br>
 	 * 根据匹配字符串、匹配字符串所对应的附件对象，创建一个新的实例。
-	 * <p>
-	 * Create a new instance according to matching strings and their corresponding attachment objects.
 	 * 
 	 * @param matchingDefinitions	Key是匹配字符串，Value是附件对象。
 	 * 					当进行匹配检查的时候，返回附件对象来标识哪一个匹配字符串被匹配上了。
-	 * 					<br>
+	 * 					<p>
 	 * 					Key is the matching string, Value is its associated attachment object.
 	 * 					When the heading string is matched, the attachment object will be returned
 	 * 					as identifier.
@@ -91,10 +93,9 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 	}
 	
 	/**
-	 * 创建一个副本，这个副本与原先的对象具有完全相同匹配方式。
-	 * <p>
 	 * Create a copy, the copy will have exactly the same matching 
-	 * definitions as the original copy.
+	 * definitions as the original copy.<br>
+	 * 创建一个副本，这个副本与原先的对象具有完全相同匹配方式。
 	 * 
 	 * @param toBeCopied	原本。<br>The original copy.
 	 */
@@ -103,14 +104,12 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 	}
 
 	/**
+	 * Normalize matching definitions according to requirements of {@link StartWithMatcher}.<br>
 	 * 根据{@link StartWithMatcher}的需要来规范化匹配条件定义。
-	 * 
-	 * <p>
-	 * Normalize matching definitions according to requirements of {@link StartWithMatcher}.
 	 * 
 	 * @param matchingDefinitions	Key是匹配字符串，Value是附件对象。
 	 * 					当进行匹配检查的时候，返回附件对象来标识哪一个匹配字符串被匹配上了。
-	 * 					<br>
+	 * 					<p>
 	 * 					Key is the matching string, Value is its associated attachment object.
 	 * 					When the matching string is matched, the attachment object will be returned
 	 * 					as identifier.
@@ -119,7 +118,7 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 	 * @param moreSpaceForSpeed  是否占用更多内存，而换取速度上的提升。
 	 * 								<br>Whether or not to consume
 	 * 								more memory for better matching speed.
-	 * @return
+	 * @return	Normalized matching definitions<br>规范化了的匹配条件定义
 	 */
 	static protected List<MatchingDefinition> normalizeMatchingDefinitions(Map<String, ? extends Object> matchingDefinitions, boolean moreSpaceForSpeed){
 		//先分成两个匹配步骤
@@ -217,9 +216,9 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 
 
 	/**
+	 * Find out which matching string matches the URL. URL can start with protocol (such as "http://"), or not.<br>
 	 * 进行匹配判断，URL可以包含协议头，也可以不包含，匹配时对大小写不敏感。
 	 * <p>
-	 * Find out which matching string matches the URL. URL can start with protocol (such as "http://"), or not.
 	 * Matching is case insensitive.
 	 * 
 	 * @param url	需要进行匹配判断的URL<br>The URL need to be tested.

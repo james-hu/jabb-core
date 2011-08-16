@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,22 +21,24 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 给定一个待检查的文本字符串，以及一批开头匹配字符串，看看待检查的文本字符串以哪个匹配字符串开头。
- * 匹配时对大小写敏感。如果匹配字符串之间互相饱含，则匹配其中最长的。
- * <p>
- * 如果需要对代表数字号码（开始号码~结束号码）的字符串进行匹配，可使用
- * {@link #expandNumberMatchingRange(String, String, Object)} 方法
- * 将号码段字符串（一个开始号码，一个结束号码）转换为号码头字符串。
- * 
- * <p>
  * Given a text string to be tested, and list of matching strings, find out which matching string the
- * text string starts with. The matching is case sensitive. If one matching string starts with another,
+ * text string starts with.<br>
+ * 给定一个待检查的文本字符串，以及一批开头匹配字符串，看看待检查的文本字符串以哪个匹配字符串开头。
+ * <p>
+ * The matching is case sensitive. 
+ * If one matching string starts with another,
  * and the text string starts with them, then the longer one will be considered to be matched. 
+ * <p>
+ * 匹配时对大小写敏感。如果匹配字符串之间互相饱含，则匹配其中最长的。
  * 
  * <p>
  * If the matching need to be checked upon number segments (start number ~ end number) represented 
  * as strings, {@link #expandNumberMatchingRange(String, String, Object)} method can be used to
  * expand number segments to heading number strings.
+ * <p>
+ * 如果需要对代表数字号码（开始号码~结束号码）的字符串进行匹配，可使用
+ * {@link #expandNumberMatchingRange(String, String, Object)} 方法
+ * 将号码段字符串（一个开始号码，一个结束号码）转换为号码头字符串。
  * 
  * @author Zhengmao HU (James)
  *
@@ -46,36 +48,35 @@ public class StringStartWithMatcher extends StartWithMatcher {
 	private static final long serialVersionUID = -2501231925022032723L;
 
 	/**
+	 * Create a new instance according to heading strings and their corresponding attachment objects.<br>
 	 * 根据开头匹配字符串、开头匹配字符串所对应的附件对象，创建一个新的实例。
-	 * 在创建内部数据结构的时候，选择占用更多内存，而换取速度上的提升。
 	 * <p>
-	 * Create a new instance according to heading strings and their corresponding attachment objects.
 	 * When initializing internal data structure, choose to consume more memory for better matching speed.
+	 * <p>
+	 * 在创建内部数据结构的时候，选择占用更多内存，而换取速度上的提升。
 	 * 
-	 * @param headingDefinitions	Key是匹配字符串，Value是附件对象。
-	 * 					当进行匹配检查的时候，返回附件对象来标识哪一个匹配字符串被匹配上了。
-	 * 					<br>
-	 * 					Key is the heading string, Value is its associated attachment object.
+	 * @param headingDefinitions	Key is the heading string, Value is its associated attachment object.
 	 * 					When the heading string is matched, the attachment object will be returned
-	 * 					as identifier.
+	 * 					as identifier.<p>
+	 * 					Key是匹配字符串，Value是附件对象。
+	 * 					当进行匹配检查的时候，返回附件对象来标识哪一个匹配字符串被匹配上了。
 	 */
 	public StringStartWithMatcher(Map<String, ? extends Object> headingDefinitions) {
 		super(normalizeMatchingDefinitions(headingDefinitions));
 	}
 
 	/**
+	 * Create a new instance according to heading strings and their corresponding attachment objects.<br>
 	 * 根据开头匹配字符串、开头匹配字符串所对应的附件对象，创建一个新的实例。
-	 * <p>
-	 * Create a new instance according to heading strings and their corresponding attachment objects.
 	 * 
 	 * @param headingDefinitions	Key是匹配字符串，Value是附件对象。
 	 * 					当进行匹配检查的时候，返回附件对象来标识哪一个匹配字符串被匹配上了。
-	 * 					<br>
+	 * 					<p>
 	 * 					Key is the heading string, Value is its associated attachment object.
 	 * 					When the heading string is matched, the attachment object will be returned
 	 * 					as identifier.
 	 * @param moreSpaceForSpeed  是否占用更多内存，而换取速度上的提升。
-	 * 								<br>Whether or not to consume
+	 * 								<p>Whether or not to consume
 	 * 								more memory for better matching speed.
 	 */
 	public StringStartWithMatcher(Map<String, ? extends Object> headingDefinitions, boolean moreSpaceForSpeed) {
@@ -83,10 +84,9 @@ public class StringStartWithMatcher extends StartWithMatcher {
 	}
 	
 	/**
-	 * 创建一个副本，这个副本与原先的对象具有完全相同匹配方式。
-	 * <p>
 	 * Create a copy, the copy will have exactly the same matching 
-	 * definitions as the original copy.
+	 * definitions as the original copy.<br>
+	 * 创建一个副本，这个副本与原先的对象具有完全相同匹配方式。
 	 * 
 	 * @param toBeCopied	原本。<br>The original copy.
 	 */
@@ -95,14 +95,12 @@ public class StringStartWithMatcher extends StartWithMatcher {
 	}
 
 	/**
+	 * Normalize matching definitions according to requirements of {@link StartWithMatcher}.<br>
 	 * 根据{@link StartWithMatcher}的需要来规范化匹配条件定义。
-	 * 
-	 * <p>
-	 * Normalize matching definitions according to requirements of {@link StartWithMatcher}.
 	 * 
 	 * @param headingDefinitions	Key是匹配字符串，Value是附件对象。
 	 * 					当进行匹配检查的时候，返回附件对象来标识哪一个匹配字符串被匹配上了。
-	 * 					<br>
+	 * 					<p>
 	 * 					Key is the heading string, Value is its associated attachment object.
 	 * 					When the heading string is matched, the attachment object will be returned
 	 * 					as identifier.
@@ -123,10 +121,9 @@ public class StringStartWithMatcher extends StartWithMatcher {
 	}
 	
 	/**
-	 * 把号码段（类似：138000~138999或138000~138029）展开成号码头（类似：138或13800,13801,13802）。
-	 * <p>
 	 * Expand number segments (such as 138000~138999 or 138000~138029) into number headings
-	 * (such as 138 or {13800,13801,13802}).
+	 * (such as 138 or {13800,13801,13802}).<br>
+	 * 把号码段（类似：138000~138999或138000~138029）展开成号码头（类似：138或13800,13801,13802）。
 	 * 
 	 * @headingDefinitions	可用来对{@link StringStartWithMatcher}进行初始化的展开后的匹配条件
 	 * 			会被放到这个Map里。
