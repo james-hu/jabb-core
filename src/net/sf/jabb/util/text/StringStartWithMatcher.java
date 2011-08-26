@@ -33,11 +33,11 @@ import java.util.Map;
  * 
  * <p>
  * If the matching need to be checked upon number segments (start number ~ end number) represented 
- * as strings, {@link #expandNumberMatchingRange(String, String, Object)} method can be used to
+ * as strings, {@link #expandNumberMatchingRange(Map, String, String, Object)} method can be used to
  * expand number segments to heading number strings.
  * <p>
  * 如果需要对代表数字号码（开始号码~结束号码）的字符串进行匹配，可使用
- * {@link #expandNumberMatchingRange(String, String, Object)} 方法
+ * {@link #expandNumberMatchingRange(Map, String, String, Object)} 方法
  * 将号码段字符串（一个开始号码，一个结束号码）转换为号码头字符串。
  * 
  * @author Zhengmao HU (James)
@@ -125,7 +125,7 @@ public class StringStartWithMatcher extends StartWithMatcher {
 	 * (such as 138 or {13800,13801,13802}).<br>
 	 * 把号码段（类似：138000~138999或138000~138029）展开成号码头（类似：138或13800,13801,13802）。
 	 * 
-	 * @headingDefinitions	可用来对{@link StringStartWithMatcher}进行初始化的展开后的匹配条件
+	 * @param headingDefinitions	可用来对{@link StringStartWithMatcher}进行初始化的展开后的匹配条件
 	 * 			会被放到这个Map里。
 	 * 			<br> Equivalent heading definitions that could be used to 
 	 * 			create instance of {@link StringStartWithMatcher} will be put into this Map.

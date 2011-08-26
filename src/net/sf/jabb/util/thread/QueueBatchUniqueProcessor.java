@@ -172,8 +172,8 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 
 	/**
 	 * This method is overridden over parent class so that a batch of data is taken 
-	 * from the queue and {@link #process(Object)} is invoked.<br>
-	 * 这个方法被重载了，从而队列中的一批数据会被取出并调用{@link #process(Object)}方法。
+	 * from the queue and {@link #process(Set)} is invoked.<br>
+	 * 这个方法被重载了，从而队列中的一批数据会被取出并调用{@link #process(Set)}方法。
 	 */
 	@Override
 	protected void consume() {
@@ -227,7 +227,7 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	 *  it will return immediately from the selection operation, possibly with a non-zero value, 
 	 *  just as if the selector's wakeup method were invoked. 
 	 *  
-	 * @param obj	The data taken from queue, which needs to be processed<br>
+	 * @param batch	The data taken from queue, which needs to be processed<br>
 	 * 				从队列中取出的待处理数据。
 	 */
 	abstract public void process(Set<E> batch);
