@@ -61,9 +61,11 @@ import dk.brics.automaton.RunAutomaton;
  * {@link UrlStartWithMatcher}。
  * 
  * <p>
- * It's underlying implementation is based on dk.brics.automaton.RunAutomaton
+ * It's underlying implementation is based on 
+ * <a href="http://www.brics.dk/automaton/">dk.brics.automaton.RunAutomaton</a>.
  * <p>
- * 底层实现基于dk.brics.automaton.RunAutomaton。
+ * 底层实现基于
+ * <a href="http://www.brics.dk/automaton/">dk.brics.automaton.RunAutomaton</a>。
  * 
  * @author Zhengmao HU (James)
  *
