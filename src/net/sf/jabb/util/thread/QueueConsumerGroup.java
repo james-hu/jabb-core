@@ -19,6 +19,7 @@ package net.sf.jabb.util.thread;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 
@@ -53,6 +54,17 @@ public class QueueConsumerGroup<E> {
 		queue = workQueue;
 		consumers = new TreeMap<String, QueueConsumer<E>>();
 	}
+	
+	/**
+	 * Internal constructor, without specifying thread pool.<br>
+	 * （内部用）创建实例，不指定统一的线程池。
+	 * 
+	 * @param workQueueSize		Size of the ArrayBlockingQueue to be created from which data for processing will be fetched.<br>
+	 * 							将被创建的ArrayBlockingQueue队列的大小，本实例将从这个队列取得待处理数据。
+	 */
+	protected QueueConsumerGroup(int workQueueSize){
+		this(new ArrayBlockingQueue<E>(workQueueSize));
+	}
 
 	/**
 	 * Internal constructor, specifying one thread pool for all QueueConsumers to use.<br>
@@ -65,6 +77,18 @@ public class QueueConsumerGroup<E> {
 	protected QueueConsumerGroup(BlockingQueue<E> workQueue, ExecutorService executorService){
 		this(workQueue);
 		threadPool = executorService;
+	}
+	
+	/**
+	 * Internal constructor, specifying one thread pool for all QueueConsumers to use.<br>
+	 * （内部用）创建实例，让所有的QueueConsumer统一使用指定的线程池。
+	 * @param workQueueSize		Size of the ArrayBlockingQueue to be created from which data for processing will be fetched.<br>
+	 * 							将被创建的ArrayBlockingQueue队列的大小，本实例将从这个队列取得待处理数据。
+	 * @param executorService	Thread pool that working threads will be get from.<br>
+	 * 							指定让本实例从这里获得所有工作线程。
+	 */
+	protected QueueConsumerGroup(int workQueueSize, ExecutorService executorService){
+		this(new ArrayBlockingQueue<E>(workQueueSize), executorService);
 	}
 	
 	/**
@@ -91,8 +115,28 @@ public class QueueConsumerGroup<E> {
 			if (threadPool != null){
 				c.setExecutorService(threadPool);
 			}
+			c.setQueue(queue);
 			consumers.put(newName, c);
 		}
+	}
+	
+	/**
+	 * Constructor, specifying one thread pool for all QueueConsumers to use.<br>
+	 * 创建实例，让所有的QueueConsumer统一使用指定的线程池。
+	 * <p>
+	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
+	 * <p>
+	 * 当被加入这个QueueConsumerGroup的时候，QueueConsumer如果有名称重复，会被自动改名。
+	 * 
+	 * @param workQueueSize		Size of the ArrayBlockingQueue to be created from which data for processing will be fetched.<br>
+	 * 							将被创建的ArrayBlockingQueue队列的大小，本实例将从这个队列取得待处理数据。
+	 * @param executorService	Thread pool that working threads will be get from.<br>
+	 * 							指定让本实例从这里获得所有工作线程。
+	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
+	 * 							会一起工作的QueueConsumer。
+	 */
+	public QueueConsumerGroup(int workQueueSize, ExecutorService executorService, QueueConsumer<E>... queueConsumers){
+		this(new ArrayBlockingQueue<E>(workQueueSize), executorService, queueConsumers);
 	}
 	
 	/**
@@ -112,6 +156,24 @@ public class QueueConsumerGroup<E> {
 		this(workQueue, null, queueConsumers);
 	}
 	
+	/**
+	 * Constructor, without specifying thread pool.<br>
+	 * 创建实例，不指定统一的线程池。
+	 * <p>
+	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
+	 * <p>
+	 * 当被加入这个QueueConsumerGroup的时候，QueueConsumer如果有名称重复，会被自动改名。
+	 * 
+	 * @param workQueueSize		Size of the ArrayBlockingQueue to be created from which data for processing will be fetched.<br>
+	 * 							将被创建的ArrayBlockingQueue队列的大小，本实例将从这个队列取得待处理数据。
+	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
+	 * 							会一起工作的QueueConsumer。
+	 */
+	public QueueConsumerGroup(int workQueueSize, QueueConsumer<E>... queueConsumers){
+		this(workQueueSize, null, queueConsumers);
+	}
+	
+
 	/**
 	 * Constructor, specifying one thread pool for all QueueConsumers to use.<br>
 	 * 创建实例，让所有的QueueConsumer统一使用指定的线程池。
@@ -136,10 +198,29 @@ public class QueueConsumerGroup<E> {
 			if (threadPool != null){
 				c.setExecutorService(threadPool);
 			}
+			c.setQueue(queue);
 			consumers.put(newName, c);
 		}
 	}
 	
+	/**
+	 * Constructor, specifying one thread pool for all QueueConsumers to use.<br>
+	 * 创建实例，让所有的QueueConsumer统一使用指定的线程池。
+	 * <p>
+	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
+	 * <p>
+	 * 当被加入这个QueueConsumerGroup的时候，QueueConsumer如果有名称重复，会被自动改名。
+	 * 
+	 * @param workQueueSize		Size of the ArrayBlockingQueue to be created from which data for processing will be fetched.<br>
+	 * 							将被创建的ArrayBlockingQueue队列的大小，本实例将从这个队列取得待处理数据。
+	 * @param executorService	Thread pool that working threads will be get from.<br>
+	 * 							指定让本实例从这里获得所有工作线程。
+	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
+	 * 							会一起工作的QueueConsumer。
+	 */
+	public QueueConsumerGroup(int workQueueSize, ExecutorService executorService, Collection<QueueConsumer<E>> queueConsumers){
+		this(new ArrayBlockingQueue<E>(workQueueSize), executorService, queueConsumers);
+	}
 	/**
 	 * Constructor, without specifying thread pool.<br>
 	 * 创建实例，不指定统一的线程池。
@@ -156,7 +237,24 @@ public class QueueConsumerGroup<E> {
 	public QueueConsumerGroup(BlockingQueue<E> workQueue, Collection<QueueConsumer<E>> queueConsumers){
 		this(workQueue, null, queueConsumers);
 	}	
-	
+
+	/**
+	 * Constructor, without specifying thread pool.<br>
+	 * 创建实例，不指定统一的线程池。
+	 * <p>
+	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
+	 * <p>
+	 * 当被加入这个QueueConsumerGroup的时候，QueueConsumer如果有名称重复，会被自动改名。
+	 * 
+	 * @param workQueueSize		Size of the ArrayBlockingQueue to be created from which data for processing will be fetched.<br>
+	 * 							将被创建的ArrayBlockingQueue队列的大小，本实例将从这个队列取得待处理数据。
+	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
+	 * 							会一起工作的QueueConsumer。
+	 */
+	public QueueConsumerGroup(int workQueueSize, Collection<QueueConsumer<E>> queueConsumers){
+		this(workQueueSize, null, queueConsumers);
+	}	
+
 	/**
 	 * Get QueueConsumer instance by its name.<br>
 	 * 按名称寻找得到QueueConsumer。
@@ -169,6 +267,26 @@ public class QueueConsumerGroup<E> {
 	}
 	
 	/**
+	 * Get the Map of all QueueConsumer.<br>
+	 * 获得含有全部QueueConsumer的Map。
+	 * 
+	 * @return	A Map, its key is the name of QueueConsumer, its value is QueueConsumer itself.<br>
+	 * 			一个Map，其key是QueueConsumer的名称，值是QueueConsumer本身。
+	 */
+	public Map<String, QueueConsumer<E>> getConsumers() {
+		return consumers;
+	}
+
+	/**
+	 * Get the work queue.<br>
+	 * 取得工作队列。
+	 * @return The work queue.<br>工作队列。
+	 */
+	public BlockingQueue<E> getQueue() {
+		return queue;
+	}
+
+	/**
 	 * Start all QueueConsumer(s) one by one.<br>
 	 * 逐个启动所有Consumer。
 	 */
@@ -179,16 +297,23 @@ public class QueueConsumerGroup<E> {
 	}
 	
 	/**
-	 * Put data into the queue for processing, 
+	 * Put data into the queue for processing, if the queue still has space
 	 * this method will return immediately 
 	 * without waiting for the data to be actually processed.<br>
-	 * 把待处理数据放入队列，这个方法会立即返回而不是等待实际处理完成。
+	 * 把待处理数据放入队列，如果队列中还有空位置则这个方法会立即返回而不是等待实际处理完成。
+	 * <p>
+	 * If the queue has no space left, this method will wait for the space then put data into the queue for processing,
+	 * after that, this method will return immediately without waiting for the data to be actually processed.
+	 * <p>
+	 * 如果队列中没有空位置了，则会等待队列空出位置来之后再把数据放进去，放完之后这个方法会立即返回而不是等待实际处理完成。
 	 * 
 	 * @param obj	Data need to be processed<br>
 	 * 				待处理的数据。
+	 * @throws InterruptedException if interrupted while waiting for space to become available.<br>
+	 * 								如果队列已满而在等待空出位置的时候发生了中断。
 	 */
-	public void queue(E obj){
-		queue.add(obj);
+	public void queue(E obj) throws InterruptedException{
+		queue.put(obj);
 	}
 	
 	/**

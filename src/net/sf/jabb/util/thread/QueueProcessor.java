@@ -48,6 +48,18 @@ abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 		super(workQueue, name, executorService);
 	}
 	
+	/**
+	 * Constructor to create an instance.<br>
+	 * 创建一个实例。
+	 * 
+	 * @param name			Name of this instance, which determines the naming of working thread.<br>
+	 * 						本个实例的名称，会被用在工作线程名里。
+	 * @param executorService	Thread pool that working thread will be get from.<br>
+	 * 							指定让本实例从这里获得工作线程。
+	 */
+	public QueueProcessor(String name, ExecutorService executorService){
+		super(null, name, executorService);
+	}
 	
 	/**
 	 * Constructor to create an instance using default thread pool.<br>
@@ -63,6 +75,17 @@ abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 	}
 	
 	/**
+	 * Constructor to create an instance using default thread pool.<br>
+	 * 创建一个使用缺省线程池的实例。
+	 * 
+	 * @param name			Name of this instance, which determines the naming of working thread.<br>
+	 * 						本个实例的名称，会被用在工作线程名里。
+	 */
+	public QueueProcessor(String name){
+		this(null, name, defaultThreadPool);
+	}
+
+	/**
 	 * Constructor to create an instance with default name and using default thread pool.<br>
 	 * 创建一个实例，使用缺省的名称和缺省的线程池。
 	 * 
@@ -73,6 +96,13 @@ abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 		this(workQueue, QueueConsumer.class.getSimpleName());
 	}
 	
+	/**
+	 * Constructor to create an instance with default name and using default thread pool.<br>
+	 * 创建一个实例，使用缺省的名称和缺省的线程池。
+	 */
+	public QueueProcessor(){
+		this(null, QueueConsumer.class.getSimpleName());
+	}
 
 	/**
 	 * This method is overridden over parent class so that one piece of data is taken 

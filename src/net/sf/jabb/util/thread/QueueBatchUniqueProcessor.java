@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -78,6 +78,26 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 		pollTimeoutUnit = timeoutUnit;
 	}
 	
+	/**
+	 * Constructor to create an instance.<br>
+	 * 创建一个实例。
+	 * 
+	 * @param name				Name of this instance, which determines the naming of working thread.<br>
+	 * 							本个实例的名称，会被用在工作线程名里。
+	 * @param executorService	Thread pool that working thread will be get from.<br>
+	 * 							指定让本实例从这里获得工作线程。
+	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
+	 * 							一批最大包含多少个数据，超过这个数量的就要留到下一批处理
+	 * @param batchWaitTimeout	Maximum time period allowed for waiting for new data from the queue 
+	 * 							before current batch is processed, 0 means no waiting.<br>
+	 * 							超过这个时段如果没有更多数据则留到下一批处理，0表示不等待。
+	 * @param timeoutUnit		Unit of the batchWaitTimeout parameter.<br>		
+	 * 							batchWaitTimeout的单位
+	 */
+	public QueueBatchUniqueProcessor(String name, ExecutorService executorService,
+			int batchSize, long batchWaitTimeout, TimeUnit timeoutUnit){
+		this(null, name, executorService, batchSize, batchWaitTimeout, timeoutUnit);
+	}
 	
 	/**
 	 * Constructor to create an instance using default thread pool.<br>
@@ -101,6 +121,25 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	}
 	
 	/**
+	 * Constructor to create an instance using default thread pool.<br>
+	 * 创建一个使用缺省线程池的实例。
+	 * 
+	 * @param name				Name of this instance, which determines the naming of working thread.<br>
+	 * 							本个实例的名称，会被用在工作线程名里。
+	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
+	 * 							一批最大包含多少个数据，超过这个数量的就要留到下一批处理
+	 * @param batchWaitTimeout	Maximum time period allowed for waiting for new data from the queue 
+	 * 							before current batch is processed, 0 means no waiting.<br>
+	 * 							超过这个时段如果没有更多数据则留到下一批处理，0表示不等待。
+	 * @param timeoutUnit		Unit of the batchWaitTimeout parameter.<br>		
+	 * 							batchWaitTimeout的单位
+	 */
+	public QueueBatchUniqueProcessor(String name,
+			int batchSize, long batchWaitTimeout, TimeUnit timeoutUnit){
+		this(null, name, defaultThreadPool, batchSize, batchWaitTimeout, timeoutUnit);
+	}
+	
+	/**
 	 * Constructor to create an instance with default name: QueueConsumer.class.getSimpleName()<br>
 	 * 创建一个实例，其名称使用缺省名称：QueueConsumer.class.getSimpleName()。
 	 * 
@@ -117,6 +156,22 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	public QueueBatchUniqueProcessor(BlockingQueue<E> workQueue,
 			int batchSize, long batchWaitTimeout, TimeUnit timeoutUnit){
 		this(workQueue, QueueConsumer.class.getSimpleName(), batchSize, batchWaitTimeout, timeoutUnit);
+	}
+	
+	/**
+	 * Constructor to create an instance with default name: QueueConsumer.class.getSimpleName()<br>
+	 * 创建一个实例，其名称使用缺省名称：QueueConsumer.class.getSimpleName()。
+	 * 
+	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
+	 * 							一批最大包含多少个数据，超过这个数量的就要留到下一批处理
+	 * @param batchWaitTimeout	Maximum time period allowed for waiting for new data from the queue 
+	 * 							before current batch is processed, 0 means no waiting.<br>
+	 * 							超过这个时段如果没有更多数据则留到下一批处理，0表示不等待。
+	 * @param timeoutUnit		Unit of the batchWaitTimeout parameter.<br>		
+	 * 							batchWaitTimeout的单位
+	 */
+	public QueueBatchUniqueProcessor(int batchSize, long batchWaitTimeout, TimeUnit timeoutUnit){
+		this(null, QueueConsumer.class.getSimpleName(), batchSize, batchWaitTimeout, timeoutUnit);
 	}
 	
 	/**
@@ -137,6 +192,20 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 		this(workQueue, name, executorService, batchSize, 0, null);
 	}
 	
+	/**
+	 * Constructor to create an instance that do not wait for new data.<br>
+	 * 创建一个不等待新数据到来的实例。
+	 * 
+	 * @param name				Name of this instance, which determines the naming of working thread.<br>
+	 * 							本个实例的名称，会被用在工作线程名里。
+	 * @param executorService	Thread pool that working thread will be get from.<br>
+	 * 							指定让本实例从这里获得工作线程。
+	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
+	 * 							一批最大包含多少个数据，超过这个数量的就要留到下一批处理
+	 */
+	public QueueBatchUniqueProcessor(String name, ExecutorService executorService, int batchSize){
+		this(null, name, executorService, batchSize, 0, null);
+	}
 	
 	/**
 	 * Constructor to create an instance that uses default thread pool and do not wait for new data.<br>
@@ -153,7 +222,20 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 			int batchSize){
 		this(workQueue, name, defaultThreadPool, batchSize, 0, null);
 	}
-	
+
+	/**
+	 * Constructor to create an instance that uses default thread pool and do not wait for new data.<br>
+	 * 创建一个使用缺省线程池且不等待新数据到来的实例。
+	 * 
+	 * @param name				Name of this instance, which determines the naming of working thread.<br>
+	 * 							本个实例的名称，会被用在工作线程名里。
+	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
+	 * 							一批最大包含多少个数据，超过这个数量的就要留到下一批处理
+	 */
+	public QueueBatchUniqueProcessor(String name, int batchSize){
+		this(null, name, defaultThreadPool, batchSize, 0, null);
+	}
+
 	/**
 	 * Constructor to create an instance that uses default name - QueueConsumer.class.getSimpleName(), 
 	 * default thread pool and do not wait for new data.<br>
@@ -169,6 +251,17 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 		this(workQueue, QueueConsumer.class.getSimpleName(), batchSize, 0, null);
 	}
 	
+	/**
+	 * Constructor to create an instance that uses default name - QueueConsumer.class.getSimpleName(), 
+	 * default thread pool and do not wait for new data.<br>
+	 * 创建一个使用缺省名称（QueueConsumer.class.getSimpleName()）、缺省线程池且不等待新数据到来的实例。
+	 * 
+	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
+	 * 							一批最大包含多少个数据，超过这个数量的就要留到下一批处理
+	 */
+	public QueueBatchUniqueProcessor(int batchSize){
+		this(null, QueueConsumer.class.getSimpleName(), batchSize, 0, null);
+	}
 
 	/**
 	 * This method is overridden over parent class so that a batch of data is taken 
