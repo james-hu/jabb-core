@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -23,9 +23,10 @@ import java.util.Set;
 import org.apache.commons.lang.mutable.MutableInt;
 
 /**
- * 经过了分析的文本。
- * <p>
- * Text that had been analyzed.
+ * Information about the text after analysis, including: original text, list of segmented words,
+ * list of segmented words after de-duplication, text length category, and result of keywords matching.<br>
+ * 对文本进行分析之后的信息，包括：原文、拆分开的词或字的清单、去重复之后的拆分开的词或字的清单、
+ * 文本长度类别、关键词字匹配结果。
  * 
  * @author Zhengmao HU (James)
  *
@@ -38,6 +39,11 @@ public class AnalyzedText {
 	protected Object lengthCategory;
 	protected Map<Object, MutableInt> matchedKeywords;
 	
+	/**
+	 * Constructor.
+	 * @param analyzer	The analyzer
+	 * @param text		The text to be analyzed
+	 */
 	public AnalyzedText(TextAnalyzer analyzer, String text){
 		this.analyzer = analyzer;
 		this.text = text;

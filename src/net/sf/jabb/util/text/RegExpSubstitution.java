@@ -29,8 +29,8 @@ import dk.brics.automaton.RunAutomaton;
 
 /**
  * The utility to substitute part of the String that matches specified regular
- * expression(s) with specified String.<br>
- * 一个工具类，对一个或多个正则表达式所匹配到的字符串中的内容作替换。
+ * expression(s) with another specified String.<br>
+ * 一个工具类，它可以对一个或多个正则表达式所匹配到的字符串中的内容作替换。
  * <p>
  * An instance of this class can be used many times for substitution for different Strings.
  * The performance overhead of each time of substitution is very small. Therefore it is very suitble

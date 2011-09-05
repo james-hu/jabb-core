@@ -37,7 +37,7 @@ import java.util.TimeZone;
  *   ...
  *   Calendar calendar = new GregorianCalendar();
  *   calendar.set(2060, 1, 31, 8, 0);  // Jan 31 2060 8AM
- *   System.out.println(DurationFormatter.formatSince(calendar.getTimeInMillis());
+ *   System.out.println(DurationFormatter.formatSince(calendar.getTimeInMillis()));
  *   
  * </pre>
  * 

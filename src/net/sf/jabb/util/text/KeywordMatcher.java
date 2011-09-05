@@ -23,9 +23,9 @@ import java.util.Map;
 import org.apache.commons.lang.mutable.MutableInt;
 
 /**
- * To check which keywords a text matches, and for each keyword how many occurrences can
- * be found.<br>
- * 检查文本当中匹配了哪些关键词，每个关键词匹配了多少次。
+ * To check which keywords a text matches, and for each matched keyword how many 
+ * occurrences are found.<br>
+ * 检查文本当中匹配了哪些关键词，以及每个被匹配到的关键词出现了多少次。
  *  
  * @author Zhengmao HU (James)
  *

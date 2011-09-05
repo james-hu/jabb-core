@@ -262,6 +262,7 @@ public abstract class QueueConsumer<E> implements Runnable{
 		if (!mode.compareAndSet(MODE_STOP_WHEN_EMPTY, MODE_STOPPED) && !mode.compareAndSet(MODE_STOP_ASAP, MODE_STOPPED)){
 			throw new IllegalStateException("Should be in state MODE_STOP_WHEN_EMPTY or MODE_STOP_ASAP, but actully not.");
 		}
+		thread.interrupt();
 	}
 	
 	/**
