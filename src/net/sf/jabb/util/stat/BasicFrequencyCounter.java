@@ -108,8 +108,8 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	
 	/**
 	 * 获取在某时刻的计数值。
-	 * @param when
-	 * @return
+	 * @param when	时刻
+	 * @return		统计数
 	 */
 	@Override
 	public long getCount(long when){
@@ -120,11 +120,11 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	
 	/**
 	 * 获得在指定时间范围内的总频次
-	 * @param fromWhen
-	 * @param toWhen
-	 * @param fromInclusive
-	 * @param toInclusive
-	 * @return
+	 * @param fromWhen		开始时间
+	 * @param toWhen		结束时间
+	 * @param fromInclusive	是否包含开始时间
+	 * @param toInclusive	是否包含结束时间
+	 * @return				统计数
 	 */
 	@Override
 	public long getCount(long fromWhen, long toWhen,  boolean fromInclusive, boolean toInclusive){
@@ -138,7 +138,7 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	
 	/**
 	 * 删除掉早于一定时间的记录
-	 * @param tillWhen
+	 * @param tillWhen	清除到哪个时间点为止
 	 */
 	@Override
 	public void purge(long tillWhen){

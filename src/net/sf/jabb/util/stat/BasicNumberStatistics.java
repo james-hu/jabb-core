@@ -60,7 +60,7 @@ public class BasicNumberStatistics {
 	
 	/**
 	 * 取得平均值。如果此前并没有提供任何值给统计用，则会抛出异常。
-	 * @return
+	 * @return	平均值
 	 */
 	public double getAvg(){
 		ensureDataExists();
@@ -69,7 +69,7 @@ public class BasicNumberStatistics {
 	
 	/**
 	 * 取得最小值。如果此前并没有提供任何值给统计用，则会抛出异常。
-	 * @return
+	 * @return	最小值
 	 */
 	public long getMin() {
 		ensureDataExists();
@@ -78,7 +78,7 @@ public class BasicNumberStatistics {
 	
 	/**
 	 * 取得最大值。如果此前并没有提供任何值给统计用，则会抛出异常。
-	 * @return
+	 * @return	最大值
 	 */
 	public long getMax() {
 		ensureDataExists();
@@ -87,7 +87,7 @@ public class BasicNumberStatistics {
 	
 	/**
 	 * 取得加总值。如果此前并没有提供任何值给统计用，则返回0。
-	 * @return
+	 * @return	累加值
 	 */
 	public long getSum() {
 		return sum.get();
@@ -95,7 +95,7 @@ public class BasicNumberStatistics {
 	
 	/**
 	 * 取得已经提供给统计的值的个数。如果此前并没有提供任何值给统计用，则返回0。
-	 * @return
+	 * @return	个数
 	 */
 	public long getCount() {
 		return count.get();

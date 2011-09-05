@@ -57,8 +57,8 @@ public class PackagedFrequencyCounter extends FrequencyCounter{
 
 	/**
 	 * 根据ID，获取ID所对应的BasicFrequencyCounter
-	 * @param id
-	 * @return
+	 * @param id	要获得的BasicFrequencyCounter的ID
+	 * @return		与指定ID所对应的BasicFrequencyCounter
 	 */
 	public BasicFrequencyCounter getCounter(Object id){
 		return counters.get(id);

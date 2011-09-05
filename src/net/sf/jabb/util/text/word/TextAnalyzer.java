@@ -56,7 +56,7 @@ public abstract class TextAnalyzer {
 	 * @param dictionaryPath	字典文件路径，如果为null，则表示使用缺省位置的字典文件
 	 * @param keywordDefinitions	关键词字的定义
 	 * @param lengthDefinitions		文本长度类别定义
-	 * @return
+	 * @return	A new instance of TextAnalyzer.<br>TextAnalyzer的一个实例。
 	 */
 	static public TextAnalyzer createInstance(int type, 
 			String dictionaryPath, 
@@ -81,7 +81,7 @@ public abstract class TextAnalyzer {
 	 * @param type				{@link #TYPE_MMSEG_SIMPLE} | {@link #TYPE_MMSEG_COMPLEX} | {@link #TYPE_MMSEG_MAXWORD} | {@link #TYPE_FAST}
 	 * @param keywordDefinitions	关键词字的定义
 	 * @param lengthDefinitions		文本长度类别定义
-	 * @return
+	 * @return	A new instance of TextAnalyzer.<br>TextAnalyzer的一个实例。
 	 */
 	static public TextAnalyzer createInstance(int type, 
 			Map<String, ? extends Object> keywordDefinitions, 

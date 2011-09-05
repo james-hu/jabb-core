@@ -48,7 +48,7 @@ public abstract class FrequencyCounter {
 	 * @param toWhen		结束时间
 	 * @param fromInclusive	是否包含开始时间
 	 * @param toInclusive	是否包含结束时间
-	 * @return
+	 * @return				统计数
 	 */
 	public abstract long getCount(long fromWhen, long toWhen, boolean fromInclusive,
 			boolean toInclusive);
@@ -92,8 +92,8 @@ public abstract class FrequencyCounter {
 	}
 
 	/**
-	 * 记录在某个时间发生了几次
-	 * @param when
+	 * 记录在某个时间发生了一次
+	 * @param when	发生的时间
 	 */
 	public void count(Date when) {
 		count(when.getTime(), 1);
@@ -101,8 +101,8 @@ public abstract class FrequencyCounter {
 
 	/**
 	 * 获得某个时间的计数
-	 * @param when
-	 * @return
+	 * @param when	时刻
+	 * @return		统计数
 	 */
 	public long getCount(Date when) {
 		return getCount(when.getTime());
@@ -110,9 +110,9 @@ public abstract class FrequencyCounter {
 
 	/**
 	 * 获得某时间区间的计数
-	 * @param fromWhen
-	 * @param toWhen
-	 * @return
+	 * @param fromWhen		开始时间
+	 * @param toWhen		结束时间
+	 * @return				统计数
 	 */
 	public long getCount(long fromWhen, long toWhen) {
 		return getCount(fromWhen, toWhen, true, false);
@@ -120,11 +120,11 @@ public abstract class FrequencyCounter {
 
 	/**
 	 * 获得某时间区间的计数
-	 * @param fromWhen
-	 * @param toWhen
-	 * @param fromInclusive
-	 * @param toInclusive
-	 * @return
+	 * @param fromWhen		开始时间
+	 * @param toWhen		结束时间
+	 * @param fromInclusive	是否包含开始时间
+	 * @param toInclusive	是否包含结束时间
+	 * @return				统计数
 	 */
 	public long getCount(Date fromWhen, Date toWhen, boolean fromInclusive, boolean toInclusive) {
 		return getCount(fromWhen.getTime(), toWhen.getTime(), true, false);
@@ -132,9 +132,9 @@ public abstract class FrequencyCounter {
 
 	/**
 	 * 获得某时间区间的计数
-	 * @param fromWhen
-	 * @param toWhen
-	 * @return
+	 * @param fromWhen		开始时间
+	 * @param toWhen		结束时间
+	 * @return				统计数
 	 */
 	public long getCount(Date fromWhen, Date toWhen) {
 		return getCount(fromWhen.getTime(), toWhen.getTime(), true, false);
@@ -145,7 +145,7 @@ public abstract class FrequencyCounter {
 	 * @param toWhen	到某个时间为止
 	 * @param period	向前推多少时间
 	 * @param unit		向前推多少时间的单位
-	 * @return
+	 * @return			统计数
 	 */
 	public long getCount(long toWhen, long period, TimeUnit unit) {
 		return getCount(toWhen - TimeUnit.MILLISECONDS.convert(period, unit), toWhen);
@@ -156,7 +156,7 @@ public abstract class FrequencyCounter {
 	 * @param toWhen	到某个时间为止
 	 * @param period	向前推多少时间
 	 * @param unit		向前推多少时间的单位
-	 * @return
+	 * @return			统计数
 	 */
 	public long getCount(Date toWhen, long period, TimeUnit unit) {
 		return getCount(toWhen.getTime(), period, unit);
@@ -166,7 +166,7 @@ public abstract class FrequencyCounter {
 	 * 获得最近一段时间的计数
 	 * @param period	向前推多少时间
 	 * @param unit		向前推多少时间的单位
-	 * @return
+	 * @return			统计数
 	 */
 	public long getCount(long period, TimeUnit unit) {
 		return getCount(System.currentTimeMillis(), period, unit);
@@ -174,7 +174,7 @@ public abstract class FrequencyCounter {
 
 	/**
 	 * 删除掉早于一定时间的记录
-	 * @param tillWhen
+	 * @param tillWhen	清除到哪个时间点为止
 	 */
 	public void purge(Date tillWhen) {
 		purge(tillWhen.getTime());
@@ -192,7 +192,7 @@ public abstract class FrequencyCounter {
 
 	/**
 	 * 删除掉早于一定时间的记录
-	 * @param base			从什么时间算起
+	 * @param baseTime		从什么时间算起
 	 * @param periodBefore	多少时间之前的要删掉
 	 * @param unit			时间单位
 	 */
