@@ -10,7 +10,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.5.jar" sourcepath="lib/src-ref/commons-lang-2.5-sources.jar"/>
 	<classpathentry kind="lib" path="lib/ci-bayes-1.0.8.jar" sourcepath="lib/src-ref/ci-bayes-1.0.8-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/javolution-5.5.1.jar" sourcepath="lib/src-ref/javolution-5.5.1-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/mmseg4j-all-1.8.2.jar" sourcepath="lib/src-ref/mmseg4j-1.8.2-src.zip"/>
 	<classpathentry kind="lib" path="lib/fscontext.jar"/>
 	<classpathentry kind="lib" path="lib/providerutil.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate3.jar" sourcepath="lib/src-ref/hibernate3-src.zip"/>
@@ -25,5 +24,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/camel-core-2.5.0.jar" sourcepath="lib/src-ref/apache-camel-core-2.5.0-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-management-1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/camel-netty-2.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/mmseg4j-core-1.8.4-with-dic.jar" sourcepath="lib/src-ref/mmseg4j-1.8.2-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

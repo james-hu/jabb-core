@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.mutable.MutableInt;
 
 /**
@@ -133,6 +134,10 @@ public class AnalyzedText {
 	 */
 	void setMatchedKeywords(Map<Object, MutableInt> matchedKeywords) {
 		this.matchedKeywords = matchedKeywords;
+	}
+	
+	public String toString(){
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

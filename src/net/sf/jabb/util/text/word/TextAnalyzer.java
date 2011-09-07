@@ -89,6 +89,17 @@ public abstract class TextAnalyzer {
 		return createInstance(type, null, keywordDefinitions, lengthDefinitions);
 	}
 
+	/**
+	 * Create an instance of TextAnalyzer.<br>
+	 * 创建一个文本分析器实例。
+	 * 
+	 * @param type				{@link #TYPE_MMSEG_SIMPLE} | {@link #TYPE_MMSEG_COMPLEX} | {@link #TYPE_MMSEG_MAXWORD} | {@link #TYPE_FAST}
+	 * @return	A new instance of TextAnalyzer.<br>TextAnalyzer的一个实例。
+	 */
+	static public TextAnalyzer createInstance(int type){
+		return createInstance(type, null, null, null);
+	}
+
 	
 	/**
 	 * Constructor that will be used internally.<br>
