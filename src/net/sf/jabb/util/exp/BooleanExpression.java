@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010-2011 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,7 +21,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 返回true或false的表达式
+ * Logical expression that results in true or false.<br>
+ * 产生true或false结果的逻辑表达式。
  * 
  * @author Zhengmao HU (James)
  *
@@ -68,7 +69,7 @@ public class BooleanExpression {
 	/**
 	 * 创建用AND连接的表达式
 	 * @param operands
-	 * @return
+	 * @return	用AND连接之后的表达式
 	 */
 	static public BooleanExpression AND(BooleanExpression... operands){
 		BooleanExpression result = new BooleanExpression(OPERATOR_AND);
@@ -79,7 +80,7 @@ public class BooleanExpression {
 	/**
 	 * 创建用AND连接的表达式
 	 * @param operands
-	 * @return
+	 * @return	用AND连接之后的表达式
 	 */
 	static public BooleanExpression AND(Collection<? extends BooleanExpression> operands){
 		BooleanExpression result = new BooleanExpression(OPERATOR_AND);
@@ -90,7 +91,7 @@ public class BooleanExpression {
 	/**
 	 * 创建用OR连接的表达式
 	 * @param operands
-	 * @return
+	 * @return	用OR连接之后的表达式
 	 */
 	static public BooleanExpression OR(BooleanExpression... operands){
 		BooleanExpression result = new BooleanExpression(OPERATOR_OR);
@@ -101,7 +102,7 @@ public class BooleanExpression {
 	/**
 	 * 创建用OR连接的表达式
 	 * @param operands
-	 * @return
+	 * @return	用OR连接之后的表达式
 	 */
 	static public BooleanExpression OR(Collection<? extends BooleanExpression> operands){
 		BooleanExpression result = new BooleanExpression(OPERATOR_OR);
@@ -110,9 +111,9 @@ public class BooleanExpression {
 	}
 	
 	/**
-	 * 创建用NOT连接的表达式
+	 * 创建用NOT修饰的表达式
 	 * @param operand
-	 * @return
+	 * @return	用NOT修饰之后的表达式
 	 */
 	static public BooleanExpression NOT(BooleanExpression operand){
 		BooleanExpression result = new BooleanExpression(OPERATOR_NOT);

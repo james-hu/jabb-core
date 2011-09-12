@@ -44,7 +44,7 @@ public class ConnectionUtility {
 	private static final Log log = LogFactory.getLog(ConnectionUtility.class);
 	public static final String ROOT_CONFIGURATION_FILE = "db-connections.properties";
 	public static final String PROVIDER_PROPERTY_NAME	= ".provider.";
-	public static final String DELIMITORS 			= PropertiesLoader.DELIMITORS;
+	public static final String DELIMITORS 			= PropertiesLoader.DELIMITERS;
 	
 	protected static Properties configuration;
 	protected static HashMap<String, DataSource> dataSources;

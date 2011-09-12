@@ -42,7 +42,7 @@ public class DbcpDataSourceProvider implements DataSourceProvider {
 
 	@Override
 	public DataSource createDataSource(String source, String config) {
-		String[] cfgs = config.split(PropertiesLoader.DELIMITORS, 2);
+		String[] cfgs = config.split(PropertiesLoader.DELIMITERS, 2);
 		if (cfgs.length != 2){
 			log.warn("Wrong configuration format for '" + source + "' : " + config);
 			return null;
