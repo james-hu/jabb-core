@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">
+  <description><![CDATA["To enable better template based page layout"]]></description>
+  <display-name>"STDR Tags"</display-name>
+  <tlib-version>1.01</tlib-version>
+  <short-name>stdr</short-name>
+  <uri>/stdr-tags</uri>
+  <tag>
+    <description><![CDATA[Include a page]]></description>
+    <name>include</name>
+    <tag-class>net.sf.jabb.stdr.jsp.IncludeTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description><![CDATA[Whether the result of this action (probably a view) should be executed/rendered]]></description>
+      <name>paramName</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <dynamic-attributes>false</dynamic-attributes>
+  </tag>
+  <tag>
+    <description><![CDATA[Assigns parameter value to a variable in a specified scope]]></description>
+    <name>set</name>
+    <tag-class>net.sf.jabb.stdr.jsp.SetTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description><![CDATA[The scope in which to assign the variable. Can be <b>application</b>, <b>session</b>, <b>request</b>, <b>page</b>, or <b>action</b>.]]></description>
+      <name>scope</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <description><![CDATA[The param name for which its value will be assigned to the variable named <i>name</i>]]></description>
+      <name>paramName</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <description><![CDATA[Name used to reference the value pushed into the Value Stack]]></description>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <dynamic-attributes>false</dynamic-attributes>
+  </tag>
+  <tag>
+    <description><![CDATA[Config a param]]></description>
+    <name>config</name>
+    <tag-class>net.sf.jabb.stdr.jsp.ConfigTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description><![CDATA[Name of the param to be configured]]></description>
+      <name>paramName</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <description><![CDATA[The value that is assigned to the param]]></description>
+      <name>value</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <description><![CDATA[Name of the param of which its value will be assigned to the param]]></description>
+      <name>valueFrom</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <dynamic-attributes>false</dynamic-attributes>
+  </tag>
+</taglib>
