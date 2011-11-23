@@ -328,6 +328,9 @@ public class QueueConsumerGroup<E> {
 	 */
 	public void stop(boolean afterQueueEmpty){
 		for (QueueConsumer<E> c: consumers.values()){
+			c.preStop(afterQueueEmpty);
+		}
+		for (QueueConsumer<E> c: consumers.values()){
 			c.stop(afterQueueEmpty);
 		}
 	}

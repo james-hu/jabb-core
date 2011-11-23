@@ -233,18 +233,33 @@ public abstract class QueueConsumer<E> implements Runnable{
 	 * 							如果为false，则工作线程处理完当前数据就结束。
 	 */
 	public void stop(boolean afterQueueEmpty){
-		if (mode.compareAndSet(MODE_RUNNING, afterQueueEmpty ? MODE_STOP_WHEN_EMPTY : MODE_STOP_ASAP)){
-			while(! mode.compareAndSet(MODE_STOPPED, MODE_INIT)){
-				thread.interrupt();
-				try {
-					// 也存在这种可能性：在while作判断的时候，queue.size()>0，
-					// 而take()的时候已经没东西取了，所以join之后也不能死等，要反复interrupt。
-					thread.join(1000);
-				} catch (InterruptedException e) {
-					// do nothing
-				}
+		preStop(afterQueueEmpty);
+		while(!(mode.compareAndSet(MODE_STOPPED, MODE_INIT) 
+				|| mode.get() == MODE_INIT)){
+			try {
+				thread.join(100);
+			} catch (InterruptedException e) {
+				// do nothing
 			}
+			preStop(afterQueueEmpty);
+			// 也存在这种可能性：在while作判断的时候，queue.size()>0，
+			// 而take()的时候已经没东西取了，所以join之后也不能死等，要反复interrupt。
+			thread.interrupt();
 		}
+	}
+	
+	/**
+	 * Ask the working thread to stop;
+	 * This method will return immediately.<br>
+	 * 要求工作线程停止；这个方法立即返回。
+	 * 
+	 * @param afterQueueEmpty	true if working thread should keep processing until the queue is empty;<br>
+	 * 							false if working thread should stop after finished current work;<br>
+	 * 							如果为true，则工作线程要等到队列处理空了才结束；<br>
+	 * 							如果为false，则工作线程处理完当前数据就结束。
+	 */
+	public void preStop(boolean afterQueueEmpty){
+		mode.compareAndSet(MODE_RUNNING, afterQueueEmpty ? MODE_STOP_WHEN_EMPTY : MODE_STOP_ASAP);
 	}
 
 	@Override
