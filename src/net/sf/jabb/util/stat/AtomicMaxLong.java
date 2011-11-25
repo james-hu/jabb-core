@@ -80,5 +80,14 @@ public class AtomicMaxLong extends AtomicMinMaxLong {
 		maxAndGet(newValue);
 	}
 
+	/**
+	 * Reset to initial status.<br>
+	 * »Ø¸´µ½³õÊ¼×´Ì¬¡£
+	 */
+	@Override
+	public void reset() {
+		value = Long.MIN_VALUE;
+	}
+
 
 }

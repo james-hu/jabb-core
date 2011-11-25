@@ -63,5 +63,10 @@ abstract class AtomicMinMaxLong {
 		return (int) value;
 	}
 	
+	/**
+	 * Reset to initial status.<br>
+	 * »Ø¸´µ½³õÊ¼×´Ì¬¡£
+	 */
+	abstract public void reset();
 
 }

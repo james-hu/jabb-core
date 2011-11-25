@@ -16,12 +16,12 @@ limitations under the License.
 
 package net.sf.jabb.util.perf;
 
-import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+import net.sf.jabb.util.col.PutOnGetMap;
 import net.sf.jabb.util.stat.BasicNumberStatistics;
 import net.sf.jabb.util.text.DurationFormatter;
 
@@ -49,8 +49,10 @@ import net.sf.jabb.util.text.DurationFormatter;
  *
  */
 public class RunTime {
+	protected static final String INDENT = "  ";
+	
 	protected String description;
-	protected List<RunTime> detail;
+	protected PutOnGetMap<String, RunTime> detail;
 	protected Object attachment;
 	
 	protected BasicNumberStatistics statistics;
@@ -68,19 +70,67 @@ public class RunTime {
 		this.description = description;
 		statistics = new BasicNumberStatistics();
 		firstRunStartTime = new AtomicLong(0);
-		detail = Collections.synchronizedList(new LinkedList<RunTime>());
+		detail = new PutOnGetMap<String, RunTime>(new LinkedHashMap<String, RunTime>(), RunTime.class);
 	}
 	
 	/**
-	 * Add one record of detail.<br>
-	 * 增加一条详细记录。
+	 * Construct an instance without description text.
+	 * 创建一个description为空的实例。
+	 */
+	public RunTime(){
+		statistics = new BasicNumberStatistics();
+		firstRunStartTime = new AtomicLong(0);
+		detail = new PutOnGetMap<String, RunTime>(new LinkedHashMap<String, RunTime>(), RunTime.class);
+	}
+	
+	/**
+	 * Reset to initial status.<br>
+	 * 回复到初始状态。
+	 */
+	public void reset(){
+		statistics.reset();
+		firstRunStartTime.set(0);
+		lastRunStartTime = 0;
+		detail.clear();
+	}
+	
+	/**
+	 * Create a detail record and add it as a child.<br>
+	 * 创建一条详细记录并加为下级。
 	 * 
 	 * @param description	Any text that describes the detailed RunTime.
 	 * @return	The detailed RunTime created.
 	 */
 	public RunTime addDetail(String description){
 		RunTime child = new RunTime(description);
-		detail.add(child);
+		detail.put(description, child);
+		return child;
+	}
+	
+	/**
+	 * Add an existing detail record as a child.<br>
+	 * 将一条已有的详细记录加为下级。
+	 * 
+	 * @param child 	an existing record that need to be added as a child.
+	 */
+	public void addDetail (RunTime child){
+		detail.put(child.description, child);
+	}
+	
+	/**
+	 * Get specified detail record, if it does not exist yet, create it first.<br>
+	 * 获得指定的详细记录，如果不存在则先创建一个。
+	 * 
+	 * @param description  description of the detail record.<br>
+	 * 						这条详细记录的description。
+	 * @return  The detail record with specified description.<br>
+	 * 			具有指定description的详细记录。
+	 */
+	public RunTime getDetail(String description){
+		RunTime child = detail.get(description);
+		if (child.getDescription() == null){
+			child.setDescription(description);
+		}
 		return child;
 	}
 	
@@ -93,6 +143,26 @@ public class RunTime {
 	public void start(){
 		firstRunStartTime.compareAndSet(0, System.currentTimeMillis());
 		lastRunStartTime = System.nanoTime();
+	}
+	
+	/**
+	 * Starts the calculation of run time of a detail record.<br>
+	 * 开始对一个详细记录的计时，它必须与结束计时在同一个线程中被调用。
+	 * @param desc	Description of the detail record.<br>
+	 * 				详细记录的Description
+	 */
+	public void startDetail(String desc){
+		this.getDetail(desc).start();
+	}
+	
+	/**
+	 * Ends the calculation of run time of a detail record.<br>
+	 * 结束对一个详细记录的计时，它必须与开始计时在同一个线程中被调用。
+	 * @param desc	Description of the detail record.<br>
+	 * 				详细记录的Description
+	 */
+	public void endDetail(String desc){
+		this.getDetail(desc).end();
 	}
 	
 	/**
@@ -117,6 +187,19 @@ public class RunTime {
 		statistics.put(nanoDurationTime);
 	}
 	
+	/**
+	 * Add one run time to a specified detail record.<br>
+	 * 给指定的详细记录增加一次RunTime。
+	 * 
+	 * @param desc	Description of the detail record.<br>
+	 * 				详细记录的Description
+	 * @param milliStartTime	Start time in milliseconds (usually from System.currentTimeMillis())
+	 * @param nanoDurationTime	Run time duration in nanoseconds.
+	 */
+	public void addDetail(String desc, long milliStartTime, long nanoDurationTime){
+		this.getDetail(desc).add(milliStartTime, nanoDurationTime);
+	}
+
 	/**
 	 * Output to a TAB separated text which can be pasted into Excel.<br>
 	 * 输出成可以贴进Excel的由TAB分隔的文本。
@@ -171,24 +254,29 @@ public class RunTime {
 			.append("Attachment").append('\n');
 		}
 		sb.append(description).append('\t');
-		sb.append(new Date(getFirstRunStartTime())).append('\t');
-		sb.append(String.format("%,d", statistics.getCount())).append('\t');
-		sb.append(' ').append(DurationFormatter.format(statistics.getSum()/1000000)).append('\t');
-		sb.append(String.format("%,d", statistics.getSum())).append('\t');
-		sb.append(' ').append(DurationFormatter.format(totalRunTime/1000000)).append('\t');
-		sb.append(String.format("%,d", totalRunTime)).append('\t');
-		sb.append(' ').append(DurationFormatter.format((long)statistics.getAvg()/1000000)).append('\t');
-		sb.append(String.format("%,d", (long)statistics.getAvg())).append('\t');
-		sb.append(' ').append(DurationFormatter.format((long)statistics.getMin()/1000000)).append('\t');
-		sb.append(String.format("%,d", (long)statistics.getMin())).append('\t');
-		sb.append(' ').append(DurationFormatter.format((long)statistics.getMax()/1000000)).append('\t');
-		sb.append(String.format("%,d", (long)statistics.getMax())).append('\t');
+		if (statistics.getCount() > 0){
+			sb.append(new Date(getFirstRunStartTime())).append('\t');
+			sb.append(String.format("%,d", statistics.getCount())).append('\t');
+			sb.append(' ').append(DurationFormatter.format(statistics.getSum()/1000000)).append('\t');
+			sb.append(String.format("%,d", statistics.getSum())).append('\t');
+			sb.append(' ').append(DurationFormatter.format(totalRunTime/1000000)).append('\t');
+			sb.append(String.format("%,d", totalRunTime)).append('\t');
+			sb.append(' ').append(DurationFormatter.format((long)statistics.getAvg()/1000000)).append('\t');
+			sb.append(String.format("%,d", (long)statistics.getAvg())).append('\t');
+			sb.append(' ').append(DurationFormatter.format((long)statistics.getMin()/1000000)).append('\t');
+			sb.append(String.format("%,d", (long)statistics.getMin())).append('\t');
+			sb.append(' ').append(DurationFormatter.format((long)statistics.getMax()/1000000)).append('\t');
+			sb.append(String.format("%,d", (long)statistics.getMax())).append('\t');
+		} else {
+			sb.append("\t\t\t\t\t\t\t\t\t\t\t\t");
+		}
 		sb.append(attachment);
 		sb.append('\n');
 		
-		for (int i = 0; i < detail.size(); i ++){
-			sb.append("    ");
-			sb.append(detail.get(i).toString(false));
+		for (RunTime child: detail.values()){
+			sb.append(INDENT);
+			sb.append(child.toString(false).replace("\n", "\n" + INDENT));
+			sb.setLength(sb.length() - INDENT.length());
 		}
 		
 		return sb.toString();
@@ -203,8 +291,8 @@ public class RunTime {
 	public long getTotalRunTime() {
 		if (detail.size() > 0){
 			long runTime = 0;
-			for (int i = 0; i < detail.size(); i ++){
-				runTime += detail.get(i).getTotalRunTime();
+			for (RunTime child: detail.values()){
+				runTime += child.getTotalRunTime();
 			}
 			return runTime;
 		}else{
@@ -231,7 +319,7 @@ public class RunTime {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public List<RunTime> getDetail() {
+	public Map<String, RunTime> getAllDetail() {
 		return detail;
 	}
 	public Object getAttachment() {

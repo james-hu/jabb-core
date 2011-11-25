@@ -100,5 +100,16 @@ public class BasicNumberStatistics {
 	public long getCount() {
 		return count.get();
 	}
+	
+	/**
+	 * Reset to initial status.<br>
+	 * »Ø¸´µ½³õÊ¼×´Ì¬¡£
+	 */
+	public void reset(){
+		min.reset();
+		max.reset();
+		sum.set(0);
+		count.set(0);
+	}
 
 }
