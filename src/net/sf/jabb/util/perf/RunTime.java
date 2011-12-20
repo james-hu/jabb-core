@@ -67,10 +67,8 @@ public class RunTime {
 	 * @param description	Any text that describes this RunTime.
 	 */
 	public RunTime(String description){
+		this();
 		this.description = description;
-		statistics = new BasicNumberStatistics();
-		firstRunStartTime = new AtomicLong(0);
-		detail = new PutOnGetMap<String, RunTime>(new LinkedHashMap<String, RunTime>(), RunTime.class);
 	}
 	
 	/**
