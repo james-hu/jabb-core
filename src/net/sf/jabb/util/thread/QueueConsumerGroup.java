@@ -189,7 +189,7 @@ public class QueueConsumerGroup<E> {
 	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
 	 * 							会一起工作的QueueConsumer。
 	 */
-	public QueueConsumerGroup(BlockingQueue<E> workQueue, ExecutorService executorService, Collection<QueueConsumer<E>> queueConsumers){
+	public QueueConsumerGroup(BlockingQueue<E> workQueue, ExecutorService executorService, Collection<? extends QueueConsumer<E>> queueConsumers){
 		this(workQueue, executorService);
 		NameDeduplicator ndd = new NameDeduplicator();
 		for (QueueConsumer<E> c: queueConsumers){
@@ -218,7 +218,7 @@ public class QueueConsumerGroup<E> {
 	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
 	 * 							会一起工作的QueueConsumer。
 	 */
-	public QueueConsumerGroup(int workQueueSize, ExecutorService executorService, Collection<QueueConsumer<E>> queueConsumers){
+	public QueueConsumerGroup(int workQueueSize, ExecutorService executorService, Collection<? extends QueueConsumer<E>> queueConsumers){
 		this(new ArrayBlockingQueue<E>(workQueueSize), executorService, queueConsumers);
 	}
 	/**
@@ -234,7 +234,7 @@ public class QueueConsumerGroup<E> {
 	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
 	 * 							会一起工作的QueueConsumer。
 	 */
-	public QueueConsumerGroup(BlockingQueue<E> workQueue, Collection<QueueConsumer<E>> queueConsumers){
+	public QueueConsumerGroup(BlockingQueue<E> workQueue, Collection<? extends QueueConsumer<E>> queueConsumers){
 		this(workQueue, null, queueConsumers);
 	}	
 
@@ -251,7 +251,7 @@ public class QueueConsumerGroup<E> {
 	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
 	 * 							会一起工作的QueueConsumer。
 	 */
-	public QueueConsumerGroup(int workQueueSize, Collection<QueueConsumer<E>> queueConsumers){
+	public QueueConsumerGroup(int workQueueSize, Collection<? extends QueueConsumer<E>> queueConsumers){
 		this(workQueueSize, null, queueConsumers);
 	}	
 
