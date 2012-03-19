@@ -181,7 +181,7 @@ public class BooleanExpression {
 	/**
 	 * 获得表达式的结果。子类可以重载这个方法。
 	 * @param context
-	 * @return
+	 * @return result
 	 */
 	public boolean evaluate(Object context){
 		switch (operatorType){

@@ -51,7 +51,7 @@ abstract public class CompareExpression extends BooleanExpression implements Com
 	/**
 	 * 子类应该实现这个方法，利用leftOperand, operation, rightOperand、以及context来
 	 * 作具体的比较运算，返回确切的结果。
-	 * @return
+	 * @return the result
 	 */
 	abstract protected boolean  compare(Object context);
 

@@ -106,7 +106,7 @@ public class ConnectionUtility {
 	/**
 	 * 从指定的逻辑数据库源中获取数据库连接。
 	 * @param source
-	 * @return
+	 * @return the database connection
 	 * @throws SQLException
 	 */
 	public static Connection getConnection(String source) throws SQLException {
@@ -120,7 +120,7 @@ public class ConnectionUtility {
 	/**
 	 * 为指定的逻辑数据库源获取实际可用的DataSource。
 	 * @param source
-	 * @return
+	 * @return the DataSource for that name
 	 */
 	public static DataSource getDataSource(String source) {
 		DataSource ds = dataSources.get(source);
@@ -141,7 +141,7 @@ public class ConnectionUtility {
 	/**
 	 * 为指定的逻辑数据库源创建DataSource。
 	 * @param source	配置信息
-	 * @return
+	 * @return the DataSource created
 	 */
 	protected static DataSource createDataSource(String source){
 		DataSource ds = null;

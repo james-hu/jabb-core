@@ -1,5 +1,5 @@
 /*
-Copyright 2011 Zhengmao HU (James)
+Copyright 2011-2012 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import java.io.Serializable;
  * @author Zhengmao HU (James)
  *
  */
+@SuppressWarnings("rawtypes")
 public class ComparableArray implements Comparable<Object>, Serializable{
 	private static final long serialVersionUID = 2978159654591722222L;
 
@@ -88,6 +89,7 @@ public class ComparableArray implements Comparable<Object>, Serializable{
 		return (int) result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public int compareTo(Object obj) {
 		if (! (obj instanceof ComparableArray)){

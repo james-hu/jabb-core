@@ -229,7 +229,7 @@ public class RunTime {
 	/**
 	 * 
 	 * @param header	true - with header row; false - without
-	 * @return
+	 * @return the string represents this object
 	 */
 	public String toString(boolean header){
 		StringBuilder sb = new StringBuilder();
@@ -284,7 +284,7 @@ public class RunTime {
 	 * Get run time which is the add-up of the run duration of all threads.<br>
 	 * 获得实际的运行时间，它是所有线程的执行时间之和。
 	 * 
-	 * @return
+	 * @return add-up of the run duration of all threads
 	 */
 	public long getTotalRunTime() {
 		if (detail.size() > 0){

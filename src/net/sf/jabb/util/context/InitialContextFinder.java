@@ -44,7 +44,7 @@ public class InitialContextFinder {
 	 * Finds the existing one.
 	 * 
 	 * @param environment
-	 * @return
+	 * @return the default context
 	 * @throws NamingException
 	 */
 	public static InitialContext findDefault(Hashtable<?,?> environment) throws NamingException{
@@ -56,7 +56,7 @@ public class InitialContextFinder {
 	 * <p>
 	 * Finds the existing one.
 	 * 
-	 * @return
+	 * @return the default context
 	 * @throws NamingException
 	 */
 	public static InitialContext findDefault() throws NamingException{
@@ -69,7 +69,7 @@ public class InitialContextFinder {
 	 * Finds the existing one or create a new one.
 	 * 
 	 * @param environment
-	 * @return
+	 * @return the context found or created
 	 * @throws NamingException
 	 */
 	public static InitialContext findOrCreate(Hashtable<?,?> environment) throws NamingException{
@@ -126,7 +126,7 @@ public class InitialContextFinder {
 	 * <p>
 	 * Finds the existing one or create a new one.
 	 * 
-	 * @return
+	 * @return the context found or created
 	 * @throws NamingException
 	 */
 	public static InitialContext findOrCreate() throws NamingException{
