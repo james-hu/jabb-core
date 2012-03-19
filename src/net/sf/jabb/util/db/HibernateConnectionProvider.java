@@ -1,5 +1,5 @@
 /*
-Copyright 2010 Zhengmao HU (James)
+Copyright 2010,2012 James Hu
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -27,24 +27,18 @@ import org.hibernate.HibernateException;
  * @author Zhengmao HU (James)
  */
 public class HibernateConnectionProvider implements
-		org.hibernate.connection.ConnectionProvider {
+	org.hibernate.service.jdbc.connections.spi.ConnectionProvider {
 
 	@Override
-	public void close() throws HibernateException {
+	public boolean isUnwrappableAs(Class unwrapType) {
 		// TODO Auto-generated method stub
-
+		return false;
 	}
 
 	@Override
-	public void closeConnection(Connection conn) throws SQLException {
-		ConnectionUtility.closeConnection(conn);
-
-	}
-
-	@Override
-	public void configure(Properties arg0) throws HibernateException {
+	public <T> T unwrap(Class<T> unwrapType) {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 
 	@Override
@@ -54,9 +48,17 @@ public class HibernateConnectionProvider implements
 	}
 
 	@Override
+	public void closeConnection(Connection conn) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public boolean supportsAggressiveRelease() {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
 
 }
