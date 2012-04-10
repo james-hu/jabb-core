@@ -18,6 +18,8 @@ package net.sf.jabb.util.web;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.jabb.util.bean.StringKeyValueBean;
+
 /**
  * Configuration information of a web application
  * @author James Hu
@@ -25,7 +27,7 @@ import java.util.Map;
  */
 public class WebApplicationConfiguration {
 	protected List<String> mainMenuItems;
-	protected Map<String, String> supportedLocales;
+	protected List<StringKeyValueBean> supportedLocales;
 	protected String defaultLocale;
 	protected String jQueryTheme;
 
@@ -37,11 +39,11 @@ public class WebApplicationConfiguration {
 		this.mainMenuItems = mainMenuItems;
 	}
 
-	public Map<String, String> getSupportedLocales() {
+	public List<StringKeyValueBean> getSupportedLocales() {
 		return supportedLocales;
 	}
 
-	public void setSupportedLocales(Map<String, String> supportedLocales) {
+	public void setSupportedLocales(List<StringKeyValueBean> supportedLocales) {
 		this.supportedLocales = supportedLocales;
 	}
 
