@@ -35,22 +35,20 @@ import java.util.SortedMap;
  * <p>
  * 注意只有这几个方法是同步的：get/put/putAll/remove/clear。
  * <p>
- * Although PutOnGetMap implemented SortedMap and NavigableMap, 
+ * Although PutIfAbsentMap implemented SortedMap and NavigableMap, 
  * if the encapsulated Map does not support those interfaces, 
  * then if any method of those interfaces was called, Exception will be thrown.
  * <p>
- * 虽然PutOnGetMap实现了SortedMap与NavigableMap接口，
+ * 虽然PutIfAbsentMap实现了SortedMap与NavigableMap接口，
  * 但是如果被封装的Map本身不支持这些接口，
  * 那么当运行时调用这些接口所特有的方法的时候，会抛出Exception。
  * 
  * @author Zhengmao HU (James)
- * 
- * @deprecated This class was renamed as PutIfAbsentMap. Please use PutIfAbsentMap instead.
  *
  * @param <K>	Type of the key of the Map entries<br>Map的key的类型
  * @param <V>	Type of the value of the Map entries<br>Map的value的类型
  */
-public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMap<K,V>{
+public class PutIfAbsentMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMap<K,V>{
 	protected Map<K, V> map;
 	protected Class<?> valueClass;
 	protected Constructor<?> valueConstructor;
@@ -66,7 +64,7 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	 * @param valueClazz	Class of the value of the Map entry.<br>
 	 * 						Map的value的类。
 	 */
-	public PutOnGetMap(Map<K, V> originalMap, Class<? extends V> valueClazz){
+	public PutIfAbsentMap(Map<K, V> originalMap, Class<? extends V> valueClazz){
 		map = originalMap;
 		valueClass = valueClazz;
 	}
@@ -81,7 +79,7 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	 * 						Map的value的类。
 	 */
 	@SuppressWarnings("unchecked")
-	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz){
+	public PutIfAbsentMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz){
 		Map<K, V> originalMap = null;
 		try {
 			originalMap = mapClazz.newInstance();
@@ -106,7 +104,7 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	 * 						value的类的构造方法所需要的参数。
 	 */
 	@SuppressWarnings("unchecked")
-	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object valueParam){
+	public PutIfAbsentMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object valueParam){
 		Map<K, V> originalMap = null;
 		try {
 			originalMap = mapClazz.newInstance();
@@ -139,7 +137,7 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	 * 						value的类的构造方法所需要的参数。
 	 */
 	@SuppressWarnings("unchecked")
-	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object... valueParams){
+	public PutIfAbsentMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object... valueParams){
 		Map<K, V> originalMap = null;
 		try {
 			originalMap = mapClazz.newInstance();
