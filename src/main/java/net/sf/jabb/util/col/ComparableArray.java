@@ -90,7 +90,6 @@ public class ComparableArray implements Comparable<Object>, Serializable{
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public int compareTo(Object obj) {
 		if (! (obj instanceof ComparableArray)){
 			throw new IllegalArgumentException("Only comparing to ComparableArray is supported.");

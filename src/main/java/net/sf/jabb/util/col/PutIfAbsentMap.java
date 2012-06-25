@@ -187,7 +187,6 @@ public class PutIfAbsentMap<K, V> implements Map<K, V>, SortedMap<K,V>, Navigabl
 	 * @param key	The key object that will be used to look for the value object.
 	 */
 	@SuppressWarnings("unchecked")
-	@Override
 	public V get(Object key) {
 		V result;
 		result = map.get(key);
@@ -213,7 +212,6 @@ public class PutIfAbsentMap<K, V> implements Map<K, V>, SortedMap<K,V>, Navigabl
 	}
 
 
-	@Override
 	public V put(K key, V value) {
 		V result;
 		synchronized(structureLock){
@@ -222,14 +220,12 @@ public class PutIfAbsentMap<K, V> implements Map<K, V>, SortedMap<K,V>, Navigabl
 		return result;
 	}
 
-	@Override
 	public void putAll(Map<? extends K, ? extends V> anotherMap) {
 		synchronized(structureLock){
 			map.putAll(anotherMap);
 		}
 	}
 
-	@Override
 	public V remove(Object obj) {
 		V result;
 		synchronized(structureLock){
@@ -238,182 +234,150 @@ public class PutIfAbsentMap<K, V> implements Map<K, V>, SortedMap<K,V>, Navigabl
 		return result;
 	}
 
-	@Override
 	public void clear() {
 		synchronized(structureLock){
 			map.clear();
 		}
 	}
 
-	@Override
 	public boolean containsKey(Object obj) {
 		return map.containsKey(obj);
 	}
 
-	@Override
 	public boolean containsValue(Object obj) {
 		return map.containsValue(obj);
 	}
 
-	@Override
 	public Set<java.util.Map.Entry<K, V>> entrySet() {
 		return map.entrySet();
 	}
 
-	@Override
 	public boolean isEmpty() {
 		return map.isEmpty();
 	}
 
-	@Override
 	public Set<K> keySet() {
 		return map.keySet();
 	}
 
-	@Override
 	public int size() {
 		return map.size();
 	}
 
-	@Override
 	public Collection<V> values() {
 		return map.values();
 	}
 
-	@Override
 	public Comparator<? super K> comparator() {
 		return ((SortedMap<K, V>)map).comparator();
 	}
 
-	@Override
 	public K firstKey() {
 		return ((SortedMap<K, V>)map).firstKey();
 	}
 
-	@Override
 	public SortedMap<K, V> headMap(K key) {
 		return ((SortedMap<K, V>)map).headMap(key);
 	}
 
-	@Override
 	public K lastKey() {
 		return ((SortedMap<K, V>)map).lastKey();
 	}
 
-	@Override
 	public SortedMap<K, V> subMap(K from, K to) {
 		return ((SortedMap<K, V>)map).subMap(from, to);
 	}
 
-	@Override
 	public SortedMap<K, V> tailMap(K key) {
 		return ((SortedMap<K, V>)map).tailMap(key);
 	}
 
 
-	@Override
 	public java.util.Map.Entry<K, V> ceilingEntry(K key) {
 		return ((NavigableMap<K, V>)map).ceilingEntry(key);
 	}
 
 
-	@Override
 	public K ceilingKey(K key) {
 		return ((NavigableMap<K, V>)map).ceilingKey(key);
 	}
 
 
-	@Override
 	public NavigableSet<K> descendingKeySet() {
 		return ((NavigableMap<K, V>)map).descendingKeySet();
 	}
 
 
-	@Override
 	public NavigableMap<K, V> descendingMap() {
 		return ((NavigableMap<K, V>)map).descendingMap();
 	}
 
 
-	@Override
 	public java.util.Map.Entry<K, V> firstEntry() {
 		return ((NavigableMap<K, V>)map).firstEntry();
 	}
 
 
-	@Override
 	public java.util.Map.Entry<K, V> floorEntry(K key) {
 		return ((NavigableMap<K, V>)map).floorEntry(key);
 	}
 
 
-	@Override
 	public K floorKey(K key) {
 		return ((NavigableMap<K, V>)map).floorKey(key);
 	}
 
 
-	@Override
 	public NavigableMap<K, V> headMap(K arg0, boolean arg1) {
 		return ((NavigableMap<K, V>)map).headMap(arg0, arg1);
 	}
 
 
-	@Override
 	public java.util.Map.Entry<K, V> higherEntry(K arg0) {
 		return ((NavigableMap<K, V>)map).higherEntry(arg0);
 	}
 
 
-	@Override
 	public K higherKey(K arg0) {
 		return ((NavigableMap<K, V>)map).higherKey(arg0);
 	}
 
 
-	@Override
 	public java.util.Map.Entry<K, V> lastEntry() {
 		return ((NavigableMap<K, V>)map).lastEntry();
 	}
 
 
-	@Override
 	public java.util.Map.Entry<K, V> lowerEntry(K arg0) {
 		return ((NavigableMap<K, V>)map).lowerEntry(arg0);
 	}
 
 
-	@Override
 	public K lowerKey(K arg0) {
 		return ((NavigableMap<K, V>)map).lowerKey(arg0);
 	}
 
 
-	@Override
 	public NavigableSet<K> navigableKeySet() {
 		return ((NavigableMap<K, V>)map).navigableKeySet();
 	}
 
 
-	@Override
 	public java.util.Map.Entry<K, V> pollFirstEntry() {
 		return ((NavigableMap<K, V>)map).pollFirstEntry();
 	}
 
 
-	@Override
 	public java.util.Map.Entry<K, V> pollLastEntry() {
 		return ((NavigableMap<K, V>)map).pollLastEntry();
 	}
 
 
-	@Override
 	public NavigableMap<K, V> subMap(K arg0, boolean arg1, K arg2, boolean arg3) {
 		return ((NavigableMap<K, V>)map).subMap(arg0, arg1, arg2, arg3);
 	}
 
 
-	@Override
 	public NavigableMap<K, V> tailMap(K arg0, boolean arg1) {
 		return ((NavigableMap<K, V>)map).tailMap(arg0, arg1);
 	}

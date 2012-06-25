@@ -32,7 +32,6 @@ import org.apache.commons.logging.LogFactory;
 public class TryDataSourceProvider implements DataSourceProvider {
 	private static final Log log = LogFactory.getLog(TryDataSourceProvider.class);
 
-	@Override
 	public DataSource createDataSource(String source, String config) {
 		for (String subSource: config.split(ConnectionUtility.DELIMITORS)){
 			DataSource ds = ConnectionUtility.getDataSource(subSource);

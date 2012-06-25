@@ -36,7 +36,6 @@ public class DirectDataSourceProvider implements DataSourceProvider {
 	private static final Log log = LogFactory.getLog(DirectDataSourceProvider.class);
 	protected static PropertiesLoader propLoader = new PropertiesLoader();
 
-	@Override
 	public DataSource createDataSource(String source, String config) {
 		DataSource ds = null;
 		try {

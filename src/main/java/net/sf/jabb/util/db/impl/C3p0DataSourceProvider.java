@@ -38,7 +38,6 @@ public class C3p0DataSourceProvider implements DataSourceProvider {
 	private static final Log log = LogFactory.getLog(C3p0DataSourceProvider.class);
 	protected static PropertiesLoader propLoader = new PropertiesLoader();
 
-	@Override
 	public DataSource createDataSource(String source, String config) {
 		String[] cfgs = config.split(PropertiesLoader.DELIMITERS, 2);
 		if (cfgs.length < 1 || cfgs.length > 2){

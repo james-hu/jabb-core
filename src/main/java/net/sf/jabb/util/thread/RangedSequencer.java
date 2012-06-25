@@ -16,6 +16,8 @@ limitations under the License.
 
 package net.sf.jabb.util.thread;
 
+import java.math.BigDecimal;
+
 /**
  * It generates sequence of incremental numbers, within a range that can be specified, 
  * without repeating or missing of any number.<br>
@@ -49,8 +51,8 @@ public class RangedSequencer extends Sequencer {
 		if (min >= max){
 			throw new IllegalArgumentException("Maximun value (actual: " + max + ") must be greater than minimal value (actual: " + min + ")");
 		}
-		if ((double)max - min > Long.MAX_VALUE){
-			throw new IllegalArgumentException("Range should not be larger than Long.MAX_VALUE (" + Long.MAX_VALUE + ")");
+		if (new BigDecimal(max).add(new BigDecimal(min).negate()).add(new BigDecimal(Long.MAX_VALUE-1).negate()).signum() > 0){
+			throw new IllegalArgumentException("Range should not be larger than Long.MAX_VALUE-1 (" + (Long.MAX_VALUE-1) + ")");
 		}
 		offset = min;
 		range = min - max - 1;   // negative value
@@ -70,21 +72,21 @@ public class RangedSequencer extends Sequencer {
 	}	
 	
 	/**
-	 * Constructs an instance with a range of [0, Long.MAX_VALUE] and specified initial number.<br>
-	 * 创建一个实例，指定初始值。最小值是0，最大值是Long.MAX_VALUE。
+	 * Constructs an instance with a range of [0, Long.MAX_VALUE-1] and specified initial number.<br>
+	 * 创建一个实例，指定初始值。最小值是0，最大值是Long.MAX_VALU-1。
 	 * 
 	 * @param init	初始值<br>the first number that will be returned by next()
 	 */
 	public RangedSequencer(long init){
-		this(0, Long.MAX_VALUE, init);
+		this(0, Long.MAX_VALUE-1, init);
 	}	
 
 	/**
-	 * Constructs an instance with a range of [0, Long.MAX_VALUE] and 0 as the initial number.<br>
-	 * 创建一个实例，指定初始值和最小值都是0，最大值是Long.MAX_VALUE。
+	 * Constructs an instance with a range of [0, Long.MAX_VALUE-1] and 0 as the initial number.<br>
+	 * 创建一个实例，指定初始值和最小值都是0，最大值是Long.MAX_VALUE-1。
 	 */
 	public RangedSequencer(){
-		this(0, Long.MAX_VALUE, 0);
+		this(0, Long.MAX_VALUE-1, 0);
 	}
 
 	/**

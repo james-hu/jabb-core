@@ -49,37 +49,30 @@ public class DriverManagerDataSource implements DataSource {
 		this.info = null;
 	}
 
-	@Override
 	public PrintWriter getLogWriter() throws SQLException {
 		return DriverManager.getLogWriter();
 	}
 
-	@Override
 	public void setLogWriter(PrintWriter out) throws SQLException {
 		DriverManager.setLogWriter(out);
 	}
 
-	@Override
 	public void setLoginTimeout(int seconds) throws SQLException {
 		DriverManager.setLoginTimeout(seconds);
 	}
 
-	@Override
 	public int getLoginTimeout() throws SQLException {
 		return DriverManager.getLoginTimeout();
 	}
 
-	@Override
 	public <T> T unwrap(Class<T> iface) throws SQLException {
 		throw new SQLException("Not supported: unwrap()");
 	}
 
-	@Override
 	public boolean isWrapperFor(Class<?> iface) throws SQLException {
 		return false;
 	}
 
-	@Override
 	public Connection getConnection() throws SQLException {
 		if (info != null){
 			return DriverManager.getConnection(url, info);
@@ -88,7 +81,6 @@ public class DriverManagerDataSource implements DataSource {
 		}
 	}
 
-	@Override
 	public Connection getConnection(String username, String password)
 			throws SQLException {
 		if (info != null){

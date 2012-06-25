@@ -2,14 +2,13 @@ package net.sf.jabb.netty.test;
 
 import net.sf.jabb.netty.XmlDecoder;
 
-import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.util.CharsetUtil;
 
 public class XmlDecoderDemo {
-	ChannelPipeline pipeline = null;
+	ChannelPipeline pipeline;
 
 	/**
 	 * @param args

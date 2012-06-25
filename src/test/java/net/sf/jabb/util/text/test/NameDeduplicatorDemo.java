@@ -31,7 +31,6 @@ public class NameDeduplicatorDemo {
 		for (int i = 0; i < 10; i ++){
 			new Thread(new Runnable(){
 
-				@Override
 				public void run() {
 					while (!stopNow){
 						System.out.println(nd.deduplicate("The Name"));

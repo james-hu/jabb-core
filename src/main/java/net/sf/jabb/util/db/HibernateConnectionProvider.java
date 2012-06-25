@@ -18,9 +18,6 @@ package net.sf.jabb.util.db;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
-
-import org.hibernate.HibernateException;
 
 /**
  * 
@@ -29,31 +26,28 @@ import org.hibernate.HibernateException;
 public class HibernateConnectionProvider implements
 	org.hibernate.service.jdbc.connections.spi.ConnectionProvider {
 
-	@Override
+	private static final long serialVersionUID = 2089779204517906906L;
+
 	public boolean isUnwrappableAs(Class unwrapType) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public <T> T unwrap(Class<T> unwrapType) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public Connection getConnection() throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public void closeConnection(Connection conn) throws SQLException {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public boolean supportsAggressiveRelease() {
 		// TODO Auto-generated method stub
 		return false;

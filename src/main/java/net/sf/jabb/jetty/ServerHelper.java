@@ -56,7 +56,6 @@ public class ServerHelper implements Lifecycle {
 	/**
 	 * @see org.springframework.context.Lifecycle#isRunning()
 	 */
-	@Override
 	public boolean isRunning() {
 		return server.isRunning();
 	}
@@ -65,7 +64,6 @@ public class ServerHelper implements Lifecycle {
 	 * RuntimeException will be thrown if the server failed to start.
 	 * @see org.springframework.context.Lifecycle#start()
 	 */
-	@Override
 	public void start(){
 		try {
 			server.start();
@@ -79,7 +77,6 @@ public class ServerHelper implements Lifecycle {
 	 * RuntimeException will be thrown if the server failed to stop.
 	 * @see org.springframework.context.Lifecycle#stop()
 	 */
-	@Override
 	public void stop() {
 		try {
 			server.stop();

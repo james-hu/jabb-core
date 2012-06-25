@@ -47,7 +47,6 @@ public class AnalyzedTextWordLister implements WordLister {
 	 * @see com.enigmastation.extractors.WordLister#addWords(java.lang.Object, java.util.Collection)
 	 */
 	@SuppressWarnings("unchecked")
-	@Override
 	public void addWords(Object document, Collection<String> collection) {
 		if (document instanceof Collection<?>){
 			collection.addAll((Collection<String>)document);
@@ -61,7 +60,6 @@ public class AnalyzedTextWordLister implements WordLister {
 	/* (non-Javadoc)
 	 * @see com.enigmastation.extractors.WordLister#getUniqueWords(java.lang.Object)
 	 */
-	@Override
 	public Set<String> getUniqueWords(Object document) {
         Set<String> features = new FastSet<String>();
 		if (document instanceof AnalyzedText){

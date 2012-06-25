@@ -90,7 +90,6 @@ public class CamelContextController implements Runnable{
 				sb.append(autoDisconnect? "true" : "false");
 				from(sb.toString()).process(
 						new Processor(){
-							@Override
 							public void process(Exchange exchange)
 									throws Exception {
 								exchange.getOut().setBody(
@@ -164,7 +163,6 @@ public class CamelContextController implements Runnable{
 	 * Starts the command processing loop, exit until "exit" command was received.<br>
 	 * 循环处理控制命令，直到收到“exit”命令。
 	 */
-	@Override
 	public void run(){
 		while(true){
 			String cmd = null;

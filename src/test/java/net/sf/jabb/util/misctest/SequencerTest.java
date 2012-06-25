@@ -28,25 +28,25 @@ public class SequencerTest {
 
 	@Test
 	public void range(){
-		long min=100;
-		long max=105;
-		long init=100;
+		range(100, 105, 100);
+		range(100,105, 102);
+		range(0, 100, 0);
+		range(0, 100, 1);
+		
+		range(0, Long.MAX_VALUE - 1, 0);
+		range(0, Long.MAX_VALUE - 1, Long.MAX_VALUE - 2);
+		range(0, Long.MAX_VALUE - 10, Long.MAX_VALUE - 12);
+		
+		range(-500, -490, -499);
+	}
+	
+	protected void range(long min, long max, long init){
 		System.out.println("======= " + min + ", " + max + ", " + init);
 		RangedSequencer s = new RangedSequencer(min, max, init);
 		for (int i=0; i <20; i ++){
 			System.out.println(s.next());
 		}
-
-		System.out.println("======= ");
-		s = new RangedSequencer();
-		for (int i=0; i <20; i ++){
-			System.out.println(s.next());
-		}
-		System.out.println("======= ");
-		s = new RangedSequencer(Long.MAX_VALUE-2);
-		for (int i=0; i <20; i ++){
-			System.out.println(s.next());
-		}
+		
 	}
 	
 }

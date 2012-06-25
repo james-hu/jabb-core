@@ -106,7 +106,6 @@ public class CombinedRegistry implements Registry {
 	 * 
 	 * @see org.apache.camel.spi.Registry#lookup(java.lang.String)
 	 */
-	@Override
 	public Object lookup(String name) {
 		Object result = null;
 		for (Registry reg: registryList){
@@ -128,7 +127,6 @@ public class CombinedRegistry implements Registry {
 	 * 
 	 * @see org.apache.camel.spi.Registry#lookup(java.lang.String, java.lang.Class)
 	 */
-	@Override
 	public <T> T lookup(String name, Class<T> type) {
 		T result = null;
 		for (Registry reg: registryList){
@@ -150,7 +148,6 @@ public class CombinedRegistry implements Registry {
 	 * 
 	 * @see org.apache.camel.spi.Registry#lookupByType(java.lang.Class)
 	 */
-	@Override
 	public <T> Map<String, T> lookupByType(Class<T> type) {
 		Map<String, T> result = new HashMap<String, T>();
 		for (Registry reg: registryList){

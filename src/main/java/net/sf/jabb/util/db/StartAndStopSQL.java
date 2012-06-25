@@ -58,7 +58,6 @@ public class StartAndStopSQL implements Lifecycle {
 	/* (non-Javadoc)
 	 * @see org.springframework.context.Lifecycle#isRunning()
 	 */
-	@Override
 	public boolean isRunning() {
 		return isRunning;
 	}
@@ -66,7 +65,6 @@ public class StartAndStopSQL implements Lifecycle {
 	/* (non-Javadoc)
 	 * @see org.springframework.context.Lifecycle#start()
 	 */
-	@Override
 	public void start() {
 		if (startSQL != null && startSQL.length() > 0){
 			executeSQL(startSQL);
@@ -77,7 +75,6 @@ public class StartAndStopSQL implements Lifecycle {
 	/* (non-Javadoc)
 	 * @see org.springframework.context.Lifecycle#stop()
 	 */
-	@Override
 	public void stop() {
 		if (stopSQL != null && stopSQL.length() > 0){
 			executeSQL(stopSQL);

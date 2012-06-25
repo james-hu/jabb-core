@@ -262,7 +262,6 @@ public abstract class QueueConsumer<E> implements Runnable{
 		mode.compareAndSet(MODE_RUNNING, afterQueueEmpty ? MODE_STOP_WHEN_EMPTY : MODE_STOP_ASAP);
 	}
 
-	@Override
 	public void run() {
 		thread = Thread.currentThread();	// run from thread in executor
 		thread.setName(name);

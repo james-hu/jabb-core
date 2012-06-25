@@ -109,7 +109,6 @@ public class LongArray implements Comparable<Object>, Serializable{
 	 * @param obj	The object to be compared with
 	 * @return	-1 if little than obj, 0 if equals, 1 if greater than.
 	 */
-	@Override
 	public int compareTo(Object obj) {
 		if (! (obj instanceof LongArray)){
 			throw new IllegalArgumentException("Only comparing to LongArray is supported.");

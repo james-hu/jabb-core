@@ -33,7 +33,6 @@ import net.sf.jabb.util.db.DataSourceProvider;
 public class JndiDataSourceProvider implements DataSourceProvider {
 	private static final Log log = LogFactory.getLog(JndiDataSourceProvider.class);
 
-	@Override
 	public DataSource createDataSource(String source, String config) {
 		DataSource ds = null;
 		try {

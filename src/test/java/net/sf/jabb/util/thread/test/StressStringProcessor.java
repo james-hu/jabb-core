@@ -2,7 +2,6 @@ package net.sf.jabb.util.thread.test;
 
 import java.util.concurrent.BlockingQueue;
 
-import net.sf.jabb.util.thread.QueueConsumer;
 import net.sf.jabb.util.thread.QueueProcessor;
 
 public class StressStringProcessor extends QueueProcessor<String> {

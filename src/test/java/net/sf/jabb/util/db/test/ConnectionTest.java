@@ -1,6 +1,8 @@
 package net.sf.jabb.util.db.test;
 
 
+import static org.junit.Assert.*;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -31,57 +33,101 @@ public class ConnectionTest {
 	}
 	
 	@Test
-	public void none() throws SQLException{
-		Connection conn = ConnectionUtility.getConnection("myTry");
-		ConnectionUtility.closeConnection(conn);
+	public void none(){
+		try{
+			Connection conn = ConnectionUtility.getConnection("myTry");
+			ConnectionUtility.closeConnection(conn);
+		}catch(SQLException e){
+			fail(e.getMessage());
+		}
 	}
 	
 	@Test
-	public void simple() throws SQLException{
-		Connection conn = ConnectionUtility.getConnection("simple");
-		ConnectionUtility.closeConnection(conn);
+	public void simple(){
+		Connection conn;
+		try {
+			conn = ConnectionUtility.getConnection("simple");
+			ConnectionUtility.closeConnection(conn);
+		} catch (SQLException e) {
+			fail(e.getMessage());
+		}
 	}
 	
 	@Test
-	public void oracle_cached() throws SQLException{
-		Connection conn = ConnectionUtility.getConnection("oracle_cached");
-		ConnectionUtility.closeConnection(conn);
+	public void oracle_cached(){
+		Connection conn;
+		try {
+			conn = ConnectionUtility.getConnection("oracle_cached");
+			ConnectionUtility.closeConnection(conn);
+		} catch (SQLException e) {
+			fail(e.getMessage());
+		}
 	}
 	
 	@Test
-	public void c3p0_basic() throws SQLException{
-		Connection conn = ConnectionUtility.getConnection("c3p0_basic");
-		ConnectionUtility.closeConnection(conn);
+	public void c3p0_basic(){
+		Connection conn;
+		try {
+			conn = ConnectionUtility.getConnection("c3p0_basic");
+			ConnectionUtility.closeConnection(conn);
+		} catch (SQLException e) {
+			fail(e.getMessage());
+		}
 	}
 	
 	@Test
-	public void c3p0_nopool() throws SQLException{
-		Connection conn = ConnectionUtility.getConnection("c3p0_nopool");
-		ConnectionUtility.closeConnection(conn);
+	public void c3p0_nopool(){
+		Connection conn;
+		try {
+			conn = ConnectionUtility.getConnection("c3p0_nopool");
+			ConnectionUtility.closeConnection(conn);
+		} catch (SQLException e) {
+			fail(e.getMessage());
+		}
 	}
 
 	@Test
-	public void dbcp_basic() throws SQLException{
-		Connection conn = ConnectionUtility.getConnection("dbcp_basic");
-		ConnectionUtility.closeConnection(conn);
+	public void dbcp_basic(){
+		Connection conn;
+		try {
+			conn = ConnectionUtility.getConnection("dbcp_basic");
+			ConnectionUtility.closeConnection(conn);
+		} catch (SQLException e) {
+			fail(e.getMessage());
+		}
 	}
 
 	@Test
-	public void proxool_basic() throws SQLException{
-		Connection conn = ConnectionUtility.getConnection("proxool_basic");
-		ConnectionUtility.closeConnection(conn);
+	public void proxool_basic(){
+		Connection conn;
+		try {
+			conn = ConnectionUtility.getConnection("proxool_basic");
+			ConnectionUtility.closeConnection(conn);
+		} catch (SQLException e) {
+			fail(e.getMessage());
+		}
 	}
 
 	@Test
-	public void weblogic() throws SQLException{
-		Connection conn = ConnectionUtility.getConnection("weblogic");
-		ConnectionUtility.closeConnection(conn);
+	public void weblogic(){
+		Connection conn;
+		try {
+			conn = ConnectionUtility.getConnection("weblogic");
+			ConnectionUtility.closeConnection(conn);
+		} catch (SQLException e) {
+			fail(e.getMessage());
+		}
 	}
 
 	@Test
-	public void try4() throws SQLException{
-		Connection conn = ConnectionUtility.getConnection("try4");
-		ConnectionUtility.closeConnection(conn);
+	public void try4(){
+		Connection conn;
+		try {
+			conn = ConnectionUtility.getConnection("try4");
+			ConnectionUtility.closeConnection(conn);
+		} catch (SQLException e) {
+			fail(e.getMessage());
+		}
 	}
 
 }

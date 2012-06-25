@@ -2,7 +2,6 @@ package net.sf.jabb.camel.test;
 
 import java.nio.charset.Charset;
 
-import net.sf.jabb.camel.CamelContextController;
 import net.sf.jabb.camel.CombinedRegistry;
 import net.sf.jabb.camel.RegistryUtility;
 

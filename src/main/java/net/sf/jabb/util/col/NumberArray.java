@@ -156,7 +156,6 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	 * @param obj	The object to be compared with
 	 * @return	-1 if little than obj, 0 if equals, 1 if greater than.
 	 */
-	@Override
 	public int compareTo(Object obj) {
 		if (! (obj instanceof NumberArray<?>)){
 			throw new IllegalArgumentException("Only comparing to MultipleNumbers is supported.");

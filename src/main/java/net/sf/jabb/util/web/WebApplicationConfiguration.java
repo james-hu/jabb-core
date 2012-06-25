@@ -16,7 +16,6 @@ limitations under the License.
 package net.sf.jabb.util.web;
 
 import java.util.List;
-import java.util.Map;
 
 import net.sf.jabb.util.bean.StringKeyValueBean;
 
