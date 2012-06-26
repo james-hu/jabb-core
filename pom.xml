@@ -2,14 +2,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.sf.jabb</groupId>
   <artifactId>jabb-core</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.0.2</version>
   <name>JABB</name>
   <url>http://jabb.sourceforge.net/</url>
   <description>JABB is a collection of reusable Java components. </description>
   <scm>
-  	<url>http://jabb.svn.sourceforge.net/svnroot/jabb/trunk/</url>
-  	<connection>scm:svn:http://jabb.svn.sourceforge.net/svnroot/jabb/trunk/</connection>
-	<developerConnection>scm:svn:https://jabb.svn.sourceforge.net/svnroot/jabb/trunk/</developerConnection>
+  	<url>http://jabb.svn.sourceforge.net/svnroot/jabb/trunk/code/jabb-core/</url>
+  	<connection>scm:svn:http://jabb.svn.sourceforge.net/svnroot/jabb/trunk/code/jabb-core/</connection>
+	<developerConnection>scm:svn:https://jabb.svn.sourceforge.net/svnroot/jabb/trunk/code/jabb-core/</developerConnection>
   </scm>
   <licenses>
     <license>
@@ -30,42 +30,58 @@
     <artifactId>oss-parent</artifactId>
     <version>7</version>
   </parent>
+  <properties>
+  	<struts2.version>2.3.4</struts2.version>
+  	<spring.version>3.1.1.RELEASE</spring.version>
+  	<camel.version>2.9.2</camel.version>
+  	<hibernate.version>4.1.4.Final</hibernate.version>
+  	<jetty.version>8.1.4.v20120524</jetty.version>
+  	<project.build.sourceEncoding>GB18030</project.build.sourceEncoding>
+  	<target.java.version>1.6</target.java.version>
+  </properties>
   <dependencies>
   	<dependency>
   		<groupId>proxool</groupId>
   		<artifactId>proxool</artifactId>
   		<version>0.8.3</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>org.apache.struts</groupId>
   		<artifactId>struts2-core</artifactId>
   		<version>${struts2.version}</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>org.springframework</groupId>
   		<artifactId>spring-context</artifactId>
   		<version>${spring.version}</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>org.apache.camel</groupId>
   		<artifactId>camel-core</artifactId>
   		<version>${camel.version}</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>org.hibernate</groupId>
   		<artifactId>hibernate-core</artifactId>
   		<version>${hibernate.version}</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>org.eclipse.jetty</groupId>
   		<artifactId>jetty-server</artifactId>
   		<version>${jetty.version}</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>log4j</groupId>
   		<artifactId>log4j</artifactId>
   		<version>1.2.17</version>
   		<scope>test</scope>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>commons-logging</groupId>
@@ -76,52 +92,63 @@
   		<groupId>org.jboss.netty</groupId>
   		<artifactId>netty</artifactId>
   		<version>3.2.7.Final</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>javax.servlet</groupId>
   		<artifactId>javax.servlet-api</artifactId>
   		<version>3.0.1</version>
   		<scope>provided</scope>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>org.apache.camel</groupId>
   		<artifactId>camel-netty</artifactId>
   		<version>${camel.version}</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>dk.brics.automaton</groupId>
   		<artifactId>automaton</artifactId>
   		<version>1.11-8</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>com.enigmastation</groupId>
   		<artifactId>ci-bayes</artifactId>
   		<version>2.0.0.RELEASE</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>commons-dbcp</groupId>
   		<artifactId>commons-dbcp</artifactId>
   		<version>1.4</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>org.eclipse.jetty</groupId>
   		<artifactId>jetty-util</artifactId>
   		<version>${jetty.version}</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>com.mchange</groupId>
   		<artifactId>c3p0</artifactId>
   		<version>0.9.2-pre4</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>javax.servlet.jsp</groupId>
   		<artifactId>javax.servlet.jsp-api</artifactId>
   		<version>2.2.1</version>
+  		<optional>true</optional>
+  		<scope>provided</scope>
   	</dependency>
   	<dependency>
   		<groupId>junit</groupId>
   		<artifactId>junit</artifactId>
   		<version>4.8.1</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>commons-lang</groupId>
@@ -132,6 +159,7 @@
   		<groupId>javolution</groupId>
   		<artifactId>javolution</artifactId>
   		<version>5.5.1</version>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>com.chenlb</groupId>
@@ -139,6 +167,7 @@
   		<version>1.8.4-with-dic</version>
   		<scope>system</scope>
   		<systemPath>${project.basedir}/lib/mmseg4j-core-1.8.4-with-dic.jar</systemPath>
+  		<optional>true</optional>
   	</dependency>
   	<dependency>
   		<groupId>com.oracle</groupId>
@@ -146,17 +175,9 @@
   		<version>10.2.0.1.0</version>
   		<scope>system</scope>
   		<systemPath>${project.basedir}/lib/ojdbc14.jar</systemPath>
+  		<optional>true</optional>
   	</dependency>
   </dependencies>
-  <properties>
-  	<struts2.version>2.3.4</struts2.version>
-  	<spring.version>3.1.1.RELEASE</spring.version>
-  	<camel.version>2.9.2</camel.version>
-  	<hibernate.version>4.1.4.Final</hibernate.version>
-  	<jetty.version>8.1.4.v20120524</jetty.version>
-  	<project.build.sourceEncoding>GB18030</project.build.sourceEncoding>
-  	<target.java.version>1.6</target.java.version>
-  </properties>
   <build>
   	<plugins>
       <plugin>

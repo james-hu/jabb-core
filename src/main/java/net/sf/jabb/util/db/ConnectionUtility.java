@@ -97,8 +97,12 @@ public class ConnectionUtility {
 			try {
 				dsp = (DataSourceProvider)Class.forName(providerClassName).newInstance();
 				dataSourceProviders.put(providerName, dsp);
-			} catch (Exception e) {
-				log.error("Cannot instantiate DataSourceProvider for '" + providerName + "': " + providerClassName, e);
+			} catch (Throwable t) {
+				if (t instanceof NoClassDefFoundError){
+					log.debug("DataSourceProvider not initialized for '" + providerName + "' because the provider class as not found: " + t.getMessage());
+				}else{
+					log.error("Cannot instantiate DataSourceProvider for '" + providerName + "': " + providerClassName, t);
+				}
 			}
 		}
 	}
