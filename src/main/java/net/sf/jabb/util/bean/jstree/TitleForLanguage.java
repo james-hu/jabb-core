@@ -15,32 +15,49 @@ limitations under the License.
 */
 package net.sf.jabb.util.bean.jstree;
 
-import net.sf.jabb.util.bean.DoubleValueBean;
+import java.io.Serializable;
+
 
 /**
  * @author James Hu
  *
  */
-public class TitleAndLanguage extends DoubleValueBean<String, String> {
+public class TitleForLanguage implements Serializable{
 	private static final long serialVersionUID = 8042876245409471549L;
+	
+	private String language;
+	private String title;
+	
+	public TitleForLanguage(){
+		
+	}
 
-	public TitleAndLanguage(String title, String language){
-		super(title, language);
+	public TitleForLanguage(String language, String title){
+		this.title = title;
+		this.language = language;
 	}
 	
-	public String getTitle(){
-		return getValue1();
+	@Override
+	public String toString(){
+		return "(" + (language == null ? "<null>" : language) + ":"
+				+ (title == null ? "<null>" : title) + ")";
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
-	public String getLanguage(){
-		return getValue2();
-	}
-	
-	public void setTitle(String title){
-		setValue1(title);
-	}
-	
-	public void setLanguage(String language){
-		setValue2(language);
-	}
+
 }
