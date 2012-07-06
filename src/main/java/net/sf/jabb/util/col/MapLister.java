@@ -39,6 +39,9 @@ public class MapLister {
 	 * 				含有格式化过的Map内容的String
 	 */
 	public static String listToString(Map<?, ?> map){
+		if (map == null){
+			return "null";
+		}
 		TreeMap<?, ?> tm = new TreeMap<Object, Object>(map);
 		StringBuilder sb = new StringBuilder();
 		for (Map.Entry<?, ?> item: tm.entrySet()){

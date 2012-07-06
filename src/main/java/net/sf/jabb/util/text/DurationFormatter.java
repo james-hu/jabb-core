@@ -19,6 +19,7 @@ package net.sf.jabb.util.text;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 /**
  * An utility to format the length of time period to String, for example: 00:03:01.011 or 7d, 12:32:02:001.<br>
@@ -52,19 +53,56 @@ public class DurationFormatter {
 	 * 格式化时间长度（以毫秒为单位）为字符串。
 	 * 
 	 * @param duration	Length of time period in milliseconds<br>以毫秒为单位的时间长度
+	 * @param unit  The least unit that will be in the output<br>输出字符串中的最小时间单位
+	 * @param trimLeftZeros Whether to remove leading zeros from the output<br>输出字符串中是否去掉开头的0
+	 * @return	The string presentation of the time period, 
+	 * 			for example: 00:03:01.011, 1:30:00,  or 7d, 12:32:02:001.<br>
+	 * 			字符串形式表示的时间长度，比如：00:03:01.011, 1:30:00, 或：7d, 12:32:02:001。
+	 */
+	public static String format(long duration, TimeUnit unit, boolean trimLeftZeros){
+		String format;
+		switch (unit){
+		case HOURS:
+			format = "HH";
+			break;
+		case MINUTES:
+			format = "HH:mm";
+			break;
+		case SECONDS:
+			format = "HH:mm:ss";
+			break;
+		case MILLISECONDS:
+			format = "HH:mm:ss.SSS";
+			break;
+		default:
+			throw new IllegalArgumentException("The unit must be HOURS, MINUTES, SECONDS, or MILLISECONDS.");
+		}
+		
+		DateFormat df = new SimpleDateFormat(format);
+		df.setTimeZone(TimeZone.getTimeZone("GMT"));
+		String resultWithZeros;
+		if (duration >= ONE_DAY_IN_MILLI){
+			long days = duration/ONE_DAY_IN_MILLI;
+			resultWithZeros = String.format("%dd, %s", days, df.format(duration));
+		}else{
+			resultWithZeros = df.format(duration);
+		}
+		return trimLeftZeros ? 
+				resultWithZeros.replaceFirst("^[0 :]+", "") : resultWithZeros;
+	}
+	
+	/**
+	 * Format the length of time period (in milliseconds) to String.<br>
+	 * 格式化时间长度（以毫秒为单位）为字符串。
+	 * 
+	 * @param duration	Length of time period in milliseconds<br>以毫秒为单位的时间长度
+	 * @param unit  The least unit that will be in the output<br>输出字符串中的最小时间单位
 	 * @return	The string presentation of the time period, 
 	 * 			for example: 00:03:01.011 or 7d, 12:32:02:001.<br>
 	 * 			字符串形式表示的时间长度，比如：00:03:01.011，或：7d, 12:32:02:001。
 	 */
 	public static String format(long duration){
-		DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
-		df.setTimeZone(TimeZone.getTimeZone("GMT"));
-		if (duration >= ONE_DAY_IN_MILLI){
-			long days = duration/ONE_DAY_IN_MILLI;
-			return String.format("%dd, %s", days, df.format(duration));
-		}else{
-			return df.format(duration);
-		}
+		return format(duration, TimeUnit.MILLISECONDS, false);
 	}
 	
 	/**
@@ -81,6 +119,6 @@ public class DurationFormatter {
 	 * 			字符串形式表示的时间长度，比如：00:03:01.011，或：7d, 12:32:02:001。
 	 */
 	public static String formatSince(long pastOrFutureTime){
-		return format(Math.abs(System.currentTimeMillis() - pastOrFutureTime));
+		return format(Math.abs(System.currentTimeMillis() - pastOrFutureTime), TimeUnit.MILLISECONDS, false);
 	}
 }
