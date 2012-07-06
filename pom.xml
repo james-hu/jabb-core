@@ -39,6 +39,7 @@
 		<jetty.version>8.1.4.v20120524</jetty.version>
 		<project.build.sourceEncoding>GB18030</project.build.sourceEncoding>
 		<target.java.version>1.6</target.java.version>
+		<struts2-jquery.version>3.3.1</struts2-jquery.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -262,4 +263,10 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+  <distributionManagement>
+    <site>
+      <id>jabb.sf.net</id>
+      <url>scp://shell.sourceforge.net/home/project-web/jabb/htdocs</url>
+    </site>
+  </distributionManagement>
 </project>
