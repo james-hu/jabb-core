@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.jabb</groupId>
 	<artifactId>jabb-core</artifactId>
-	<version>1.0.4</version>
+	<version>1.0.5-SNAPSHOT</version>
 	<name>JABB</name>
 	<url>http://jabb.sourceforge.net/</url>
 	<description>JABB is a collection of reusable Java components. </description>
@@ -53,6 +53,12 @@
 			<artifactId>struts2-core</artifactId>
 			<version>${struts2.version}</version>
 			<optional>true</optional>
+		    <exclusions>
+		        <exclusion>
+		            <artifactId>tools</artifactId>
+		            <groupId>com.sun</groupId>
+		        </exclusion>
+		    </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -179,6 +185,18 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/ojdbc14.jar</systemPath>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.3</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss</groupId>
+			<artifactId>jboss-common-core</artifactId>
+			<version>2.2.17.GA</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>

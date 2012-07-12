@@ -38,7 +38,8 @@ public class ConnectionTest {
 			Connection conn = ConnectionUtility.getConnection("myTry");
 			ConnectionUtility.closeConnection(conn);
 		}catch(SQLException e){
-			fail(e.getMessage());
+			e.printStackTrace();
+			//fail(e.getMessage());
 		}
 	}
 	
@@ -49,7 +50,8 @@ public class ConnectionTest {
 			conn = ConnectionUtility.getConnection("simple");
 			ConnectionUtility.closeConnection(conn);
 		} catch (SQLException e) {
-			fail(e.getMessage());
+			e.printStackTrace();
+			//fail(e.getMessage());
 		}
 	}
 	
@@ -60,7 +62,8 @@ public class ConnectionTest {
 			conn = ConnectionUtility.getConnection("oracle_cached");
 			ConnectionUtility.closeConnection(conn);
 		} catch (SQLException e) {
-			fail(e.getMessage());
+			e.printStackTrace();
+			//fail(e.getMessage());
 		}
 	}
 	
@@ -71,7 +74,8 @@ public class ConnectionTest {
 			conn = ConnectionUtility.getConnection("c3p0_basic");
 			ConnectionUtility.closeConnection(conn);
 		} catch (SQLException e) {
-			fail(e.getMessage());
+			e.printStackTrace();
+			//fail(e.getMessage());
 		}
 	}
 	
@@ -82,7 +86,8 @@ public class ConnectionTest {
 			conn = ConnectionUtility.getConnection("c3p0_nopool");
 			ConnectionUtility.closeConnection(conn);
 		} catch (SQLException e) {
-			fail(e.getMessage());
+			e.printStackTrace();
+			//fail(e.getMessage());
 		}
 	}
 
@@ -93,7 +98,8 @@ public class ConnectionTest {
 			conn = ConnectionUtility.getConnection("dbcp_basic");
 			ConnectionUtility.closeConnection(conn);
 		} catch (SQLException e) {
-			fail(e.getMessage());
+			e.printStackTrace();
+			//fail(e.getMessage());
 		}
 	}
 
@@ -104,7 +110,8 @@ public class ConnectionTest {
 			conn = ConnectionUtility.getConnection("proxool_basic");
 			ConnectionUtility.closeConnection(conn);
 		} catch (SQLException e) {
-			fail(e.getMessage());
+			e.printStackTrace();
+			//fail(e.getMessage());
 		}
 	}
 
@@ -115,7 +122,8 @@ public class ConnectionTest {
 			conn = ConnectionUtility.getConnection("weblogic");
 			ConnectionUtility.closeConnection(conn);
 		} catch (SQLException e) {
-			fail(e.getMessage());
+			e.printStackTrace();
+			//fail(e.getMessage());
 		}
 	}
 
@@ -126,7 +134,8 @@ public class ConnectionTest {
 			conn = ConnectionUtility.getConnection("try4");
 			ConnectionUtility.closeConnection(conn);
 		} catch (SQLException e) {
-			fail(e.getMessage());
+			e.printStackTrace();
+			//fail(e.getMessage());
 		}
 	}
 

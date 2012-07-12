@@ -18,9 +18,14 @@ package net.sf.jabb.util.db;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.Lifecycle;
 
 /**
@@ -30,8 +35,22 @@ import org.springframework.context.Lifecycle;
  * @author James Hu
  *
  */
-public class StartAndStopSQL implements Lifecycle {
-	protected boolean isRunning;
+public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableBean {
+	private static final Log log = LogFactory.getLog(StartAndStopSQL.class);
+	
+	static final protected int UNKNOWN=0;
+	static final protected int STARTING=1;
+	static final protected int RUNNING=2;
+	static final protected int STOPPING=3;
+	
+	static final protected String[] stateNames = new String[] {
+		"UNKOWN",
+		"STARTING",
+		"RUNNING",
+		"STOPPING"
+	};
+	
+	protected AtomicInteger state = new AtomicInteger(UNKNOWN);
 	
 	protected DataSource dataSource;
 	protected String startSQL;
@@ -48,6 +67,7 @@ public class StartAndStopSQL implements Lifecycle {
 			conn = dataSource.getConnection();
 			stmt = conn.createStatement();
 			stmt.execute(sql);
+			log.info("SQL executed: " + sql);
 		}catch(SQLException sqle){
 			throw new RuntimeException("Failed to execute SQL: " + sql, sqle);
 		}finally{
@@ -59,28 +79,49 @@ public class StartAndStopSQL implements Lifecycle {
 	 * @see org.springframework.context.Lifecycle#isRunning()
 	 */
 	public boolean isRunning() {
-		return isRunning;
+		return state.get() == RUNNING;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.springframework.context.Lifecycle#start()
 	 */
 	public void start() {
-		if (startSQL != null && startSQL.length() > 0){
-			executeSQL(startSQL);
+		if (state.compareAndSet(UNKNOWN, STARTING)){
+			log.debug("Starting...");
+			if (startSQL != null && startSQL.length() > 0){
+				executeSQL(startSQL);
+			}
+			state.set(RUNNING);
+		}else{
+			log.warn("Start request ignored. Current state is: " + stateNames[state.get()]);
 		}
-		isRunning = true;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.springframework.context.Lifecycle#stop()
 	 */
 	public void stop() {
-		if (stopSQL != null && stopSQL.length() > 0){
-			executeSQL(stopSQL);
+		if (state.compareAndSet(RUNNING, STOPPING)){
+			log.debug("Stopping...");
+			if (stopSQL != null && stopSQL.length() > 0){
+				executeSQL(stopSQL);
+			}
+			state.set(UNKNOWN);
+		}else{
+			log.warn("Stop request ignored. Current state is: " + stateNames[state.get()]);
 		}
-		isRunning = false;
 	}
+	
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		start();
+	}
+
+	@Override
+	public void destroy() throws Exception {
+		stop();
+	}
+
 
 	public DataSource getDataSource() {
 		return dataSource;
