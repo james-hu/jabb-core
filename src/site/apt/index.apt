@@ -1,0 +1,51 @@
+JABB - Java Application Building Blocks
+
+  JABB is a collection of reusable Java components. 
+  Some components within JABB may be inter-dependent, 
+  but the intent is not to make JABB a framework. 
+  Most of the components are just utility classes that may be used in your projects.
+  
+[img/intro_text_zh_1.png]
+
+  JABB is open source software licensed under Apache License. 
+  Let me know if you are using or considering using JABB in your projects, 
+  so that I can better help you.
+  
+[img/intro_text_zh_2.png]
+
+The Project:
+
+  * Project summary page: {{http://sourceforge.net/projects/jabb/}}
+  
+  * Project home page: {{http://jabb.sourceforge.net/}}
+  
+  * <<Introduction (PDF)>>: {{{./doc/jabb_intro.pdf}http://jabb.sourceforge.net/doc/jabb_intro.pdf}}
+  
+  * Javadoc: {{{./apidocs/index.html}http://jabb.sourceforge.net/apidocs}}
+  
+  * Downloads: {{http://sourceforge.net/projects/jabb/files}}
+  
+  * Source code browsing: {{http://jabb.svn.sourceforge.net/}}
+  
+  * SVN: {{https://jabb.svn.sourceforge.net/svnroot/jabb}}
+  
+  * As dependency in Maven:
+  
++--------------------------------------+
+<dependency>
+   <groupId>net.sf.jabb</groupId>
+   <artifactId>jabb-core</artifactId>
+   <version>x.y.z</version>
+</dependency>
++--------------------------------------+
+
+The Author:
+
+  * Tech Blog: {{http://james-hu.users.sourceforge.net/blog/}}
+  
+  * Photos: {{https://picasaweb.google.com/104306225331370072882}}
+  
+  * LinkedIn: {{http://au.linkedin.com/in/jameshuprofile}}
+  
+  * Weibo: {{http://weibo.com/u/2386483953}}
+
