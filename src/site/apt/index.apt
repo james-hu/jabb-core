@@ -13,15 +13,17 @@ JABB - Java Application Building Blocks
   
 [img/intro_text_zh_2.png]
 
+Document:
+
+  * Introduction (PDF): {{{./doc/jabb_intro.pdf}http://jabb.sourceforge.net/doc/jabb_intro.pdf}}
+
+  * Javadoc: {{{./apidocs/index.html}http://jabb.sourceforge.net/apidocs}}
+
 The Project:
 
   * Project summary page: {{http://sourceforge.net/projects/jabb/}}
   
   * Project home page: {{http://jabb.sourceforge.net/}}
-  
-  * <<Introduction (PDF)>>: {{{./doc/jabb_intro.pdf}http://jabb.sourceforge.net/doc/jabb_intro.pdf}}
-  
-  * Javadoc: {{{./apidocs/index.html}http://jabb.sourceforge.net/apidocs}}
   
   * Downloads: {{http://sourceforge.net/projects/jabb/files}}
   

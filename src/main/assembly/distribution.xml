@@ -16,6 +16,9 @@
     <fileSet>
       <directory>target/site</directory>
       <outputDirectory>/site</outputDirectory>
+      <excludes>
+        <exclude>doc/*.pdf</exclude>
+      </excludes>
     </fileSet>
     <fileSet>
       <directory>src/site/resources/doc</directory>

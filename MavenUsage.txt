@@ -1,4 +1,6 @@
-jar: mvn -DskipTests clean package
-web site: mvn javadoc:javadoc site:site site:deploy
-zip: mvn javadoc:javadoc site:site assembly:single
-all: mvn clean package deploy javadoc:javadoc site:site site:deploy assembly:single
+jar:      mvn -DskipTests clean package
+deploy:   mvn deploy
+web site: ssh -t james-hu,jabb@shell.sourceforge.net create
+          mvn javadoc:javadoc site:site site:deploy
+zip:      mvn javadoc:javadoc site:site assembly:single
+all:      mvn clean package deploy javadoc:javadoc site:site site:deploy assembly:single
