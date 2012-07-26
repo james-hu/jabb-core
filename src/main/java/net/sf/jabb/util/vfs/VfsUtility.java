@@ -24,6 +24,7 @@ import org.apache.commons.vfs2.FileSystemOptions;
 import org.apache.commons.vfs2.auth.StaticUserAuthenticator;
 import org.apache.commons.vfs2.impl.DefaultFileSystemManager;
 import org.apache.commons.vfs2.impl.StandardFileSystemManager;
+import org.apache.commons.vfs2.provider.UriParser;
 import org.apache.commons.vfs2.provider.http.HttpFileSystemConfigBuilder;
 
 /**
@@ -126,6 +127,16 @@ public class VfsUtility {
 			}
 		}
 
+	}
+	
+    /**
+     * Extracts the scheme from a URI.
+     *
+     * @param uri The URI.
+     * @return The scheme name. Returns null if there is no scheme.
+     */
+	static public String extractScheme(String uri){
+		return UriParser.extractScheme(uri);
 	}
 	
 }

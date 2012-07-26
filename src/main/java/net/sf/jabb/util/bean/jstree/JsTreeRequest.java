@@ -36,7 +36,7 @@ public class JsTreeRequest {
 	/**
 	 * for getChildren
 	 */
-	protected boolean isRoot;
+	protected Boolean isRoot;
 	/**
 	 * for search
 	 */
@@ -44,7 +44,7 @@ public class JsTreeRequest {
 	/**
 	 * for createNode, moveNode
 	 */
-	protected int position;
+	protected Integer position;
 	/**
 	 * for createNode, renameNode
 	 */
@@ -56,7 +56,7 @@ public class JsTreeRequest {
 	/**
 	 * for moveNode
 	 */
-	protected boolean isCopy;
+	protected Boolean isCopy;
 	/**
 	 * for createNode, moveNode
 	 */
@@ -80,16 +80,16 @@ public class JsTreeRequest {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public boolean getIsRoot() {
+	public Boolean getIsRoot() {
 		return isRoot;
 	}
-	public void setIsRoot(boolean isRoot) {
+	public void setIsRoot(Boolean isRoot) {
 		this.isRoot = isRoot;
 	}
-	public boolean isRoot() {
+	public Boolean isRoot() {
 		return isRoot;
 	}
-	public void setRoot(boolean isRoot) {
+	public void setRoot(Boolean isRoot) {
 		this.isRoot = isRoot;
 	}
 	public String getSearchString() {
@@ -98,10 +98,10 @@ public class JsTreeRequest {
 	public void setSearchString(String searchString) {
 		this.searchString = searchString;
 	}
-	public int getPosition() {
+	public Integer getPosition() {
 		return position;
 	}
-	public void setPosition(int position) {
+	public void setPosition(Integer position) {
 		this.position = position;
 	}
 	public String getTitle() {
@@ -116,16 +116,16 @@ public class JsTreeRequest {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public boolean isCopy() {
+	public Boolean isCopy() {
 		return isCopy;
 	}
-	public void setCopy(boolean isCopy) {
+	public void setCopy(Boolean isCopy) {
 		this.isCopy = isCopy;
 	}
-	public boolean getIsCopy() {
+	public Boolean getIsCopy() {
 		return isCopy;
 	}
-	public void setIsCopy(boolean isCopy) {
+	public void setIsCopy(Boolean isCopy) {
 		this.isCopy = isCopy;
 	}
 	public String getReferenceId() {

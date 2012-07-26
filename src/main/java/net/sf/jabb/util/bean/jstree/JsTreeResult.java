@@ -26,8 +26,13 @@ public class JsTreeResult {
 	 */
 	protected boolean status;
 	protected String id;
+	protected String message;
 
 	public boolean isStatus() {
+		return status;
+	}
+
+	public boolean getStatus() {
 		return status;
 	}
 
@@ -41,5 +46,13 @@ public class JsTreeResult {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

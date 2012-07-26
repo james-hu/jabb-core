@@ -28,7 +28,7 @@ public class JsTreeNodeData {
 	static public final String STATE_OPEN = "open";
 	/**
 	 * Can be a String for non-i18n, or a Map<String, String> for i18n.
-	 * For i18n, the keys of the Map are: title, language.
+	 * For i18n, the entries of the Map are: title, language.
 	 */
 	protected Object data;
 	protected Map<String, Object> attr;
