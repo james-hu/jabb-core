@@ -15,7 +15,8 @@ limitations under the License.
 */
 package net.sf.jabb.util.bean.jstree;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -33,11 +34,71 @@ public class JsTreeNodeData {
 	protected Object data;
 	protected Map<String, Object> attr;
 	/**
-	 * "closed" or "open", defaults to "closed"
+	 * "closed" or "open", it should be null for those without child nodes"
 	 */
 	protected String state;
-	protected List<JsTreeNodeData> children;
+	protected Collection<JsTreeNodeData> children;
 	
+	public void setState(boolean isOpen){
+		state = isOpen ? STATE_OPEN : STATE_CLOSED;
+	}
+	
+	public boolean stateIsOpen(){
+		return STATE_OPEN.equals(state);
+	}
+	
+	public boolean stateIsClosed(){
+		return STATE_CLOSED.equals(state);
+	}
+	
+	public String dataString(){
+		return data == null ? null : data.toString();
+	}
+	
+	public void setAttr(String name, Object value){
+		if (attr == null){
+			attr = new HashMap<String, Object>();
+		}
+		attr.put(name, value);
+	}
+	
+	public Object getAttr(String name){
+		return attr == null ? null : attr.get(name);
+	}
+	
+	public Object getAttrAsString(String name){
+		return getAttr(name).toString();
+	}
+	
+	public <T> T getAttr(String name, Class<T> claz){
+		return attr == null ? null : claz.cast(attr.get(name));
+	}
+	
+	public void setAttrId(Object id){
+		setAttr("id", id);
+	}
+	
+	public Object attrId(){
+		return getAttr("id");
+	}
+	
+	public String attrIdString(){
+		Object id = attrId();
+		return id == null ? null : id.toString();
+	}
+	
+	public void setAttrRel(Object rel){
+		setAttr("rel", rel);
+	}
+	
+	public Object attrRel(){
+		return getAttr("rel");
+	}
+	
+	public String attrRelString(){
+		Object rel = attrRel();
+		return rel == null ? null : rel.toString();
+	}
 	
 	public Object getData() {
 		return data;
@@ -57,10 +118,10 @@ public class JsTreeNodeData {
 	public void setState(String state) {
 		this.state = state;
 	}
-	public List<JsTreeNodeData> getChildren() {
+	public Collection<JsTreeNodeData> getChildren() {
 		return children;
 	}
-	public void setChildren(List<JsTreeNodeData> children) {
+	public void setChildren(Collection<JsTreeNodeData> children) {
 		this.children = children;
 	}
 

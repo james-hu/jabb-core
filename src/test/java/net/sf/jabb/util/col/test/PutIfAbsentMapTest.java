@@ -62,7 +62,7 @@ public class PutIfAbsentMapTest {
 		}
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=RuntimeException.class)
 	public void createInstance5(){
 		PutIfAbsentMap<Long, AtomicInteger> map = new PutIfAbsentMap<Long, AtomicInteger>(Map.class, AtomicInteger.class);
 		for (int i = 0; i < 10; i ++){

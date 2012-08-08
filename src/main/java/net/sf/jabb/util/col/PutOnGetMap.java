@@ -50,12 +50,7 @@ import java.util.SortedMap;
  * @param <K>	Type of the key of the Map entries<br>Map的key的类型
  * @param <V>	Type of the value of the Map entries<br>Map的value的类型
  */
-public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMap<K,V>{
-	protected Map<K, V> map;
-	protected Class<?> valueClass;
-	protected Constructor<?> valueConstructor;
-	protected Object valueParameter;
-	protected Object structureLock = new Object();
+public class PutOnGetMap<K, V> extends PutIfAbsentMap<K, V> implements SortedMap<K,V>, NavigableMap<K,V>{
 	
 	/**
 	 * Constructs an instance with specified Map instance and value Class.<br>
@@ -67,8 +62,7 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	 * 						Map的value的类。
 	 */
 	public PutOnGetMap(Map<K, V> originalMap, Class<? extends V> valueClazz){
-		map = originalMap;
-		valueClass = valueClazz;
+		super(originalMap, valueClazz);
 	}
 	
 	/**
@@ -82,14 +76,7 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	 */
 	@SuppressWarnings("unchecked")
 	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz){
-		Map<K, V> originalMap = null;
-		try {
-			originalMap = mapClazz.newInstance();
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Cannot create instance for class: " + mapClazz.getCanonicalName(), e);
-		} 
-		map = originalMap;
-		valueClass = valueClazz;
+		super(mapClazz, valueClazz);
 	}
 
 	
@@ -107,22 +94,7 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	 */
 	@SuppressWarnings("unchecked")
 	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object valueParam){
-		Map<K, V> originalMap = null;
-		try {
-			originalMap = mapClazz.newInstance();
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Cannot create instance for class: " + mapClazz.getCanonicalName(), e);
-		} 
-		map = originalMap;
-
-		try {
-			// for single non-array argument
-			valueConstructor = valueClazz.getConstructor(valueParam.getClass());
-			valueParameter = valueParam;
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Cannot find correct constuctor for '" + valueClazz.getCanonicalName()
-					+ "' with parameter type'" + valueParam == null? "null" : valueParam.getClass().getCanonicalName() + "'.", e);
-		}
+		super(mapClazz, valueClazz, valueParam);
 	}
 
 	
@@ -140,135 +112,9 @@ public class PutOnGetMap<K, V> implements Map<K, V>, SortedMap<K,V>, NavigableMa
 	 */
 	@SuppressWarnings("unchecked")
 	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object... valueParams){
-		Map<K, V> originalMap = null;
-		try {
-			originalMap = mapClazz.newInstance();
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Cannot create instance for class: " + mapClazz.getCanonicalName(), e);
-		} 
-		map = originalMap;
-
-		try {
-			try{
-				// for single array argument
-				valueConstructor = valueClazz.getConstructor(valueParams.getClass());
-				valueParameter = valueParams;
-			}catch (NoSuchMethodException nsme){
-				// for multiple argument
-				Class<?>[] paramTypes = new Class<?>[valueParams.length];
-				for (int i = 0; i < valueParams.length; i ++){
-					paramTypes[i] = valueParams[i].getClass();
-				}
-				valueConstructor = valueClazz.getConstructor(paramTypes);
-				valueParameter = valueParams;
-			}
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Cannot find correct constuctor for '" + valueClazz.getCanonicalName()
-					+ "' with parameter: " + Arrays.toString(valueParams), e);
-		}
+		super(mapClazz, valueClazz, valueParams);
 	}
 
-
-	/**
-	 * Get the encapsulated Map instance.<br>
-	 * 获得最初被封装的那个Map。
-	 * @return The map instance that is encapsulated inside.
-	 */
-	public Map<K, V> getMap(){
-		return map;
-	}
-	
-
-	/**
-	 * Get the value object corresponding to the key object specified, 
-	 * if such entry does not exist in the Map, then create one and put
-	 * into the Map and return the value object in the newly created entry.<br>
-	 * 取得key所对应的value，如果目前在Map里没有，则在Map里新建一个并返回新建
-	 * 的这个value对象。
-	 * 
-	 * @param key	The key object that will be used to look for the value object.
-	 */
-	@SuppressWarnings("unchecked")
-	public V get(Object key) {
-		V result;
-		result = map.get(key);
-		if (result == null){
-			synchronized(structureLock){
-				if (!map.containsKey(key)){
-					try {
-						if (valueConstructor != null){
-							result = (V)(valueConstructor.newInstance(valueParameter));
-						}else{
-							result = (V)(valueClass.newInstance());
-						}
-						map.put((K)key, result);
-					} catch (Exception e) {
-						throw new IllegalArgumentException("Error putting key and new instance of " + valueClass.getCanonicalName(), e);
-					} 
-				}else{
-					result = map.get(key);
-				}
-			}
-		}
-		return result;
-	}
-
-
-	public V put(K key, V value) {
-		V result;
-		synchronized(structureLock){
-			result = map.put(key, value);
-		}
-		return result;
-	}
-
-	public void putAll(Map<? extends K, ? extends V> anotherMap) {
-		synchronized(structureLock){
-			map.putAll(anotherMap);
-		}
-	}
-
-	public V remove(Object obj) {
-		V result;
-		synchronized(structureLock){
-			result = map.remove(obj);
-		}
-		return result;
-	}
-
-	public void clear() {
-		synchronized(structureLock){
-			map.clear();
-		}
-	}
-
-	public boolean containsKey(Object obj) {
-		return map.containsKey(obj);
-	}
-
-	public boolean containsValue(Object obj) {
-		return map.containsValue(obj);
-	}
-
-	public Set<java.util.Map.Entry<K, V>> entrySet() {
-		return map.entrySet();
-	}
-
-	public boolean isEmpty() {
-		return map.isEmpty();
-	}
-
-	public Set<K> keySet() {
-		return map.keySet();
-	}
-
-	public int size() {
-		return map.size();
-	}
-
-	public Collection<V> values() {
-		return map.values();
-	}
 
 	public Comparator<? super K> comparator() {
 		return ((SortedMap<K, V>)map).comparator();
