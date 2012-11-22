@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.jabb</groupId>
 	<artifactId>jabb-core</artifactId>
-	<version>1.0.9</version>
+	<version>1.0.10</version>
 	<name>JABB</name>
 	<url>http://jabb.sourceforge.net/</url>
 	<description>JABB is a collection of reusable Java components. </description>
@@ -37,7 +37,7 @@
 		<camel.version>2.9.2</camel.version>
 		<hibernate.version>4.1.4.Final</hibernate.version>
 		<jetty.version>8.1.4.v20120524</jetty.version>
-		<project.build.sourceEncoding>GB18030</project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<target.java.version>1.6</target.java.version>
 		<struts2-jquery.version>3.3.1</struts2-jquery.version>
 	</properties>
@@ -174,16 +174,12 @@
 			<groupId>com.chenlb</groupId>
 			<artifactId>mmseg4j-core</artifactId>
 			<version>1.8.4-with-dic</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/mmseg4j-core-1.8.4-with-dic.jar</systemPath>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc14</artifactId>
 			<version>10.2.0.1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/ojdbc14.jar</systemPath>
 			<optional>true</optional>
 		</dependency>
 		<dependency>

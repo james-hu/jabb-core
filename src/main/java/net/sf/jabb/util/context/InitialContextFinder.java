@@ -26,8 +26,8 @@ import javax.naming.NoInitialContextException;
 import javax.naming.Reference;
 
 /**
- * ÕÒµ½InitialContext£¬Èç¹û´æÔÚÔò·µ»ØÈ±Ê¡µÄ£¬Èç¹û²»´æÔÚÔò´´½¨²¢·µ»ØÒ»¸ö
- * com.sun.jndi.fscontext.RefFSContextFactory¡£
+ * æ‰¾åˆ°InitialContextï¼Œå¦‚æœå­˜åœ¨åˆ™è¿”å›ç¼ºçœçš„ï¼Œå¦‚æœä¸å­˜åœ¨åˆ™åˆ›å»ºå¹¶è¿”å›ä¸€ä¸ª
+ * com.sun.jndi.fscontext.RefFSContextFactoryã€‚
  * <p>
  * Finds InitialContext. If there is one, then return the one. If not,
  * then create a one of type com.sun.jndi.fscontext.RefFSContextFactory and return it.
@@ -39,7 +39,7 @@ public class InitialContextFinder {
 	protected static boolean found = false; 
 	
 	/**
-	 * ÕÒµ½ÏÖ³ÉµÄ¡£
+	 * æ‰¾åˆ°ç°æˆçš„ã€‚
 	 * <p>
 	 * Finds the existing one.
 	 * 
@@ -52,7 +52,7 @@ public class InitialContextFinder {
 	}
 	
 	/**
-	 * ÕÒµ½ÏÖ³ÉµÄ¡£
+	 * æ‰¾åˆ°ç°æˆçš„ã€‚
 	 * <p>
 	 * Finds the existing one.
 	 * 
@@ -64,7 +64,7 @@ public class InitialContextFinder {
 	}
 	
 	/**
-	 * ÕÒµ½ÏÖ³ÉµÄµÄ»ò´´½¨Ò»¸ö¡£
+	 * æ‰¾åˆ°ç°æˆçš„çš„æˆ–åˆ›å»ºä¸€ä¸ªã€‚
 	 * <p>
 	 * Finds the existing one or create a new one.
 	 * 
@@ -122,7 +122,7 @@ public class InitialContextFinder {
 	}
 	
 	/**
-	 * ÕÒµ½ÏÖ³ÉµÄµÄ»ò´´½¨Ò»¸ö¡£
+	 * æ‰¾åˆ°ç°æˆçš„çš„æˆ–åˆ›å»ºä¸€ä¸ªã€‚
 	 * <p>
 	 * Finds the existing one or create a new one.
 	 * 

@@ -33,18 +33,18 @@ import net.sf.jabb.util.text.StartWithMatcher;
 public class StartWithMatcherExample {
 
 	/**
-	 * ×¢Òâ£¬Èç¹ûÆ¥ÅäÌõ¼ş»¥ÏàÖ®¼äÊÇÆ¥ÅäµÄ£¬Ôò½á¹û¿ÉÄÜ»á²»×¼¡£
-	 * ËùÒÔÔÚĞèÒªÖªµÀ¾ßÌåÆ¥Åä½á¹ûµÄÊ±ºò£¬Òª±ÜÃâÓÃÕıÔò±í´ïÊ½À´×÷ÎªÆ¥ÅäÌõ¼ş£¬¾¡Á¿ÓÃ´¿×Ö·û´®¡£
+	 * æ³¨æ„ï¼Œå¦‚æœåŒ¹é…æ¡ä»¶äº’ç›¸ä¹‹é—´æ˜¯åŒ¹é…çš„ï¼Œåˆ™ç»“æœå¯èƒ½ä¼šä¸å‡†ã€‚
+	 * æ‰€ä»¥åœ¨éœ€è¦çŸ¥é“å…·ä½“åŒ¹é…ç»“æœçš„æ—¶å€™ï¼Œè¦é¿å…ç”¨æ­£åˆ™è¡¨è¾¾å¼æ¥ä½œä¸ºåŒ¹é…æ¡ä»¶ï¼Œå°½é‡ç”¨çº¯å­—ç¬¦ä¸²ã€‚
 	 * @param args
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
 	 * @throws CloneNotSupportedException 
 	 */
 	public static void main(String[] args) throws IOException, ClassNotFoundException, CloneNotSupportedException{
-		System.out.println("==== Ò»°ã¹¦ÄÜÊ¾·¶ ====");
+		System.out.println("==== ä¸€èˆ¬åŠŸèƒ½ç¤ºèŒƒ ====");
 		StartWithMatcher m = showExample(null);
 		
-		System.out.println("==== ĞòÁĞ»¯Ê¾·¶ ====");
+		System.out.println("==== åºåˆ—åŒ–ç¤ºèŒƒ ====");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ObjectOutputStream oos = new ObjectOutputStream(baos);
 		oos.writeObject(m);
@@ -54,7 +54,7 @@ public class StartWithMatcherExample {
 		StartWithMatcher m2 = (StartWithMatcher) ois.readObject();
 		showExample(m2);
 		
-		System.out.println("==== ¸´ÖÆÊ¾·¶ ====");
+		System.out.println("==== å¤åˆ¶ç¤ºèŒƒ ====");
 		StartWithMatcher m3 = new StartWithMatcher(m);
 		showExample(m3);
 		

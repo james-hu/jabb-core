@@ -16,10 +16,10 @@ public class MatcherTest {
 	
 	@Test
 	public void simpleMatch(){
-		Automaton a = new RegExp("中国").toAutomaton();
+		Automaton a = new RegExp("涓浗").toAutomaton();
 		RunAutomaton ra = new RunAutomaton(a);
-		System.out.println("simpleMatch ==> " + ra.run("中国"));
-		System.out.println("newMatcher ==> " + ra.newMatcher("中华人民中国大家").find());
+		System.out.println("simpleMatch ==> " + ra.run("涓浗"));
+		System.out.println("newMatcher ==> " + ra.newMatcher("涓崕浜烘皯涓浗澶у").find());
 		
 	}
 	

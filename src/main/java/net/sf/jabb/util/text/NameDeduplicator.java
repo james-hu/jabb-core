@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2011 Zhengmao HU (James)
+Copyright 2010-2012 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@ limitations under the License.
 package net.sf.jabb.util.text;
 
 import java.util.concurrent.ConcurrentHashMap;
+
+import net.sf.jabb.util.col.PutIfAbsentMap;
 import net.sf.jabb.util.col.PutOnGetMap;
 import net.sf.jabb.util.thread.Sequencer;
 
@@ -24,31 +26,31 @@ import net.sf.jabb.util.thread.Sequencer;
 /**
  * This utility class can rename names by appending numbers to avoid name duplication, 
  * it is multi-thread safe.<br>
- * Õâ¸ö¹¤¾ßÀà¿ÉÒÔÍ¨¹ı¸øÃû³ÆºóÃæÌí¼ÓÊı×ÖµÄ·½Ê½À´Îª±ÜÃâÖØÃû¶ø×Ô¶¯¸ÄÃû£¬ËüÊÇ¶àÏß³Ì°²È«µÄ¡£
+ * è¿™ä¸ªå·¥å…·ç±»å¯ä»¥é€šè¿‡ç»™åç§°åé¢æ·»åŠ æ•°å­—çš„æ–¹å¼æ¥ä¸ºé¿å…é‡åè€Œè‡ªåŠ¨æ”¹åï¼Œå®ƒæ˜¯å¤šçº¿ç¨‹å®‰å…¨çš„ã€‚
  * 
  * @author Zhengmao HU (James)
  *
  */
 public class NameDeduplicator {
-	protected PutOnGetMap<String, Sequencer> nameSequencers;
+	protected PutIfAbsentMap<String, Sequencer> nameSequencers;
 	protected String renamePattern;
 	
 	/**
 	 * Constructs an instance with specified postfix pattern.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬Ê¹ÓÃÖ¸¶¨µÄºó×ºÄ£°å¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œä½¿ç”¨æŒ‡å®šçš„åç¼€æ¨¡æ¿ã€‚
 	 * 
 	 * @param postfixPattern	Patten for the postfix to be appended, 
 	 * 							for example, <code>" (%d)"</code> or <code>"_%d"</code><br>
-	 * 							ºó×ºÄ£°æ£¬±ÈÈç"<code> (%d)</code>"»ò"<code>_%d</code>"¡£
+	 * 							åç¼€æ¨¡ç‰ˆï¼Œæ¯”å¦‚"<code> (%d)</code>"æˆ–"<code>_%d</code>"ã€‚
 	 */
 	public NameDeduplicator(String postfixPattern){
 		this.renamePattern = "%s" + postfixPattern;
-		nameSequencers = new PutOnGetMap<String, Sequencer>(new ConcurrentHashMap<String, Sequencer>(), Sequencer.class);
+		nameSequencers = new PutIfAbsentMap<String, Sequencer>(new ConcurrentHashMap<String, Sequencer>(), Sequencer.class);
 	}
 	
 	/**
 	 * Constructs an instance with <code>" (%d)"</code> as the postfix pattern.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬ÒÔ"<code> (%d)</code>"×÷Îªºó×ºÄ£°æ¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œä»¥"<code> (%d)</code>"ä½œä¸ºåç¼€æ¨¡ç‰ˆã€‚
 	 */
 	public NameDeduplicator(){
 		this(" (%d)");
@@ -56,14 +58,14 @@ public class NameDeduplicator {
 	
 	/**
 	 * Ensure a unique name, rename if needed.<br>
-	 * È·±£Ãû³Æ²»ÖØ¸´£¬Èç¹ûÓĞ±ØÒª¾Í¸ÄÃû¡£
+	 * ç¡®ä¿åç§°ä¸é‡å¤ï¼Œå¦‚æœæœ‰å¿…è¦å°±æ”¹åã€‚
 	 * <p>
 	 * This method is multi-threads safe.
 	 * <p>
-	 * Õâ¸ö·½·¨ÊÇ¶àÏß³Ì°²È«µÄ¡£
+	 * è¿™ä¸ªæ–¹æ³•æ˜¯å¤šçº¿ç¨‹å®‰å…¨çš„ã€‚
 	 * 
-	 * @param name	The original name<br>Ô­Ãû³Æ
-	 * @return		Same as the original name if or renamed<br>ÓëÔ­Ãû³ÆÏàÍ¬£¬»ò±»×Ô¶¯¸ÄÃû
+	 * @param name	The original name<br>åŸåç§°
+	 * @return		Same as the original name if or renamed<br>ä¸åŸåç§°ç›¸åŒï¼Œæˆ–è¢«è‡ªåŠ¨æ”¹å
 	 */
 	public String deduplicate(String name){
 		long id = nextId(name);
@@ -76,17 +78,17 @@ public class NameDeduplicator {
 	
 	/**
 	 * Get the next sequential id for specified name.<br>
-	 * È¡µÃÖ¸¶¨Ãû³ÆµÄÏÂÒ»¸ö²»ÖØ¸´IdÖµ¡£
+	 * å–å¾—æŒ‡å®šåç§°çš„ä¸‹ä¸€ä¸ªä¸é‡å¤Idå€¼ã€‚
 	 * <p>
 	 * For a specified name, the first time of invocation will return 0, 
 	 * the second time return 1, the third time return 2, so on and so forth.
 	 * This method is multi-threads safe.
 	 * <p>
-	 * ¶ÔÓÚÍ¬Ò»¸öÃû³Æ£¬µÚÒ»´Îµ÷ÓÃ·µ»ØµÄÊÇ0£¬µÚ¶ş´ÎÊÇ1£¬µÚÈı´ÎÊÇ2£¬ÒÀ´ËÀàÍÆ¡£
-	 * Õâ¸ö·½·¨ÊÇ¶àÏß³Ì°²È«µÄ¡£
+	 * å¯¹äºåŒä¸€ä¸ªåç§°ï¼Œç¬¬ä¸€æ¬¡è°ƒç”¨è¿”å›çš„æ˜¯0ï¼Œç¬¬äºŒæ¬¡æ˜¯1ï¼Œç¬¬ä¸‰æ¬¡æ˜¯2ï¼Œä¾æ­¤ç±»æ¨ã€‚
+	 * è¿™ä¸ªæ–¹æ³•æ˜¯å¤šçº¿ç¨‹å®‰å…¨çš„ã€‚
 	 * 
-	 * @param name	The specified name<br>Ö¸¶¨µÄÃû³Æ
-	 * @return		next sequential id<br>ÏÂÒ»¸ö²»ÖØ¸´IdÖµ
+	 * @param name	The specified name<br>æŒ‡å®šçš„åç§°
+	 * @return		next sequential id<br>ä¸‹ä¸€ä¸ªä¸é‡å¤Idå€¼
 	 */
 	public long nextId(String name){
 		return nameSequencers.get(name).next();

@@ -29,8 +29,8 @@ import java.util.Set;
  * &quot;*&quot; is supported as widecard to match
  * the file name name of all of the two formats; Inclusion of files via &quot;.include=&quot; 
  * syntax is also supported.<br>
- * ÔØÈëPropertiesµÄ¹¤¾ßÀà£»ËüÖ§³Ö´«Í³propertiesÎÄ¼ş¸ñÊ½£¨.properties£©ºÍĞÂµÄ{@link Properties#loadFromXML(InputStream) xml}¸ñÊ½£¨.xml£©£¬
- * Ò²Ö§³ÖÓÃ¡°*¡±×÷ÎªÍ¨Åä·ûÍ¬Ê±Æ¥ÅäÕâÁ½ÖÖ¸ñÊ½µÄÎÄ¼şºó×º£¬ÒÔ¼°Ö§³ÖÔÚÎÄ¼şÖĞÓÃ¡°.include=¡±°üº¬ÒıÓÃ±ğµÄÎÄ¼ş¡£
+ * è½½å…¥Propertiesçš„å·¥å…·ç±»ï¼›å®ƒæ”¯æŒä¼ ç»Ÿpropertiesæ–‡ä»¶æ ¼å¼ï¼ˆ.propertiesï¼‰å’Œæ–°çš„{@link Properties#loadFromXML(InputStream) xml}æ ¼å¼ï¼ˆ.xmlï¼‰ï¼Œ
+ * ä¹Ÿæ”¯æŒç”¨â€œ*â€ä½œä¸ºé€šé…ç¬¦åŒæ—¶åŒ¹é…è¿™ä¸¤ç§æ ¼å¼çš„æ–‡ä»¶åç¼€ï¼Œä»¥åŠæ”¯æŒåœ¨æ–‡ä»¶ä¸­ç”¨â€œ.include=â€åŒ…å«å¼•ç”¨åˆ«çš„æ–‡ä»¶ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -38,13 +38,13 @@ import java.util.Set;
 public class PropertiesLoader {
 	/**
 	 * The default inclusion keyword, which is &quot;.include&quot;.<br>
-	 * È±Ê¡µÄ°üº¬ÊôĞÔ¹Ø¼ü×Ö¡£Îª&quot;.include&quot;
+	 * ç¼ºçœçš„åŒ…å«å±æ€§å…³é”®å­—ã€‚ä¸º&quot;.include&quot;
 	 */
 	public static final String DEFAULT_INCLUDE_PROPERTY_NAME	= ".include";
 	/**
 	 * If more than one file need to be included, the delimiters that can
 	 * be used among file names, which is &quot;[ ,;\t]+include&quot;.<br>
-	 * Èç¹ûĞèÒª°üº¬¶à¸öÎÄ¼ş£¬ÎÄ¼şÃûÖ®¼äËù²ÉÓÃµÄ·Ö¸ô·û£¬Îª&quot;[ ,;\t]+include&quot;¡£
+	 * å¦‚æœéœ€è¦åŒ…å«å¤šä¸ªæ–‡ä»¶ï¼Œæ–‡ä»¶åä¹‹é—´æ‰€é‡‡ç”¨çš„åˆ†éš”ç¬¦ï¼Œä¸º&quot;[ ,;\t]+include&quot;ã€‚
 	 */
 	public static final String DELIMITERS 			= "[ ,;\t]+";
 
@@ -54,15 +54,15 @@ public class PropertiesLoader {
 	
 	/**
 	 * Create a new instance that locates properties files via relative path.<br>
-	 * ´´½¨Ò»¸öĞÂµÄÊµÀı£¬Ñ°ÕÒpropertiesÎÄ¼şµÄÊ±ºòÓÃÏà¶ÔÎ»ÖÃ¡£
+	 * åˆ›å»ºä¸€ä¸ªæ–°çš„å®ä¾‹ï¼Œå¯»æ‰¾propertiesæ–‡ä»¶çš„æ—¶å€™ç”¨ç›¸å¯¹ä½ç½®ã€‚
 	 * <p>
 	 * baseClass.{@link Class#getResourceAsStream(String)} will be used to read properties files.<br>
-	 * ¶ÁÈ¡propertiesÎÄ¼şµÄÊ±ºò½«Ê¹ÓÃbaseClass.{@link Class#getResourceAsStream(String)}¡£
+	 * è¯»å–propertiesæ–‡ä»¶çš„æ—¶å€™å°†ä½¿ç”¨baseClass.{@link Class#getResourceAsStream(String)}ã€‚
 	 * 
 	 * @param baseClass	the Class that its location will be used as the base when locating properties files.<br>
-	 * 					Õâ¸öÀàµÄÎ»ÖÃ½«»á×÷Îª»ù×¼Î»ÖÃÀ´Ñ°ÕÒpropertiesÎÄ¼ş¡£
+	 * 					è¿™ä¸ªç±»çš„ä½ç½®å°†ä¼šä½œä¸ºåŸºå‡†ä½ç½®æ¥å¯»æ‰¾propertiesæ–‡ä»¶ã€‚
 	 * @param replacePlaceHolders  if true, place holders will be replaced by system properties.<br>
-	 * 					Èç¹ûÎªtrue£¬ÔòÆäÖĞµÄÕ¼Î»±êÖ¾»á±»ÏµÍ³PropertiesËùÌæ´ú¡£
+	 * 					å¦‚æœä¸ºtrueï¼Œåˆ™å…¶ä¸­çš„å ä½æ ‡å¿—ä¼šè¢«ç³»ç»ŸPropertiesæ‰€æ›¿ä»£ã€‚
 	 * If running inside JBoss, it replace any occurrence of ${p} with the System.getProperty(p) value. 
 	 * If there is no such property p defined, then the ${p} reference will remain unchanged. 
 	 * If the property reference is of the form ${p:v} and there is no such property p, then 
@@ -79,13 +79,13 @@ public class PropertiesLoader {
 	
 	/**
 	 * Create a new instance that locates properties files via relative path.<br>
-	 * ´´½¨Ò»¸öĞÂµÄÊµÀı£¬Ñ°ÕÒpropertiesÎÄ¼şµÄÊ±ºòÓÃÏà¶ÔÎ»ÖÃ¡£
+	 * åˆ›å»ºä¸€ä¸ªæ–°çš„å®ä¾‹ï¼Œå¯»æ‰¾propertiesæ–‡ä»¶çš„æ—¶å€™ç”¨ç›¸å¯¹ä½ç½®ã€‚
 	 * <p>
 	 * baseClass.{@link Class#getResourceAsStream(String)} will be used to read properties files.<br>
-	 * ¶ÁÈ¡propertiesÎÄ¼şµÄÊ±ºò½«Ê¹ÓÃbaseClass.{@link Class#getResourceAsStream(String)}¡£
+	 * è¯»å–propertiesæ–‡ä»¶çš„æ—¶å€™å°†ä½¿ç”¨baseClass.{@link Class#getResourceAsStream(String)}ã€‚
 	 * 
 	 * @param baseClass	the Class that its location will be used as the base when locating properties files.<br>
-	 * 					Õâ¸öÀàµÄÎ»ÖÃ½«»á×÷Îª»ù×¼Î»ÖÃÀ´Ñ°ÕÒpropertiesÎÄ¼ş¡£
+	 * 					è¿™ä¸ªç±»çš„ä½ç½®å°†ä¼šä½œä¸ºåŸºå‡†ä½ç½®æ¥å¯»æ‰¾propertiesæ–‡ä»¶ã€‚
 	 */
 	public PropertiesLoader(Class<?> baseClass){
 		this(baseClass, true);
@@ -93,12 +93,12 @@ public class PropertiesLoader {
 	
 	/**
 	 * Create a new instance that locates properties files via absolute path.<br>
-	 * ´´½¨Ò»¸öĞÂµÄÊµÀı£¬Ñ°ÕÒpropertiesÎÄ¼şµÄÊ±ºòÓÃ¾ø¶ÔÎ»ÖÃ¡£
+	 * åˆ›å»ºä¸€ä¸ªæ–°çš„å®ä¾‹ï¼Œå¯»æ‰¾propertiesæ–‡ä»¶çš„æ—¶å€™ç”¨ç»å¯¹ä½ç½®ã€‚
 	 * <p>
 	 * Thread Context ClassLoader will be used to read properties files.<br>
-	 * ¶ÁÈ¡propertiesÎÄ¼şµÄÊ±ºò½«Ê¹ÓÃThread Context ClassLoaderg¡£
+	 * è¯»å–propertiesæ–‡ä»¶çš„æ—¶å€™å°†ä½¿ç”¨Thread Context ClassLoadergã€‚
 	 * @param replacePlaceHolders  if true, place holders will be replaced by system properties.<br>
-	 * 					Èç¹ûÎªtrue£¬ÔòÆäÖĞµÄÕ¼Î»±êÖ¾»á±»ÏµÍ³PropertiesËùÌæ´ú¡£
+	 * 					å¦‚æœä¸ºtrueï¼Œåˆ™å…¶ä¸­çš„å ä½æ ‡å¿—ä¼šè¢«ç³»ç»ŸPropertiesæ‰€æ›¿ä»£ã€‚
 	 * If running inside JBoss, it replace any occurrence of ${p} with the System.getProperty(p) value. 
 	 * If there is no such property p defined, then the ${p} reference will remain unchanged. 
 	 * If the property reference is of the form ${p:v} and there is no such property p, then 
@@ -114,10 +114,10 @@ public class PropertiesLoader {
 	
 	/**
 	 * Create a new instance that locates properties files via absolute path.<br>
-	 * ´´½¨Ò»¸öĞÂµÄÊµÀı£¬Ñ°ÕÒpropertiesÎÄ¼şµÄÊ±ºòÓÃ¾ø¶ÔÎ»ÖÃ¡£
+	 * åˆ›å»ºä¸€ä¸ªæ–°çš„å®ä¾‹ï¼Œå¯»æ‰¾propertiesæ–‡ä»¶çš„æ—¶å€™ç”¨ç»å¯¹ä½ç½®ã€‚
 	 * <p>
 	 * ClassLoader.{@link ClassLoader#getSystemResourceAsStream(String)} will be used to read properties files.<br>
-	 * ¶ÁÈ¡propertiesÎÄ¼şµÄÊ±ºò½«Ê¹ÓÃClassLoader.{@link ClassLoader#getSystemResourceAsStream(String)}¡£
+	 * è¯»å–propertiesæ–‡ä»¶çš„æ—¶å€™å°†ä½¿ç”¨ClassLoader.{@link ClassLoader#getSystemResourceAsStream(String)}ã€‚
 	 */
 	public PropertiesLoader(){
 		this(null, true);
@@ -125,8 +125,8 @@ public class PropertiesLoader {
 	
 	/**
 	 * Replace place holders in both keys and values with values defined in system properties.
-	 * @param props
-	 * @return
+	 * @param props		the input (before processing) which will not be altered during the processing.
+	 * @return		the output (after processing)
 	 */
 	protected Properties replacePlaceHolders(Properties props){
 		if (replacePlaceHolders){
@@ -146,9 +146,9 @@ public class PropertiesLoader {
 	
 	/**
 	 * Load properties from resource, without handling of the inclusion.<br>
-	 * ´ÓÖ¸¶¨µÄ×ÊÔ´ÖĞÔØÈëproperties£¬²»´¦Àí°üº¬¹ØÏµ¡£
+	 * ä»æŒ‡å®šçš„èµ„æºä¸­è½½å…¥propertiesï¼Œä¸å¤„ç†åŒ…å«å…³ç³»ã€‚
 	 * @param name	location of the properties file, which can ends with &quot;.*&quot;.<br>
-	 * 				propertiesÎÄ¼şµÄÎ»ÖÃ£¬¿ÉÒÔÒÔ&quot;.*&quot;½áÎ²¡£
+	 * 				propertiesæ–‡ä»¶çš„ä½ç½®ï¼Œå¯ä»¥ä»¥&quot;.*&quot;ç»“å°¾ã€‚
 	 * @return	null if not found, otherwise return the loaded properties
 	 * @throws IOException resource found, but error when reading
 	 * @throws InvalidPropertiesFormatException resource found, but with wrong format
@@ -194,11 +194,11 @@ public class PropertiesLoader {
 	
 	/**
 	 * (Internal usage only) Load properties from resource, with handling of the inclusion.<br>
-	 * £¨ÄÚ²¿Ê¹ÓÃ£©´ÓÖ¸¶¨µÄ×ÊÔ´ÖĞÔØÈëproperties£¬´¦Àí°üº¬¹ØÏµ¡£
+	 * ï¼ˆå†…éƒ¨ä½¿ç”¨ï¼‰ä»æŒ‡å®šçš„èµ„æºä¸­è½½å…¥propertiesï¼Œå¤„ç†åŒ…å«å…³ç³»ã€‚
 	 * @param name	location of the properties file, which can ends with &quot;.*&quot;.<br>
-	 * 				propertiesÎÄ¼şµÄÎ»ÖÃ£¬¿ÉÒÔÒÔ&quot;.*&quot;½áÎ²¡£
+	 * 				propertiesæ–‡ä»¶çš„ä½ç½®ï¼Œå¯ä»¥ä»¥&quot;.*&quot;ç»“å°¾ã€‚
 	 * @param includePropertyName	To override the default inclusion keyword.<br>	
-	 * 								Èç¹û²»ÏëÊ¹ÓÃÈ±Ê¡µÄ°üº¬ÊôĞÔ¹Ø¼ü×Ö£¬¿ÉÒÔÔÚÕâÀïÖ¸¶¨¡£
+	 * 								å¦‚æœä¸æƒ³ä½¿ç”¨ç¼ºçœçš„åŒ…å«å±æ€§å…³é”®å­—ï¼Œå¯ä»¥åœ¨è¿™é‡ŒæŒ‡å®šã€‚
 	 * @param history		names of the files that have been loaded before.
 	 * @return	null if not found, otherwise return the loaded properties
 	 * @throws IOException resource found, but error when reading
@@ -230,11 +230,11 @@ public class PropertiesLoader {
 	
 	/**
 	 * Load properties from resource, with handling of the inclusion.<br>
-	 * ´ÓÖ¸¶¨µÄ×ÊÔ´ÖĞÔØÈëproperties£¬´¦Àí°üº¬¹ØÏµ¡£
+	 * ä»æŒ‡å®šçš„èµ„æºä¸­è½½å…¥propertiesï¼Œå¤„ç†åŒ…å«å…³ç³»ã€‚
 	 * @param name	location of the properties file, which can ends with &quot;.*&quot;.<br>
-	 * 				propertiesÎÄ¼şµÄÎ»ÖÃ£¬¿ÉÒÔÒÔ&quot;.*&quot;½áÎ²¡£
+	 * 				propertiesæ–‡ä»¶çš„ä½ç½®ï¼Œå¯ä»¥ä»¥&quot;.*&quot;ç»“å°¾ã€‚
 	 * @param includePropertyName	To override the default inclusion keyword.<br>	
-	 * 								Èç¹û²»ÏëÊ¹ÓÃÈ±Ê¡µÄ°üº¬ÊôĞÔ¹Ø¼ü×Ö£¬¿ÉÒÔÔÚÕâÀïÖ¸¶¨¡£
+	 * 								å¦‚æœä¸æƒ³ä½¿ç”¨ç¼ºçœçš„åŒ…å«å±æ€§å…³é”®å­—ï¼Œå¯ä»¥åœ¨è¿™é‡ŒæŒ‡å®šã€‚
 	 * @return	null if not found, otherwise return the loaded properties
 	 * @throws IOException resource found, but error when reading
 	 * @throws InvalidPropertiesFormatException resource found, but with wrong format
@@ -245,9 +245,9 @@ public class PropertiesLoader {
 	
 	/**
 	 * Load properties from resource, with handling of the inclusion.<br>
-	 * ´ÓÖ¸¶¨µÄ×ÊÔ´ÖĞÔØÈëproperties£¬´¦Àí°üº¬¹ØÏµ¡£
+	 * ä»æŒ‡å®šçš„èµ„æºä¸­è½½å…¥propertiesï¼Œå¤„ç†åŒ…å«å…³ç³»ã€‚
 	 * @param name	location of the properties file, which can ends with &quot;.*&quot;.<br>
-	 * 				propertiesÎÄ¼şµÄÎ»ÖÃ£¬¿ÉÒÔÒÔ&quot;.*&quot;½áÎ²¡£
+	 * 				propertiesæ–‡ä»¶çš„ä½ç½®ï¼Œå¯ä»¥ä»¥&quot;.*&quot;ç»“å°¾ã€‚
 	 * @return	null if not found, otherwise return the loaded properties
 	 * @throws IOException resource found, but error when reading
 	 * @throws InvalidPropertiesFormatException resource found, but with wrong format

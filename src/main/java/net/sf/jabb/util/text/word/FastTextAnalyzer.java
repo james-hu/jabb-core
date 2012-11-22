@@ -22,7 +22,7 @@ import net.sf.jabb.util.text.KeywordMatcher;
 
 
 /**
- * »ùÓÚKeywordMatcher·Ö´ÊµÄÎÄ±¾·ÖÎöÆ÷¡£
+ * åŸºäºKeywordMatcheråˆ†è¯çš„æ–‡æœ¬åˆ†æå™¨ã€‚
  * <p>
  * Text Analyzer.
  * 

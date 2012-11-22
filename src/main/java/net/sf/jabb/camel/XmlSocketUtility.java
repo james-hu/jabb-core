@@ -28,8 +28,8 @@ import org.jboss.netty.handler.codec.string.StringEncoder;
 /**
  * This utility makes it convenient to provide XML protocol based socket interface 
  * (for example, SOAP over TCP rather than HTTP) in Camel.<br>
- * Õâ¸ö¹¤¾ßÌá¹©Ò»Ğ©·½±ãÊ¹ÓÃµÄ·½·¨£¬´Ó¶ø¿ÉÒÔÀûÓÃCamelÌá¹©»ùÓÚXMLµÄSocket½Ó¿Ú
- * £¨±ÈÈçSOAP over TCP¶ø²»ÊÇHTTP£©¡£
+ * è¿™ä¸ªå·¥å…·æä¾›ä¸€äº›æ–¹ä¾¿ä½¿ç”¨çš„æ–¹æ³•ï¼Œä»è€Œå¯ä»¥åˆ©ç”¨Camelæä¾›åŸºäºXMLçš„Socketæ¥å£
+ * ï¼ˆæ¯”å¦‚SOAP over TCPè€Œä¸æ˜¯HTTPï¼‰ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -42,31 +42,31 @@ public class XmlSocketUtility {
 	
 	/**
 	 * Creates a XML protocol based socket server in Camel.<br>
-	 * ÔÚCamelÖĞ£¬´´½¨Ò»¸ö»ùÓÚXMLµÄSocket½Ó¿Ú·şÎñÆ÷¡£
+	 * åœ¨Camelä¸­ï¼Œåˆ›å»ºä¸€ä¸ªåŸºäºXMLçš„Socketæ¥å£æœåŠ¡å™¨ã€‚
 	 * 
 	 * @param camelContext		CamelContext which must be based on CombinedRegistry, because additional entries must
 	 * 							be added to the Registry.<br>
-	 * 							CamelµÄContext£¬Ëü±ØĞëÓÃµÄÊÇCombinedRegistry£¬ÒòÎªÒªÍùRegistryÀï·Å¶«Î÷¡£
+	 * 							Camelçš„Contextï¼Œå®ƒå¿…é¡»ç”¨çš„æ˜¯CombinedRegistryï¼Œå› ä¸ºè¦å¾€Registryé‡Œæ”¾ä¸œè¥¿ã€‚
 	 * @param serverUri			URI of the socket server which will be used by Camel Netty component
 	 * 							to create an Endpoint.<br>
-	 * 							·şÎñÆ÷µÄURI£¬Ëü½«±»CamelµÄNetty×é¼şÓÃÀ´´´½¨Ò»¸öEndpoint¡£
+	 * 							æœåŠ¡å™¨çš„URIï¼Œå®ƒå°†è¢«Camelçš„Nettyç»„ä»¶ç”¨æ¥åˆ›å»ºä¸€ä¸ªEndpointã€‚
 	 *							 <p>For example: <code>tcp://localhost:9000</code>
 	 * @param syncFlag			The sync parameter that will be send to Camel Netty component, 
 	 * 							true means sync and false means async.<br>
-	 * 							´«µİ¸øCamel Netty×é¼şµÄsync²ÎÊı£¬true±íÊ¾Í¬²½£¬false±íÊ¾Òì²½¡£
+	 * 							ä¼ é€’ç»™Camel Nettyç»„ä»¶çš„syncå‚æ•°ï¼Œtrueè¡¨ç¤ºåŒæ­¥ï¼Œfalseè¡¨ç¤ºå¼‚æ­¥ã€‚
 	 * @param toUri				The Pipe that receives the messages, usually it should be either direct or seda.<br>
-	 * 							½ÓÊÕµ½µÄÏûÏ¢¶¼»á±»ËÍ¸øÕâ¸öPipe£¬Ò»°ãÀ´ËµËüÒªÃ´ÊÇdirect£¬ÒªÃ´ÊÇseda¡£
+	 * 							æ¥æ”¶åˆ°çš„æ¶ˆæ¯éƒ½ä¼šè¢«é€ç»™è¿™ä¸ªPipeï¼Œä¸€èˆ¬æ¥è¯´å®ƒè¦ä¹ˆæ˜¯directï¼Œè¦ä¹ˆæ˜¯sedaã€‚
 	 * @param topLevelTagName	Name of the top level tag that will be used to find the boundaries of XML messages.<br> 
-	 * 							±êÊ¶XMLÏûÏ¢¿ªÍ·ºÍ½áÎ²µÄ±êÇ©Ãû³Æ¡£
+	 * 							æ ‡è¯†XMLæ¶ˆæ¯å¼€å¤´å’Œç»“å°¾çš„æ ‡ç­¾åç§°ã€‚
 	 * @param messageCharset	Charset that the XML messages received are supposed to be encoded in.<br>
-	 * 							XMLÏûÏ¢µÄ×Ö·û±àÂë·½Ê½
+	 * 							XMLæ¶ˆæ¯çš„å­—ç¬¦ç¼–ç æ–¹å¼
 	 * @param maxMessageBytes	The maximum possible length of the XML messages received.<br>
-	 * 							½ÓÊÕµ½µÄXMLÏûÏ¢µÄ×î´ó¿ÉÄÜ³¤¶È
+	 * 							æ¥æ”¶åˆ°çš„XMLæ¶ˆæ¯çš„æœ€å¤§å¯èƒ½é•¿åº¦
 	 * @throws Exception 		Exception if the routes could not be created for whatever reason
 	 */
 	static public void addServer(CamelContext camelContext, final String serverUri, final boolean syncFlag, final String toUri, 
 			String topLevelTagName, Charset messageCharset, int maxMessageBytes) throws Exception {
-		// Netty ÓÃµÄencoder/decoder
+		// Netty ç”¨çš„encoder/decoder
 		XmlDecoder xmlDecoder = new XmlDecoder(maxMessageBytes, topLevelTagName, messageCharset);
 		StringEncoder stringEncoder = new StringEncoder(messageCharset);
 		
@@ -96,7 +96,7 @@ public class XmlSocketUtility {
 	
 	/**
 	 * Strips off the top level tag from XML string.<br>
-	 * ´ÓXML×Ö·û´®ÖĞÈ¥µô×îÉÏ²ãµÄTag¡£
+	 * ä»XMLå­—ç¬¦ä¸²ä¸­å»æ‰æœ€ä¸Šå±‚çš„Tagã€‚
 	 * 
 	 * @param xmlString	The XMl string to be processed
 	 * @return	The result string with top level tag removed.

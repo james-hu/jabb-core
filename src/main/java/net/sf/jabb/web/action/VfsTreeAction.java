@@ -129,9 +129,9 @@ public class VfsTreeAction extends ActionSupport  implements ModelDriven<JsTreeR
 	
 	/**
 	 * Populate a node.
-	 * @param root
-	 * @param file
-	 * @return
+	 * @param root		Relative root directory.
+	 * @param file		The file object.
+	 * @return	The node data structure which presents the file.
 	 * @throws FileSystemException
 	 */
 	protected JsTreeNodeData populateTreeNodeData(FileObject root, FileObject file) throws FileSystemException {
@@ -145,8 +145,8 @@ public class VfsTreeAction extends ActionSupport  implements ModelDriven<JsTreeR
 	}	
 	/**
 	 * It transforms FileObject into JsTreeNodeData.
-	 * @param file
-	 * @return
+	 * @param file  the file whose information will be encapsulated in the node data structure.
+	 * @return	The node data structure which presents the file.
 	 * @throws FileSystemException 
 	 */
 	protected JsTreeNodeData populateTreeNodeData(FileObject file, boolean noChild, String relativePath) throws FileSystemException {

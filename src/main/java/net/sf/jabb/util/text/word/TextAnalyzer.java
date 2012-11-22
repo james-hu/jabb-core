@@ -21,26 +21,26 @@ import java.util.TreeMap;
 
 /**
  * Text Analyzer; Result of the analysis will be hold in {@link AnalyzedText}.<br>
- * ÎÄ±¾·ÖÎöÆ÷£»·ÖÎöµÄ½á¹û»á·ÅÔÚ{@link AnalyzedText}ÖĞ¡£
+ * æ–‡æœ¬åˆ†æå™¨ï¼›åˆ†æçš„ç»“æœä¼šæ”¾åœ¨{@link AnalyzedText}ä¸­ã€‚
  * 
  * @author Zhengmao HU (James)
  *
  */
 public abstract class TextAnalyzer {
 	/**
-	 * Ê¹ÓÃcom.chenlb.mmseg4j.SimpleSeg½øĞĞ·Ö´Ê
+	 * ä½¿ç”¨com.chenlb.mmseg4j.SimpleSegè¿›è¡Œåˆ†è¯
 	 */
 	static public final int TYPE_MMSEG_SIMPLE = 1;
 	/**
-	 * Ê¹ÓÃcom.chenlb.mmseg4j.MaxWordSeg½øĞĞ·Ö´Ê
+	 * ä½¿ç”¨com.chenlb.mmseg4j.MaxWordSegè¿›è¡Œåˆ†è¯
 	 */
 	static public final int TYPE_MMSEG_MAXWORD = 2;
 	/**
-	 * Ê¹ÓÃcom.chenlb.mmseg4j.ComplexSeg½øĞĞ·Ö´Ê
+	 * ä½¿ç”¨com.chenlb.mmseg4j.ComplexSegè¿›è¡Œåˆ†è¯
 	 */
 	static public final int TYPE_MMSEG_COMPLEX = 3;
 	/**
-	 * Ê¹ÓÃKeywordMatcherÓë×Ô¶¨ÒåµÄ×Öµä±í½øĞĞ·Ö´Ê£¨ÊÔÑéÖĞ£¬ÉĞ²»ÍêÉÆ£©
+	 * ä½¿ç”¨KeywordMatcherä¸è‡ªå®šä¹‰çš„å­—å…¸è¡¨è¿›è¡Œåˆ†è¯ï¼ˆè¯•éªŒä¸­ï¼Œå°šä¸å®Œå–„ï¼‰
 	 */
 	static public final int TYPE_FAST = 4;
 	
@@ -50,13 +50,13 @@ public abstract class TextAnalyzer {
 	
 	/**
 	 * Create an instance of TextAnalyzer.<br>
-	 * ´´½¨Ò»¸öÎÄ±¾·ÖÎöÆ÷ÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªæ–‡æœ¬åˆ†æå™¨å®ä¾‹ã€‚
 	 * 
 	 * @param type				{@link #TYPE_MMSEG_SIMPLE} | {@link #TYPE_MMSEG_COMPLEX} | {@link #TYPE_MMSEG_MAXWORD} | {@link #TYPE_FAST}
-	 * @param dictionaryPath	×ÖµäÎÄ¼şÂ·¾¶£¬Èç¹ûÎªnull£¬Ôò±íÊ¾Ê¹ÓÃÈ±Ê¡Î»ÖÃµÄ×ÖµäÎÄ¼ş
-	 * @param keywordDefinitions	¹Ø¼ü´Ê×ÖµÄ¶¨Òå
-	 * @param lengthDefinitions		ÎÄ±¾³¤¶ÈÀà±ğ¶¨Òå
-	 * @return	A new instance of TextAnalyzer.<br>TextAnalyzerµÄÒ»¸öÊµÀı¡£
+	 * @param dictionaryPath	å­—å…¸æ–‡ä»¶è·¯å¾„ï¼Œå¦‚æœä¸ºnullï¼Œåˆ™è¡¨ç¤ºä½¿ç”¨ç¼ºçœä½ç½®çš„å­—å…¸æ–‡ä»¶
+	 * @param keywordDefinitions	å…³é”®è¯å­—çš„å®šä¹‰
+	 * @param lengthDefinitions		æ–‡æœ¬é•¿åº¦ç±»åˆ«å®šä¹‰
+	 * @return	A new instance of TextAnalyzer.<br>TextAnalyzerçš„ä¸€ä¸ªå®ä¾‹ã€‚
 	 */
 	static public TextAnalyzer createInstance(int type, 
 			String dictionaryPath, 
@@ -76,12 +76,12 @@ public abstract class TextAnalyzer {
 	
 	/**
 	 * Create an instance of TextAnalyzer.<br>
-	 * ´´½¨Ò»¸öÎÄ±¾·ÖÎöÆ÷ÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªæ–‡æœ¬åˆ†æå™¨å®ä¾‹ã€‚
 	 * 
 	 * @param type				{@link #TYPE_MMSEG_SIMPLE} | {@link #TYPE_MMSEG_COMPLEX} | {@link #TYPE_MMSEG_MAXWORD} | {@link #TYPE_FAST}
-	 * @param keywordDefinitions	¹Ø¼ü´Ê×ÖµÄ¶¨Òå
-	 * @param lengthDefinitions		ÎÄ±¾³¤¶ÈÀà±ğ¶¨Òå
-	 * @return	A new instance of TextAnalyzer.<br>TextAnalyzerµÄÒ»¸öÊµÀı¡£
+	 * @param keywordDefinitions	å…³é”®è¯å­—çš„å®šä¹‰
+	 * @param lengthDefinitions		æ–‡æœ¬é•¿åº¦ç±»åˆ«å®šä¹‰
+	 * @return	A new instance of TextAnalyzer.<br>TextAnalyzerçš„ä¸€ä¸ªå®ä¾‹ã€‚
 	 */
 	static public TextAnalyzer createInstance(int type, 
 			Map<String, ? extends Object> keywordDefinitions, 
@@ -91,10 +91,10 @@ public abstract class TextAnalyzer {
 
 	/**
 	 * Create an instance of TextAnalyzer.<br>
-	 * ´´½¨Ò»¸öÎÄ±¾·ÖÎöÆ÷ÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªæ–‡æœ¬åˆ†æå™¨å®ä¾‹ã€‚
 	 * 
 	 * @param type				{@link #TYPE_MMSEG_SIMPLE} | {@link #TYPE_MMSEG_COMPLEX} | {@link #TYPE_MMSEG_MAXWORD} | {@link #TYPE_FAST}
-	 * @return	A new instance of TextAnalyzer.<br>TextAnalyzerµÄÒ»¸öÊµÀı¡£
+	 * @return	A new instance of TextAnalyzer.<br>TextAnalyzerçš„ä¸€ä¸ªå®ä¾‹ã€‚
 	 */
 	static public TextAnalyzer createInstance(int type){
 		return createInstance(type, null, null, null);
@@ -103,10 +103,10 @@ public abstract class TextAnalyzer {
 	
 	/**
 	 * Constructor that will be used internally.<br>
-	 * ½ö¹©ÄÚ²¿Ê¹ÓÃµÄ¹¹Ôì·½·¨¡£
-	 * @param dictionaryPath		×ÖµäÎÄ¼şÂ·¾¶
-	 * @param keywordDefinitions	¹Ø¼ü´Ê×ÖµÄ¶¨Òå
-	 * @param lengthDefinitions		ÎÄ±¾³¤¶ÈÀà±ğ¶¨Òå
+	 * ä»…ä¾›å†…éƒ¨ä½¿ç”¨çš„æ„é€ æ–¹æ³•ã€‚
+	 * @param dictionaryPath		å­—å…¸æ–‡ä»¶è·¯å¾„
+	 * @param keywordDefinitions	å…³é”®è¯å­—çš„å®šä¹‰
+	 * @param lengthDefinitions		æ–‡æœ¬é•¿åº¦ç±»åˆ«å®šä¹‰
 	 */
 	protected TextAnalyzer(String dictionaryPath, 
 			Map<String, ? extends Object> keywordDefinitions, 
@@ -118,10 +118,10 @@ public abstract class TextAnalyzer {
 	}
 	
 	/**
-	 * ¶ÔÎÄ±¾½øĞĞ·ÖÎö¡£
-	 * @param text	´ı·ÖÎöµÄÎÄ±¾
-	 * @param lazy	ÊÇ·ñÑÓ³Ù·ÖÎö£¨ËùÎ½ÑÓ³ÙÊÇÖ¸Ö±µ½ÓÃµ½·ÖÎö½á¹ûµÄÊ±ºò²Å½øĞĞÊµÖÊĞÔ·ÖÎö£©
-	 * @return		·ÖÎö½á¹û
+	 * å¯¹æ–‡æœ¬è¿›è¡Œåˆ†æã€‚
+	 * @param text	å¾…åˆ†æçš„æ–‡æœ¬
+	 * @param lazy	æ˜¯å¦å»¶è¿Ÿåˆ†æï¼ˆæ‰€è°“å»¶è¿Ÿæ˜¯æŒ‡ç›´åˆ°ç”¨åˆ°åˆ†æç»“æœçš„æ—¶å€™æ‰è¿›è¡Œå®è´¨æ€§åˆ†æï¼‰
+	 * @return		åˆ†æç»“æœ
 	 */
 	public AnalyzedText analyze(String text, boolean lazy){
 		AnalyzedText result = new AnalyzedText(this, text);
@@ -134,17 +134,17 @@ public abstract class TextAnalyzer {
 	}
 	
 	/**
-	 * ¶ÔÎÄ±¾½øĞĞÁ¢¿Ì·ÖÎö£¬²»ÓÃlazy·½Ê½¡£
-	 * @param text	´ı·ÖÎöµÄÎÄ±¾
-	 * @return		·ÖÎö½á¹û
+	 * å¯¹æ–‡æœ¬è¿›è¡Œç«‹åˆ»åˆ†æï¼Œä¸ç”¨lazyæ–¹å¼ã€‚
+	 * @param text	å¾…åˆ†æçš„æ–‡æœ¬
+	 * @return		åˆ†æç»“æœ
 	 */
 	public AnalyzedText analyze(String text){
 		return analyze(text, false);
 	}
 	
 	/**
-	 * ½øĞĞÎÄ±¾³¤¶È·ÖÎö¡ª¡ª·ÖÎöÎÄ±¾µÄ³¤¶ÈÂäÔÚÄÄ¸öÀà±ğÇø¼ä¡£
-	 * @param aText		ÓÃÀ´»ñÈ¡Ô­Ê¼ÎÄ±¾ÒÔ¼°´æ·Å½á¹û
+	 * è¿›è¡Œæ–‡æœ¬é•¿åº¦åˆ†æâ€”â€”åˆ†ææ–‡æœ¬çš„é•¿åº¦è½åœ¨å“ªä¸ªç±»åˆ«åŒºé—´ã€‚
+	 * @param aText		ç”¨æ¥è·å–åŸå§‹æ–‡æœ¬ä»¥åŠå­˜æ”¾ç»“æœ
 	 */
 	void analyzeLength(AnalyzedText aText){
 		if (lengthDefinitions != null){
@@ -158,21 +158,21 @@ public abstract class TextAnalyzer {
 	}
 	
 	/**
-	 * ½øĞĞ·Ö´Ê¡ª¡ª½«ÎÄ±¾·Ö¸îÎªÒ»¸ö¸ö´Ê»ò×Ö¡£
-	 * @param aText		ÓÃÀ´»ñÈ¡Ô­Ê¼ÎÄ±¾ÒÔ¼°´æ·Å½á¹û
+	 * è¿›è¡Œåˆ†è¯â€”â€”å°†æ–‡æœ¬åˆ†å‰²ä¸ºä¸€ä¸ªä¸ªè¯æˆ–å­—ã€‚
+	 * @param aText		ç”¨æ¥è·å–åŸå§‹æ–‡æœ¬ä»¥åŠå­˜æ”¾ç»“æœ
 	 */
 	abstract void analyzeWords(AnalyzedText aText);
 	
 	/**
-	 * ½øĞĞ¹Ø¼ü´Ê×ÖÆ¥Åä¡£
-	 * @param aText	ÓÃÀ´»ñÈ¡Ô­Ê¼ÎÄ±¾ÒÔ¼°´æ·Å½á¹û
+	 * è¿›è¡Œå…³é”®è¯å­—åŒ¹é…ã€‚
+	 * @param aText	ç”¨æ¥è·å–åŸå§‹æ–‡æœ¬ä»¥åŠå­˜æ”¾ç»“æœ
 	 */
 	abstract void analyzeKeywords(AnalyzedText aText);
 	
 	/**
-	 * ÖØĞÂ¼ÓÔØÅäÖÃÊı¾İ¡£
-	 * @param keywordDefinitions	¹Ø¼ü´Ê¶¨Òå
-	 * @param lengthDefinitions		ÎÄ±¾³¤¶ÈÀà±ğ¶¨Òå
+	 * é‡æ–°åŠ è½½é…ç½®æ•°æ®ã€‚
+	 * @param keywordDefinitions	å…³é”®è¯å®šä¹‰
+	 * @param lengthDefinitions		æ–‡æœ¬é•¿åº¦ç±»åˆ«å®šä¹‰
 	 */
 	void reloadDefinitions(
 			Map<String, ? extends Object> keywordDefinitions, 

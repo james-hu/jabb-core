@@ -34,8 +34,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Êı¾İ¿âÁ¬½Ó¹¤¾ß£¬ËüÌá¹©ÓĞ¹ØÊı¾İ¿âÁ¬½Ó»ñÈ¡¡¢¹Ø±ÕµÄ·½·¨¡£
- * ËüÓÃµ½commons-loggingÀ´¼ÇÂ¼Ö´ĞĞÇé¿ö¡£
+ * æ•°æ®åº“è¿æ¥å·¥å…·ï¼Œå®ƒæä¾›æœ‰å…³æ•°æ®åº“è¿æ¥è·å–ã€å…³é—­çš„æ–¹æ³•ã€‚
+ * å®ƒç”¨åˆ°commons-loggingæ¥è®°å½•æ‰§è¡Œæƒ…å†µã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -61,7 +61,7 @@ public class ConnectionUtility {
 	}
 	
 	/**
-	 * ¶ÁÈ¡ÅäÖÃĞÅÏ¢
+	 * è¯»å–é…ç½®ä¿¡æ¯
 	 */
 	protected static void readConfiguration(){
 		PropertiesLoader propLoader = new PropertiesLoader(ConnectionUtility.class);
@@ -77,7 +77,7 @@ public class ConnectionUtility {
 	}
 	
 	/**
-	 * ¸ù¾İÅäÖÃĞÅÏ¢£¬³õÊ¼»¯DataSourceProvider¡£
+	 * æ ¹æ®é…ç½®ä¿¡æ¯ï¼Œåˆå§‹åŒ–DataSourceProviderã€‚
 	 */
 	protected static void setupDataSourceProviders(){
 		List<String> providerProperties = new LinkedList<String>();
@@ -108,7 +108,7 @@ public class ConnectionUtility {
 	}
 	
 	/**
-	 * ´ÓÖ¸¶¨µÄÂß¼­Êı¾İ¿âÔ´ÖĞ»ñÈ¡Êı¾İ¿âÁ¬½Ó¡£
+	 * ä»æŒ‡å®šçš„é€»è¾‘æ•°æ®åº“æºä¸­è·å–æ•°æ®åº“è¿æ¥ã€‚
 	 * @param source
 	 * @return the database connection
 	 * @throws SQLException
@@ -122,7 +122,7 @@ public class ConnectionUtility {
 	}
 	
 	/**
-	 * ÎªÖ¸¶¨µÄÂß¼­Êı¾İ¿âÔ´»ñÈ¡Êµ¼Ê¿ÉÓÃµÄDataSource¡£
+	 * ä¸ºæŒ‡å®šçš„é€»è¾‘æ•°æ®åº“æºè·å–å®é™…å¯ç”¨çš„DataSourceã€‚
 	 * @param source
 	 * @return the DataSource for that name
 	 */
@@ -143,8 +143,8 @@ public class ConnectionUtility {
 	}
 	
 	/**
-	 * ÎªÖ¸¶¨µÄÂß¼­Êı¾İ¿âÔ´´´½¨DataSource¡£
-	 * @param source	ÅäÖÃĞÅÏ¢
+	 * ä¸ºæŒ‡å®šçš„é€»è¾‘æ•°æ®åº“æºåˆ›å»ºDataSourceã€‚
+	 * @param source	é…ç½®ä¿¡æ¯
 	 * @return the DataSource created
 	 */
 	protected static DataSource createDataSource(String source){
@@ -179,9 +179,9 @@ public class ConnectionUtility {
 	}
 	
 	/**
-	 * »ñµÃStatement.executeBatch()ËùĞŞ¸ÄµÄ×Ü¼ÇÂ¼Êı¡£
-	 * @param batchExecuteResult	Statement.executeBatch()Ëù·µ»ØµÄÊı×é
-	 * @return  0»òÕıÊı£¬±íÊ¾×Ü¼ÇÂ¼Êı£»-2±íÊ¾Î´Öª£»ÆäÓà±íÊ¾executeBatch()Ö´ĞĞ³ö´í£»
+	 * è·å¾—Statement.executeBatch()æ‰€ä¿®æ”¹çš„æ€»è®°å½•æ•°ã€‚
+	 * @param batchExecuteResult	Statement.executeBatch()æ‰€è¿”å›çš„æ•°ç»„
+	 * @return  0æˆ–æ­£æ•°ï¼Œè¡¨ç¤ºæ€»è®°å½•æ•°ï¼›-2è¡¨ç¤ºæœªçŸ¥ï¼›å…¶ä½™è¡¨ç¤ºexecuteBatch()æ‰§è¡Œå‡ºé”™ï¼›
 	 */
 	public static int getBatchUpdateCount(int[] batchExecuteResult){
 		int result = 0;

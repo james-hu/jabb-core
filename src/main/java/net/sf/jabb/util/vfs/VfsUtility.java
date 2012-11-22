@@ -101,7 +101,7 @@ public class VfsUtility {
 	/**
 	 * Close both FileObject(s) and FileSystemManager.
 	 * @param fsManager	 The FileSystemManager to be closed. It can be null.
-	 * @param fo	The FileObjects to be closed. It can contain null.
+	 * @param fos	The FileObjects to be closed. It can contain null elements.
 	 */
 	static public void close(FileSystemManager fsManager, FileObject... fos){
 		close(fos);

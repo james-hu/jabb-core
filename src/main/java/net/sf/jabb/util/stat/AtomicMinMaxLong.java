@@ -19,7 +19,7 @@ package net.sf.jabb.util.stat;
 
 /**
  * The parent class for AtomicMinLong and AtomicMaxLong.<br>
- * AtomicMinLongºÍAtomicMaxLongµÄ¹«¹²µÄ¸¸Àà¡£
+ * AtomicMinLongå’ŒAtomicMaxLongçš„å…¬å…±çš„çˆ¶ç±»ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -35,7 +35,7 @@ abstract class AtomicMinMaxLong {
 	
 	/**
 	 * getCurrent value.<br>
-	 * »ñµÃµ±Ç°Öµ¡£
+	 * è·å¾—å½“å‰å€¼ã€‚
 	 * 
 	 * @return Current value.
 	 */
@@ -45,7 +45,7 @@ abstract class AtomicMinMaxLong {
 	
 	/**
 	 * getCurrent value.<br>
-	 * »ñµÃµ±Ç°Öµ¡£
+	 * è·å¾—å½“å‰å€¼ã€‚
 	 * 
 	 * @return Current value.
 	 */
@@ -55,7 +55,7 @@ abstract class AtomicMinMaxLong {
 	
 	/**
 	 * getCurrent value as int.<br>
-	 * ÒÔintÀàĞÍ»ñµÃµ±Ç°Öµ¡£
+	 * ä»¥intç±»å‹è·å¾—å½“å‰å€¼ã€‚
 	 * 
 	 * @return Current value as int.
 	 */
@@ -65,7 +65,7 @@ abstract class AtomicMinMaxLong {
 	
 	/**
 	 * Reset to initial status.<br>
-	 * »Ø¸´µ½³õÊ¼×´Ì¬¡£
+	 * å›å¤åˆ°åˆå§‹çŠ¶æ€ã€‚
 	 */
 	abstract public void reset();
 

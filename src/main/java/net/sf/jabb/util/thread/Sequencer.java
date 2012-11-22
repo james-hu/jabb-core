@@ -21,11 +21,11 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * It generates sequence of incremental numbers, ranging from 0 to Long.MAX_VALUE, 
  * without repeating or missing of any number.<br>
- * Éú³ÉĞòÁĞÊı×Ö£¬±£Ö¤²»ÖØ¸´½¥Ôö£¬·¶Î§´Ó0µ½Long.MAX_VALUE£¬Ñ­»·Íù¸´¡£
+ * ç”Ÿæˆåºåˆ—æ•°å­—ï¼Œä¿è¯ä¸é‡å¤æ¸å¢ï¼ŒèŒƒå›´ä»0åˆ°Long.MAX_VALUEï¼Œå¾ªç¯å¾€å¤ã€‚
  * <p>
  * It is multi-thread safe, and has high performance.
  * <p>
- * ËüÊÇÏß³Ì°²È«µÄ£¬¶øÇÒĞÔÄÜ¸ß¡£
+ * å®ƒæ˜¯çº¿ç¨‹å®‰å…¨çš„ï¼Œè€Œä¸”æ€§èƒ½é«˜ã€‚
  * 
  * @author Zhengmao HU (James)
  */
@@ -34,7 +34,7 @@ public class Sequencer {
 	
 	/**
 	 * Constructs an instance that generates numbers starting from specified value.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬ÇÒ³õÊ¼ÖµÎªÖ¸¶¨µÄÖµ¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œä¸”åˆå§‹å€¼ä¸ºæŒ‡å®šçš„å€¼ã€‚
 	 * 
 	 * @param initialValue	the first value that will be returned by next()
 	 */
@@ -44,7 +44,7 @@ public class Sequencer {
 	
 	/**
 	 * Constructs an instance that generates numbers starting from 0.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬ÇÒ³õÊ¼ÖµÎª0¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œä¸”åˆå§‹å€¼ä¸º0ã€‚
 	 * 
 	 */
 	public Sequencer(){
@@ -53,7 +53,7 @@ public class Sequencer {
 
 	/**
 	 * Gets the next number in sequence.<br>
-	 * »ñµÃÏÂÒ»¸öĞòÁĞÖµ¡£
+	 * è·å¾—ä¸‹ä¸€ä¸ªåºåˆ—å€¼ã€‚
 	 * 
 	 * @return	the next number in sequence
 	 */

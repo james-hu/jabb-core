@@ -26,12 +26,12 @@ import java.util.Map;
 /**
  * Given a text string to be tested, and list of matching strings, find out which matching string the
  * text string starts with.<br>
- * ¸ø¶¨Ò»¸ö´ı¼ì²éµÄURL×Ö·û´®£¬ÒÔ¼°Ò»Åú¿ªÍ·Æ¥Åä×Ö·û´®£¬¿´¿´´ı¼ì²éµÄURL×Ö·û´®ÒÔÄÄ¸öÆ¥Åä×Ö·û´®¿ªÍ·¡£
+ * ç»™å®šä¸€ä¸ªå¾…æ£€æŸ¥çš„URLå­—ç¬¦ä¸²ï¼Œä»¥åŠä¸€æ‰¹å¼€å¤´åŒ¹é…å­—ç¬¦ä¸²ï¼Œçœ‹çœ‹å¾…æ£€æŸ¥çš„URLå­—ç¬¦ä¸²ä»¥å“ªä¸ªåŒ¹é…å­—ç¬¦ä¸²å¼€å¤´ã€‚
  * <p>
  * The matching is case sensitive. If one matching string starts with another,
  * and the text string starts with them, then the longer one will be considered to be matched. 
  * <p>
- * Æ¥ÅäÊ±¶Ô´óĞ¡Ğ´Ãô¸Ğ¡£Èç¹ûÆ¥Åä×Ö·û´®Ö®¼ä»¥Ïà±¥º¬£¬ÔòÆ¥ÅäÆäÖĞ×î³¤µÄ¡£
+ * åŒ¹é…æ—¶å¯¹å¤§å°å†™æ•æ„Ÿã€‚å¦‚æœåŒ¹é…å­—ç¬¦ä¸²ä¹‹é—´äº’ç›¸é¥±å«ï¼Œåˆ™åŒ¹é…å…¶ä¸­æœ€é•¿çš„ã€‚
  * 
  * <p>
  * <ul>
@@ -39,14 +39,14 @@ import java.util.Map;
  * 	<li>Matching strings should not contain protocol string.</li>
  * 	<li>"*" can be used at the beginning of matching string as wide card to match one or more
  * 		domain segments. For example, *.sina.com matches
- * 		www.sina.com, news.sina.com, image.news.sina.com, h1.image.news.sina.com¡£</li>
+ * 		www.sina.com, news.sina.com, image.news.sina.com, h1.image.news.sina.comã€‚</li>
  * </ul>
  * <p>
  * <ul>
- * 	<li>±»Æ¥ÅäµÄURL¿ÉÒÔ°üº¬Ğ­ÒéÍ·£¨±ÈÈç¡°http://¡±£©£¬Ò²¿ÉÒÔ²»°üº¬¡£</li>
- * 	<li>Æ¥ÅäÓÃµÄ×Ö·û´®²»Ó¦°üº¬Ğ­ÒéÍ·¡£</li>
- * 	<li>Æ¥ÅäÓÃµÄ×Ö·û´®ÔÚ¿É¿ªÍ·Ê¹ÓÃÍ¨Åä·û¡°*.¡±£¬±íÊ¾Æ¥ÅäÒ»¸ö»ò¶à¸öÓòÃû¶Î¡£±ÈÈç£¬*.sina.com¿ÉÒÔÆ¥Åä
- * 		www.sina.com, news.sina.com, image.news.sina.com, h1.image.news.sina.com¡£</li>
+ * 	<li>è¢«åŒ¹é…çš„URLå¯ä»¥åŒ…å«åè®®å¤´ï¼ˆæ¯”å¦‚â€œhttp://â€ï¼‰ï¼Œä¹Ÿå¯ä»¥ä¸åŒ…å«ã€‚</li>
+ * 	<li>åŒ¹é…ç”¨çš„å­—ç¬¦ä¸²ä¸åº”åŒ…å«åè®®å¤´ã€‚</li>
+ * 	<li>åŒ¹é…ç”¨çš„å­—ç¬¦ä¸²åœ¨å¯å¼€å¤´ä½¿ç”¨é€šé…ç¬¦â€œ*.â€ï¼Œè¡¨ç¤ºåŒ¹é…ä¸€ä¸ªæˆ–å¤šä¸ªåŸŸåæ®µã€‚æ¯”å¦‚ï¼Œ*.sina.comå¯ä»¥åŒ¹é…
+ * 		www.sina.com, news.sina.com, image.news.sina.com, h1.image.news.sina.comã€‚</li>
  * </ul>
  * 
  * @author Zhengmao HU (James)
@@ -57,14 +57,14 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 
 	/**
 	 * Create a new instance according to matching strings and their corresponding attachment objects.<br>
-	 * ¸ù¾İÆ¥Åä×Ö·û´®¡¢Æ¥Åä×Ö·û´®Ëù¶ÔÓ¦µÄ¸½¼ş¶ÔÏó£¬´´½¨Ò»¸öĞÂµÄÊµÀı¡£
+	 * æ ¹æ®åŒ¹é…å­—ç¬¦ä¸²ã€åŒ¹é…å­—ç¬¦ä¸²æ‰€å¯¹åº”çš„é™„ä»¶å¯¹è±¡ï¼Œåˆ›å»ºä¸€ä¸ªæ–°çš„å®ä¾‹ã€‚
 	 * <p>
 	 * When initializing internal data structure, choose to consume more memory for better matching speed.
 	 * <p>
-	 * ÔÚ´´½¨ÄÚ²¿Êı¾İ½á¹¹µÄÊ±ºò£¬Ñ¡ÔñÕ¼ÓÃ¸ü¶àÄÚ´æ£¬¶ø»»È¡ËÙ¶ÈÉÏµÄÌáÉı¡£
+	 * åœ¨åˆ›å»ºå†…éƒ¨æ•°æ®ç»“æ„çš„æ—¶å€™ï¼Œé€‰æ‹©å ç”¨æ›´å¤šå†…å­˜ï¼Œè€Œæ¢å–é€Ÿåº¦ä¸Šçš„æå‡ã€‚
 	 * 
-	 * @param matchingDefinitions	KeyÊÇÆ¥Åä×Ö·û´®£¬ValueÊÇ¸½¼ş¶ÔÏó¡£
-	 * 					µ±½øĞĞÆ¥Åä¼ì²éµÄÊ±ºò£¬·µ»Ø¸½¼ş¶ÔÏóÀ´±êÊ¶ÄÄÒ»¸öÆ¥Åä×Ö·û´®±»Æ¥ÅäÉÏÁË¡£
+	 * @param matchingDefinitions	Keyæ˜¯åŒ¹é…å­—ç¬¦ä¸²ï¼ŒValueæ˜¯é™„ä»¶å¯¹è±¡ã€‚
+	 * 					å½“è¿›è¡ŒåŒ¹é…æ£€æŸ¥çš„æ—¶å€™ï¼Œè¿”å›é™„ä»¶å¯¹è±¡æ¥æ ‡è¯†å“ªä¸€ä¸ªåŒ¹é…å­—ç¬¦ä¸²è¢«åŒ¹é…ä¸Šäº†ã€‚
 	 * 					<p>
 	 * 					Key is the matching string, Value is its associated attachment object.
 	 * 					When the heading string is matched, the attachment object will be returned
@@ -76,15 +76,15 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 
 	/**
 	 * Create a new instance according to matching strings and their corresponding attachment objects.<br>
-	 * ¸ù¾İÆ¥Åä×Ö·û´®¡¢Æ¥Åä×Ö·û´®Ëù¶ÔÓ¦µÄ¸½¼ş¶ÔÏó£¬´´½¨Ò»¸öĞÂµÄÊµÀı¡£
+	 * æ ¹æ®åŒ¹é…å­—ç¬¦ä¸²ã€åŒ¹é…å­—ç¬¦ä¸²æ‰€å¯¹åº”çš„é™„ä»¶å¯¹è±¡ï¼Œåˆ›å»ºä¸€ä¸ªæ–°çš„å®ä¾‹ã€‚
 	 * 
-	 * @param matchingDefinitions	KeyÊÇÆ¥Åä×Ö·û´®£¬ValueÊÇ¸½¼ş¶ÔÏó¡£
-	 * 					µ±½øĞĞÆ¥Åä¼ì²éµÄÊ±ºò£¬·µ»Ø¸½¼ş¶ÔÏóÀ´±êÊ¶ÄÄÒ»¸öÆ¥Åä×Ö·û´®±»Æ¥ÅäÉÏÁË¡£
+	 * @param matchingDefinitions	Keyæ˜¯åŒ¹é…å­—ç¬¦ä¸²ï¼ŒValueæ˜¯é™„ä»¶å¯¹è±¡ã€‚
+	 * 					å½“è¿›è¡ŒåŒ¹é…æ£€æŸ¥çš„æ—¶å€™ï¼Œè¿”å›é™„ä»¶å¯¹è±¡æ¥æ ‡è¯†å“ªä¸€ä¸ªåŒ¹é…å­—ç¬¦ä¸²è¢«åŒ¹é…ä¸Šäº†ã€‚
 	 * 					<p>
 	 * 					Key is the matching string, Value is its associated attachment object.
 	 * 					When the heading string is matched, the attachment object will be returned
 	 * 					as identifier.
-	 * @param moreSpaceForSpeed  ÊÇ·ñÕ¼ÓÃ¸ü¶àÄÚ´æ£¬¶ø»»È¡ËÙ¶ÈÉÏµÄÌáÉı¡£
+	 * @param moreSpaceForSpeed  æ˜¯å¦å ç”¨æ›´å¤šå†…å­˜ï¼Œè€Œæ¢å–é€Ÿåº¦ä¸Šçš„æå‡ã€‚
 	 * 								<br>Whether or not to consume
 	 * 								more memory for better matching speed.
 	 */
@@ -95,9 +95,9 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 	/**
 	 * Create a copy, the copy will have exactly the same matching 
 	 * definitions as the original copy.<br>
-	 * ´´½¨Ò»¸ö¸±±¾£¬Õâ¸ö¸±±¾ÓëÔ­ÏÈµÄ¶ÔÏó¾ßÓĞÍêÈ«ÏàÍ¬Æ¥Åä·½Ê½¡£
+	 * åˆ›å»ºä¸€ä¸ªå‰¯æœ¬ï¼Œè¿™ä¸ªå‰¯æœ¬ä¸åŸå…ˆçš„å¯¹è±¡å…·æœ‰å®Œå…¨ç›¸åŒåŒ¹é…æ–¹å¼ã€‚
 	 * 
-	 * @param toBeCopied	Ô­±¾¡£<br>The original copy.
+	 * @param toBeCopied	åŸæœ¬ã€‚<br>The original copy.
 	 */
 	public UrlStartWithMatcher(UrlStartWithMatcher toBeCopied) {
 		super(toBeCopied);
@@ -105,23 +105,23 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 
 	/**
 	 * Normalize matching definitions according to requirements of {@link StartWithMatcher}.<br>
-	 * ¸ù¾İ{@link StartWithMatcher}µÄĞèÒªÀ´¹æ·¶»¯Æ¥ÅäÌõ¼ş¶¨Òå¡£
+	 * æ ¹æ®{@link StartWithMatcher}çš„éœ€è¦æ¥è§„èŒƒåŒ–åŒ¹é…æ¡ä»¶å®šä¹‰ã€‚
 	 * 
-	 * @param matchingDefinitions	KeyÊÇÆ¥Åä×Ö·û´®£¬ValueÊÇ¸½¼ş¶ÔÏó¡£
-	 * 					µ±½øĞĞÆ¥Åä¼ì²éµÄÊ±ºò£¬·µ»Ø¸½¼ş¶ÔÏóÀ´±êÊ¶ÄÄÒ»¸öÆ¥Åä×Ö·û´®±»Æ¥ÅäÉÏÁË¡£
+	 * @param matchingDefinitions	Keyæ˜¯åŒ¹é…å­—ç¬¦ä¸²ï¼ŒValueæ˜¯é™„ä»¶å¯¹è±¡ã€‚
+	 * 					å½“è¿›è¡ŒåŒ¹é…æ£€æŸ¥çš„æ—¶å€™ï¼Œè¿”å›é™„ä»¶å¯¹è±¡æ¥æ ‡è¯†å“ªä¸€ä¸ªåŒ¹é…å­—ç¬¦ä¸²è¢«åŒ¹é…ä¸Šäº†ã€‚
 	 * 					<p>
 	 * 					Key is the matching string, Value is its associated attachment object.
 	 * 					When the matching string is matched, the attachment object will be returned
 	 * 					as identifier.
-	 * @return	{@link StartWithMatcher}ËùĞèµÄÆ¥ÅäÌõ¼ş¶¨Òå¡£
+	 * @return	{@link StartWithMatcher}æ‰€éœ€çš„åŒ¹é…æ¡ä»¶å®šä¹‰ã€‚
 	 * 			<br>Matching definitions for usage of {@link StartWithMatcher}.
-	 * @param moreSpaceForSpeed  ÊÇ·ñÕ¼ÓÃ¸ü¶àÄÚ´æ£¬¶ø»»È¡ËÙ¶ÈÉÏµÄÌáÉı¡£
+	 * @param moreSpaceForSpeed  æ˜¯å¦å ç”¨æ›´å¤šå†…å­˜ï¼Œè€Œæ¢å–é€Ÿåº¦ä¸Šçš„æå‡ã€‚
 	 * 								<br>Whether or not to consume
 	 * 								more memory for better matching speed.
-	 * @return	Normalized matching definitions<br>¹æ·¶»¯ÁËµÄÆ¥ÅäÌõ¼ş¶¨Òå
+	 * @return	Normalized matching definitions<br>è§„èŒƒåŒ–äº†çš„åŒ¹é…æ¡ä»¶å®šä¹‰
 	 */
 	static protected List<MatchingDefinition> normalizeMatchingDefinitions(Map<String, ? extends Object> matchingDefinitions, boolean moreSpaceForSpeed){
-		//ÏÈ·Ö³ÉÁ½¸öÆ¥Åä²½Öè
+		//å…ˆåˆ†æˆä¸¤ä¸ªåŒ¹é…æ­¥éª¤
 		Map<String, UrlStartWithMatcherStep2> step1 = new HashMap<String, UrlStartWithMatcherStep2>();
 		for (Map.Entry<String, ? extends Object> e: matchingDefinitions.entrySet()){
 			String[] splited = splitURL(e.getKey());
@@ -136,12 +136,12 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 			char c1 = k >=1 ? reversedBeforePart.charAt(k-1) : 0;
 			char c2 = k >=2 ? reversedBeforePart.charAt(k-2) : 0;
 			if (c1 == '*' && c2 == '.'){
-				step1Example = reversedBeforePart.substring(0, k - 1);	//µãºÅÒªÁôÏÂ
+				step1Example = reversedBeforePart.substring(0, k - 1);	//ç‚¹å·è¦ç•™ä¸‹
 				step1Pattern = escapeForRegExp(step1Example); 
 				step1PatternUnescaped = step1Example;
 			}else{
 				step1Example = reversedBeforePart + "$";
-				step1Pattern = escapeForRegExp(reversedBeforePart) + "$"; //¼ÓÒ»¸öÖÕ½á·û£¬ÊµÏÖ¾«È·Æ¥Åä
+				step1Pattern = escapeForRegExp(reversedBeforePart) + "$"; //åŠ ä¸€ä¸ªç»ˆç»“ç¬¦ï¼Œå®ç°ç²¾ç¡®åŒ¹é…
 				step1PatternUnescaped = step1Example;
 			}
 			
@@ -163,22 +163,22 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 			}
 		}
 		
-		// Èç¹û±¾patternÄÜ±»ÆäËûpatternËùÆ¥Åä£¬ÔòÒª¶îÍâÉèÖÃ
+		// å¦‚æœæœ¬patternèƒ½è¢«å…¶ä»–patternæ‰€åŒ¹é…ï¼Œåˆ™è¦é¢å¤–è®¾ç½®
 		for (UrlStartWithMatcherStep2 step2 : step1.values()){
 			String example = step2.step1Example;
 				for (UrlStartWithMatcherStep2 otherStep2: step1.values()){
 					//UrlStartWithMatcherStep2 otherStep2 = step1.get(otherStep2Pattern);
 					if (step2 != otherStep2){
 						String otherExample = otherStep2.step1Example;
-						boolean matched = false; //ÕâÀïÎŞĞè¿¼ÂÇĞÔÄÜ
-						if (example.endsWith(".")){		//±ÈÈçmoc.anis.swen.
-							if (otherExample.endsWith(".")){	//±ÈÈçmoc.anis.
+						boolean matched = false; //è¿™é‡Œæ— éœ€è€ƒè™‘æ€§èƒ½
+						if (example.endsWith(".")){		//æ¯”å¦‚moc.anis.swen.
+							if (otherExample.endsWith(".")){	//æ¯”å¦‚moc.anis.
 								if (example.startsWith(otherExample)){
 									matched = true;
 								}
 							}
-						} else {	//±ÈÈç moc.anis.swen$
-							if (example.startsWith(otherExample)){	//±ÈÈçmoc.anis.
+						} else {	//æ¯”å¦‚ moc.anis.swen$
+							if (example.startsWith(otherExample)){	//æ¯”å¦‚moc.anis.
 								matched = true;
 							}
 						}
@@ -217,12 +217,12 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 
 	/**
 	 * Find out which matching string matches the URL. URL can start with protocol (such as "http://"), or not.<br>
-	 * ½øĞĞÆ¥ÅäÅĞ¶Ï£¬URL¿ÉÒÔ°üº¬Ğ­ÒéÍ·£¬Ò²¿ÉÒÔ²»°üº¬£¬Æ¥ÅäÊ±¶Ô´óĞ¡Ğ´²»Ãô¸Ğ¡£
+	 * è¿›è¡ŒåŒ¹é…åˆ¤æ–­ï¼ŒURLå¯ä»¥åŒ…å«åè®®å¤´ï¼Œä¹Ÿå¯ä»¥ä¸åŒ…å«ï¼ŒåŒ¹é…æ—¶å¯¹å¤§å°å†™ä¸æ•æ„Ÿã€‚
 	 * <p>
 	 * Matching is case insensitive.
 	 * 
-	 * @param url	ĞèÒª½øĞĞÆ¥ÅäÅĞ¶ÏµÄURL<br>The URL need to be tested.
-	 * @return	Æ¥Åäµ½µÄ×Ö·û´®Ëù¶ÔÓ¦µÄ¸½¼ş£¬Èç¹ûÕÒ²»µ½ÈÎºÎÆ¥Åä£¬Ôò·µ»Ønull
+	 * @param url	éœ€è¦è¿›è¡ŒåŒ¹é…åˆ¤æ–­çš„URL<br>The URL need to be tested.
+	 * @return	åŒ¹é…åˆ°çš„å­—ç¬¦ä¸²æ‰€å¯¹åº”çš„é™„ä»¶ï¼Œå¦‚æœæ‰¾ä¸åˆ°ä»»ä½•åŒ¹é…ï¼Œåˆ™è¿”å›null
 	 * 			<br>The corresponding attachment object of the matching string that matches the URL.
 	 * 			Return null if no matching found.
 	 */
@@ -240,29 +240,29 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 	}
 	
 	/**
-	 * ½«URL²ğ³ÉÁ½¿é£º·´ĞòºóµÄĞ±ÏßÇ°ÃæµÄÖ÷»ú¡¢¶Ë¿ÚºÍÕÊºÅ£»Ğ±ÏßºóÃæµÄÂ·¾¶ºÍ²ÎÊı¡£
-	 * ±ÈÈç¶ÔÓÚhttp://www.news.com/read/daily/headline.html£¬·µ»ØµÄÊÇ£º
-	 * moc.swen.wwwºÍread/daily/headline.htmlÁ½Ïî¡£
+	 * å°†URLæ‹†æˆä¸¤å—ï¼šååºåçš„æ–œçº¿å‰é¢çš„ä¸»æœºã€ç«¯å£å’Œå¸å·ï¼›æ–œçº¿åé¢çš„è·¯å¾„å’Œå‚æ•°ã€‚
+	 * æ¯”å¦‚å¯¹äºhttp://www.news.com/read/daily/headline.htmlï¼Œè¿”å›çš„æ˜¯ï¼š
+	 * moc.swen.wwwå’Œread/daily/headline.htmlä¸¤é¡¹ã€‚
 	 *
-	 * @param url	URL£¬¿ÉÒÔ´øhttp://£¬Ò²¿É²»´ø
-	 * @return	µÚÒ»ÏîÊÇ·´ĞòºóµÄĞ±ÏßÇ°ÃæµÄ£¬µÚ¶şÏîÊÇĞ±ÏßºóÃæµÄ¡£¶øÇÒÒÑ¾­±»×ªÎªĞ¡Ğ´¡£
+	 * @param url	URLï¼Œå¯ä»¥å¸¦http://ï¼Œä¹Ÿå¯ä¸å¸¦
+	 * @return	ç¬¬ä¸€é¡¹æ˜¯ååºåçš„æ–œçº¿å‰é¢çš„ï¼Œç¬¬äºŒé¡¹æ˜¯æ–œçº¿åé¢çš„ã€‚è€Œä¸”å·²ç»è¢«è½¬ä¸ºå°å†™ã€‚
 	 */
 	static protected String[] splitURL(String url){
 		String beforePart;
 		String afterPart;
 		String[] l = new String[2];
 		int protocolEnd = url.indexOf("://");
-		if (protocolEnd == -1){	//Èç¹ûÃ»ÓĞĞ­ÒéĞÅÏ¢
+		if (protocolEnd == -1){	//å¦‚æœæ²¡æœ‰åè®®ä¿¡æ¯
 			protocolEnd = -3;
 		}
 		int pathStart = url.indexOf("/", protocolEnd + 3);
-		if (pathStart == -1){//Ã»Â·¾¶ĞÅÏ¢
+		if (pathStart == -1){//æ²¡è·¯å¾„ä¿¡æ¯
 			pathStart = url.length();
 			afterPart = "";
 		}else{
-			afterPart = url.substring(pathStart+1).toLowerCase();		// Ğ±ÏßºóµÄÂ·¾¶ºÍ²ÎÊı
+			afterPart = url.substring(pathStart+1).toLowerCase();		// æ–œçº¿åçš„è·¯å¾„å’Œå‚æ•°
 		}
-		beforePart = url.substring(protocolEnd + 3, pathStart).toLowerCase();	// Ğ±ÏßÇ°µÄÖ÷»ú¡¢¶Ë¿ÚºÍÕÊºÅ
+		beforePart = url.substring(protocolEnd + 3, pathStart).toLowerCase();	// æ–œçº¿å‰çš„ä¸»æœºã€ç«¯å£å’Œå¸å·
 		
 		String reversedBeforePart = new StringBuffer(beforePart).reverse().toString();
 		l[0] = reversedBeforePart;
@@ -273,19 +273,19 @@ public class UrlStartWithMatcher extends StartWithMatcher {
 }
 
 /**
- * µÚ¶ş½×¶ÎµÄÆ¥Åä¡£µÚÒ»½×¶ÎÊÇ¶ÔĞ±ÏßÇ°ÃæµÄ½øĞĞÆ¥Åä£¬µÚ¶ş½×¶ÎÊÇÕë¶ÔĞ±ÏßºóÃæµÄ¡£
+ * ç¬¬äºŒé˜¶æ®µçš„åŒ¹é…ã€‚ç¬¬ä¸€é˜¶æ®µæ˜¯å¯¹æ–œçº¿å‰é¢çš„è¿›è¡ŒåŒ¹é…ï¼Œç¬¬äºŒé˜¶æ®µæ˜¯é’ˆå¯¹æ–œçº¿åé¢çš„ã€‚
  *
  * @author Zhengmao HU (James)
  */
 class UrlStartWithMatcherStep2 implements Serializable{
 	private static final long serialVersionUID = 2909200683816055940L;
 	boolean moreSpaceForSpeed;
-	boolean noStep2;	// ÊÇ·ñ²»ÔÙĞèÒª½øĞĞµÚ¶ş²½Æ¥Åä
+	boolean noStep2;	// æ˜¯å¦ä¸å†éœ€è¦è¿›è¡Œç¬¬äºŒæ­¥åŒ¹é…
 	String step1PatternUnescapged;
 	String step1Example;
-	Object step1Attachment; 	//½öµ±noStep2ÎªtrueÊ±ÓĞÒâÒå
-	Map<String, Object> patterns;	// ½öµ±noStep2ÎªfalseÊ±ÓĞÒâÒå
-	Map<String, Object> additionalStep1Patterns;	// ½öµ±step1µÄpatternÄÜ±»ÆäËûstep1 patternÆ¥ÅäÉÏµÄÊ±ºò
+	Object step1Attachment; 	//ä»…å½“noStep2ä¸ºtrueæ—¶æœ‰æ„ä¹‰
+	Map<String, Object> patterns;	// ä»…å½“noStep2ä¸ºfalseæ—¶æœ‰æ„ä¹‰
+	Map<String, Object> additionalStep1Patterns;	// ä»…å½“step1çš„patternèƒ½è¢«å…¶ä»–step1 patternåŒ¹é…ä¸Šçš„æ—¶å€™
 	
 	StringStartWithMatcher matcher;
 	StringStartWithMatcher additionalStep1Matcher;

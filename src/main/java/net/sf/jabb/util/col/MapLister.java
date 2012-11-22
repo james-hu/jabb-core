@@ -21,7 +21,7 @@ import java.util.TreeMap;
 
 /**
  * An utility to list the content of the Map in a formatted manner.<br>
- * °ÑMapÀïµÄÄÚÈİ¸ñÊ½»¯Êä³öµÄ¹¤¾ß¡£
+ * æŠŠMapé‡Œçš„å†…å®¹æ ¼å¼åŒ–è¾“å‡ºçš„å·¥å…·ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -30,13 +30,13 @@ public class MapLister {
 	/**
 	 * Print the content of the Map in a newly created String, 
 	 * entries are sorted by key,  formatted as "key\t= value\n".<br>
-	 * °ÑMapÀïµÄÄÚÈİÁĞÔÚStringÀï£¬MapÀïµÄÃ¿¸öentryÕ¼Ò»ĞĞ£¬°´keyÅÅĞò£¬
-	 * Ã¿ĞĞµÄ¸ñÊ½Îª¡°key\t= value\n¡±¡£
+	 * æŠŠMapé‡Œçš„å†…å®¹åˆ—åœ¨Stringé‡Œï¼ŒMapé‡Œçš„æ¯ä¸ªentryå ä¸€è¡Œï¼ŒæŒ‰keyæ’åºï¼Œ
+	 * æ¯è¡Œçš„æ ¼å¼ä¸ºâ€œkey\t= value\nâ€ã€‚
 	 * 
 	 * @param map	The Map object for which the content need to be listed.<br>
-	 * 				ĞèÒªÁĞ³öÄÚÈİµÄMap¶ÔÏó
+	 * 				éœ€è¦åˆ—å‡ºå†…å®¹çš„Mapå¯¹è±¡
 	 * @return 		A String that holds formated content of the Map.<br>
-	 * 				º¬ÓĞ¸ñÊ½»¯¹ıµÄMapÄÚÈİµÄString
+	 * 				å«æœ‰æ ¼å¼åŒ–è¿‡çš„Mapå†…å®¹çš„String
 	 */
 	public static String listToString(Map<?, ?> map){
 		if (map == null){

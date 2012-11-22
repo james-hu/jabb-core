@@ -17,7 +17,7 @@ limitations under the License.
 package net.sf.jabb.util.exp;
 
 /**
- * ±È½Ï²Ù×÷µÄÀàĞÍ³£Á¿¶¨Òå¡£
+ * æ¯”è¾ƒæ“ä½œçš„ç±»å‹å¸¸é‡å®šä¹‰ã€‚
  * <p>
  * Constants of the compare operations.
  * 

@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2011 Zhengmao HU (James)
+Copyright 2010-2012 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -24,31 +24,32 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import net.sf.jabb.util.col.PutIfAbsentMap;
 import net.sf.jabb.util.col.PutOnGetMap;
 
 /**
- * Æµ´Î¼ÆÊıÆ÷
+ * é¢‘æ¬¡è®¡æ•°å™¨
  * 
  * @author Zhengmao HU (James)
  *
  */
 public class BasicFrequencyCounter extends FrequencyCounter {
-	protected PutOnGetMap<Long, AtomicLong> counters;
+	protected PutIfAbsentMap<Long, AtomicLong> counters;
 	protected long granularity;
 	protected long purgeBefore;
 	protected Object recordLock = new Object();
 	
 
 	/**
-	 * ´´½¨Ò»¸öÊµÀı£¬Èç¹ûpurgePeriod²ÎÊı²»Îª0Ôò»á×Ô¶¯½øĞĞÀúÊ·Êı¾İÇå³ı¡£
-	 * @param granularity	¼ÆÊı¿ÅÁ£¶È
-	 * @param unit			¿ÅÁ£¶ÈµÄµ¥Î»
-	 * @param purgePeriod	ÀúÊ·Êı¾İµÄ±£ÁôÊ±¼ä³¤¶È
-	 * @param purgeUnit		ÀúÊ·Êı¾İ±£ÁôÊ±¼ä³¤¶ÈµÄµ¥Î»
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œå¦‚æœpurgePeriodå‚æ•°ä¸ä¸º0åˆ™ä¼šè‡ªåŠ¨è¿›è¡Œå†å²æ•°æ®æ¸…é™¤ã€‚
+	 * @param granularity	è®¡æ•°é¢—ç²’åº¦
+	 * @param unit			é¢—ç²’åº¦çš„å•ä½
+	 * @param purgePeriod	å†å²æ•°æ®çš„ä¿ç•™æ—¶é—´é•¿åº¦
+	 * @param purgeUnit		å†å²æ•°æ®ä¿ç•™æ—¶é—´é•¿åº¦çš„å•ä½
 	 */
 	public BasicFrequencyCounter(long granularity, TimeUnit unit,
 			long purgePeriod, TimeUnit purgeUnit){
-		counters = new PutOnGetMap<Long, AtomicLong>(
+		counters = new PutIfAbsentMap<Long, AtomicLong>(
 				new ConcurrentSkipListMap<Long, AtomicLong>(), AtomicLong.class);
 		this.granularity = TimeUnit.MILLISECONDS.convert(granularity, unit);
 		if (purgePeriod == 0){
@@ -59,25 +60,25 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	}
 
 	/**
-	 * ´´½¨Ò»¸ö²»¶ÔÀúÊ·Êı¾İ½øĞĞ×Ô¶¯Çå³ıµÄÊµÀı¡£
-	 * @param granularity	¼ÆÊı¿ÅÁ£¶È
-	 * @param unit			¿ÅÁ£¶ÈµÄµ¥Î»
+	 * åˆ›å»ºä¸€ä¸ªä¸å¯¹å†å²æ•°æ®è¿›è¡Œè‡ªåŠ¨æ¸…é™¤çš„å®ä¾‹ã€‚
+	 * @param granularity	è®¡æ•°é¢—ç²’åº¦
+	 * @param unit			é¢—ç²’åº¦çš„å•ä½
 	 */
 	public BasicFrequencyCounter(long granularity, TimeUnit unit){
 		this(granularity, unit, 0, null);
 	}
 	
 	/**
-	 * ´´½¨Ò»¸ö²»¶ÔÀúÊ·Êı¾İ½øĞĞ×Ô¶¯Çå³ı£¬ÇÒ²»Õë¶ÔÊ±¼ä¿ÅÁ£¶È
-	 * £¨±ÈÈç£¬¶ÔÓÚÒ»Åú¶ÌĞÅ£¬¶Ô²»Í¬³¤¶È¶ÌĞÅ¸÷ÓĞ¶àÉÙÌõ½øĞĞÍ³¼Æ£©µÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªä¸å¯¹å†å²æ•°æ®è¿›è¡Œè‡ªåŠ¨æ¸…é™¤ï¼Œä¸”ä¸é’ˆå¯¹æ—¶é—´é¢—ç²’åº¦
+	 * ï¼ˆæ¯”å¦‚ï¼Œå¯¹äºä¸€æ‰¹çŸ­ä¿¡ï¼Œå¯¹ä¸åŒé•¿åº¦çŸ­ä¿¡å„æœ‰å¤šå°‘æ¡è¿›è¡Œç»Ÿè®¡ï¼‰çš„å®ä¾‹ã€‚
 	 */
 	public BasicFrequencyCounter(){
 		this(1, TimeUnit.MILLISECONDS, 0, null);
 	}
 
 	/**
-	 * ¸ù¾İÅäÖÃĞÅÏ¢´´½¨Ò»¸öÊµÀı¡£
-	 * @param definition	ÅäÖÃĞÅÏ¢
+	 * æ ¹æ®é…ç½®ä¿¡æ¯åˆ›å»ºä¸€ä¸ªå®ä¾‹ã€‚
+	 * @param definition	é…ç½®ä¿¡æ¯
 	 */
 	public BasicFrequencyCounter(FrequencyCounterDefinition definition){
 		this(definition.getGranularity(), TimeUnit.MILLISECONDS,
@@ -85,9 +86,9 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	}
 	
 	/**
-	 * ¼ÇÂ¼ÔÚÄ³Ê±¿Ì·¢ÉúÁË¶àÉÙ´Î¡£
-	 * @param when	·¢ÉúµÄÊ±¿Ì
-	 * @param times	´ÎÊı
+	 * è®°å½•åœ¨æŸæ—¶åˆ»å‘ç”Ÿäº†å¤šå°‘æ¬¡ã€‚
+	 * @param when	å‘ç”Ÿçš„æ—¶åˆ»
+	 * @param times	æ¬¡æ•°
 	 */
 	@Override
 	public void count(long when, int times){
@@ -99,17 +100,17 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	}
 	
 	/**
-	 * »ñµÃÈ«²¿¼ÆÊıÍ³¼Æ
-	 * @return	·µ»ØµÄMapµÄKeyÊÇÒÔºÁÃëÎªµ¥Î»µÄÊ±¼ä£¬valueÊÇ¼ÆÊıÖµ¡£
+	 * è·å¾—å…¨éƒ¨è®¡æ•°ç»Ÿè®¡
+	 * @return	è¿”å›çš„Mapçš„Keyæ˜¯ä»¥æ¯«ç§’ä¸ºå•ä½çš„æ—¶é—´ï¼Œvalueæ˜¯è®¡æ•°å€¼ã€‚
 	 */
 	public Map<Long, AtomicLong> getCounts(){
 		return counters.getMap();
 	}
 	
 	/**
-	 * »ñÈ¡ÔÚÄ³Ê±¿ÌµÄ¼ÆÊıÖµ¡£
-	 * @param when	Ê±¿Ì
-	 * @return		Í³¼ÆÊı
+	 * è·å–åœ¨æŸæ—¶åˆ»çš„è®¡æ•°å€¼ã€‚
+	 * @param when	æ—¶åˆ»
+	 * @return		ç»Ÿè®¡æ•°
 	 */
 	@Override
 	public long getCount(long when){
@@ -119,16 +120,16 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	}
 	
 	/**
-	 * »ñµÃÔÚÖ¸¶¨Ê±¼ä·¶Î§ÄÚµÄ×ÜÆµ´Î
-	 * @param fromWhen		¿ªÊ¼Ê±¼ä
-	 * @param toWhen		½áÊøÊ±¼ä
-	 * @param fromInclusive	ÊÇ·ñ°üº¬¿ªÊ¼Ê±¼ä
-	 * @param toInclusive	ÊÇ·ñ°üº¬½áÊøÊ±¼ä
-	 * @return				Í³¼ÆÊı
+	 * è·å¾—åœ¨æŒ‡å®šæ—¶é—´èŒƒå›´å†…çš„æ€»é¢‘æ¬¡
+	 * @param fromWhen		å¼€å§‹æ—¶é—´
+	 * @param toWhen		ç»“æŸæ—¶é—´
+	 * @param fromInclusive	æ˜¯å¦åŒ…å«å¼€å§‹æ—¶é—´
+	 * @param toInclusive	æ˜¯å¦åŒ…å«ç»“æŸæ—¶é—´
+	 * @return				ç»Ÿè®¡æ•°
 	 */
 	@Override
 	public long getCount(long fromWhen, long toWhen,  boolean fromInclusive, boolean toInclusive){
-		NavigableMap<Long, AtomicLong> range = counters.subMap(fromWhen, fromInclusive, toWhen, toInclusive);
+		NavigableMap<Long, AtomicLong> range = ((ConcurrentSkipListMap<Long, AtomicLong>)counters.getMap()).subMap(fromWhen, fromInclusive, toWhen, toInclusive);
 		long count = 0;
 		for(AtomicLong c: range.values()){
 			count += c.longValue();
@@ -137,19 +138,19 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	}
 	
 	/**
-	 * É¾³ıµôÔçÓÚÒ»¶¨Ê±¼äµÄ¼ÇÂ¼
-	 * @param tillWhen	Çå³ıµ½ÄÄ¸öÊ±¼äµãÎªÖ¹
+	 * åˆ é™¤æ‰æ—©äºä¸€å®šæ—¶é—´çš„è®°å½•
+	 * @param tillWhen	æ¸…é™¤åˆ°å“ªä¸ªæ—¶é—´ç‚¹ä¸ºæ­¢
 	 */
 	@Override
 	public void purge(long tillWhen){
 		Long t;
-		while((t = counters.firstKey()) != null && t < tillWhen){
+		while((t = ((ConcurrentSkipListMap<Long, AtomicLong>)counters.getMap()).firstKey()) != null && t < tillWhen){
 			counters.remove(t);
 		}
 	}
 	
 	/**
-	 * ×ª³ÉString
+	 * è½¬æˆString
 	 */
 	public String toString(){
 		StringWriter sw = new StringWriter();

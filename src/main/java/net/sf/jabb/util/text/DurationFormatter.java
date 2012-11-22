@@ -23,10 +23,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * An utility to format the length of time period to String, for example: 00:03:01.011 or 7d, 12:32:02:001.<br>
- * Ò»¸ö¿ÉÒÔÓÃÀ´¸ñÊ½»¯Ê±¼ä¶ÎĞÅÏ¢µÄ¹¤¾ßÀà£¬ÆäÊä³ö½á¹û±ÈÈç: 00:03:01.011£¬»ò£º7d, 12:32:02:001¡£
+ * ä¸€ä¸ªå¯ä»¥ç”¨æ¥æ ¼å¼åŒ–æ—¶é—´æ®µä¿¡æ¯çš„å·¥å…·ç±»ï¼Œå…¶è¾“å‡ºç»“æœæ¯”å¦‚: 00:03:01.011ï¼Œæˆ–ï¼š7d, 12:32:02:001ã€‚
  * <p>
  * An example of usage:<br>
- * µäĞÍÓÃ·¨ÊÇÕâÑùµÄ£º
+ * å…¸å‹ç”¨æ³•æ˜¯è¿™æ ·çš„ï¼š
  * <pre>
  *   long t0 = System.currentTimeMillis();
  *   ...
@@ -50,14 +50,14 @@ public class DurationFormatter {
 
 	/**
 	 * Format the length of time period (in milliseconds) to String.<br>
-	 * ¸ñÊ½»¯Ê±¼ä³¤¶È£¨ÒÔºÁÃëÎªµ¥Î»£©Îª×Ö·û´®¡£
+	 * æ ¼å¼åŒ–æ—¶é—´é•¿åº¦ï¼ˆä»¥æ¯«ç§’ä¸ºå•ä½ï¼‰ä¸ºå­—ç¬¦ä¸²ã€‚
 	 * 
-	 * @param duration	Length of time period in milliseconds<br>ÒÔºÁÃëÎªµ¥Î»µÄÊ±¼ä³¤¶È
-	 * @param unit  The least unit that will be in the output<br>Êä³ö×Ö·û´®ÖĞµÄ×îĞ¡Ê±¼äµ¥Î»
-	 * @param trimLeftZeros Whether to remove leading zeros from the output<br>Êä³ö×Ö·û´®ÖĞÊÇ·ñÈ¥µô¿ªÍ·µÄ0
+	 * @param duration	Length of time period in milliseconds<br>ä»¥æ¯«ç§’ä¸ºå•ä½çš„æ—¶é—´é•¿åº¦
+	 * @param unit  The least unit that will be in the output<br>è¾“å‡ºå­—ç¬¦ä¸²ä¸­çš„æœ€å°æ—¶é—´å•ä½
+	 * @param trimLeftZeros Whether to remove leading zeros from the output<br>è¾“å‡ºå­—ç¬¦ä¸²ä¸­æ˜¯å¦å»æ‰å¼€å¤´çš„0
 	 * @return	The string presentation of the time period, 
 	 * 			for example: 00:03:01.011, 1:30:00,  or 7d, 12:32:02:001.<br>
-	 * 			×Ö·û´®ĞÎÊ½±íÊ¾µÄÊ±¼ä³¤¶È£¬±ÈÈç£º00:03:01.011, 1:30:00, »ò£º7d, 12:32:02:001¡£
+	 * 			å­—ç¬¦ä¸²å½¢å¼è¡¨ç¤ºçš„æ—¶é—´é•¿åº¦ï¼Œæ¯”å¦‚ï¼š00:03:01.011, 1:30:00, æˆ–ï¼š7d, 12:32:02:001ã€‚
 	 */
 	public static String format(long duration, TimeUnit unit, boolean trimLeftZeros){
 		String format;
@@ -93,13 +93,12 @@ public class DurationFormatter {
 	
 	/**
 	 * Format the length of time period (in milliseconds) to String.<br>
-	 * ¸ñÊ½»¯Ê±¼ä³¤¶È£¨ÒÔºÁÃëÎªµ¥Î»£©Îª×Ö·û´®¡£
+	 * æ ¼å¼åŒ–æ—¶é—´é•¿åº¦ï¼ˆä»¥æ¯«ç§’ä¸ºå•ä½ï¼‰ä¸ºå­—ç¬¦ä¸²ã€‚
 	 * 
-	 * @param duration	Length of time period in milliseconds<br>ÒÔºÁÃëÎªµ¥Î»µÄÊ±¼ä³¤¶È
-	 * @param unit  The least unit that will be in the output<br>Êä³ö×Ö·û´®ÖĞµÄ×îĞ¡Ê±¼äµ¥Î»
+	 * @param duration	Length of time period in milliseconds<br>ä»¥æ¯«ç§’ä¸ºå•ä½çš„æ—¶é—´é•¿åº¦
 	 * @return	The string presentation of the time period, 
 	 * 			for example: 00:03:01.011 or 7d, 12:32:02:001.<br>
-	 * 			×Ö·û´®ĞÎÊ½±íÊ¾µÄÊ±¼ä³¤¶È£¬±ÈÈç£º00:03:01.011£¬»ò£º7d, 12:32:02:001¡£
+	 * 			å­—ç¬¦ä¸²å½¢å¼è¡¨ç¤ºçš„æ—¶é—´é•¿åº¦ï¼Œæ¯”å¦‚ï¼š00:03:01.011ï¼Œæˆ–ï¼š7d, 12:32:02:001ã€‚
 	 */
 	public static String format(long duration){
 		return format(duration, TimeUnit.MILLISECONDS, false);
@@ -107,16 +106,16 @@ public class DurationFormatter {
 	
 	/**
 	 * Format the length of time period between current system time and specified time to String.<br>
-	 * ¸ñÊ½»¯Ö¸¶¨Ê±¼äÍ¬µ±Ç°ÏµÍ³Ê±¼äÖ®¼äµÄÊ±¼ä²îÎª×Ö·û´®¡£
+	 * æ ¼å¼åŒ–æŒ‡å®šæ—¶é—´åŒå½“å‰ç³»ç»Ÿæ—¶é—´ä¹‹é—´çš„æ—¶é—´å·®ä¸ºå­—ç¬¦ä¸²ã€‚
 	 * <p>
 	 * The time specified can be in the past or in the future, in either cases, meaningful result will be get.
 	 * <p>
-	 * Ö¸¶¨µÄÓÃ×÷Í¬µ±Ç°ÏµÍ³Ê±¼ä×÷±È½ÏµÄÊ±¼ä¿ÉÒÔÊÇÔÚ¹ıÈ¥£¬Ò²¿ÉÒÔÊÇÔÚ½«À´£¬ÕâÁ½ÖÖÇé¿ö¶¼ÄÜ²úÉúÓĞÒâÒåµÄ½á¹û¡£
+	 * æŒ‡å®šçš„ç”¨ä½œåŒå½“å‰ç³»ç»Ÿæ—¶é—´ä½œæ¯”è¾ƒçš„æ—¶é—´å¯ä»¥æ˜¯åœ¨è¿‡å»ï¼Œä¹Ÿå¯ä»¥æ˜¯åœ¨å°†æ¥ï¼Œè¿™ä¸¤ç§æƒ…å†µéƒ½èƒ½äº§ç”Ÿæœ‰æ„ä¹‰çš„ç»“æœã€‚
 	 * 
-	 * @param pastOrFutureTime	A time in the past or in the future<br>¹ıÈ¥»òÎ´À´µÄÄ³¸öÊ±¼ä
+	 * @param pastOrFutureTime	A time in the past or in the future<br>è¿‡å»æˆ–æœªæ¥çš„æŸä¸ªæ—¶é—´
 	 * @return	The string presentation of the time period, 
 	 * 			for example: 00:03:01.011 or 7d, 12:32:02:001.<br>
-	 * 			×Ö·û´®ĞÎÊ½±íÊ¾µÄÊ±¼ä³¤¶È£¬±ÈÈç£º00:03:01.011£¬»ò£º7d, 12:32:02:001¡£
+	 * 			å­—ç¬¦ä¸²å½¢å¼è¡¨ç¤ºçš„æ—¶é—´é•¿åº¦ï¼Œæ¯”å¦‚ï¼š00:03:01.011ï¼Œæˆ–ï¼š7d, 12:32:02:001ã€‚
 	 */
 	public static String formatSince(long pastOrFutureTime){
 		return format(Math.abs(System.currentTimeMillis() - pastOrFutureTime), TimeUnit.MILLISECONDS, false);

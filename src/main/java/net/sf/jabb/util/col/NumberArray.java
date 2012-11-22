@@ -21,15 +21,15 @@ import java.io.Serializable;
 /**
  * Encapsulates multiple objects of Number(such as Integer, Long, Double) into one object,
  * which is suitable to be used as the key object of Map.<br>
- * °Ñ¶à¸öNumber£¨±ÈÈçInteger, Long, Double£©ÀàĞÍµÄÖµ·â×°ÔÚÕâÒ»¸ö¶ÔÏóÀï£¬ÊÊºÏÓÃÀ´×÷ÎªMapµÄkey¡£
+ * æŠŠå¤šä¸ªNumberï¼ˆæ¯”å¦‚Integer, Long, Doubleï¼‰ç±»å‹çš„å€¼å°è£…åœ¨è¿™ä¸€ä¸ªå¯¹è±¡é‡Œï¼Œé€‚åˆç”¨æ¥ä½œä¸ºMapçš„keyã€‚
  * <p>
  * It supports hashCode(), toString(), equals(), compareTo() methods.
  * <p>
- * ËüÖ§³ÖhashCode(), toString(), equals(), compareTo()·½·¨¡£
+ * å®ƒæ”¯æŒhashCode(), toString(), equals(), compareTo()æ–¹æ³•ã€‚
  * 
  * @author Zhengmao HU (James)
  *
- * @param <T extends Number>	NumberÀàĞÍ
+ * @param <T extends Number>	Numberç±»å‹
  */
 public class NumberArray<T extends Number> implements Comparable<Object>, Serializable{
 	private static final long serialVersionUID = 3101324164832289477L;
@@ -38,10 +38,10 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	
 	/**
 	 * Constructs a NumberArray with specified value objects.<br>
-	 * ´´½¨Ò»¸ö°üº¬ÕâĞ©ÊıÖµ¶ÔÏóµÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªåŒ…å«è¿™äº›æ•°å€¼å¯¹è±¡çš„å®ä¾‹ã€‚
 	 * 
 	 * @param values	value objects of Number type that will be encapsulated.<br>
-	 * 					Ò»Åú½«±»·â×°µÄÊıÖµ¶ÔÏó¡£
+	 * 					ä¸€æ‰¹å°†è¢«å°è£…çš„æ•°å€¼å¯¹è±¡ã€‚
 	 */
 	public NumberArray(T... values){
 		this.values = values;
@@ -49,7 +49,7 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	
 	/**
 	 * Gets all the values encapsulated in this object.<br>
-	 * »ñµÃËùÓĞÖµ¡£
+	 * è·å¾—æ‰€æœ‰å€¼ã€‚
 	 * 
 	 * @return array of value objects
 	 */
@@ -59,7 +59,7 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	
 	/**
 	 * Gets the value in specified position.<br>
-	 * »ñµÃÖ¸¶¨Î»ÖÃµÄÖµ¡£
+	 * è·å¾—æŒ‡å®šä½ç½®çš„å€¼ã€‚
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value
@@ -70,7 +70,7 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 
 	/**
 	 * Gets the value in specified position.<br>
-	 * »ñµÃÖ¸¶¨Î»ÖÃµÄÖµ¡£
+	 * è·å¾—æŒ‡å®šä½ç½®çš„å€¼ã€‚
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as int
@@ -81,7 +81,7 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	
 	/**
 	 * Gets the value in specified position.<br>
-	 * »ñµÃÖ¸¶¨Î»ÖÃµÄÖµ¡£
+	 * è·å¾—æŒ‡å®šä½ç½®çš„å€¼ã€‚
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as long
@@ -92,7 +92,7 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	
 	/**
 	 * Gets the value in specified position.<br>
-	 * »ñµÃÖ¸¶¨Î»ÖÃµÄÖµ¡£
+	 * è·å¾—æŒ‡å®šä½ç½®çš„å€¼ã€‚
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as double
@@ -103,7 +103,7 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 
 	/**
 	 * Gets the value in specified position.<br>
-	 * »ñµÃÖ¸¶¨Î»ÖÃµÄÖµ¡£
+	 * è·å¾—æŒ‡å®šä½ç½®çš„å€¼ã€‚
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as float
@@ -114,7 +114,7 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 
 	/**
 	 * Gets the value in specified position.<br>
-	 * »ñµÃÖ¸¶¨Î»ÖÃµÄÖµ¡£
+	 * è·å¾—æŒ‡å®šä½ç½®çš„å€¼ã€‚
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as short
@@ -125,7 +125,7 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 
 	/**
 	 * Gets the value in specified position.<br>
-	 * »ñµÃÖ¸¶¨Î»ÖÃµÄÖµ¡£
+	 * è·å¾—æŒ‡å®šä½ç½®çš„å€¼ã€‚
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as byte
@@ -136,7 +136,7 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 
 	/**
 	 * Gets the calculated hash code.<br>
-	 * »ñµÃ¼ÆËãµÃµ½µÄhashÖµ¡£
+	 * è·å¾—è®¡ç®—å¾—åˆ°çš„hashå€¼ã€‚
 	 */
 	@Override
 	public int hashCode(){
@@ -151,7 +151,7 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 
 	/**
 	 * Compare.<br>
-	 * ±È½Ï¡£
+	 * æ¯”è¾ƒã€‚
 	 * 
 	 * @param obj	The object to be compared with
 	 * @return	-1 if little than obj, 0 if equals, 1 if greater than.

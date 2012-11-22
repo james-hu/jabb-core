@@ -19,9 +19,9 @@ package net.sf.jabb.util.stat;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Ìá¹©»ù±¾µÄÍ³¼ÆĞÅÏ¢£¬°üÀ¨£º
- * ×î´óÖµ¡¢×îĞ¡Öµ¡¢Æ½¾ùÖµ¡¢×Ü¼Æ¡¢¸öÊı¡£
- * ËüÊÇ¶àÏß³Ì°²È«µÄ¡£
+ * æä¾›åŸºæœ¬çš„ç»Ÿè®¡ä¿¡æ¯ï¼ŒåŒ…æ‹¬ï¼š
+ * æœ€å¤§å€¼ã€æœ€å°å€¼ã€å¹³å‡å€¼ã€æ€»è®¡ã€ä¸ªæ•°ã€‚
+ * å®ƒæ˜¯å¤šçº¿ç¨‹å®‰å…¨çš„ã€‚
  * @author Zhengmao HU (James)
  *
  */
@@ -39,8 +39,8 @@ public class BasicNumberStatistics {
 	}
 	
 	/**
-	 * °ÑÒ»¸öÖµÌá¹©¸øÍ³¼Æ
-	 * @param value		ĞèÒªÌá¹©¸øÍ³¼ÆµÄÖµ
+	 * æŠŠä¸€ä¸ªå€¼æä¾›ç»™ç»Ÿè®¡
+	 * @param value		éœ€è¦æä¾›ç»™ç»Ÿè®¡çš„å€¼
 	 */
 	public void put(long value){
 		min.min(value);
@@ -50,7 +50,7 @@ public class BasicNumberStatistics {
 	}
 	
 	/**
-	 * ¼ì²éÊÇ·ñ¹©Í³¼ÆµÄÊı¾İ´æÔÚ£¬Èç¹ûÃ»ÓĞÔòÅ×Òì³£
+	 * æ£€æŸ¥æ˜¯å¦ä¾›ç»Ÿè®¡çš„æ•°æ®å­˜åœ¨ï¼Œå¦‚æœæ²¡æœ‰åˆ™æŠ›å¼‚å¸¸
 	 */
 	protected void ensureDataExists(){
 		if (getCount() <= 0){
@@ -59,8 +59,8 @@ public class BasicNumberStatistics {
 	}
 	
 	/**
-	 * È¡µÃÆ½¾ùÖµ¡£Èç¹û´ËÇ°²¢Ã»ÓĞÌá¹©ÈÎºÎÖµ¸øÍ³¼ÆÓÃ£¬Ôò»áÅ×³öÒì³£¡£
-	 * @return	Æ½¾ùÖµ
+	 * å–å¾—å¹³å‡å€¼ã€‚å¦‚æœæ­¤å‰å¹¶æ²¡æœ‰æä¾›ä»»ä½•å€¼ç»™ç»Ÿè®¡ç”¨ï¼Œåˆ™ä¼šæŠ›å‡ºå¼‚å¸¸ã€‚
+	 * @return	å¹³å‡å€¼
 	 */
 	public double getAvg(){
 		ensureDataExists();
@@ -68,8 +68,8 @@ public class BasicNumberStatistics {
 	}
 	
 	/**
-	 * È¡µÃ×îĞ¡Öµ¡£Èç¹û´ËÇ°²¢Ã»ÓĞÌá¹©ÈÎºÎÖµ¸øÍ³¼ÆÓÃ£¬Ôò»áÅ×³öÒì³£¡£
-	 * @return	×îĞ¡Öµ
+	 * å–å¾—æœ€å°å€¼ã€‚å¦‚æœæ­¤å‰å¹¶æ²¡æœ‰æä¾›ä»»ä½•å€¼ç»™ç»Ÿè®¡ç”¨ï¼Œåˆ™ä¼šæŠ›å‡ºå¼‚å¸¸ã€‚
+	 * @return	æœ€å°å€¼
 	 */
 	public long getMin() {
 		ensureDataExists();
@@ -77,8 +77,8 @@ public class BasicNumberStatistics {
 	}
 	
 	/**
-	 * È¡µÃ×î´óÖµ¡£Èç¹û´ËÇ°²¢Ã»ÓĞÌá¹©ÈÎºÎÖµ¸øÍ³¼ÆÓÃ£¬Ôò»áÅ×³öÒì³£¡£
-	 * @return	×î´óÖµ
+	 * å–å¾—æœ€å¤§å€¼ã€‚å¦‚æœæ­¤å‰å¹¶æ²¡æœ‰æä¾›ä»»ä½•å€¼ç»™ç»Ÿè®¡ç”¨ï¼Œåˆ™ä¼šæŠ›å‡ºå¼‚å¸¸ã€‚
+	 * @return	æœ€å¤§å€¼
 	 */
 	public long getMax() {
 		ensureDataExists();
@@ -86,16 +86,16 @@ public class BasicNumberStatistics {
 	}
 	
 	/**
-	 * È¡µÃ¼Ó×ÜÖµ¡£Èç¹û´ËÇ°²¢Ã»ÓĞÌá¹©ÈÎºÎÖµ¸øÍ³¼ÆÓÃ£¬Ôò·µ»Ø0¡£
-	 * @return	ÀÛ¼ÓÖµ
+	 * å–å¾—åŠ æ€»å€¼ã€‚å¦‚æœæ­¤å‰å¹¶æ²¡æœ‰æä¾›ä»»ä½•å€¼ç»™ç»Ÿè®¡ç”¨ï¼Œåˆ™è¿”å›0ã€‚
+	 * @return	ç´¯åŠ å€¼
 	 */
 	public long getSum() {
 		return sum.get();
 	}
 	
 	/**
-	 * È¡µÃÒÑ¾­Ìá¹©¸øÍ³¼ÆµÄÖµµÄ¸öÊı¡£Èç¹û´ËÇ°²¢Ã»ÓĞÌá¹©ÈÎºÎÖµ¸øÍ³¼ÆÓÃ£¬Ôò·µ»Ø0¡£
-	 * @return	¸öÊı
+	 * å–å¾—å·²ç»æä¾›ç»™ç»Ÿè®¡çš„å€¼çš„ä¸ªæ•°ã€‚å¦‚æœæ­¤å‰å¹¶æ²¡æœ‰æä¾›ä»»ä½•å€¼ç»™ç»Ÿè®¡ç”¨ï¼Œåˆ™è¿”å›0ã€‚
+	 * @return	ä¸ªæ•°
 	 */
 	public long getCount() {
 		return count.get();
@@ -103,7 +103,7 @@ public class BasicNumberStatistics {
 	
 	/**
 	 * Reset to initial status.<br>
-	 * »Ø¸´µ½³õÊ¼×´Ì¬¡£
+	 * å›å¤åˆ°åˆå§‹çŠ¶æ€ã€‚
 	 */
 	public void reset(){
 		min.reset();

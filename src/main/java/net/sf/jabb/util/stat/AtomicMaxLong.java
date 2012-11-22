@@ -19,7 +19,7 @@ package net.sf.jabb.util.stat;
 /**
  * It stores the maximum value; 
  * the compare-and-change procedure is synchronized so that multi-thread safe is ensured.<br>
- * ´æ·Å×î´óÖµ£¬¡°±È½ÏÈ»ºó½»»»¡±µÄ¹ı³ÌÊÇÍ¬²½µÄ£¬ËùÒÔËüÊÇ¶àÏß³Ì°²È«µÄ¡£
+ * å­˜æ”¾æœ€å¤§å€¼ï¼Œâ€œæ¯”è¾ƒç„¶åäº¤æ¢â€çš„è¿‡ç¨‹æ˜¯åŒæ­¥çš„ï¼Œæ‰€ä»¥å®ƒæ˜¯å¤šçº¿ç¨‹å®‰å…¨çš„ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -28,7 +28,7 @@ public class AtomicMaxLong extends AtomicMinMaxLong {
 	
 	/**
 	 * Constructs an instance to store the maximum value.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬ÓÃÀ´±£´æ×î´óÖµ¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œç”¨æ¥ä¿å­˜æœ€å¤§å€¼ã€‚
 	 */
 	public AtomicMaxLong(){
 		super(Long.MIN_VALUE);
@@ -37,10 +37,10 @@ public class AtomicMaxLong extends AtomicMinMaxLong {
 	/**
 	 * Compare a value with current maximum value and make the greater one the new maximum value;
 	 * New maximum value after comparison is returned.<br>
-	 * ÄÃÒ»¸öÖµÍ¬µ±Ç°Öµ±È½Ï£¬°ÑÆäÖĞ´óµÄÄÇ¸öÉèÖÃÎªĞÂµÄ×î´óÖµ£¬·µ»Ø±È½ÏÖ®ºóµÄĞÂµÄ×î´óÖµ¡£
+	 * æ‹¿ä¸€ä¸ªå€¼åŒå½“å‰å€¼æ¯”è¾ƒï¼ŒæŠŠå…¶ä¸­å¤§çš„é‚£ä¸ªè®¾ç½®ä¸ºæ–°çš„æœ€å¤§å€¼ï¼Œè¿”å›æ¯”è¾ƒä¹‹åçš„æ–°çš„æœ€å¤§å€¼ã€‚
 	 * 
-	 * @param newValue	ÄÃÀ´×÷±È½ÏµÄÖµ¡£
-	 * @return		New maximum value after comparison<br>±È½ÏÖ®ºóµÄĞÂµÄ×î´óÖµ
+	 * @param newValue	æ‹¿æ¥ä½œæ¯”è¾ƒçš„å€¼ã€‚
+	 * @return		New maximum value after comparison<br>æ¯”è¾ƒä¹‹åçš„æ–°çš„æœ€å¤§å€¼
 	 */
 	public long maxAndGet(long newValue){
 		synchronized(updateLock){
@@ -54,10 +54,10 @@ public class AtomicMaxLong extends AtomicMinMaxLong {
 	/**
 	 * Compare a value with current maximum value and make the greater one the new maximum value;
 	 * Previous maximum value before comparison is returned.<br>
-	 * ÄÃÒ»¸öÖµÍ¬µ±Ç°Öµ±È½Ï£¬°ÑÆäÖĞ´óµÄÄÇ¸öÉèÖÃÎªĞÂµÄ×î´óÖµ£¬·µ»Ø±È½ÏÖ®Ç°µÄÀÏµÄ×î´óÖµ¡£
+	 * æ‹¿ä¸€ä¸ªå€¼åŒå½“å‰å€¼æ¯”è¾ƒï¼ŒæŠŠå…¶ä¸­å¤§çš„é‚£ä¸ªè®¾ç½®ä¸ºæ–°çš„æœ€å¤§å€¼ï¼Œè¿”å›æ¯”è¾ƒä¹‹å‰çš„è€çš„æœ€å¤§å€¼ã€‚
 	 * 
-	 * @param newValue	ÄÃÀ´×÷±È½ÏµÄÖµ¡£
-	 * @return		Previous maximum value before comparison<br>±È½ÏÖ®Ç°µÄÀÏµÄ×î´óÖµ
+	 * @param newValue	æ‹¿æ¥ä½œæ¯”è¾ƒçš„å€¼ã€‚
+	 * @return		Previous maximum value before comparison<br>æ¯”è¾ƒä¹‹å‰çš„è€çš„æœ€å¤§å€¼
 	 */
 	public long getAndMax(long newValue){
 		long oldValue;
@@ -72,9 +72,9 @@ public class AtomicMaxLong extends AtomicMinMaxLong {
 	
 	/**
 	 * Compare a value with current maximum value and make the greater one the new maximum value.<br>
-	 * ÄÃÒ»¸öÖµÍ¬µ±Ç°Öµ±È½Ï£¬°ÑÆäÖĞ´óµÄÄÇ¸öÉèÖÃÎªĞÂµÄ×î´óÖµ¡£
+	 * æ‹¿ä¸€ä¸ªå€¼åŒå½“å‰å€¼æ¯”è¾ƒï¼ŒæŠŠå…¶ä¸­å¤§çš„é‚£ä¸ªè®¾ç½®ä¸ºæ–°çš„æœ€å¤§å€¼ã€‚
 	 * 
-	 * @param newValue	ÄÃÀ´×÷±È½ÏµÄÖµ¡£
+	 * @param newValue	æ‹¿æ¥ä½œæ¯”è¾ƒçš„å€¼ã€‚
 	 */
 	public void max(long newValue){
 		maxAndGet(newValue);
@@ -82,7 +82,7 @@ public class AtomicMaxLong extends AtomicMinMaxLong {
 
 	/**
 	 * Reset to initial status.<br>
-	 * »Ø¸´µ½³õÊ¼×´Ì¬¡£
+	 * å›å¤åˆ°åˆå§‹çŠ¶æ€ã€‚
 	 */
 	@Override
 	public void reset() {

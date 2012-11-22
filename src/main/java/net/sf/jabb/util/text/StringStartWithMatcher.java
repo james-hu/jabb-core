@@ -23,22 +23,22 @@ import java.util.Map;
 /**
  * Given a text string to be tested, and list of matching strings, find out which matching string the
  * text string starts with.<br>
- * ¸ø¶¨Ò»¸ö´ı¼ì²éµÄÎÄ±¾×Ö·û´®£¬ÒÔ¼°Ò»Åú¿ªÍ·Æ¥Åä×Ö·û´®£¬¿´¿´´ı¼ì²éµÄÎÄ±¾×Ö·û´®ÒÔÄÄ¸öÆ¥Åä×Ö·û´®¿ªÍ·¡£
+ * ç»™å®šä¸€ä¸ªå¾…æ£€æŸ¥çš„æ–‡æœ¬å­—ç¬¦ä¸²ï¼Œä»¥åŠä¸€æ‰¹å¼€å¤´åŒ¹é…å­—ç¬¦ä¸²ï¼Œçœ‹çœ‹å¾…æ£€æŸ¥çš„æ–‡æœ¬å­—ç¬¦ä¸²ä»¥å“ªä¸ªåŒ¹é…å­—ç¬¦ä¸²å¼€å¤´ã€‚
  * <p>
  * The matching is case sensitive. 
  * If one matching string starts with another,
  * and the text string starts with them, then the longer one will be considered to be matched. 
  * <p>
- * Æ¥ÅäÊ±¶Ô´óĞ¡Ğ´Ãô¸Ğ¡£Èç¹ûÆ¥Åä×Ö·û´®Ö®¼ä»¥Ïà±¥º¬£¬ÔòÆ¥ÅäÆäÖĞ×î³¤µÄ¡£
+ * åŒ¹é…æ—¶å¯¹å¤§å°å†™æ•æ„Ÿã€‚å¦‚æœåŒ¹é…å­—ç¬¦ä¸²ä¹‹é—´äº’ç›¸é¥±å«ï¼Œåˆ™åŒ¹é…å…¶ä¸­æœ€é•¿çš„ã€‚
  * 
  * <p>
  * If the matching need to be checked upon number segments (start number ~ end number) represented 
  * as strings, {@link #expandNumberMatchingRange(Map, String, String, Object)} method can be used to
  * expand number segments to heading number strings.
  * <p>
- * Èç¹ûĞèÒª¶Ô´ú±íÊı×ÖºÅÂë£¨¿ªÊ¼ºÅÂë~½áÊøºÅÂë£©µÄ×Ö·û´®½øĞĞÆ¥Åä£¬¿ÉÊ¹ÓÃ
- * {@link #expandNumberMatchingRange(Map, String, String, Object)} ·½·¨
- * ½«ºÅÂë¶Î×Ö·û´®£¨Ò»¸ö¿ªÊ¼ºÅÂë£¬Ò»¸ö½áÊøºÅÂë£©×ª»»ÎªºÅÂëÍ·×Ö·û´®¡£
+ * å¦‚æœéœ€è¦å¯¹ä»£è¡¨æ•°å­—å·ç ï¼ˆå¼€å§‹å·ç ~ç»“æŸå·ç ï¼‰çš„å­—ç¬¦ä¸²è¿›è¡ŒåŒ¹é…ï¼Œå¯ä½¿ç”¨
+ * {@link #expandNumberMatchingRange(Map, String, String, Object)} æ–¹æ³•
+ * å°†å·ç æ®µå­—ç¬¦ä¸²ï¼ˆä¸€ä¸ªå¼€å§‹å·ç ï¼Œä¸€ä¸ªç»“æŸå·ç ï¼‰è½¬æ¢ä¸ºå·ç å¤´å­—ç¬¦ä¸²ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -49,17 +49,17 @@ public class StringStartWithMatcher extends StartWithMatcher {
 
 	/**
 	 * Create a new instance according to heading strings and their corresponding attachment objects.<br>
-	 * ¸ù¾İ¿ªÍ·Æ¥Åä×Ö·û´®¡¢¿ªÍ·Æ¥Åä×Ö·û´®Ëù¶ÔÓ¦µÄ¸½¼ş¶ÔÏó£¬´´½¨Ò»¸öĞÂµÄÊµÀı¡£
+	 * æ ¹æ®å¼€å¤´åŒ¹é…å­—ç¬¦ä¸²ã€å¼€å¤´åŒ¹é…å­—ç¬¦ä¸²æ‰€å¯¹åº”çš„é™„ä»¶å¯¹è±¡ï¼Œåˆ›å»ºä¸€ä¸ªæ–°çš„å®ä¾‹ã€‚
 	 * <p>
 	 * When initializing internal data structure, choose to consume more memory for better matching speed.
 	 * <p>
-	 * ÔÚ´´½¨ÄÚ²¿Êı¾İ½á¹¹µÄÊ±ºò£¬Ñ¡ÔñÕ¼ÓÃ¸ü¶àÄÚ´æ£¬¶ø»»È¡ËÙ¶ÈÉÏµÄÌáÉı¡£
+	 * åœ¨åˆ›å»ºå†…éƒ¨æ•°æ®ç»“æ„çš„æ—¶å€™ï¼Œé€‰æ‹©å ç”¨æ›´å¤šå†…å­˜ï¼Œè€Œæ¢å–é€Ÿåº¦ä¸Šçš„æå‡ã€‚
 	 * 
 	 * @param headingDefinitions	Key is the heading string, Value is its associated attachment object.
 	 * 					When the heading string is matched, the attachment object will be returned
 	 * 					as identifier.<p>
-	 * 					KeyÊÇÆ¥Åä×Ö·û´®£¬ValueÊÇ¸½¼ş¶ÔÏó¡£
-	 * 					µ±½øĞĞÆ¥Åä¼ì²éµÄÊ±ºò£¬·µ»Ø¸½¼ş¶ÔÏóÀ´±êÊ¶ÄÄÒ»¸öÆ¥Åä×Ö·û´®±»Æ¥ÅäÉÏÁË¡£
+	 * 					Keyæ˜¯åŒ¹é…å­—ç¬¦ä¸²ï¼ŒValueæ˜¯é™„ä»¶å¯¹è±¡ã€‚
+	 * 					å½“è¿›è¡ŒåŒ¹é…æ£€æŸ¥çš„æ—¶å€™ï¼Œè¿”å›é™„ä»¶å¯¹è±¡æ¥æ ‡è¯†å“ªä¸€ä¸ªåŒ¹é…å­—ç¬¦ä¸²è¢«åŒ¹é…ä¸Šäº†ã€‚
 	 */
 	public StringStartWithMatcher(Map<String, ? extends Object> headingDefinitions) {
 		super(normalizeMatchingDefinitions(headingDefinitions));
@@ -67,15 +67,15 @@ public class StringStartWithMatcher extends StartWithMatcher {
 
 	/**
 	 * Create a new instance according to heading strings and their corresponding attachment objects.<br>
-	 * ¸ù¾İ¿ªÍ·Æ¥Åä×Ö·û´®¡¢¿ªÍ·Æ¥Åä×Ö·û´®Ëù¶ÔÓ¦µÄ¸½¼ş¶ÔÏó£¬´´½¨Ò»¸öĞÂµÄÊµÀı¡£
+	 * æ ¹æ®å¼€å¤´åŒ¹é…å­—ç¬¦ä¸²ã€å¼€å¤´åŒ¹é…å­—ç¬¦ä¸²æ‰€å¯¹åº”çš„é™„ä»¶å¯¹è±¡ï¼Œåˆ›å»ºä¸€ä¸ªæ–°çš„å®ä¾‹ã€‚
 	 * 
-	 * @param headingDefinitions	KeyÊÇÆ¥Åä×Ö·û´®£¬ValueÊÇ¸½¼ş¶ÔÏó¡£
-	 * 					µ±½øĞĞÆ¥Åä¼ì²éµÄÊ±ºò£¬·µ»Ø¸½¼ş¶ÔÏóÀ´±êÊ¶ÄÄÒ»¸öÆ¥Åä×Ö·û´®±»Æ¥ÅäÉÏÁË¡£
+	 * @param headingDefinitions	Keyæ˜¯åŒ¹é…å­—ç¬¦ä¸²ï¼ŒValueæ˜¯é™„ä»¶å¯¹è±¡ã€‚
+	 * 					å½“è¿›è¡ŒåŒ¹é…æ£€æŸ¥çš„æ—¶å€™ï¼Œè¿”å›é™„ä»¶å¯¹è±¡æ¥æ ‡è¯†å“ªä¸€ä¸ªåŒ¹é…å­—ç¬¦ä¸²è¢«åŒ¹é…ä¸Šäº†ã€‚
 	 * 					<p>
 	 * 					Key is the heading string, Value is its associated attachment object.
 	 * 					When the heading string is matched, the attachment object will be returned
 	 * 					as identifier.
-	 * @param moreSpaceForSpeed  ÊÇ·ñÕ¼ÓÃ¸ü¶àÄÚ´æ£¬¶ø»»È¡ËÙ¶ÈÉÏµÄÌáÉı¡£
+	 * @param moreSpaceForSpeed  æ˜¯å¦å ç”¨æ›´å¤šå†…å­˜ï¼Œè€Œæ¢å–é€Ÿåº¦ä¸Šçš„æå‡ã€‚
 	 * 								<p>Whether or not to consume
 	 * 								more memory for better matching speed.
 	 */
@@ -86,9 +86,9 @@ public class StringStartWithMatcher extends StartWithMatcher {
 	/**
 	 * Create a copy, the copy will have exactly the same matching 
 	 * definitions as the original copy.<br>
-	 * ´´½¨Ò»¸ö¸±±¾£¬Õâ¸ö¸±±¾ÓëÔ­ÏÈµÄ¶ÔÏó¾ßÓĞÍêÈ«ÏàÍ¬Æ¥Åä·½Ê½¡£
+	 * åˆ›å»ºä¸€ä¸ªå‰¯æœ¬ï¼Œè¿™ä¸ªå‰¯æœ¬ä¸åŸå…ˆçš„å¯¹è±¡å…·æœ‰å®Œå…¨ç›¸åŒåŒ¹é…æ–¹å¼ã€‚
 	 * 
-	 * @param toBeCopied	Ô­±¾¡£<br>The original copy.
+	 * @param toBeCopied	åŸæœ¬ã€‚<br>The original copy.
 	 */
 	public StringStartWithMatcher(StringStartWithMatcher toBeCopied) {
 		super(toBeCopied);
@@ -96,19 +96,19 @@ public class StringStartWithMatcher extends StartWithMatcher {
 
 	/**
 	 * Normalize matching definitions according to requirements of {@link StartWithMatcher}.<br>
-	 * ¸ù¾İ{@link StartWithMatcher}µÄĞèÒªÀ´¹æ·¶»¯Æ¥ÅäÌõ¼ş¶¨Òå¡£
+	 * æ ¹æ®{@link StartWithMatcher}çš„éœ€è¦æ¥è§„èŒƒåŒ–åŒ¹é…æ¡ä»¶å®šä¹‰ã€‚
 	 * 
-	 * @param headingDefinitions	KeyÊÇÆ¥Åä×Ö·û´®£¬ValueÊÇ¸½¼ş¶ÔÏó¡£
-	 * 					µ±½øĞĞÆ¥Åä¼ì²éµÄÊ±ºò£¬·µ»Ø¸½¼ş¶ÔÏóÀ´±êÊ¶ÄÄÒ»¸öÆ¥Åä×Ö·û´®±»Æ¥ÅäÉÏÁË¡£
+	 * @param headingDefinitions	Keyæ˜¯åŒ¹é…å­—ç¬¦ä¸²ï¼ŒValueæ˜¯é™„ä»¶å¯¹è±¡ã€‚
+	 * 					å½“è¿›è¡ŒåŒ¹é…æ£€æŸ¥çš„æ—¶å€™ï¼Œè¿”å›é™„ä»¶å¯¹è±¡æ¥æ ‡è¯†å“ªä¸€ä¸ªåŒ¹é…å­—ç¬¦ä¸²è¢«åŒ¹é…ä¸Šäº†ã€‚
 	 * 					<p>
 	 * 					Key is the heading string, Value is its associated attachment object.
 	 * 					When the heading string is matched, the attachment object will be returned
 	 * 					as identifier.
-	 * @return	{@link StartWithMatcher}ËùĞèµÄÆ¥ÅäÌõ¼ş¶¨Òå¡£
+	 * @return	{@link StartWithMatcher}æ‰€éœ€çš„åŒ¹é…æ¡ä»¶å®šä¹‰ã€‚
 	 * 			<br>Matching definitions for usage of {@link StartWithMatcher}.
 	 */
 	static protected List<MatchingDefinition> normalizeMatchingDefinitions(Map<String, ? extends Object> headingDefinitions){
-		// exactMatchExample×Ô¶¯ÉèÖÃÎªÓëregularExpressionÏàÍ¬
+		// exactMatchExampleè‡ªåŠ¨è®¾ç½®ä¸ºä¸regularExpressionç›¸åŒ
 		List<MatchingDefinition> l = new ArrayList<MatchingDefinition>(headingDefinitions.size());
 		for (Map.Entry<String, ? extends Object> e: headingDefinitions.entrySet()){
 			MatchingDefinition c = new MatchingDefinition();
@@ -123,21 +123,21 @@ public class StringStartWithMatcher extends StartWithMatcher {
 	/**
 	 * Expand number segments (such as 138000~138999 or 138000~138029) into number headings
 	 * (such as 138 or {13800,13801,13802}).<br>
-	 * °ÑºÅÂë¶Î£¨ÀàËÆ£º138000~138999»ò138000~138029£©Õ¹¿ª³ÉºÅÂëÍ·£¨ÀàËÆ£º138»ò13800,13801,13802£©¡£
+	 * æŠŠå·ç æ®µï¼ˆç±»ä¼¼ï¼š138000~138999æˆ–138000~138029ï¼‰å±•å¼€æˆå·ç å¤´ï¼ˆç±»ä¼¼ï¼š138æˆ–13800,13801,13802ï¼‰ã€‚
 	 * 
-	 * @param headingDefinitions	¿ÉÓÃÀ´¶Ô{@link StringStartWithMatcher}½øĞĞ³õÊ¼»¯µÄÕ¹¿ªºóµÄÆ¥ÅäÌõ¼ş
-	 * 			»á±»·Åµ½Õâ¸öMapÀï¡£
+	 * @param headingDefinitions	å¯ç”¨æ¥å¯¹{@link StringStartWithMatcher}è¿›è¡Œåˆå§‹åŒ–çš„å±•å¼€åçš„åŒ¹é…æ¡ä»¶
+	 * 			ä¼šè¢«æ”¾åˆ°è¿™ä¸ªMapé‡Œã€‚
 	 * 			<br> Equivalent heading definitions that could be used to 
 	 * 			create instance of {@link StringStartWithMatcher} will be put into this Map.
-	 * @param start	ÆğÊ¼ºÅÂë	<br> first/starting number
-	 * @param end	½áÊøºÅÂë <br> last/ending number
-	 * @param attachment	Æ¥Åä¸½¼ş<br>attachment to identify that the segment matches a string
+	 * @param start	èµ·å§‹å·ç 	<br> first/starting number
+	 * @param end	ç»“æŸå·ç  <br> last/ending number
+	 * @param attachment	åŒ¹é…é™„ä»¶<br>attachment to identify that the segment matches a string
 	 */
 	public static <T> void expandNumberMatchingRange(Map<String, T> headingDefinitions, String start, String end, T attachment){
-		int firstDiff; //µÚÒ»¸ö²»ÏàÍ¬×Ö·ûµÄÎ»ÖÃ
-		int lastDiff;  //Ä©Î²0:9¶ÔÓ¦¶Î¿ªÊ¼µÄÎ»ÖÃ
+		int firstDiff; //ç¬¬ä¸€ä¸ªä¸ç›¸åŒå­—ç¬¦çš„ä½ç½®
+		int lastDiff;  //æœ«å°¾0:9å¯¹åº”æ®µå¼€å§‹çš„ä½ç½®
 		
-		// ÏÈÇ¿ĞĞ±£Ö¤ÆğÊ¼ºÅÂëÓë½áÊøºÅÂë³¤¶ÈÏàÍ¬
+		// å…ˆå¼ºè¡Œä¿è¯èµ·å§‹å·ç ä¸ç»“æŸå·ç é•¿åº¦ç›¸åŒ
 		if (start.length() > end.length()){
 			StringBuilder sb = new StringBuilder(end);
 			while (start.length() > sb.length()){
@@ -152,14 +152,14 @@ public class StringStartWithMatcher extends StartWithMatcher {
 			start = sb.toString();
 		}
 		
-		// È»ºóÑ°ÕÒµÚÒ»¸ö²»ÏàÍ¬×Ö·ûµÄÎ»ÖÃ
+		// ç„¶åå¯»æ‰¾ç¬¬ä¸€ä¸ªä¸ç›¸åŒå­—ç¬¦çš„ä½ç½®
 		for (firstDiff = 0; firstDiff < start.length(); firstDiff++){
 			if (start.charAt(firstDiff) != end.charAt(firstDiff)){
 				break;
 			}
 		}
 		
-		// ÔÙÑ°ÕÒÄ©Î²0:9¶ÔÓ¦¶Î¿ªÊ¼µÄÎ»ÖÃ
+		// å†å¯»æ‰¾æœ«å°¾0:9å¯¹åº”æ®µå¼€å§‹çš„ä½ç½®
 		for (lastDiff = start.length() - 1; lastDiff >= 0; lastDiff--){
 			if (start.charAt(lastDiff) != '0' || end.charAt(lastDiff) != '9'){
 				break;
@@ -167,9 +167,9 @@ public class StringStartWithMatcher extends StartWithMatcher {
 		}
 		lastDiff++;
 		
-		if (firstDiff == lastDiff){ // Ôò±íÊ¾¿ÉºÏ²¢ÎªÒ»Ìõ
+		if (firstDiff == lastDiff){ // åˆ™è¡¨ç¤ºå¯åˆå¹¶ä¸ºä¸€æ¡
 			headingDefinitions.put(start.substring(0, firstDiff), attachment);
-		} else { // Ôò±íÊ¾ÒªÀ©Õ¹Îª¶àÌõ
+		} else { // åˆ™è¡¨ç¤ºè¦æ‰©å±•ä¸ºå¤šæ¡
 			int j = Integer.parseInt(start.substring(firstDiff, lastDiff));
 			int k = Integer.parseInt(end.substring(firstDiff, lastDiff));
 			String head = start.substring(0, firstDiff);

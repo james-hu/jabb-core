@@ -29,37 +29,37 @@ import java.util.SortedMap;
 /**
  * Encapsulates Map so that a new entry is put in to the Map whenever
  * there is a get for a non-existing entry.<br>
- * °ÑMap½øÒ»²½·â×°£¬Ê¹µÃÃ¿´ÎgetµÄÊ±ºò£¬Èç¹ûÃ»ÓĞ£¬¾Í×Ô¶¯put¡£
+ * æŠŠMapè¿›ä¸€æ­¥å°è£…ï¼Œä½¿å¾—æ¯æ¬¡getçš„æ—¶å€™ï¼Œå¦‚æœæ²¡æœ‰ï¼Œå°±è‡ªåŠ¨putã€‚
  * <p>
  * Please note that only these methods are synchronized: get/put/putAll/remove/clear.
  * <p>
- * ×¢ÒâÖ»ÓĞÕâ¼¸¸ö·½·¨ÊÇÍ¬²½µÄ£ºget/put/putAll/remove/clear¡£
+ * æ³¨æ„åªæœ‰è¿™å‡ ä¸ªæ–¹æ³•æ˜¯åŒæ­¥çš„ï¼šget/put/putAll/remove/clearã€‚
  * <p>
  * Although PutOnGetMap implemented SortedMap and NavigableMap, 
  * if the encapsulated Map does not support those interfaces, 
  * then if any method of those interfaces was called, Exception will be thrown.
  * <p>
- * ËäÈ»PutOnGetMapÊµÏÖÁËSortedMapÓëNavigableMap½Ó¿Ú£¬
- * µ«ÊÇÈç¹û±»·â×°µÄMap±¾Éí²»Ö§³ÖÕâĞ©½Ó¿Ú£¬
- * ÄÇÃ´µ±ÔËĞĞÊ±µ÷ÓÃÕâĞ©½Ó¿ÚËùÌØÓĞµÄ·½·¨µÄÊ±ºò£¬»áÅ×³öException¡£
+ * è™½ç„¶PutOnGetMapå®ç°äº†SortedMapä¸NavigableMapæ¥å£ï¼Œ
+ * ä½†æ˜¯å¦‚æœè¢«å°è£…çš„Mapæœ¬èº«ä¸æ”¯æŒè¿™äº›æ¥å£ï¼Œ
+ * é‚£ä¹ˆå½“è¿è¡Œæ—¶è°ƒç”¨è¿™äº›æ¥å£æ‰€ç‰¹æœ‰çš„æ–¹æ³•çš„æ—¶å€™ï¼Œä¼šæŠ›å‡ºExceptionã€‚
  * 
  * @author Zhengmao HU (James)
  * 
  * @deprecated This class was renamed as PutIfAbsentMap. Please use PutIfAbsentMap instead.
  *
- * @param <K>	Type of the key of the Map entries<br>MapµÄkeyµÄÀàĞÍ
- * @param <V>	Type of the value of the Map entries<br>MapµÄvalueµÄÀàĞÍ
+ * @param <K>	Type of the key of the Map entries<br>Mapçš„keyçš„ç±»å‹
+ * @param <V>	Type of the value of the Map entries<br>Mapçš„valueçš„ç±»å‹
  */
 public class PutOnGetMap<K, V> extends PutIfAbsentMap<K, V> implements SortedMap<K,V>, NavigableMap<K,V>{
 	
 	/**
 	 * Constructs an instance with specified Map instance and value Class.<br>
-	 * ¸ø¶¨MapÊµÀıÒÔ¼°valueµÄÀà£¬°ÑÒ»¸öÆÕÍ¨µÄMapÊµÀı·â×°³É¡°Ã¿´ÎgetµÄÊ±ºò£¬Èç¹ûÃ»ÓĞ£¬¾Í×Ô¶¯put¡±¡£
+	 * ç»™å®šMapå®ä¾‹ä»¥åŠvalueçš„ç±»ï¼ŒæŠŠä¸€ä¸ªæ™®é€šçš„Mapå®ä¾‹å°è£…æˆâ€œæ¯æ¬¡getçš„æ—¶å€™ï¼Œå¦‚æœæ²¡æœ‰ï¼Œå°±è‡ªåŠ¨putâ€ã€‚
 	 * 
 	 * @param originalMap	The Map instance that will be encapsulated.<br>
-	 * 						±»·â×°½øÀ´µÄMapÊµÀı¡£
+	 * 						è¢«å°è£…è¿›æ¥çš„Mapå®ä¾‹ã€‚
 	 * @param valueClazz	Class of the value of the Map entry.<br>
-	 * 						MapµÄvalueµÄÀà¡£
+	 * 						Mapçš„valueçš„ç±»ã€‚
 	 */
 	public PutOnGetMap(Map<K, V> originalMap, Class<? extends V> valueClazz){
 		super(originalMap, valueClazz);
@@ -67,12 +67,12 @@ public class PutOnGetMap<K, V> extends PutIfAbsentMap<K, V> implements SortedMap
 	
 	/**
 	 * Constructs an instance with specified Map Class and value Class.<br>
-	 * ¸ø¶¨MapµÄÀàÒÔ¼°valueµÄÀà£¬·â×°³öÒ»¸ö¡°Ã¿´ÎgetµÄÊ±ºò£¬Èç¹ûÃ»ÓĞ£¬¾Í×Ô¶¯put¡±µÄÊµÀı¡£
+	 * ç»™å®šMapçš„ç±»ä»¥åŠvalueçš„ç±»ï¼Œå°è£…å‡ºä¸€ä¸ªâ€œæ¯æ¬¡getçš„æ—¶å€™ï¼Œå¦‚æœæ²¡æœ‰ï¼Œå°±è‡ªåŠ¨putâ€çš„å®ä¾‹ã€‚
 	 * 
 	 * @param mapClazz		The Map Class that its instance will be created and encapsulated.<br>
-	 * 						±»·â×°½øÀ´µÄMapµÄÀà
+	 * 						è¢«å°è£…è¿›æ¥çš„Mapçš„ç±»
 	 * @param valueClazz	Class of the value of the Map entry.<br>
-	 * 						MapµÄvalueµÄÀà¡£
+	 * 						Mapçš„valueçš„ç±»ã€‚
 	 */
 	@SuppressWarnings("unchecked")
 	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz){
@@ -83,14 +83,14 @@ public class PutOnGetMap<K, V> extends PutIfAbsentMap<K, V> implements SortedMap
 	/**
 	 * Constructs an instance with specified Map Class, value Class 
 	 * and the constructor parameter of the value Class.<br>
-	 * ¸ø¶¨MapµÄÀà¡¢valueµÄÀàÒÔ¼°valueÀà¹¹Ôì·½·¨µÄ²ÎÊı£¬·â×°³öÒ»¸ö¡°Ã¿´ÎgetµÄÊ±ºò£¬Èç¹ûÃ»ÓĞ£¬¾Í×Ô¶¯put¡±µÄÊµÀı¡£
+	 * ç»™å®šMapçš„ç±»ã€valueçš„ç±»ä»¥åŠvalueç±»æ„é€ æ–¹æ³•çš„å‚æ•°ï¼Œå°è£…å‡ºä¸€ä¸ªâ€œæ¯æ¬¡getçš„æ—¶å€™ï¼Œå¦‚æœæ²¡æœ‰ï¼Œå°±è‡ªåŠ¨putâ€çš„å®ä¾‹ã€‚
 	 * 
 	 * @param mapClazz		The Map Class that its instance will be created and encapsulated.<br>
-	 * 						±»·â×°½øÀ´µÄMapµÄÀà
+	 * 						è¢«å°è£…è¿›æ¥çš„Mapçš„ç±»
 	 * @param valueClazz	Class of the value of the Map entry.<br>
-	 * 						MapµÄvalueµÄÀà¡£
+	 * 						Mapçš„valueçš„ç±»ã€‚
 	 * @param valueParam	Constructor parameter for the value Class.<br>	
-	 * 						valueµÄÀàµÄ¹¹Ôì·½·¨ËùĞèÒªµÄ²ÎÊı¡£
+	 * 						valueçš„ç±»çš„æ„é€ æ–¹æ³•æ‰€éœ€è¦çš„å‚æ•°ã€‚
 	 */
 	@SuppressWarnings("unchecked")
 	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object valueParam){
@@ -101,14 +101,14 @@ public class PutOnGetMap<K, V> extends PutIfAbsentMap<K, V> implements SortedMap
 	/**
 	 * Constructs an instance with specified Map Class, value Class 
 	 * and the constructor parameter of the value Class.<br>
-	 * ¸ø¶¨MapµÄÀà¡¢valueµÄÀàÒÔ¼°valueÀà¹¹Ôì·½·¨µÄ²ÎÊı£¬·â×°³öÒ»¸ö¡°Ã¿´ÎgetµÄÊ±ºò£¬Èç¹ûÃ»ÓĞ£¬¾Í×Ô¶¯put¡±µÄÊµÀı¡£
+	 * ç»™å®šMapçš„ç±»ã€valueçš„ç±»ä»¥åŠvalueç±»æ„é€ æ–¹æ³•çš„å‚æ•°ï¼Œå°è£…å‡ºä¸€ä¸ªâ€œæ¯æ¬¡getçš„æ—¶å€™ï¼Œå¦‚æœæ²¡æœ‰ï¼Œå°±è‡ªåŠ¨putâ€çš„å®ä¾‹ã€‚
 	 * 
 	 * @param mapClazz		The Map Class that its instance will be created and encapsulated.<br>
-	 * 						±»·â×°½øÀ´µÄMapµÄÀà
+	 * 						è¢«å°è£…è¿›æ¥çš„Mapçš„ç±»
 	 * @param valueClazz	Class of the value of the Map entry.<br>
-	 * 						MapµÄvalueµÄÀà¡£
+	 * 						Mapçš„valueçš„ç±»ã€‚
 	 * @param valueParams	Constructor parameter for the value Class.<br>	
-	 * 						valueµÄÀàµÄ¹¹Ôì·½·¨ËùĞèÒªµÄ²ÎÊı¡£
+	 * 						valueçš„ç±»çš„æ„é€ æ–¹æ³•æ‰€éœ€è¦çš„å‚æ•°ã€‚
 	 */
 	@SuppressWarnings("unchecked")
 	public PutOnGetMap(@SuppressWarnings("rawtypes") Class<? extends Map> mapClazz, Class<? extends V> valueClazz, Object... valueParams){

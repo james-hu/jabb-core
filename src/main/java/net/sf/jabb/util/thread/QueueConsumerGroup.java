@@ -27,15 +27,15 @@ import net.sf.jabb.util.text.NameDeduplicator;
 
 /**
  * A group of QueueConsumer(s) that work on on the same queue simultaneously.<br>
- * Ò»Åú²¢ĞĞ´¦ÀíÍ¬Ò»¸ö¶ÓÁĞµÄQueueConsumer¡£
+ * ä¸€æ‰¹å¹¶è¡Œå¤„ç†åŒä¸€ä¸ªé˜Ÿåˆ—çš„QueueConsumerã€‚
  * <p>
  * One working thread will be created for each QueueConsumer when necessary.
  * <p>
- * Ã¿¸öQueueConsumerÏàÓ¦µÄ»áÓĞÒ»¸ö¹¤×÷Ïß³ÌÔÚĞèÒªµÄÊ±ºò±»´´½¨¡£
+ * æ¯ä¸ªQueueConsumerç›¸åº”çš„ä¼šæœ‰ä¸€ä¸ªå·¥ä½œçº¿ç¨‹åœ¨éœ€è¦çš„æ—¶å€™è¢«åˆ›å»ºã€‚
  * 
  * @author Zhengmao HU (James)
  * 
- * @param <E>	Type of the data in the queue.<br>¶ÓÁĞÖĞÊı¾İµÄÀàĞÍ
+ * @param <E>	Type of the data in the queue.<br>é˜Ÿåˆ—ä¸­æ•°æ®çš„ç±»å‹
  * 
  */
 public class QueueConsumerGroup<E> {
@@ -45,10 +45,10 @@ public class QueueConsumerGroup<E> {
 	
 	/**
 	 * Internal constructor, without specifying thread pool.<br>
-	 * £¨ÄÚ²¿ÓÃ£©´´½¨ÊµÀı£¬²»Ö¸¶¨Í³Ò»µÄÏß³Ì³Ø¡£
+	 * ï¼ˆå†…éƒ¨ç”¨ï¼‰åˆ›å»ºå®ä¾‹ï¼Œä¸æŒ‡å®šç»Ÿä¸€çš„çº¿ç¨‹æ± ã€‚
 	 * 
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 */
 	protected QueueConsumerGroup(BlockingQueue<E> workQueue){
 		queue = workQueue;
@@ -57,10 +57,10 @@ public class QueueConsumerGroup<E> {
 	
 	/**
 	 * Internal constructor, without specifying thread pool.<br>
-	 * £¨ÄÚ²¿ÓÃ£©´´½¨ÊµÀı£¬²»Ö¸¶¨Í³Ò»µÄÏß³Ì³Ø¡£
+	 * ï¼ˆå†…éƒ¨ç”¨ï¼‰åˆ›å»ºå®ä¾‹ï¼Œä¸æŒ‡å®šç»Ÿä¸€çš„çº¿ç¨‹æ± ã€‚
 	 * 
 	 * @param workQueueSize		Size of the ArrayBlockingQueue to be created from which data for processing will be fetched.<br>
-	 * 							½«±»´´½¨µÄArrayBlockingQueue¶ÓÁĞµÄ´óĞ¡£¬±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							å°†è¢«åˆ›å»ºçš„ArrayBlockingQueueé˜Ÿåˆ—çš„å¤§å°ï¼Œæœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 */
 	protected QueueConsumerGroup(int workQueueSize){
 		this(new ArrayBlockingQueue<E>(workQueueSize));
@@ -68,11 +68,11 @@ public class QueueConsumerGroup<E> {
 
 	/**
 	 * Internal constructor, specifying one thread pool for all QueueConsumers to use.<br>
-	 * £¨ÄÚ²¿ÓÃ£©´´½¨ÊµÀı£¬ÈÃËùÓĞµÄQueueConsumerÍ³Ò»Ê¹ÓÃÖ¸¶¨µÄÏß³Ì³Ø¡£
+	 * ï¼ˆå†…éƒ¨ç”¨ï¼‰åˆ›å»ºå®ä¾‹ï¼Œè®©æ‰€æœ‰çš„QueueConsumerç»Ÿä¸€ä½¿ç”¨æŒ‡å®šçš„çº¿ç¨‹æ± ã€‚
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param executorService	Thread pool that working threads will be get from.<br>
-	 * 							Ö¸¶¨ÈÃ±¾ÊµÀı´ÓÕâÀï»ñµÃËùÓĞ¹¤×÷Ïß³Ì¡£
+	 * 							æŒ‡å®šè®©æœ¬å®ä¾‹ä»è¿™é‡Œè·å¾—æ‰€æœ‰å·¥ä½œçº¿ç¨‹ã€‚
 	 */
 	protected QueueConsumerGroup(BlockingQueue<E> workQueue, ExecutorService executorService){
 		this(workQueue);
@@ -81,11 +81,11 @@ public class QueueConsumerGroup<E> {
 	
 	/**
 	 * Internal constructor, specifying one thread pool for all QueueConsumers to use.<br>
-	 * £¨ÄÚ²¿ÓÃ£©´´½¨ÊµÀı£¬ÈÃËùÓĞµÄQueueConsumerÍ³Ò»Ê¹ÓÃÖ¸¶¨µÄÏß³Ì³Ø¡£
+	 * ï¼ˆå†…éƒ¨ç”¨ï¼‰åˆ›å»ºå®ä¾‹ï¼Œè®©æ‰€æœ‰çš„QueueConsumerç»Ÿä¸€ä½¿ç”¨æŒ‡å®šçš„çº¿ç¨‹æ± ã€‚
 	 * @param workQueueSize		Size of the ArrayBlockingQueue to be created from which data for processing will be fetched.<br>
-	 * 							½«±»´´½¨µÄArrayBlockingQueue¶ÓÁĞµÄ´óĞ¡£¬±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							å°†è¢«åˆ›å»ºçš„ArrayBlockingQueueé˜Ÿåˆ—çš„å¤§å°ï¼Œæœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param executorService	Thread pool that working threads will be get from.<br>
-	 * 							Ö¸¶¨ÈÃ±¾ÊµÀı´ÓÕâÀï»ñµÃËùÓĞ¹¤×÷Ïß³Ì¡£
+	 * 							æŒ‡å®šè®©æœ¬å®ä¾‹ä»è¿™é‡Œè·å¾—æ‰€æœ‰å·¥ä½œçº¿ç¨‹ã€‚
 	 */
 	protected QueueConsumerGroup(int workQueueSize, ExecutorService executorService){
 		this(new ArrayBlockingQueue<E>(workQueueSize), executorService);
@@ -93,18 +93,18 @@ public class QueueConsumerGroup<E> {
 	
 	/**
 	 * Constructor, specifying one thread pool for all QueueConsumers to use.<br>
-	 * ´´½¨ÊµÀı£¬ÈÃËùÓĞµÄQueueConsumerÍ³Ò»Ê¹ÓÃÖ¸¶¨µÄÏß³Ì³Ø¡£
+	 * åˆ›å»ºå®ä¾‹ï¼Œè®©æ‰€æœ‰çš„QueueConsumerç»Ÿä¸€ä½¿ç”¨æŒ‡å®šçš„çº¿ç¨‹æ± ã€‚
 	 * <p>
 	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
 	 * <p>
-	 * µ±±»¼ÓÈëÕâ¸öQueueConsumerGroupµÄÊ±ºò£¬QueueConsumerÈç¹ûÓĞÃû³ÆÖØ¸´£¬»á±»×Ô¶¯¸ÄÃû¡£
+	 * å½“è¢«åŠ å…¥è¿™ä¸ªQueueConsumerGroupçš„æ—¶å€™ï¼ŒQueueConsumerå¦‚æœæœ‰åç§°é‡å¤ï¼Œä¼šè¢«è‡ªåŠ¨æ”¹åã€‚
 	 * 
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param executorService	Thread pool that working threads will be get from.<br>
-	 * 							Ö¸¶¨ÈÃ±¾ÊµÀı´ÓÕâÀï»ñµÃËùÓĞ¹¤×÷Ïß³Ì¡£
+	 * 							æŒ‡å®šè®©æœ¬å®ä¾‹ä»è¿™é‡Œè·å¾—æ‰€æœ‰å·¥ä½œçº¿ç¨‹ã€‚
 	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
-	 * 							»áÒ»Æğ¹¤×÷µÄQueueConsumer¡£
+	 * 							ä¼šä¸€èµ·å·¥ä½œçš„QueueConsumerã€‚
 	 */
 	public QueueConsumerGroup(BlockingQueue<E> workQueue, ExecutorService executorService, QueueConsumer<E>... queueConsumers){
 		this(workQueue, executorService);
@@ -122,18 +122,18 @@ public class QueueConsumerGroup<E> {
 	
 	/**
 	 * Constructor, specifying one thread pool for all QueueConsumers to use.<br>
-	 * ´´½¨ÊµÀı£¬ÈÃËùÓĞµÄQueueConsumerÍ³Ò»Ê¹ÓÃÖ¸¶¨µÄÏß³Ì³Ø¡£
+	 * åˆ›å»ºå®ä¾‹ï¼Œè®©æ‰€æœ‰çš„QueueConsumerç»Ÿä¸€ä½¿ç”¨æŒ‡å®šçš„çº¿ç¨‹æ± ã€‚
 	 * <p>
 	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
 	 * <p>
-	 * µ±±»¼ÓÈëÕâ¸öQueueConsumerGroupµÄÊ±ºò£¬QueueConsumerÈç¹ûÓĞÃû³ÆÖØ¸´£¬»á±»×Ô¶¯¸ÄÃû¡£
+	 * å½“è¢«åŠ å…¥è¿™ä¸ªQueueConsumerGroupçš„æ—¶å€™ï¼ŒQueueConsumerå¦‚æœæœ‰åç§°é‡å¤ï¼Œä¼šè¢«è‡ªåŠ¨æ”¹åã€‚
 	 * 
 	 * @param workQueueSize		Size of the ArrayBlockingQueue to be created from which data for processing will be fetched.<br>
-	 * 							½«±»´´½¨µÄArrayBlockingQueue¶ÓÁĞµÄ´óĞ¡£¬±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							å°†è¢«åˆ›å»ºçš„ArrayBlockingQueueé˜Ÿåˆ—çš„å¤§å°ï¼Œæœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param executorService	Thread pool that working threads will be get from.<br>
-	 * 							Ö¸¶¨ÈÃ±¾ÊµÀı´ÓÕâÀï»ñµÃËùÓĞ¹¤×÷Ïß³Ì¡£
+	 * 							æŒ‡å®šè®©æœ¬å®ä¾‹ä»è¿™é‡Œè·å¾—æ‰€æœ‰å·¥ä½œçº¿ç¨‹ã€‚
 	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
-	 * 							»áÒ»Æğ¹¤×÷µÄQueueConsumer¡£
+	 * 							ä¼šä¸€èµ·å·¥ä½œçš„QueueConsumerã€‚
 	 */
 	public QueueConsumerGroup(int workQueueSize, ExecutorService executorService, QueueConsumer<E>... queueConsumers){
 		this(new ArrayBlockingQueue<E>(workQueueSize), executorService, queueConsumers);
@@ -141,16 +141,16 @@ public class QueueConsumerGroup<E> {
 	
 	/**
 	 * Constructor, without specifying thread pool.<br>
-	 * ´´½¨ÊµÀı£¬²»Ö¸¶¨Í³Ò»µÄÏß³Ì³Ø¡£
+	 * åˆ›å»ºå®ä¾‹ï¼Œä¸æŒ‡å®šç»Ÿä¸€çš„çº¿ç¨‹æ± ã€‚
 	 * <p>
 	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
 	 * <p>
-	 * µ±±»¼ÓÈëÕâ¸öQueueConsumerGroupµÄÊ±ºò£¬QueueConsumerÈç¹ûÓĞÃû³ÆÖØ¸´£¬»á±»×Ô¶¯¸ÄÃû¡£
+	 * å½“è¢«åŠ å…¥è¿™ä¸ªQueueConsumerGroupçš„æ—¶å€™ï¼ŒQueueConsumerå¦‚æœæœ‰åç§°é‡å¤ï¼Œä¼šè¢«è‡ªåŠ¨æ”¹åã€‚
 	 * 
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
-	 * 							»áÒ»Æğ¹¤×÷µÄQueueConsumer¡£
+	 * 							ä¼šä¸€èµ·å·¥ä½œçš„QueueConsumerã€‚
 	 */
 	public QueueConsumerGroup(BlockingQueue<E> workQueue, QueueConsumer<E>... queueConsumers){
 		this(workQueue, null, queueConsumers);
@@ -158,16 +158,16 @@ public class QueueConsumerGroup<E> {
 	
 	/**
 	 * Constructor, without specifying thread pool.<br>
-	 * ´´½¨ÊµÀı£¬²»Ö¸¶¨Í³Ò»µÄÏß³Ì³Ø¡£
+	 * åˆ›å»ºå®ä¾‹ï¼Œä¸æŒ‡å®šç»Ÿä¸€çš„çº¿ç¨‹æ± ã€‚
 	 * <p>
 	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
 	 * <p>
-	 * µ±±»¼ÓÈëÕâ¸öQueueConsumerGroupµÄÊ±ºò£¬QueueConsumerÈç¹ûÓĞÃû³ÆÖØ¸´£¬»á±»×Ô¶¯¸ÄÃû¡£
+	 * å½“è¢«åŠ å…¥è¿™ä¸ªQueueConsumerGroupçš„æ—¶å€™ï¼ŒQueueConsumerå¦‚æœæœ‰åç§°é‡å¤ï¼Œä¼šè¢«è‡ªåŠ¨æ”¹åã€‚
 	 * 
 	 * @param workQueueSize		Size of the ArrayBlockingQueue to be created from which data for processing will be fetched.<br>
-	 * 							½«±»´´½¨µÄArrayBlockingQueue¶ÓÁĞµÄ´óĞ¡£¬±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							å°†è¢«åˆ›å»ºçš„ArrayBlockingQueueé˜Ÿåˆ—çš„å¤§å°ï¼Œæœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
-	 * 							»áÒ»Æğ¹¤×÷µÄQueueConsumer¡£
+	 * 							ä¼šä¸€èµ·å·¥ä½œçš„QueueConsumerã€‚
 	 */
 	public QueueConsumerGroup(int workQueueSize, QueueConsumer<E>... queueConsumers){
 		this(workQueueSize, null, queueConsumers);
@@ -176,18 +176,18 @@ public class QueueConsumerGroup<E> {
 
 	/**
 	 * Constructor, specifying one thread pool for all QueueConsumers to use.<br>
-	 * ´´½¨ÊµÀı£¬ÈÃËùÓĞµÄQueueConsumerÍ³Ò»Ê¹ÓÃÖ¸¶¨µÄÏß³Ì³Ø¡£
+	 * åˆ›å»ºå®ä¾‹ï¼Œè®©æ‰€æœ‰çš„QueueConsumerç»Ÿä¸€ä½¿ç”¨æŒ‡å®šçš„çº¿ç¨‹æ± ã€‚
 	 * <p>
 	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
 	 * <p>
-	 * µ±±»¼ÓÈëÕâ¸öQueueConsumerGroupµÄÊ±ºò£¬QueueConsumerÈç¹ûÓĞÃû³ÆÖØ¸´£¬»á±»×Ô¶¯¸ÄÃû¡£
+	 * å½“è¢«åŠ å…¥è¿™ä¸ªQueueConsumerGroupçš„æ—¶å€™ï¼ŒQueueConsumerå¦‚æœæœ‰åç§°é‡å¤ï¼Œä¼šè¢«è‡ªåŠ¨æ”¹åã€‚
 	 * 
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param executorService	Thread pool that working threads will be get from.<br>
-	 * 							Ö¸¶¨ÈÃ±¾ÊµÀı´ÓÕâÀï»ñµÃËùÓĞ¹¤×÷Ïß³Ì¡£
+	 * 							æŒ‡å®šè®©æœ¬å®ä¾‹ä»è¿™é‡Œè·å¾—æ‰€æœ‰å·¥ä½œçº¿ç¨‹ã€‚
 	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
-	 * 							»áÒ»Æğ¹¤×÷µÄQueueConsumer¡£
+	 * 							ä¼šä¸€èµ·å·¥ä½œçš„QueueConsumerã€‚
 	 */
 	public QueueConsumerGroup(BlockingQueue<E> workQueue, ExecutorService executorService, Collection<? extends QueueConsumer<E>> queueConsumers){
 		this(workQueue, executorService);
@@ -205,34 +205,34 @@ public class QueueConsumerGroup<E> {
 	
 	/**
 	 * Constructor, specifying one thread pool for all QueueConsumers to use.<br>
-	 * ´´½¨ÊµÀı£¬ÈÃËùÓĞµÄQueueConsumerÍ³Ò»Ê¹ÓÃÖ¸¶¨µÄÏß³Ì³Ø¡£
+	 * åˆ›å»ºå®ä¾‹ï¼Œè®©æ‰€æœ‰çš„QueueConsumerç»Ÿä¸€ä½¿ç”¨æŒ‡å®šçš„çº¿ç¨‹æ± ã€‚
 	 * <p>
 	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
 	 * <p>
-	 * µ±±»¼ÓÈëÕâ¸öQueueConsumerGroupµÄÊ±ºò£¬QueueConsumerÈç¹ûÓĞÃû³ÆÖØ¸´£¬»á±»×Ô¶¯¸ÄÃû¡£
+	 * å½“è¢«åŠ å…¥è¿™ä¸ªQueueConsumerGroupçš„æ—¶å€™ï¼ŒQueueConsumerå¦‚æœæœ‰åç§°é‡å¤ï¼Œä¼šè¢«è‡ªåŠ¨æ”¹åã€‚
 	 * 
 	 * @param workQueueSize		Size of the ArrayBlockingQueue to be created from which data for processing will be fetched.<br>
-	 * 							½«±»´´½¨µÄArrayBlockingQueue¶ÓÁĞµÄ´óĞ¡£¬±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							å°†è¢«åˆ›å»ºçš„ArrayBlockingQueueé˜Ÿåˆ—çš„å¤§å°ï¼Œæœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param executorService	Thread pool that working threads will be get from.<br>
-	 * 							Ö¸¶¨ÈÃ±¾ÊµÀı´ÓÕâÀï»ñµÃËùÓĞ¹¤×÷Ïß³Ì¡£
+	 * 							æŒ‡å®šè®©æœ¬å®ä¾‹ä»è¿™é‡Œè·å¾—æ‰€æœ‰å·¥ä½œçº¿ç¨‹ã€‚
 	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
-	 * 							»áÒ»Æğ¹¤×÷µÄQueueConsumer¡£
+	 * 							ä¼šä¸€èµ·å·¥ä½œçš„QueueConsumerã€‚
 	 */
 	public QueueConsumerGroup(int workQueueSize, ExecutorService executorService, Collection<? extends QueueConsumer<E>> queueConsumers){
 		this(new ArrayBlockingQueue<E>(workQueueSize), executorService, queueConsumers);
 	}
 	/**
 	 * Constructor, without specifying thread pool.<br>
-	 * ´´½¨ÊµÀı£¬²»Ö¸¶¨Í³Ò»µÄÏß³Ì³Ø¡£
+	 * åˆ›å»ºå®ä¾‹ï¼Œä¸æŒ‡å®šç»Ÿä¸€çš„çº¿ç¨‹æ± ã€‚
 	 * <p>
 	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
 	 * <p>
-	 * µ±±»¼ÓÈëÕâ¸öQueueConsumerGroupµÄÊ±ºò£¬QueueConsumerÈç¹ûÓĞÃû³ÆÖØ¸´£¬»á±»×Ô¶¯¸ÄÃû¡£
+	 * å½“è¢«åŠ å…¥è¿™ä¸ªQueueConsumerGroupçš„æ—¶å€™ï¼ŒQueueConsumerå¦‚æœæœ‰åç§°é‡å¤ï¼Œä¼šè¢«è‡ªåŠ¨æ”¹åã€‚
 	 * 
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
-	 * 							»áÒ»Æğ¹¤×÷µÄQueueConsumer¡£
+	 * 							ä¼šä¸€èµ·å·¥ä½œçš„QueueConsumerã€‚
 	 */
 	public QueueConsumerGroup(BlockingQueue<E> workQueue, Collection<? extends QueueConsumer<E>> queueConsumers){
 		this(workQueue, null, queueConsumers);
@@ -240,16 +240,16 @@ public class QueueConsumerGroup<E> {
 
 	/**
 	 * Constructor, without specifying thread pool.<br>
-	 * ´´½¨ÊµÀı£¬²»Ö¸¶¨Í³Ò»µÄÏß³Ì³Ø¡£
+	 * åˆ›å»ºå®ä¾‹ï¼Œä¸æŒ‡å®šç»Ÿä¸€çš„çº¿ç¨‹æ± ã€‚
 	 * <p>
 	 * Duplicated names of QueueConsumer(s) will be renamed automatically when adding to this QueueConsumerGroup.
 	 * <p>
-	 * µ±±»¼ÓÈëÕâ¸öQueueConsumerGroupµÄÊ±ºò£¬QueueConsumerÈç¹ûÓĞÃû³ÆÖØ¸´£¬»á±»×Ô¶¯¸ÄÃû¡£
+	 * å½“è¢«åŠ å…¥è¿™ä¸ªQueueConsumerGroupçš„æ—¶å€™ï¼ŒQueueConsumerå¦‚æœæœ‰åç§°é‡å¤ï¼Œä¼šè¢«è‡ªåŠ¨æ”¹åã€‚
 	 * 
 	 * @param workQueueSize		Size of the ArrayBlockingQueue to be created from which data for processing will be fetched.<br>
-	 * 							½«±»´´½¨µÄArrayBlockingQueue¶ÓÁĞµÄ´óĞ¡£¬±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							å°†è¢«åˆ›å»ºçš„ArrayBlockingQueueé˜Ÿåˆ—çš„å¤§å°ï¼Œæœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param queueConsumers	QueueConsumer(s) that will work together.<br>
-	 * 							»áÒ»Æğ¹¤×÷µÄQueueConsumer¡£
+	 * 							ä¼šä¸€èµ·å·¥ä½œçš„QueueConsumerã€‚
 	 */
 	public QueueConsumerGroup(int workQueueSize, Collection<? extends QueueConsumer<E>> queueConsumers){
 		this(workQueueSize, null, queueConsumers);
@@ -257,7 +257,7 @@ public class QueueConsumerGroup<E> {
 
 	/**
 	 * Get QueueConsumer instance by its name.<br>
-	 * °´Ãû³ÆÑ°ÕÒµÃµ½QueueConsumer¡£
+	 * æŒ‰åç§°å¯»æ‰¾å¾—åˆ°QueueConsumerã€‚
 	 * 
 	 * @param name 	Name of the QueueConsumer
 	 * @return		The instance with the name specified
@@ -268,10 +268,10 @@ public class QueueConsumerGroup<E> {
 	
 	/**
 	 * Get the Map of all QueueConsumer.<br>
-	 * »ñµÃº¬ÓĞÈ«²¿QueueConsumerµÄMap¡£
+	 * è·å¾—å«æœ‰å…¨éƒ¨QueueConsumerçš„Mapã€‚
 	 * 
 	 * @return	A Map, its key is the name of QueueConsumer, its value is QueueConsumer itself.<br>
-	 * 			Ò»¸öMap£¬ÆäkeyÊÇQueueConsumerµÄÃû³Æ£¬ÖµÊÇQueueConsumer±¾Éí¡£
+	 * 			ä¸€ä¸ªMapï¼Œå…¶keyæ˜¯QueueConsumerçš„åç§°ï¼Œå€¼æ˜¯QueueConsumeræœ¬èº«ã€‚
 	 */
 	public Map<String, QueueConsumer<E>> getConsumers() {
 		return consumers;
@@ -279,8 +279,8 @@ public class QueueConsumerGroup<E> {
 
 	/**
 	 * Get the work queue.<br>
-	 * È¡µÃ¹¤×÷¶ÓÁĞ¡£
-	 * @return The work queue.<br>¹¤×÷¶ÓÁĞ¡£
+	 * å–å¾—å·¥ä½œé˜Ÿåˆ—ã€‚
+	 * @return The work queue.<br>å·¥ä½œé˜Ÿåˆ—ã€‚
 	 */
 	public BlockingQueue<E> getQueue() {
 		return queue;
@@ -288,7 +288,7 @@ public class QueueConsumerGroup<E> {
 
 	/**
 	 * Start all QueueConsumer(s) one by one.<br>
-	 * Öğ¸öÆô¶¯ËùÓĞConsumer¡£
+	 * é€ä¸ªå¯åŠ¨æ‰€æœ‰Consumerã€‚
 	 */
 	public void start(){
 		for (QueueConsumer<E> c: consumers.values()){
@@ -300,17 +300,17 @@ public class QueueConsumerGroup<E> {
 	 * Put data into the queue for processing, if the queue still has space
 	 * this method will return immediately 
 	 * without waiting for the data to be actually processed.<br>
-	 * °Ñ´ı´¦ÀíÊı¾İ·ÅÈë¶ÓÁĞ£¬Èç¹û¶ÓÁĞÖĞ»¹ÓĞ¿ÕÎ»ÖÃÔòÕâ¸ö·½·¨»áÁ¢¼´·µ»Ø¶ø²»ÊÇµÈ´ıÊµ¼Ê´¦ÀíÍê³É¡£
+	 * æŠŠå¾…å¤„ç†æ•°æ®æ”¾å…¥é˜Ÿåˆ—ï¼Œå¦‚æœé˜Ÿåˆ—ä¸­è¿˜æœ‰ç©ºä½ç½®åˆ™è¿™ä¸ªæ–¹æ³•ä¼šç«‹å³è¿”å›è€Œä¸æ˜¯ç­‰å¾…å®é™…å¤„ç†å®Œæˆã€‚
 	 * <p>
 	 * If the queue has no space left, this method will wait for the space then put data into the queue for processing,
 	 * after that, this method will return immediately without waiting for the data to be actually processed.
 	 * <p>
-	 * Èç¹û¶ÓÁĞÖĞÃ»ÓĞ¿ÕÎ»ÖÃÁË£¬Ôò»áµÈ´ı¶ÓÁĞ¿Õ³öÎ»ÖÃÀ´Ö®ºóÔÙ°ÑÊı¾İ·Å½øÈ¥£¬·ÅÍêÖ®ºóÕâ¸ö·½·¨»áÁ¢¼´·µ»Ø¶ø²»ÊÇµÈ´ıÊµ¼Ê´¦ÀíÍê³É¡£
+	 * å¦‚æœé˜Ÿåˆ—ä¸­æ²¡æœ‰ç©ºä½ç½®äº†ï¼Œåˆ™ä¼šç­‰å¾…é˜Ÿåˆ—ç©ºå‡ºä½ç½®æ¥ä¹‹åå†æŠŠæ•°æ®æ”¾è¿›å»ï¼Œæ”¾å®Œä¹‹åè¿™ä¸ªæ–¹æ³•ä¼šç«‹å³è¿”å›è€Œä¸æ˜¯ç­‰å¾…å®é™…å¤„ç†å®Œæˆã€‚
 	 * 
 	 * @param obj	Data need to be processed<br>
-	 * 				´ı´¦ÀíµÄÊı¾İ¡£
+	 * 				å¾…å¤„ç†çš„æ•°æ®ã€‚
 	 * @throws InterruptedException if interrupted while waiting for space to become available.<br>
-	 * 								Èç¹û¶ÓÁĞÒÑÂú¶øÔÚµÈ´ı¿Õ³öÎ»ÖÃµÄÊ±ºò·¢ÉúÁËÖĞ¶Ï¡£
+	 * 								å¦‚æœé˜Ÿåˆ—å·²æ»¡è€Œåœ¨ç­‰å¾…ç©ºå‡ºä½ç½®çš„æ—¶å€™å‘ç”Ÿäº†ä¸­æ–­ã€‚
 	 */
 	public void queue(E obj) throws InterruptedException{
 		queue.put(obj);
@@ -319,12 +319,12 @@ public class QueueConsumerGroup<E> {
 	/**
 	 * Stop all the working threads one by one; 
 	 * This method will not return until all threads are stopped.<br>
-	 * Öğ¸öÍ£Ö¹Ëù¹¤×÷Ïß³Ì£¬Õâ¸ö·½·¨»áµÈµ½ËùÓĞ¹¤×÷Ïß³Ì½áÊø²Å·µ»Ø¡£
+	 * é€ä¸ªåœæ­¢æ‰€å·¥ä½œçº¿ç¨‹ï¼Œè¿™ä¸ªæ–¹æ³•ä¼šç­‰åˆ°æ‰€æœ‰å·¥ä½œçº¿ç¨‹ç»“æŸæ‰è¿”å›ã€‚
 	 * 
 	 * @param afterQueueEmpty	true if working thread should keep processing until the queue is empty;<br>
 	 * 							false if working thread should stop after finished current work;<br>
-	 * 							Èç¹ûÎªtrue£¬Ôò¹¤×÷Ïß³ÌÒªµÈµ½¶ÓÁĞ´¦Àí¿ÕÁË²Å½áÊø£»<br>
-	 * 							Èç¹ûÎªfalse£¬Ôò¹¤×÷Ïß³Ì´¦ÀíÍêµ±Ç°Êı¾İ¾Í½áÊø¡£
+	 * 							å¦‚æœä¸ºtrueï¼Œåˆ™å·¥ä½œçº¿ç¨‹è¦ç­‰åˆ°é˜Ÿåˆ—å¤„ç†ç©ºäº†æ‰ç»“æŸï¼›<br>
+	 * 							å¦‚æœä¸ºfalseï¼Œåˆ™å·¥ä½œçº¿ç¨‹å¤„ç†å®Œå½“å‰æ•°æ®å°±ç»“æŸã€‚
 	 */
 	public void stop(boolean afterQueueEmpty){
 		for (QueueConsumer<E> c: consumers.values()){
@@ -338,7 +338,7 @@ public class QueueConsumerGroup<E> {
 	/**
 	 * Stop working threads after the queue is empty; 
 	 * This method will not return until working thread finishes.<br>
-	 * ÈÃËùÓĞ´¦ÀíÏß³ÌÔÚ¶ÓÁĞ´¦Àí¿ÕÁËÖ®ºóÍ£Ö¹£¬Õâ¸ö·½·¨»áµÈµ½ËùÓĞ¹¤×÷´¦ÀíÏß³Ì½áÊø²Å·µ»Ø¡£
+	 * è®©æ‰€æœ‰å¤„ç†çº¿ç¨‹åœ¨é˜Ÿåˆ—å¤„ç†ç©ºäº†ä¹‹ååœæ­¢ï¼Œè¿™ä¸ªæ–¹æ³•ä¼šç­‰åˆ°æ‰€æœ‰å·¥ä½œå¤„ç†çº¿ç¨‹ç»“æŸæ‰è¿”å›ã€‚
 	 */
 	public void stop(){
 		stop(true);

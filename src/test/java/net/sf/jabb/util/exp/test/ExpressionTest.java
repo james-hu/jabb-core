@@ -26,18 +26,18 @@ public class ExpressionTest {
 		Map<String, Object> keywords = new HashMap<String, Object>();
 		
 		keywords.clear();
-		keywords.put("�й�", "�й�");
-		keywords.put("�й���", "�й���");
-		keywords.put("�л����񹲺͹�", "�л����񹲺͹�");
-		keywords.put("ë��", "ë��");
-		keywords.put("������", "������");
-		keywords.put("�찲��", "�찲��");
-		keywords.put("��", "��");
-		keywords.put("����", "����");
-		keywords.put("�Ϻ�", "�Ϻ�");
-		keywords.put("��", "����");
+		keywords.put("中国", "中国");
+		keywords.put("中国人", "中国人");
+		keywords.put("中华人民共和国", "中华人民共和国");
+		keywords.put("毛泽东", "毛泽东");
+		keywords.put("江泽民", "江泽民");
+		keywords.put("天安门", "天安门");
+		keywords.put("年", "年");
+		keywords.put("北京", "北京");
+		keywords.put("上海", "上海");
+		keywords.put("，", "逗号");
 
-		System.out.println("*** �ؼ��ʱ� *******");
+		System.out.println("*** 关键词表 *******");
 		for (String w: keywords.keySet()){
 			System.out.format("\t %-15s ---> %s\n", w, keywords.get(w));
 		}
@@ -98,28 +98,28 @@ public class ExpressionTest {
 	@Test
 	public void keywordMatchingTest(){
 		BooleanExpression exp = 
-			BooleanExpression.AND(BooleanExpression.HAS("ë��"),
-					BooleanExpression.HAS("�찲��"),
-					BooleanExpression.OR(BooleanExpression.HAS("����"),
-							BooleanExpression.HAS("����")),
-					BooleanExpression.NOT(BooleanExpression.HAS("�Ϻ�"))
+			BooleanExpression.AND(BooleanExpression.HAS("毛泽东"),
+					BooleanExpression.HAS("天安门"),
+					BooleanExpression.OR(BooleanExpression.HAS("北京"),
+							BooleanExpression.HAS("沈阳")),
+					BooleanExpression.NOT(BooleanExpression.HAS("上海"))
 					);
 		
 		System.out.println("-----------------");
 		for (String[] text: new String[][]
 		                             {
-				{"1949��10��1�գ��ڱ����찲���ϣ�ë��ׯ��������\n"
-				+ "�л����񹲺͹������ˣ��Ӵˣ��й�����վ�����ˡ�����ȫ�й�����Ľ��գ�\n"
-				+ "�������Ϻ��ȵص����񻶺�ȸԾ��", "false"},
-				{"ë�󶫾��������ڱ����찲��", "true"},
-				{"ë��ͬ־��һλΰ�������", "false"},
-				{"�κ��οͶ����Ե����й����찲��", "false"},
-				{"�κ��οͶ����Ե����й����찲�ţ����ҿ��Բι�ë�󶫼�����", "false"},
-				{"���������������������������ڱ���", "false"},
-				{"���������������������������ڱ�������仰����ë�����찲��˵�ġ�", "true"},
-				{"�������������������������Ǳ�����ë��ͬ־�Ա����ǳ�����", "false"},
-				{"�ڱ������찲�ų�¥��ë��ͬ־�ᵽ�����Թ������ǳ�����", "true"},
-				{"�ڱ������찲�ų�¥��ë��ͬ־�ᵽ�������Ϻ��ǳ�����", "false"},
+				{"1949年10月1日，在北京天安门上，毛泽东庄严宣布，\n"
+				+ "中华人民共和国成立了，从此，中国人民站起来了。这是全中国人民的节日，\n"
+				+ "北京、上海等地的人民欢呼雀跃。", "false"},
+				{"毛泽东经常出现在北京天安门", "true"},
+				{"毛泽东同志是一位伟大的领袖", "false"},
+				{"任何游客都可以登上中国的天安门", "false"},
+				{"任何游客都可以登上中国的天安门，而且可以参观毛泽东纪念堂", "false"},
+				{"北京、沈阳、哈尔滨，都算是在北方", "false"},
+				{"北京、沈阳、哈尔滨，都算是在北方，这句话不是毛泽东在天安门说的。", "true"},
+				{"北京、沈阳、哈尔滨，都算是北方，毛泽东同志对北方非常重视", "false"},
+				{"在北京的天安门城楼，毛泽东同志提到过他对哈尔滨非常重视", "true"},
+				{"在北京的天安门城楼，毛泽东同志提到过他对上海非常重视", "false"},
 		                             }
 		){
 			evaluateKeywordMatching(exp, text[0], text[1]);

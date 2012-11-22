@@ -19,7 +19,7 @@ package net.sf.jabb.util.stat;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Æµ´Î¼ÆÊıÆ÷µÄÉèÖÃĞÅÏ¢
+ * é¢‘æ¬¡è®¡æ•°å™¨çš„è®¾ç½®ä¿¡æ¯
  * 
  * @author Zhengmao HU (James)
  *
@@ -30,12 +30,12 @@ public class FrequencyCounterDefinition {
 	protected long purgeBefore;
 	
 	/**
-	 * ´´½¨Ò»¸ö²»×Ô¶¯É¾³ıÀúÊ·Êı¾İµÄÆµ´Î¼ÆÊıÆ÷ÅäÖÃĞÅÏ¢¶ÔÏó
-	 * @param id			Æµ´Î¼ÆÊıÆ÷µÄID£¬Èç¹ûÆµ´Î¼ÆÊıÆ÷ĞèÒª±»×÷ÎªPackagedFrequencyCounterÖĞ
-	 * 						µÄÒ»²¿·Ö£¬ÄÇÃ´¾ÍÓĞ±ØÒªÉèÖÃID£¬Èç¹ûÖ»ÊÇµ¥¶À×÷ÎªBasicFrequencyCounter
-	 * 						Ê¹ÓÃ£¬ÄÇÃ´¾Í¿ÉÒÔÉèÖÃÎªnull¡£
-	 * @param granularity	Æµ´ÎÍ³¼ÆµÄ¿ÅÁ£¶È£¬±ÈÈç30¡¢60¡£
-	 * @param unit			¿ÅÁ£¶ÈµÄµ¥Î»£¬±ÈÈçTimeUnit.SECONDS¡¢TimeUnit.MINUTES¡£
+	 * åˆ›å»ºä¸€ä¸ªä¸è‡ªåŠ¨åˆ é™¤å†å²æ•°æ®çš„é¢‘æ¬¡è®¡æ•°å™¨é…ç½®ä¿¡æ¯å¯¹è±¡
+	 * @param id			é¢‘æ¬¡è®¡æ•°å™¨çš„IDï¼Œå¦‚æœé¢‘æ¬¡è®¡æ•°å™¨éœ€è¦è¢«ä½œä¸ºPackagedFrequencyCounterä¸­
+	 * 						çš„ä¸€éƒ¨åˆ†ï¼Œé‚£ä¹ˆå°±æœ‰å¿…è¦è®¾ç½®IDï¼Œå¦‚æœåªæ˜¯å•ç‹¬ä½œä¸ºBasicFrequencyCounter
+	 * 						ä½¿ç”¨ï¼Œé‚£ä¹ˆå°±å¯ä»¥è®¾ç½®ä¸ºnullã€‚
+	 * @param granularity	é¢‘æ¬¡ç»Ÿè®¡çš„é¢—ç²’åº¦ï¼Œæ¯”å¦‚30ã€60ã€‚
+	 * @param unit			é¢—ç²’åº¦çš„å•ä½ï¼Œæ¯”å¦‚TimeUnit.SECONDSã€TimeUnit.MINUTESã€‚
 	 */
 	public FrequencyCounterDefinition(Object id, long granularity, TimeUnit unit){
 		this.id = id;
@@ -44,14 +44,14 @@ public class FrequencyCounterDefinition {
 	}
 
 	/**
-	 * ´´½¨Ò»¸ö×Ô¶¯É¾³ıÀúÊ·Êı¾İµÄÆµ´Î¼ÆÊıÆ÷ÅäÖÃĞÅÏ¢¶ÔÏó
-	 * @param id			Æµ´Î¼ÆÊıÆ÷µÄID£¬Èç¹ûÆµ´Î¼ÆÊıÆ÷ĞèÒª±»×÷ÎªPackagedFrequencyCounterÖĞ
-	 * 						µÄÒ»²¿·Ö£¬ÄÇÃ´¾ÍÓĞ±ØÒªÉèÖÃID£¬Èç¹ûÖ»ÊÇµ¥¶À×÷ÎªBasicFrequencyCounter
-	 * 						Ê¹ÓÃ£¬ÄÇÃ´¾Í¿ÉÒÔÉèÖÃÎªnull¡£
-	 * @param granularity	Æµ´ÎÍ³¼ÆµÄ¿ÅÁ£¶È£¬±ÈÈç30¡¢60¡£
-	 * @param unit			¿ÅÁ£¶ÈµÄµ¥Î»£¬±ÈÈçTimeUnit.SECONDS¡¢TimeUnit.MINUTES¡£
-	 * @param purgePeriod	¶àÉÙÊ±¼äÖ®Ç°µÄÀúÊ·Êı¾İĞèÒª×Ô¶¯Çå³ı£¬±ÈÈç1¡¢3¡£
-	 * @param purgeUnit		purgePeriodµÄÊ±¼äµ¥Î»£¬±ÈÈçTimeUnit.HOURS¡£
+	 * åˆ›å»ºä¸€ä¸ªè‡ªåŠ¨åˆ é™¤å†å²æ•°æ®çš„é¢‘æ¬¡è®¡æ•°å™¨é…ç½®ä¿¡æ¯å¯¹è±¡
+	 * @param id			é¢‘æ¬¡è®¡æ•°å™¨çš„IDï¼Œå¦‚æœé¢‘æ¬¡è®¡æ•°å™¨éœ€è¦è¢«ä½œä¸ºPackagedFrequencyCounterä¸­
+	 * 						çš„ä¸€éƒ¨åˆ†ï¼Œé‚£ä¹ˆå°±æœ‰å¿…è¦è®¾ç½®IDï¼Œå¦‚æœåªæ˜¯å•ç‹¬ä½œä¸ºBasicFrequencyCounter
+	 * 						ä½¿ç”¨ï¼Œé‚£ä¹ˆå°±å¯ä»¥è®¾ç½®ä¸ºnullã€‚
+	 * @param granularity	é¢‘æ¬¡ç»Ÿè®¡çš„é¢—ç²’åº¦ï¼Œæ¯”å¦‚30ã€60ã€‚
+	 * @param unit			é¢—ç²’åº¦çš„å•ä½ï¼Œæ¯”å¦‚TimeUnit.SECONDSã€TimeUnit.MINUTESã€‚
+	 * @param purgePeriod	å¤šå°‘æ—¶é—´ä¹‹å‰çš„å†å²æ•°æ®éœ€è¦è‡ªåŠ¨æ¸…é™¤ï¼Œæ¯”å¦‚1ã€3ã€‚
+	 * @param purgeUnit		purgePeriodçš„æ—¶é—´å•ä½ï¼Œæ¯”å¦‚TimeUnit.HOURSã€‚
 	 */
 	public FrequencyCounterDefinition(Object id, long granularity, TimeUnit unit,
 			long purgePeriod, TimeUnit purgeUnit){
@@ -60,7 +60,7 @@ public class FrequencyCounterDefinition {
 	}
 
 	/**
-	 * »ñµÃ¿ÅÁ£¶È
+	 * è·å¾—é¢—ç²’åº¦
 	 * @return the granularity
 	 */
 	public long getGranularity() {
@@ -68,15 +68,15 @@ public class FrequencyCounterDefinition {
 	}
 
 	/**
-	 * »ñµÃ±£Áô¶àÉÙÊ±¼äÖ®ÄÚµÄÀúÊ·Êı¾İ
-	 * @return ÒÔºÁÃëÎªµ¥Î»µÄ±£ÁôÊ±¼ä³¤¶È
+	 * è·å¾—ä¿ç•™å¤šå°‘æ—¶é—´ä¹‹å†…çš„å†å²æ•°æ®
+	 * @return ä»¥æ¯«ç§’ä¸ºå•ä½çš„ä¿ç•™æ—¶é—´é•¿åº¦
 	 */
 	public long getPurgeBefore() {
 		return purgeBefore;
 	}
 
 	/**
-	 * »ñµÃID
+	 * è·å¾—ID
 	 * @return the id
 	 */
 	public Object getId() {

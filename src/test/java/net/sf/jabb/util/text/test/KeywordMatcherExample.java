@@ -39,10 +39,10 @@ public class KeywordMatcherExample {
 	 * @throws ClassNotFoundException 
 	 */
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		System.out.println("==== Ò»°ã¹¦ÄÜÊ¾·¶ ====");
+		System.out.println("==== ä¸€èˆ¬åŠŸèƒ½ç¤ºèŒƒ ====");
 		KeywordMatcher m = showExample(null);
 		
-		System.out.println("==== ĞòÁĞ»¯Ê¾·¶ ====");
+		System.out.println("==== åºåˆ—åŒ–ç¤ºèŒƒ ====");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ObjectOutputStream oos = new ObjectOutputStream(baos);
 		oos.writeObject(m);
@@ -52,7 +52,7 @@ public class KeywordMatcherExample {
 		KeywordMatcher m2 = (KeywordMatcher) ois.readObject();
 		showExample(m2);
 		
-		System.out.println("==== ¿½±´Ê¾·¶ ====");
+		System.out.println("==== æ‹·è´ç¤ºèŒƒ ====");
 		KeywordMatcher m3 = new KeywordMatcher(m);
 		showExample(m3);
 		
@@ -63,18 +63,18 @@ public class KeywordMatcherExample {
 			Map<String, Object> keywords = new HashMap<String, Object>();
 			
 			keywords.clear();
-			keywords.put("ÖĞ¹ú", "ÖĞ¹ú");
-			keywords.put("ÖĞ¹úÈË", "ÖĞ¹úÈË");
-			keywords.put("ÖĞ»ªÈËÃñ¹²ºÍ¹ú", "ÖĞ»ªÈËÃñ¹²ºÍ¹ú");
-			keywords.put("Ã«Ôó¶«", "Ã«Ôó¶«");
-			keywords.put("½­ÔóÃñ", "½­ÔóÃñ");
-			keywords.put("Ìì°²ÃÅ", "Ìì°²ÃÅ");
-			keywords.put("Äê", "Äê");
-			keywords.put("±±¾©", "±±¾©");
-			keywords.put("ÉÏº£", "ÉÏº£");
-			keywords.put("£¬", "¶ººÅ");
+			keywords.put("ä¸­å›½", "ä¸­å›½");
+			keywords.put("ä¸­å›½äºº", "ä¸­å›½äºº");
+			keywords.put("ä¸­åäººæ°‘å…±å’Œå›½", "ä¸­åäººæ°‘å…±å’Œå›½");
+			keywords.put("æ¯›æ³½ä¸œ", "æ¯›æ³½ä¸œ");
+			keywords.put("æ±Ÿæ³½æ°‘", "æ±Ÿæ³½æ°‘");
+			keywords.put("å¤©å®‰é—¨", "å¤©å®‰é—¨");
+			keywords.put("å¹´", "å¹´");
+			keywords.put("åŒ—äº¬", "åŒ—äº¬");
+			keywords.put("ä¸Šæµ·", "ä¸Šæµ·");
+			keywords.put("ï¼Œ", "é€—å·");
 
-			System.out.println("*** ¹Ø¼ü´Ê±í *******");
+			System.out.println("*** å…³é”®è¯è¡¨ *******");
 			for (String w: keywords.keySet()){
 				System.out.format("\t %-15s ---> %s\n", w, keywords.get(w));
 			}
@@ -83,16 +83,16 @@ public class KeywordMatcherExample {
 			m = new KeywordMatcher(keywords);
 			
 		}
-		String s ="1949Äê10ÔÂ1ÈÕ£¬ÔÚ±±¾©Ìì°²ÃÅÉÏ£¬Ã«Ôó¶«×¯ÑÏĞû²¼£¬\n"
-			+ "ÖĞ»ªÈËÃñ¹²ºÍ¹ú³ÉÁ¢ÁË£¬´Ó´Ë£¬ÖĞ¹úÈËÃñÕ¾ÆğÀ´ÁË¡£ÕâÊÇÈ«ÖĞ¹úÈËÃñµÄ½ÚÈÕ£¬\n"
-			+ "±±¾©¡¢ÉÏº£µÈµØµÄÈËÃñ»¶ºôÈ¸Ô¾¡£";
-		System.out.println("*** ÎÄ±¾ *******");
+		String s ="1949å¹´10æœˆ1æ—¥ï¼Œåœ¨åŒ—äº¬å¤©å®‰é—¨ä¸Šï¼Œæ¯›æ³½ä¸œåº„ä¸¥å®£å¸ƒï¼Œ\n"
+			+ "ä¸­åäººæ°‘å…±å’Œå›½æˆç«‹äº†ï¼Œä»æ­¤ï¼Œä¸­å›½äººæ°‘ç«™èµ·æ¥äº†ã€‚è¿™æ˜¯å…¨ä¸­å›½äººæ°‘çš„èŠ‚æ—¥ï¼Œ\n"
+			+ "åŒ—äº¬ã€ä¸Šæµ·ç­‰åœ°çš„äººæ°‘æ¬¢å‘¼é›€è·ƒã€‚";
+		System.out.println("*** æ–‡æœ¬ *******");
 		System.out.println(s);
 		System.out.println();
 		
 		Map<Object, MutableInt> result = m.match(s);
 		
-		System.out.println("*** ½á¹û *******");
+		System.out.println("*** ç»“æœ *******");
 		for (Object o: result.keySet()){
 			System.out.format("\t %-15s ===> %d\n", o, result.get(o).intValue());
 		}

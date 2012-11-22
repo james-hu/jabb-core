@@ -34,7 +34,7 @@ public class SimpleAnalyze {
 	
 	@Test
 	public void example(){
-		String s = "Yellow fox jump过大片河流，so caused chaos. 这可怎么办？";
+		String s = "Yellow fox jump杩囧ぇ鐗囨渤娴侊紝so caused chaos. 杩欏彲鎬庝箞鍔烇紵";
 		System.out.println(s);
 		System.out.println(wi.getWords(s));
 	}

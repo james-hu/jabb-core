@@ -17,8 +17,8 @@ limitations under the License.
 package net.sf.jabb.util.exp;
 
 /**
- * ¶ÔÊı×Ö£¨NumberµÄ×ÓÀà£¬°üÀ¨AtomicLong, AtomicInteger, Long, Integer, DoubleµÈ£©½øĞĞ±È½Ï¡£
- * ±È½Ï³£¼ûµÄÓÃ·¨ÊÇÆäÖĞÒ»¸ö²Ù×÷ÊıÓÃAtomicLong»òAtomicInteger£¬ÁíÒ»¸öÓÃLong»òInteger¡£
+ * å¯¹æ•°å­—ï¼ˆNumberçš„å­ç±»ï¼ŒåŒ…æ‹¬AtomicLong, AtomicInteger, Long, Integer, Doubleç­‰ï¼‰è¿›è¡Œæ¯”è¾ƒã€‚
+ * æ¯”è¾ƒå¸¸è§çš„ç”¨æ³•æ˜¯å…¶ä¸­ä¸€ä¸ªæ“ä½œæ•°ç”¨AtomicLongæˆ–AtomicIntegerï¼Œå¦ä¸€ä¸ªç”¨Longæˆ–Integerã€‚
  * <p>
  * Compares Numbers(including AtomicLong, AtomicInteger, Long, Integer, Double, etc)
  * Typical usage is to use AtomicLong or AtomicInteger as one operand and
@@ -30,8 +30,8 @@ package net.sf.jabb.util.exp;
 public class NumberCompareExpression extends CompareExpression {
 
 	/**
-	 * Ö±½Ó°Ñ´ı±È½ÏµÄÊı×Ö´ø½øÈ¥¡£ÕæÕıµÄ±È½Ï»á·¢ÉúÔÚevaluateµÄÊ±ºò¡£
-	 * µ÷ÓÃevaluate()·½·¨µÄÊ±ºò´«µİµÄcontext²ÎÊı²»»á±»ÓÃµ½¡£
+	 * ç›´æ¥æŠŠå¾…æ¯”è¾ƒçš„æ•°å­—å¸¦è¿›å»ã€‚çœŸæ­£çš„æ¯”è¾ƒä¼šå‘ç”Ÿåœ¨evaluateçš„æ—¶å€™ã€‚
+	 * è°ƒç”¨evaluate()æ–¹æ³•çš„æ—¶å€™ä¼ é€’çš„contextå‚æ•°ä¸ä¼šè¢«ç”¨åˆ°ã€‚
 	 * 
 	 * @param leftOperand
 	 * @param operation

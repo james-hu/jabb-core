@@ -26,17 +26,17 @@ import java.util.Set;
 /**
  * Encapsulates Map so that a new entry is put in to the Map whenever
  * there is a get for a non-existing entry.<br>
- * °ÑMap½øÒ»²½·â×°£¬Ê¹µÃÃ¿´ÎgetµÄÊ±ºò£¬Èç¹ûÃ»ÓĞ£¬¾Í×Ô¶¯put¡£
+ * æŠŠMapè¿›ä¸€æ­¥å°è£…ï¼Œä½¿å¾—æ¯æ¬¡getçš„æ—¶å€™ï¼Œå¦‚æœæ²¡æœ‰ï¼Œå°±è‡ªåŠ¨putã€‚
  * <p>
  * Please note that only these methods are synchronized: get/put/putAll/remove/clear.
  * <p>
- * ×¢ÒâÖ»ÓĞÕâ¼¸¸ö·½·¨ÊÇÍ¬²½µÄ£ºget/put/putAll/remove/clear¡£
+ * æ³¨æ„åªæœ‰è¿™å‡ ä¸ªæ–¹æ³•æ˜¯åŒæ­¥çš„ï¼šget/put/putAll/remove/clearã€‚
  * <p>
  * 
  * @author Zhengmao HU (James)
  *
- * @param <K>	Type of the key of the Map entries<br>MapµÄkeyµÄÀàĞÍ
- * @param <V>	Type of the value of the Map entries<br>MapµÄvalueµÄÀàĞÍ
+ * @param <K>	Type of the key of the Map entries<br>Mapçš„keyçš„ç±»å‹
+ * @param <V>	Type of the value of the Map entries<br>Mapçš„valueçš„ç±»å‹
  */
 public class PutIfAbsentMap<K, V> implements Map<K, V>{
 	protected Map<K, V> map;
@@ -55,12 +55,12 @@ public class PutIfAbsentMap<K, V> implements Map<K, V>{
 	
 	/**
 	 * Constructs an instance with specified Map instance and value Class.<br>
-	 * ¸ø¶¨MapÊµÀıÒÔ¼°valueµÄÀà£¬°ÑÒ»¸öÆÕÍ¨µÄMapÊµÀı·â×°³É¡°Ã¿´ÎgetµÄÊ±ºò£¬Èç¹ûÃ»ÓĞ£¬¾Í×Ô¶¯put¡±¡£
+	 * ç»™å®šMapå®ä¾‹ä»¥åŠvalueçš„ç±»ï¼ŒæŠŠä¸€ä¸ªæ™®é€šçš„Mapå®ä¾‹å°è£…æˆâ€œæ¯æ¬¡getçš„æ—¶å€™ï¼Œå¦‚æœæ²¡æœ‰ï¼Œå°±è‡ªåŠ¨putâ€ã€‚
 	 * 
 	 * @param originalMap	The Map instance that will be encapsulated.<br>
-	 * 						±»·â×°½øÀ´µÄMapÊµÀı¡£
+	 * 						è¢«å°è£…è¿›æ¥çš„Mapå®ä¾‹ã€‚
 	 * @param valueClazz	Class of the value of the Map entry.<br>
-	 * 						MapµÄvalueµÄÀà¡£
+	 * 						Mapçš„valueçš„ç±»ã€‚
 	 * @throws RuntimeException If no non-argument constructor can be found in valueClazz.
 	 */
 	public PutIfAbsentMap(Map<K, V> originalMap, final Class<? extends V> valueClazz) {
@@ -80,12 +80,12 @@ public class PutIfAbsentMap<K, V> implements Map<K, V>{
 	
 	/**
 	 * Constructs an instance with specified Map instance and value Class.<br>
-	 * ¸ø¶¨MapÊµÀıÒÔ¼°valueµÄÀà£¬°ÑÒ»¸öÆÕÍ¨µÄMapÊµÀı·â×°³É¡°Ã¿´ÎgetµÄÊ±ºò£¬Èç¹ûÃ»ÓĞ£¬¾Í×Ô¶¯put¡±¡£
+	 * ç»™å®šMapå®ä¾‹ä»¥åŠvalueçš„ç±»ï¼ŒæŠŠä¸€ä¸ªæ™®é€šçš„Mapå®ä¾‹å°è£…æˆâ€œæ¯æ¬¡getçš„æ—¶å€™ï¼Œå¦‚æœæ²¡æœ‰ï¼Œå°±è‡ªåŠ¨putâ€ã€‚
 	 * 
 	 * @param originalMap	The Map instance that will be encapsulated.<br>
-	 * 						±»·â×°½øÀ´µÄMapÊµÀı¡£
+	 * 						è¢«å°è£…è¿›æ¥çš„Mapå®ä¾‹ã€‚
 	 * @param valueClazz	Class of the value of the Map entry.<br>
-	 * 						MapµÄvalueµÄÀà¡£
+	 * 						Mapçš„valueçš„ç±»ã€‚
 	 * @param valueParam	Parameter to be passed in to the constructor of valueClazz.
 	 * @throws RuntimeException 	if no correct constructor in valueClazz can be found.
 	 */
@@ -188,7 +188,7 @@ public class PutIfAbsentMap<K, V> implements Map<K, V>{
 
 	/**
 	 * Get the encapsulated Map instance.<br>
-	 * »ñµÃ×î³õ±»·â×°µÄÄÇ¸öMap¡£
+	 * è·å¾—æœ€åˆè¢«å°è£…çš„é‚£ä¸ªMapã€‚
 	 * @return The map instance that is encapsulated inside.
 	 */
 	public Map<K, V> getMap(){
@@ -200,8 +200,8 @@ public class PutIfAbsentMap<K, V> implements Map<K, V>{
 	 * Get the value object corresponding to the key object specified, 
 	 * if such entry does not exist in the Map, then create one and put
 	 * into the Map and return the value object in the newly created entry.<br>
-	 * È¡µÃkeyËù¶ÔÓ¦µÄvalue£¬Èç¹ûÄ¿Ç°ÔÚMapÀïÃ»ÓĞ£¬ÔòÔÚMapÀïĞÂ½¨Ò»¸ö²¢·µ»ØĞÂ½¨
-	 * µÄÕâ¸övalue¶ÔÏó¡£
+	 * å–å¾—keyæ‰€å¯¹åº”çš„valueï¼Œå¦‚æœç›®å‰åœ¨Mapé‡Œæ²¡æœ‰ï¼Œåˆ™åœ¨Mapé‡Œæ–°å»ºä¸€ä¸ªå¹¶è¿”å›æ–°å»º
+	 * çš„è¿™ä¸ªvalueå¯¹è±¡ã€‚
 	 * 
 	 * @param key	The key object that will be used to look for the value object.
 	 */

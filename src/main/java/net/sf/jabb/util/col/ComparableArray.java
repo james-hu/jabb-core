@@ -20,14 +20,14 @@ import java.io.Serializable;
 /**
  * Encapsulates multiple Comparable (implements Comparable Interface) values into one object, which
  * is suitable to be used as key object of Map.<br>
- * °Ñ¶à¸ö¿É±È½Ï£¨ÊµÏÖÁËComparable£©Öµ·â×°ÔÚÕâÒ»¸ö¶ÔÏóÀï£¬ÊÊºÏÓÃÀ´×÷ÎªMapµÄkey¡£
+ * æŠŠå¤šä¸ªå¯æ¯”è¾ƒï¼ˆå®ç°äº†Comparableï¼‰å€¼å°è£…åœ¨è¿™ä¸€ä¸ªå¯¹è±¡é‡Œï¼Œé€‚åˆç”¨æ¥ä½œä¸ºMapçš„keyã€‚
  * <p>
  * It supports hashCode(), toString(), equals(), compareTo() methods.
  * <p>
- * ËüÖ§³ÖhashCode(), toString(), equals(), compareTo()·½·¨¡£
+ * å®ƒæ”¯æŒhashCode(), toString(), equals(), compareTo()æ–¹æ³•ã€‚
  * <p>
  * Classes that are Comparable include:<br>
- * ¿É±È½Ï£¨ÊµÏÖÁËComparable£©µÄÀà°üÀ¨£º
+ * å¯æ¯”è¾ƒï¼ˆå®ç°äº†Comparableï¼‰çš„ç±»åŒ…æ‹¬ï¼š
  * <p>
  *     Authenticator.RequestorType, BigDecimal, BigInteger, Boolean, Byte, ByteBuffer, Calendar, Character, CharBuffer, Charset, ClientInfoStatus, CollationKey, Component.BaselineResizeBehavior, CompositeName, CompoundName, Date, Date, Desktop.Action, Diagnostic.Kind, Dialog.ModalExclusionType, Dialog.ModalityType, Double, DoubleBuffer, DropMode, ElementKind, ElementType, Enum, File, Float, FloatBuffer, Formatter.BigDecimalLayoutForm, FormSubmitEvent.MethodType, GregorianCalendar, GroupLayout.Alignment, IntBuffer, Integer, JavaFileObject.Kind, JTable.PrintMode, KeyRep.Type, LayoutStyle.ComponentPlacement, LdapName, Long, LongBuffer, MappedByteBuffer, MemoryType, MessageContext.Scope, Modifier, MultipleGradientPaint.ColorSpaceType, MultipleGradientPaint.CycleMethod, NestingKind, Normalizer.Form, ObjectName, ObjectStreamField, Proxy.Type, Rdn, Resource.AuthenticationType, RetentionPolicy, RoundingMode, RowFilter.ComparisonType, RowIdLifetime, RowSorterEvent.Type, Service.Mode, Short, ShortBuffer, SOAPBinding.ParameterStyle, SOAPBinding.Style, SOAPBinding.Use, SortOrder, SourceVersion, SSLEngineResult.HandshakeStatus, SSLEngineResult.Status, StandardLocation, String, SwingWorker.StateValue, Thread.State, Time, Timestamp, TimeUnit, TrayIcon.MessageType, TypeKind, URI, UUID, WebParam.Mode, XmlAccessOrder, XmlAccessType, XmlNsForm
  * <br>
@@ -44,10 +44,10 @@ public class ComparableArray implements Comparable<Object>, Serializable{
 	
 	/**
 	 * Constructs an instance that encapsulates specified Comparable values.<br>
-	 * ´´½¨Ò»¸ö°üº¬ÕâĞ©¿É±È½ÏÖµµÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªåŒ…å«è¿™äº›å¯æ¯”è¾ƒå€¼çš„å®ä¾‹ã€‚
 	 * 
 	 * @param values	Comparable values that will be encapsulated.<br>
-	 * 				Ò»Åú½«±»·â×°µÄ¿É±È½ÏÖµ¡£
+	 * 				ä¸€æ‰¹å°†è¢«å°è£…çš„å¯æ¯”è¾ƒå€¼ã€‚
 	 */
 	public ComparableArray(Comparable... values){
 		this.values = values;
@@ -55,7 +55,7 @@ public class ComparableArray implements Comparable<Object>, Serializable{
 	
 	/**
 	 * Gets all the values encapsulated in this object.<br>
-	 * »ñµÃËùÓĞÖµ¡£
+	 * è·å¾—æ‰€æœ‰å€¼ã€‚
 	 * 
 	 * @return	array of values encapsulated.
 	 */
@@ -65,7 +65,7 @@ public class ComparableArray implements Comparable<Object>, Serializable{
 	
 	/**
 	 * Gets the value in specified position.<br>
-	 * »ñµÃÖ¸¶¨Î»ÖÃµÄÖµ¡£
+	 * è·å¾—æŒ‡å®šä½ç½®çš„å€¼ã€‚
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value
@@ -76,7 +76,7 @@ public class ComparableArray implements Comparable<Object>, Serializable{
 	
 	/**
 	 * Gets the calculated hash code.<br>
-	 * »ñµÃ¼ÆËãµÃµ½µÄhashÖµ¡£
+	 * è·å¾—è®¡ç®—å¾—åˆ°çš„hashå€¼ã€‚
 	 */
 	@Override
 	public int hashCode(){

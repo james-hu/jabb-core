@@ -21,11 +21,11 @@ import java.io.Serializable;
 /**
  * Encapsulates multiple int type values into one object, which
  * is suitable to be used as key object of Map.<br>
- * °Ñ¶à¸öintÀàĞÍµÄÖµ·â×°ÔÚÕâÒ»¸ö¶ÔÏóÀï£¬ÊÊºÏÓÃÀ´×÷ÎªMapµÄkey¡£
+ * æŠŠå¤šä¸ªintç±»å‹çš„å€¼å°è£…åœ¨è¿™ä¸€ä¸ªå¯¹è±¡é‡Œï¼Œé€‚åˆç”¨æ¥ä½œä¸ºMapçš„keyã€‚
  * <p>
  * It supports hashCode(), toString(), equals(), compareTo() methods.
  * <p>
- * ËüÖ§³ÖhashCode(), toString(), equals(), compareTo()·½·¨¡£
+ * å®ƒæ”¯æŒhashCode(), toString(), equals(), compareTo()æ–¹æ³•ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -37,9 +37,9 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 	
 	/**
 	 * Constructs an IntegerArray that encapsulates specified int values.<br>
-	 * ´´½¨Ò»¸ö°üº¬ÕâĞ©ÕûĞÍÖµµÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªåŒ…å«è¿™äº›æ•´å‹å€¼çš„å®ä¾‹ã€‚
 	 * 
-	 * @param values	int values that will be encapsulated.<br>Ò»Åú½«±»·â×°µÄÕûĞÍÖµ¡£
+	 * @param values	int values that will be encapsulated.<br>ä¸€æ‰¹å°†è¢«å°è£…çš„æ•´å‹å€¼ã€‚
 	 */
 	public IntegerArray(int... values){
 		this.values = values;
@@ -47,7 +47,7 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 	
 	/**
 	 * Gets all the values encapsulated in this object.<br>
-	 * »ñµÃËùÓĞÖµ¡£
+	 * è·å¾—æ‰€æœ‰å€¼ã€‚
 	 * 
 	 * @return	array of values encapsulated.
 	 */
@@ -57,7 +57,7 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 	
 	/**
 	 * Gets the value in specified position.<br>
-	 * »ñµÃÖ¸¶¨Î»ÖÃµÄÖµ¡£
+	 * è·å¾—æŒ‡å®šä½ç½®çš„å€¼ã€‚
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value
@@ -68,7 +68,7 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 	
 	/**
 	 * Gets the value in specified position.<br>
-	 * »ñµÃÖ¸¶¨Î»ÖÃµÄÖµ¡£
+	 * è·å¾—æŒ‡å®šä½ç½®çš„å€¼ã€‚
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as long
@@ -79,7 +79,7 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 	
 	/**
 	 * Gets the value in specified position.<br>
-	 * »ñµÃÖ¸¶¨Î»ÖÃµÄÖµ¡£
+	 * è·å¾—æŒ‡å®šä½ç½®çš„å€¼ã€‚
 	 * 
 	 * @param index	position (position of the first one is 0)
 	 * @return	the value as int
@@ -90,7 +90,7 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 	
 	/**
 	 * Gets the calculated hash code.<br>
-	 * »ñµÃ¼ÆËãµÃµ½µÄhashÖµ¡£
+	 * è·å¾—è®¡ç®—å¾—åˆ°çš„hashå€¼ã€‚
 	 */
 	@Override
 	public int hashCode(){
@@ -104,7 +104,7 @@ public class IntegerArray implements Comparable<Object>, Serializable{
 
 	/**
 	 * Compare.<br>
-	 * ±È½Ï¡£
+	 * æ¯”è¾ƒã€‚
 	 * 
 	 * @param obj	The object to be compared with
 	 * @return	-1 if little than obj, 0 if equals, 1 if greater than.

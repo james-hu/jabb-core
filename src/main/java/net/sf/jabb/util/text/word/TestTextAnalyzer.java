@@ -24,7 +24,7 @@ import org.apache.commons.lang.mutable.MutableInt;
 import net.sf.jabb.util.text.StringStartWithMatcher;
 
 /**
- * ÎÄ±¾·ÖÎöÆ÷¡£
+ * æ–‡æœ¬åˆ†æå™¨ã€‚
  * <p>
  * Text Analyzer.
  * 

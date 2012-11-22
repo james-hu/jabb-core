@@ -21,11 +21,11 @@ import java.math.BigDecimal;
 /**
  * It generates sequence of incremental numbers, within a range that can be specified, 
  * without repeating or missing of any number.<br>
- * ĞòÁĞÖµÉú³ÉÆ÷£¬±£Ö¤²»ÖØ¸´½¥Ôö£¬Ö§³Ö×î´ó×îĞ¡ÖµµÄ·¶Î§Éè¶¨¡£
+ * åºåˆ—å€¼ç”Ÿæˆå™¨ï¼Œä¿è¯ä¸é‡å¤æ¸å¢ï¼Œæ”¯æŒæœ€å¤§æœ€å°å€¼çš„èŒƒå›´è®¾å®šã€‚
  * <p>
  * It is multi-thread safe, and has high performance.
  * <p>
- * ËüÊÇÏß³Ì°²È«µÄ£¬¶øÇÒĞÔÄÜ¸ß¡£
+ * å®ƒæ˜¯çº¿ç¨‹å®‰å…¨çš„ï¼Œè€Œä¸”æ€§èƒ½é«˜ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -37,11 +37,11 @@ public class RangedSequencer extends Sequencer {
 	
 	/**
 	 * Constructs an instance, with specified range and initial number.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬Ö¸¶¨×îĞ¡¡¢×î´ó¡¢³õÊ¼Öµ¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼ŒæŒ‡å®šæœ€å°ã€æœ€å¤§ã€åˆå§‹å€¼ã€‚
 	 * 
-	 * @param min	×îĞ¡Öµ<br>low boundary of the range
-	 * @param max	×î´óÖµ<br>high boundary of the range
-	 * @param init	³õÊ¼Öµ<br>the first number that will be returned by next()
+	 * @param min	æœ€å°å€¼<br>low boundary of the range
+	 * @param max	æœ€å¤§å€¼<br>high boundary of the range
+	 * @param init	åˆå§‹å€¼<br>the first number that will be returned by next()
 	 */
 	public RangedSequencer(long min, long max, long init){
 		super(init-min);
@@ -62,10 +62,10 @@ public class RangedSequencer extends Sequencer {
 	/**
 	 * Constructs an instance, with specified range, 
 	 * and use the low boundary as initial number.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬Ö¸¶¨×îĞ¡¡¢×î´óÖµ£¬³õÊ¼Öµ¾ÍÊÇ×îĞ¡Öµ¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼ŒæŒ‡å®šæœ€å°ã€æœ€å¤§å€¼ï¼Œåˆå§‹å€¼å°±æ˜¯æœ€å°å€¼ã€‚
 	 * 
-	 * @param min	×îĞ¡Öµ<br>low boundary of the range
-	 * @param max	×î´óÖµ<br>high boundary of the range
+	 * @param min	æœ€å°å€¼<br>low boundary of the range
+	 * @param max	æœ€å¤§å€¼<br>high boundary of the range
 	 */
 	public RangedSequencer(long min, long max){
 		this(min, max, min);
@@ -73,9 +73,9 @@ public class RangedSequencer extends Sequencer {
 	
 	/**
 	 * Constructs an instance with a range of [0, Long.MAX_VALUE-1] and specified initial number.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬Ö¸¶¨³õÊ¼Öµ¡£×îĞ¡ÖµÊÇ0£¬×î´óÖµÊÇLong.MAX_VALU-1¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼ŒæŒ‡å®šåˆå§‹å€¼ã€‚æœ€å°å€¼æ˜¯0ï¼Œæœ€å¤§å€¼æ˜¯Long.MAX_VALU-1ã€‚
 	 * 
-	 * @param init	³õÊ¼Öµ<br>the first number that will be returned by next()
+	 * @param init	åˆå§‹å€¼<br>the first number that will be returned by next()
 	 */
 	public RangedSequencer(long init){
 		this(0, Long.MAX_VALUE-1, init);
@@ -83,7 +83,7 @@ public class RangedSequencer extends Sequencer {
 
 	/**
 	 * Constructs an instance with a range of [0, Long.MAX_VALUE-1] and 0 as the initial number.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬Ö¸¶¨³õÊ¼ÖµºÍ×îĞ¡Öµ¶¼ÊÇ0£¬×î´óÖµÊÇLong.MAX_VALUE-1¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼ŒæŒ‡å®šåˆå§‹å€¼å’Œæœ€å°å€¼éƒ½æ˜¯0ï¼Œæœ€å¤§å€¼æ˜¯Long.MAX_VALUE-1ã€‚
 	 */
 	public RangedSequencer(){
 		this(0, Long.MAX_VALUE-1, 0);
@@ -91,7 +91,7 @@ public class RangedSequencer extends Sequencer {
 
 	/**
 	 * Get the next number in sequence.<br>
-	 * »ñµÃÏÂÒ»¸öĞòÁĞÖµ¡£
+	 * è·å¾—ä¸‹ä¸€ä¸ªåºåˆ—å€¼ã€‚
 	 * 
 	 * @return	the next number in sequence
 	 */

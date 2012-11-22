@@ -23,28 +23,28 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A template for consuming data from a queue.<br>
- * Ò»¸ö´Ó¶ÓÁĞÖĞÈ¡Êı¾İ½øĞĞ´¦ÀíµÄÄ£°å¡£
+ * ä¸€ä¸ªä»é˜Ÿåˆ—ä¸­å–æ•°æ®è¿›è¡Œå¤„ç†çš„æ¨¡æ¿ã€‚
  * <p>
  * One working thread will be created for each instance of this class when necessary.
  * <p>
- * ±¾ÀàµÄÃ¿¸öÊµÀıÏàÓ¦µÄ»áÓĞÒ»¸ö¹¤×÷Ïß³ÌÔÚĞèÒªµÄÊ±ºò±»´´½¨¡£
+ * æœ¬ç±»çš„æ¯ä¸ªå®ä¾‹ç›¸åº”çš„ä¼šæœ‰ä¸€ä¸ªå·¥ä½œçº¿ç¨‹åœ¨éœ€è¦çš„æ—¶å€™è¢«åˆ›å»ºã€‚
  * 
  * @author Zhengmao HU (James)
  * 
- * @param <E>	Type of the data in the queue.<br>¶ÓÁĞÖĞÊı¾İµÄÀàĞÍ
+ * @param <E>	Type of the data in the queue.<br>é˜Ÿåˆ—ä¸­æ•°æ®çš„ç±»å‹
  *
  */
 public abstract class QueueConsumer<E> implements Runnable{
 	protected BlockingQueue<E> queue;
 	/**
 	 * The working thread.<br>
-	 * ¹¤×÷Ïß³Ì¡£
+	 * å·¥ä½œçº¿ç¨‹ã€‚
 	 */
 	protected Thread thread;
 	protected AtomicInteger mode;
 	/**
 	 * Name of this instance, which determines the naming of working thread.<br>
-	 * ±¾¸öÊµÀıµÄÃû×Ö£¬Ëü¾ö¶¨ÁË¹¤×÷Ïß³ÌµÄÃû×Ö¡£
+	 * æœ¬ä¸ªå®ä¾‹çš„åå­—ï¼Œå®ƒå†³å®šäº†å·¥ä½œçº¿ç¨‹çš„åå­—ã€‚
 	 */
 	protected String name;
 
@@ -58,8 +58,8 @@ public abstract class QueueConsumer<E> implements Runnable{
 	/**
 	 * If no ExecutorService is specified in constructor,
 	 * then the working thread will come from this thread pool.<br>
-	 * Èç¹ûÔÚ¹¹Ôì·½·¨ÖĞÃ»ÓĞÖ¸¶¨ExecutorService£¬ÔòËüµÄ¹¤×÷Ïß³Ì
-	 * ½«È¡×ÔÕâ¸öÏß³Ì³Ø¡£
+	 * å¦‚æœåœ¨æ„é€ æ–¹æ³•ä¸­æ²¡æœ‰æŒ‡å®šExecutorServiceï¼Œåˆ™å®ƒçš„å·¥ä½œçº¿ç¨‹
+	 * å°†å–è‡ªè¿™ä¸ªçº¿ç¨‹æ± ã€‚
 	 * <p>
 	 * defaultThreadPool = Executors.newCachedThreadPool()
 	 */
@@ -67,7 +67,7 @@ public abstract class QueueConsumer<E> implements Runnable{
 	
 	/**
 	 * Effective thread pool of this instance.<br>
-	 * ±¾¸öÊµÀıÊµ¼ÊÊ¹ÓÃµÄÏß³Ì³Ø¡£
+	 * æœ¬ä¸ªå®ä¾‹å®é™…ä½¿ç”¨çš„çº¿ç¨‹æ± ã€‚
 	 */
 	protected ExecutorService threadPool;
 	
@@ -89,10 +89,10 @@ public abstract class QueueConsumer<E> implements Runnable{
 
 	/**
 	 * Use this method if you don't want the queue to be passed in from constructor.<br>
-	 * Èç¹ûÄã²»ÏëÍ¨¹ı¹¹Ôì·½·¨À´´«µİ¶ÓÁĞ¶ÔÏó£¬¾ÍÓÃÕâ¸ö·½·¨¡£
+	 * å¦‚æœä½ ä¸æƒ³é€šè¿‡æ„é€ æ–¹æ³•æ¥ä¼ é€’é˜Ÿåˆ—å¯¹è±¡ï¼Œå°±ç”¨è¿™ä¸ªæ–¹æ³•ã€‚
 	 * 
 	 * @param workQueue 	The queue that data for processing will be fetched from.<br>
-	 * 						±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 						æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 */
 	public void setQueue(BlockingQueue<E> workQueue) {
 		this.queue = workQueue;
@@ -100,8 +100,8 @@ public abstract class QueueConsumer<E> implements Runnable{
 	
 	/**
 	 * Get the work queue.<br>
-	 * È¡µÃ¹¤×÷¶ÓÁĞ¡£
-	 * @return The work queue.<br>¹¤×÷¶ÓÁĞ¡£
+	 * å–å¾—å·¥ä½œé˜Ÿåˆ—ã€‚
+	 * @return The work queue.<br>å·¥ä½œé˜Ÿåˆ—ã€‚
 	 */
 	public BlockingQueue<E> getQueue() {
 		return queue;
@@ -109,14 +109,14 @@ public abstract class QueueConsumer<E> implements Runnable{
 
 	/**
 	 * Constructor to create an instance.<br>
-	 * ´´½¨Ò»¸öÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ã€‚
 	 * 
 	 * @param name			Name of this instance, which determines the naming of working thread.<br>
-	 * 						±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 						æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param executorService	Thread pool that working thread will be get from.<br>
-	 * 							Ö¸¶¨ÈÃ±¾ÊµÀı´ÓÕâÀï»ñµÃ¹¤×÷Ïß³Ì¡£
+	 * 							æŒ‡å®šè®©æœ¬å®ä¾‹ä»è¿™é‡Œè·å¾—å·¥ä½œçº¿ç¨‹ã€‚
 	 */
 	public QueueConsumer(BlockingQueue<E> workQueue, String name, ExecutorService executorService){
 		threadPool = executorService;
@@ -127,12 +127,12 @@ public abstract class QueueConsumer<E> implements Runnable{
 	
 	/**
 	 * Constructor to create an instance.<br>
-	 * ´´½¨Ò»¸öÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ã€‚
 	 * 
 	 * @param name			Name of this instance, which determines the naming of working thread.<br>
-	 * 						±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 						æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 * @param executorService	Thread pool that working thread will be get from.<br>
-	 * 							Ö¸¶¨ÈÃ±¾ÊµÀı´ÓÕâÀï»ñµÃ¹¤×÷Ïß³Ì¡£
+	 * 							æŒ‡å®šè®©æœ¬å®ä¾‹ä»è¿™é‡Œè·å¾—å·¥ä½œçº¿ç¨‹ã€‚
 	 */
 	public QueueConsumer(String name, ExecutorService executorService){
 		this(null, name, executorService);
@@ -141,12 +141,12 @@ public abstract class QueueConsumer<E> implements Runnable{
 	
 	/**
 	 * Constructor to create an instance using default thread pool.<br>
-	 * ´´½¨Ò»¸öÊ¹ÓÃÈ±Ê¡Ïß³Ì³ØµÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªä½¿ç”¨ç¼ºçœçº¿ç¨‹æ± çš„å®ä¾‹ã€‚
 	 * 
 	 * @param name			Name of this instance, which determines the naming of working thread.<br>
-	 * 						±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 						æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 */
 	public QueueConsumer(BlockingQueue<E> workQueue, String name){
 		this(workQueue, name, defaultThreadPool);
@@ -154,10 +154,10 @@ public abstract class QueueConsumer<E> implements Runnable{
 	
 	/**
 	 * Constructor to create an instance using default thread pool.<br>
-	 * ´´½¨Ò»¸öÊ¹ÓÃÈ±Ê¡Ïß³Ì³ØµÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªä½¿ç”¨ç¼ºçœçº¿ç¨‹æ± çš„å®ä¾‹ã€‚
 	 * 
 	 * @param name			Name of this instance, which determines the naming of working thread.<br>
-	 * 						±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 						æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 */
 	public QueueConsumer(String name){
 		this(null, name, defaultThreadPool);
@@ -165,10 +165,10 @@ public abstract class QueueConsumer<E> implements Runnable{
 
 	/**
 	 * Constructor to create an instance with default name and using default thread pool.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬Ê¹ÓÃÈ±Ê¡µÄÃû³ÆºÍÈ±Ê¡µÄÏß³Ì³Ø¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œä½¿ç”¨ç¼ºçœçš„åç§°å’Œç¼ºçœçš„çº¿ç¨‹æ± ã€‚
 	 * 
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 */
 	public QueueConsumer(BlockingQueue<E> workQueue){
 		this(workQueue, QueueConsumer.class.getSimpleName());
@@ -176,7 +176,7 @@ public abstract class QueueConsumer<E> implements Runnable{
 	
 	/**
 	 * Constructor to create an instance with default name and using default thread pool.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬Ê¹ÓÃÈ±Ê¡µÄÃû³ÆºÍÈ±Ê¡µÄÏß³Ì³Ø¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œä½¿ç”¨ç¼ºçœçš„åç§°å’Œç¼ºçœçš„çº¿ç¨‹æ± ã€‚
 	 */
 	public QueueConsumer(){
 		this(null, QueueConsumer.class.getSimpleName());
@@ -186,17 +186,17 @@ public abstract class QueueConsumer<E> implements Runnable{
 	 * Put data into the queue for processing, if the queue still has space
 	 * this method will return immediately 
 	 * without waiting for the data to be actually processed.<br>
-	 * °Ñ´ı´¦ÀíÊı¾İ·ÅÈë¶ÓÁĞ£¬Èç¹û¶ÓÁĞÖĞ»¹ÓĞ¿ÕÎ»ÖÃÔòÕâ¸ö·½·¨»áÁ¢¼´·µ»Ø¶ø²»ÊÇµÈ´ıÊµ¼Ê´¦ÀíÍê³É¡£
+	 * æŠŠå¾…å¤„ç†æ•°æ®æ”¾å…¥é˜Ÿåˆ—ï¼Œå¦‚æœé˜Ÿåˆ—ä¸­è¿˜æœ‰ç©ºä½ç½®åˆ™è¿™ä¸ªæ–¹æ³•ä¼šç«‹å³è¿”å›è€Œä¸æ˜¯ç­‰å¾…å®é™…å¤„ç†å®Œæˆã€‚
 	 * <p>
 	 * If the queue has no space left, this method will wait for the space then put data into the queue for processing,
 	 * after that, this method will return immediately without waiting for the data to be actually processed.
 	 * <p>
-	 * Èç¹û¶ÓÁĞÖĞÃ»ÓĞ¿ÕÎ»ÖÃÁË£¬Ôò»áµÈ´ı¶ÓÁĞ¿Õ³öÎ»ÖÃÀ´Ö®ºóÔÙ°ÑÊı¾İ·Å½øÈ¥£¬·ÅÍêÖ®ºóÕâ¸ö·½·¨»áÁ¢¼´·µ»Ø¶ø²»ÊÇµÈ´ıÊµ¼Ê´¦ÀíÍê³É¡£
+	 * å¦‚æœé˜Ÿåˆ—ä¸­æ²¡æœ‰ç©ºä½ç½®äº†ï¼Œåˆ™ä¼šç­‰å¾…é˜Ÿåˆ—ç©ºå‡ºä½ç½®æ¥ä¹‹åå†æŠŠæ•°æ®æ”¾è¿›å»ï¼Œæ”¾å®Œä¹‹åè¿™ä¸ªæ–¹æ³•ä¼šç«‹å³è¿”å›è€Œä¸æ˜¯ç­‰å¾…å®é™…å¤„ç†å®Œæˆã€‚
 	 * 
 	 * @param obj	Data need to be processed<br>
-	 * 				´ı´¦ÀíµÄÊı¾İ¡£
+	 * 				å¾…å¤„ç†çš„æ•°æ®ã€‚
 	 * @throws InterruptedException if interrupted while waiting for space to become available.<br>
-	 * 								Èç¹û¶ÓÁĞÒÑÂú¶øÔÚµÈ´ı¿Õ³öÎ»ÖÃµÄÊ±ºò·¢ÉúÁËÖĞ¶Ï¡£
+	 * 								å¦‚æœé˜Ÿåˆ—å·²æ»¡è€Œåœ¨ç­‰å¾…ç©ºå‡ºä½ç½®çš„æ—¶å€™å‘ç”Ÿäº†ä¸­æ–­ã€‚
 	 */
 	public void queue(E obj) throws InterruptedException{
 		queue.put(obj);
@@ -205,7 +205,7 @@ public abstract class QueueConsumer<E> implements Runnable{
 	/**
 	 * Start working thread; This method will return immediately 
 	 * without waiting for anything to be actually processed.<br>
-	 * Æô¶¯¹¤×÷´¦ÀíÏß³Ì£¬Õâ¸ö·½·¨Á¢¼´·µ»Ø£¬¶ø²»µÈ´ıÈÎºÎÊµ¼Ê´¦Àí·¢Éú¡£
+	 * å¯åŠ¨å·¥ä½œå¤„ç†çº¿ç¨‹ï¼Œè¿™ä¸ªæ–¹æ³•ç«‹å³è¿”å›ï¼Œè€Œä¸ç­‰å¾…ä»»ä½•å®é™…å¤„ç†å‘ç”Ÿã€‚
 	 */
 	public void start(){
 		if (mode.compareAndSet(MODE_INIT, MODE_START)){
@@ -216,7 +216,7 @@ public abstract class QueueConsumer<E> implements Runnable{
 	/**
 	 * Stop working thread after the queue is empty; 
 	 * This method will not return until working thread finishes.<br>
-	 * µÈ´ı¶ÓÁĞ´¦Àí¿ÕÁËÖ®ºóÍ£Ö¹´¦ÀíÏß³Ì£¬Õâ¸ö·½·¨»áµÈµ½¹¤×÷´¦ÀíÏß³Ì½áÊø²Å·µ»Ø¡£
+	 * ç­‰å¾…é˜Ÿåˆ—å¤„ç†ç©ºäº†ä¹‹ååœæ­¢å¤„ç†çº¿ç¨‹ï¼Œè¿™ä¸ªæ–¹æ³•ä¼šç­‰åˆ°å·¥ä½œå¤„ç†çº¿ç¨‹ç»“æŸæ‰è¿”å›ã€‚
 	 */
 	public void stop(){
 		stop(true);
@@ -225,12 +225,12 @@ public abstract class QueueConsumer<E> implements Runnable{
 	/**
 	 * Stop working thread; 
 	 * This method will not return until working thread finishes.<br>
-	 * Í£Ö¹´¦ÀíÏß³Ì£¬Õâ¸ö·½·¨»áµÈµ½¹¤×÷´¦ÀíÏß³Ì½áÊø²Å·µ»Ø¡£
+	 * åœæ­¢å¤„ç†çº¿ç¨‹ï¼Œè¿™ä¸ªæ–¹æ³•ä¼šç­‰åˆ°å·¥ä½œå¤„ç†çº¿ç¨‹ç»“æŸæ‰è¿”å›ã€‚
 	 * 
 	 * @param afterQueueEmpty	true if working thread should keep processing until the queue is empty;<br>
 	 * 							false if working thread should stop after finished current work;<br>
-	 * 							Èç¹ûÎªtrue£¬Ôò¹¤×÷Ïß³ÌÒªµÈµ½¶ÓÁĞ´¦Àí¿ÕÁË²Å½áÊø£»<br>
-	 * 							Èç¹ûÎªfalse£¬Ôò¹¤×÷Ïß³Ì´¦ÀíÍêµ±Ç°Êı¾İ¾Í½áÊø¡£
+	 * 							å¦‚æœä¸ºtrueï¼Œåˆ™å·¥ä½œçº¿ç¨‹è¦ç­‰åˆ°é˜Ÿåˆ—å¤„ç†ç©ºäº†æ‰ç»“æŸï¼›<br>
+	 * 							å¦‚æœä¸ºfalseï¼Œåˆ™å·¥ä½œçº¿ç¨‹å¤„ç†å®Œå½“å‰æ•°æ®å°±ç»“æŸã€‚
 	 */
 	public void stop(boolean afterQueueEmpty){
 		preStop(afterQueueEmpty);
@@ -242,8 +242,8 @@ public abstract class QueueConsumer<E> implements Runnable{
 				// do nothing
 			}
 			preStop(afterQueueEmpty);
-			// Ò²´æÔÚÕâÖÖ¿ÉÄÜĞÔ£ºÔÚwhile×÷ÅĞ¶ÏµÄÊ±ºò£¬queue.size()>0£¬
-			// ¶øtake()µÄÊ±ºòÒÑ¾­Ã»¶«Î÷È¡ÁË£¬ËùÒÔjoinÖ®ºóÒ²²»ÄÜËÀµÈ£¬Òª·´¸´interrupt¡£
+			// ä¹Ÿå­˜åœ¨è¿™ç§å¯èƒ½æ€§ï¼šåœ¨whileä½œåˆ¤æ–­çš„æ—¶å€™ï¼Œqueue.size()>0ï¼Œ
+			// è€Œtake()çš„æ—¶å€™å·²ç»æ²¡ä¸œè¥¿å–äº†ï¼Œæ‰€ä»¥joinä¹‹åä¹Ÿä¸èƒ½æ­»ç­‰ï¼Œè¦åå¤interruptã€‚
 			thread.interrupt();
 		}
 	}
@@ -251,12 +251,12 @@ public abstract class QueueConsumer<E> implements Runnable{
 	/**
 	 * Ask the working thread to stop;
 	 * This method will return immediately.<br>
-	 * ÒªÇó¹¤×÷Ïß³ÌÍ£Ö¹£»Õâ¸ö·½·¨Á¢¼´·µ»Ø¡£
+	 * è¦æ±‚å·¥ä½œçº¿ç¨‹åœæ­¢ï¼›è¿™ä¸ªæ–¹æ³•ç«‹å³è¿”å›ã€‚
 	 * 
 	 * @param afterQueueEmpty	true if working thread should keep processing until the queue is empty;<br>
 	 * 							false if working thread should stop after finished current work;<br>
-	 * 							Èç¹ûÎªtrue£¬Ôò¹¤×÷Ïß³ÌÒªµÈµ½¶ÓÁĞ´¦Àí¿ÕÁË²Å½áÊø£»<br>
-	 * 							Èç¹ûÎªfalse£¬Ôò¹¤×÷Ïß³Ì´¦ÀíÍêµ±Ç°Êı¾İ¾Í½áÊø¡£
+	 * 							å¦‚æœä¸ºtrueï¼Œåˆ™å·¥ä½œçº¿ç¨‹è¦ç­‰åˆ°é˜Ÿåˆ—å¤„ç†ç©ºäº†æ‰ç»“æŸï¼›<br>
+	 * 							å¦‚æœä¸ºfalseï¼Œåˆ™å·¥ä½œçº¿ç¨‹å¤„ç†å®Œå½“å‰æ•°æ®å°±ç»“æŸã€‚
 	 */
 	public void preStop(boolean afterQueueEmpty){
 		mode.compareAndSet(MODE_RUNNING, afterQueueEmpty ? MODE_STOP_WHEN_EMPTY : MODE_STOP_ASAP);
@@ -269,7 +269,7 @@ public abstract class QueueConsumer<E> implements Runnable{
 			throw new IllegalStateException("Should be in state MODE_START, but actully not.");
 		}
 		
-		int m;	//±£Ö¤ÖµÒ»ÖÂ
+		int m;	//ä¿è¯å€¼ä¸€è‡´
 		while(((m = mode.get()) == MODE_RUNNING) || (m == MODE_STOP_WHEN_EMPTY && queue.size() > 0)){
 			consume();
 		}
@@ -281,10 +281,10 @@ public abstract class QueueConsumer<E> implements Runnable{
 	
 	/**
 	 * Consume the data in queue - this method should be overridden in subclass.<br>
-	 * ´¦Àí¶ÓÁĞÖĞµÄÊı¾İ¡ª¡ªÕâ¸ö·½·¨Ó¦¸ÃÔÚ×ÓÀàÖĞ±»ÖØÔØ¡£
+	 * å¤„ç†é˜Ÿåˆ—ä¸­çš„æ•°æ®â€”â€”è¿™ä¸ªæ–¹æ³•åº”è¯¥åœ¨å­ç±»ä¸­è¢«é‡è½½ã€‚
 	 * <p>
 	 * This method may be interrupted while running, so please note the following:<br>
-	 * Õâ¸ö·½·¨ÔÚÔËĞĞ¹ı³ÌÖĞ¿ÉÄÜ»áÓöµ½Ïß³ÌµÄinterrupt£¬ËùÒÔÈç¹ûÓĞÒÔÏÂÇé¿öÒª×¢ÒâÕıÈ·´¦Àí£º
+	 * è¿™ä¸ªæ–¹æ³•åœ¨è¿è¡Œè¿‡ç¨‹ä¸­å¯èƒ½ä¼šé‡åˆ°çº¿ç¨‹çš„interruptï¼Œæ‰€ä»¥å¦‚æœæœ‰ä»¥ä¸‹æƒ…å†µè¦æ³¨æ„æ­£ç¡®å¤„ç†ï¼š
 	 * <p>
 	 *  If this thread is blocked in an invocation of the wait(), wait(long), or wait(long, int) 
 	 *  methods of the Object  class, or of the join(), join(long), join(long, int), sleep(long), 

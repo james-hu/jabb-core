@@ -33,7 +33,7 @@ import com.chenlb.mmseg4j.Seg;
 import com.chenlb.mmseg4j.SimpleSeg;
 
 /**
- * »ùÓÚmmseg4j·Ö´ÊµÄÎÄ±¾·ÖÎöÆ÷¡£
+ * åŸºäºmmseg4jåˆ†è¯çš„æ–‡æœ¬åˆ†æå™¨ã€‚
  * <p>
  * Text Analyzer.
  * 

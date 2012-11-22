@@ -30,6 +30,7 @@ public class NameDeduplicatorTest {
 
 	@Test
 	public void test() throws InterruptedException {
+		System.out.print("Starting threads: ");
 		for (int i = 0; i < 100; i ++){
 			new Thread(new Runnable(){
 
@@ -42,17 +43,22 @@ public class NameDeduplicatorTest {
 				}
 				
 			}).start();
+			System.out.print(", " + i);
 		}
-		Thread.sleep(20*1000);
+		System.out.println("\nAll started.");
+		Thread.sleep(10*1000);
 		stopNow = true;
+		System.out.println("Stopping...");
 		
-		Thread.sleep(2*1000);
+		Thread.sleep(3*1000);
+		System.out.println("Checking...");
 		long id = -1;
 		for (Map.Entry<Long, AtomicLong> e: fc.getCounts().entrySet()){
 			Assert.assertTrue(e.getKey() == id + 1);
 			id = e.getKey();
 			Assert.assertTrue(e.getValue().get() == 1);
 		}
+		System.out.println("Done.");
 	}
 
 }

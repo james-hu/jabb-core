@@ -21,7 +21,7 @@ public class ChineseWordIdentifier extends SimpleSeg {
 	
 	@Override
 	public Chunk seg(Sentence sen) {
-		identifiedWords.add("ÊÔÑé");
+		identifiedWords.add("è¯•éªŒ");
 		sen.setOffset(sen.getText().length);
 		return emptyChunk;
 	}

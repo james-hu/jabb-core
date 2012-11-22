@@ -24,7 +24,7 @@ import javolution.util.FastSet;
 import com.enigmastation.extractors.WordLister;
 
 /**
- * Ö§³ÖÖĞÓ¢ÎÄµÄ·Ö´ÊÆ÷¡£»ùÓÚ´ÊµäÆ¥Åä¡£
+ * æ”¯æŒä¸­è‹±æ–‡çš„åˆ†è¯å™¨ã€‚åŸºäºè¯å…¸åŒ¹é…ã€‚
  * <p>
  * A WordLister that can handle Chinese and English. It is based
  * on dictionary matching.

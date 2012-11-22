@@ -17,7 +17,7 @@ limitations under the License.
 package net.sf.jabb.util.exp;
 
 /**
- * ÓÃÓÚµÃµ½±È½Ï½á¹û
+ * ç”¨äºå¾—åˆ°æ¯”è¾ƒç»“æœ
  * @author Zhengmao HU (James)
  *
  */
@@ -49,8 +49,8 @@ abstract public class CompareExpression extends BooleanExpression implements Com
 	}
 	
 	/**
-	 * ×ÓÀàÓ¦¸ÃÊµÏÖÕâ¸ö·½·¨£¬ÀûÓÃleftOperand, operation, rightOperand¡¢ÒÔ¼°contextÀ´
-	 * ×÷¾ßÌåµÄ±È½ÏÔËËã£¬·µ»ØÈ·ÇĞµÄ½á¹û¡£
+	 * å­ç±»åº”è¯¥å®ç°è¿™ä¸ªæ–¹æ³•ï¼Œåˆ©ç”¨leftOperand, operation, rightOperandã€ä»¥åŠcontextæ¥
+	 * ä½œå…·ä½“çš„æ¯”è¾ƒè¿ç®—ï¼Œè¿”å›ç¡®åˆ‡çš„ç»“æœã€‚
 	 * @return the result
 	 */
 	abstract protected boolean  compare(Object context);

@@ -52,7 +52,7 @@ public class PlaceHolderReplacer {
 	 * System.getProperty("path.separator").
 	 * 
 	 * @param str		the input string that substitution will be performed upon.
-	 * @return
+	 * @return		the output string that had been processed
 	 */
 	static public String replaceWithProperties(final String str){
 		return replaceWithProperties(str, null);
@@ -70,7 +70,7 @@ public class PlaceHolderReplacer {
 	 * 
 	 * @param str		the input string that substitution will be performed upon.
 	 * @param props		the properties to be used instead of System.getProerty()
-	 * @return
+	 * @return		the output string that had been replaced
 	 */
 	static public String replaceWithProperties(final String str, final Properties props){
 		String result = null;

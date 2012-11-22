@@ -25,7 +25,7 @@ import org.apache.commons.lang.mutable.MutableInt;
 /**
  * To check which keywords a text matches, and for each matched keyword how many 
  * occurrences are found.<br>
- * ¼ì²éÎÄ±¾µ±ÖĞÆ¥ÅäÁËÄÄĞ©¹Ø¼ü´Ê£¬ÒÔ¼°Ã¿¸ö±»Æ¥Åäµ½µÄ¹Ø¼ü´Ê³öÏÖÁË¶àÉÙ´Î¡£
+ * æ£€æŸ¥æ–‡æœ¬å½“ä¸­åŒ¹é…äº†å“ªäº›å…³é”®è¯ï¼Œä»¥åŠæ¯ä¸ªè¢«åŒ¹é…åˆ°çš„å…³é”®è¯å‡ºç°äº†å¤šå°‘æ¬¡ã€‚
  *  
  * @author Zhengmao HU (James)
  *
@@ -37,9 +37,9 @@ public class KeywordMatcher implements Serializable{
 	
 	/**
 	 * Constructs a copy which has exactly the same matching definition as the original one.<br>
-	 * ´´½¨Ò»¸ö¸±±¾£¬Õâ¸ö¸±±¾ÓëÔ­ÏÈµÄ¶ÔÏó¾ßÓĞÍêÈ«ÏàÍ¬Æ¥Åä·½Ê½¶¨Òå¡£
+	 * åˆ›å»ºä¸€ä¸ªå‰¯æœ¬ï¼Œè¿™ä¸ªå‰¯æœ¬ä¸åŸå…ˆçš„å¯¹è±¡å…·æœ‰å®Œå…¨ç›¸åŒåŒ¹é…æ–¹å¼å®šä¹‰ã€‚
 	 * 
-	 * @param toBeCopied	original object<br>Ô­±¾
+	 * @param toBeCopied	original object<br>åŸæœ¬
 	 */
 	public KeywordMatcher(KeywordMatcher toBeCopied){
 		this.matcher = new StringStartWithMatcher(toBeCopied.matcher);
@@ -48,11 +48,11 @@ public class KeywordMatcher implements Serializable{
 	/**
 	 * Constructs a matcher object with specified keywords; When creating internal
 	 * data structure, choose to consume more memory for better matching speed.<br>
-	 * ¸ù¾İ¹Ø¼ü´ÊÁĞ±í£¬´´½¨Ò»¸öÆ¥ÅäÆ÷£»
-	 * ÔÚ´´½¨ÄÚ²¿Êı¾İ½á¹¹µÄÊ±ºò£¬Ñ¡ÔñÕ¼ÓÃ¸ü¶àÄÚ´æ£¬¶ø»»È¡ËÙ¶ÈÉÏµÄÌáÉı¡£
+	 * æ ¹æ®å…³é”®è¯åˆ—è¡¨ï¼Œåˆ›å»ºä¸€ä¸ªåŒ¹é…å™¨ï¼›
+	 * åœ¨åˆ›å»ºå†…éƒ¨æ•°æ®ç»“æ„çš„æ—¶å€™ï¼Œé€‰æ‹©å ç”¨æ›´å¤šå†…å­˜ï¼Œè€Œæ¢å–é€Ÿåº¦ä¸Šçš„æå‡ã€‚
 	 * 
 	 * @param keywordDefinitions	Keywords and their associated attachment as identifier.<br>
-	 * 								¹Ø¼ü´ÊÒÔ¼°ÓëÖ®¶ÔÓ¦µÄ½á¹û±êÊ¶¸½¼ş¶ÔÏó¡£
+	 * 								å…³é”®è¯ä»¥åŠä¸ä¹‹å¯¹åº”çš„ç»“æœæ ‡è¯†é™„ä»¶å¯¹è±¡ã€‚
 	 * 								
 	 */
 	public KeywordMatcher(Map<String, ? extends Object> keywordDefinitions) {
@@ -61,13 +61,13 @@ public class KeywordMatcher implements Serializable{
 
 	/**
 	 * Constructs a matcher object with specified keywords.<br>
-	 * ¸ù¾İ¹Ø¼ü´ÊÁĞ±í£¬´´½¨Ò»¸öÆ¥ÅäÆ÷¡£
+	 * æ ¹æ®å…³é”®è¯åˆ—è¡¨ï¼Œåˆ›å»ºä¸€ä¸ªåŒ¹é…å™¨ã€‚
 	 * 
 	 * @param keywordDefinitions	Keywords and their associated attachment as identifier.<br>
-	 * 								¹Ø¼ü´ÊÒÔ¼°ÓëÖ®¶ÔÓ¦µÄ½á¹û±êÊ¶¸½¼ş¶ÔÏó¡£
+	 * 								å…³é”®è¯ä»¥åŠä¸ä¹‹å¯¹åº”çš„ç»“æœæ ‡è¯†é™„ä»¶å¯¹è±¡ã€‚
 	 * @param moreSpaceForSpeed		Whether or not to consume
 	 * 								more memory for better matching speed.<br>
-	 * 								ÊÇ·ñÕ¼ÓÃ¸ü¶àÄÚ´æ£¬¶ø»»È¡ËÙ¶ÈÉÏµÄÌáÉı¡£
+	 * 								æ˜¯å¦å ç”¨æ›´å¤šå†…å­˜ï¼Œè€Œæ¢å–é€Ÿåº¦ä¸Šçš„æå‡ã€‚
 	 */
 	public KeywordMatcher(Map<String, ? extends Object> keywordDefinitions, boolean moreSpaceForSpeed) {
 		Map<String, Object> newDefinitions = new HashMap<String, Object>(keywordDefinitions.size());
@@ -80,12 +80,12 @@ public class KeywordMatcher implements Serializable{
 	/**
 	 * Do the matching test, find out which keywords can be matched, and how many occurrences of each
 	 * keyword can be found.<br>
-	 * ½øĞĞÆ¥Åä£¬·µ»ØËùÆ¥ÅäÉÏµÄ¹Ø¼ü´Ê£¬ÒÔ¼°Æ¥ÅäµÄ´ÎÊı¡£
+	 * è¿›è¡ŒåŒ¹é…ï¼Œè¿”å›æ‰€åŒ¹é…ä¸Šçš„å…³é”®è¯ï¼Œä»¥åŠåŒ¹é…çš„æ¬¡æ•°ã€‚
 	 *   
-	 * @param text 	the text string to be tested<br>´ıÆ¥ÅäµÄÎÄ±¾
+	 * @param text 	the text string to be tested<br>å¾…åŒ¹é…çš„æ–‡æœ¬
 	 * @return	For all the keywords that can be found in the text, return their attachments (as the Key
 	 * 			in the Map) and occurrences count (as the Value in the Map).<br>
-	 * 			·µ»ØÆ¥ÅäÉÏµÄÈ«²¿¹Ø¼ü´ÊËù¶ÔÓ¦µÄattachment£¨ÔÚMapµÄKeyÖĞ£©£¬ÒÔ¼°ËüÃÇ³öÏÖµÄ´ÎÊı£¨ÔÚMapµÄValueÖĞ£©¡£
+	 * 			è¿”å›åŒ¹é…ä¸Šçš„å…¨éƒ¨å…³é”®è¯æ‰€å¯¹åº”çš„attachmentï¼ˆåœ¨Mapçš„Keyä¸­ï¼‰ï¼Œä»¥åŠå®ƒä»¬å‡ºç°çš„æ¬¡æ•°ï¼ˆåœ¨Mapçš„Valueä¸­ï¼‰ã€‚
 	 */
 	public Map<Object, MutableInt> match(CharSequence text){
 		Map<Object, MutableInt> result = null;

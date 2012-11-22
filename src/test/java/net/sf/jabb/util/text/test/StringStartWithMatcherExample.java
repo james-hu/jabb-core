@@ -36,16 +36,16 @@ import net.sf.jabb.util.text.StringStartWithMatcher;
 public class StringStartWithMatcherExample {
 
 	/**
-	 * ÕâÊÇÒ»¸öÓÃ·¨Ê¾Àı¡£
+	 * è¿™æ˜¯ä¸€ä¸ªç”¨æ³•ç¤ºä¾‹ã€‚
 	 * @param args
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
 	 */
 	public static void main(String[] args) throws IOException, ClassNotFoundException{
-		System.out.println("==== Ò»°ã¹¦ÄÜÊ¾·¶ ====");
+		System.out.println("==== ä¸€èˆ¬åŠŸèƒ½ç¤ºèŒƒ ====");
 		StringStartWithMatcher m = showExample(null);
 		
-		System.out.println("==== ĞòÁĞ»¯Ê¾·¶ ====");
+		System.out.println("==== åºåˆ—åŒ–ç¤ºèŒƒ ====");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ObjectOutputStream oos = new ObjectOutputStream(baos);
 		oos.writeObject(m);
@@ -55,7 +55,7 @@ public class StringStartWithMatcherExample {
 		StringStartWithMatcher m2 = (StringStartWithMatcher) ois.readObject();
 		showExample(m2);
 		
-		System.out.println("==== ¸´ÖÆÊ¾·¶ ====");
+		System.out.println("==== å¤åˆ¶ç¤ºèŒƒ ====");
 		StringStartWithMatcher m3 = new StringStartWithMatcher(m);
 		showExample(m3);
 
@@ -65,23 +65,23 @@ public class StringStartWithMatcherExample {
 		if (m == null){
 			Map<String, Object> heads = new HashMap<String, Object>();
 			
-			////////////  ºÅ¶ÎÆ¥Åä  ///////////////
+			////////////  å·æ®µåŒ¹é…  ///////////////
 			heads.clear();
-			heads.put("134", "134ºÅ¶Î");
-			heads.put("135", "135ºÅ¶Î");
-			heads.put("136", "136ºÅ¶Î");
-			heads.put("1361", "1361ºÅ¶Î");
-			heads.put("1362", "1362ºÅ¶Î");
-			heads.put("137", "137ºÅ¶Î");
-			heads.put("138", "138ºÅ¶Î");
-			heads.put("13817", "13817ºÅ¶Î");
-			heads.put("13817726996", "ÎÒµÄºÅÂë");
-			heads.put("138177269", "ºÜ½Ó½üÎÒµÄºÅÂë");
-			heads.put("1381772", "ÓĞĞ©½Ó½üÎÒµÄºÅÂë");
-			heads.put("ÖĞ»ªÈËÃñ¹²ºÍ¹ú", "ÖĞ»ªÈËÃñ¹²ºÍ¹ú");
-			heads.put("ÖĞ»ªÈËÃñ", "ÖĞ»ªÈËÃñ");
-			heads.put("ÖĞ»ª", "ÖĞ»ª");
-			// ºÅ¶ÎÕ¹¿ª
+			heads.put("134", "134å·æ®µ");
+			heads.put("135", "135å·æ®µ");
+			heads.put("136", "136å·æ®µ");
+			heads.put("1361", "1361å·æ®µ");
+			heads.put("1362", "1362å·æ®µ");
+			heads.put("137", "137å·æ®µ");
+			heads.put("138", "138å·æ®µ");
+			heads.put("13817", "13817å·æ®µ");
+			heads.put("13817726996", "æˆ‘çš„å·ç ");
+			heads.put("138177269", "å¾ˆæ¥è¿‘æˆ‘çš„å·ç ");
+			heads.put("1381772", "æœ‰äº›æ¥è¿‘æˆ‘çš„å·ç ");
+			heads.put("ä¸­åäººæ°‘å…±å’Œå›½", "ä¸­åäººæ°‘å…±å’Œå›½");
+			heads.put("ä¸­åäººæ°‘", "ä¸­åäººæ°‘");
+			heads.put("ä¸­å", "ä¸­å");
+			// å·æ®µå±•å¼€
 			StringStartWithMatcher.expandNumberMatchingRange(heads, "1335000", "1335999", "1335000~1335999");
 			StringStartWithMatcher.expandNumberMatchingRange(heads, "1375010", "1375039", "1375010~1375039");
 			StringStartWithMatcher.expandNumberMatchingRange(heads, "13750632", "13750641", "13750632~13750641");
@@ -90,7 +90,7 @@ public class StringStartWithMatcherExample {
 			StringStartWithMatcher.expandNumberMatchingRange(heads, "1891", "189299", "1891~189299");
 			StringStartWithMatcher.expandNumberMatchingRange(heads, "1881991", "1882", "1881991~1882");
 			
-			System.out.println("\t*** Õ¹¿ªºóµÄÆ¥Åä¶ÔÓ¦±í *******");
+			System.out.println("\t*** å±•å¼€åçš„åŒ¹é…å¯¹åº”è¡¨ *******");
 			SortedSet<String> ss = new TreeSet<String>(heads.keySet());
 			for (String pattern: ss){
 				System.out.format("\t %-15s ---> %s\n", pattern, heads.get(pattern));
@@ -100,7 +100,7 @@ public class StringStartWithMatcherExample {
 			m = new StringStartWithMatcher(heads);
 			
 		}
-		System.out.println("  **** Æ¥Åä½á¹û *******");
+		System.out.println("  **** åŒ¹é…ç»“æœ *******");
 		for (String s: new String[] {
 				"1376726637", "13717726996", "1340898394",
 				"18", "138", "1385", "13817", "13817899633", "1381772", "13817726", 
@@ -110,7 +110,7 @@ public class StringStartWithMatcherExample {
 				"133500166", "1335010", "133501",
 				"1891234", "18923434", "1892",
 				"1301213243", "130138090", "13009090", "13012689892",
-				"ÖĞ¼äÎ»ÖÃ", "ÖĞ¹úÈËÃñ", "ÖĞ»ª´óµØ", "ÖĞ»ªÃñ¹ú", "ÖĞ»ªÈËÃñ¹²ÓĞµÄ²Æ²ú", "ÖĞ»ªÈËÃñ¹²ºÍ¹ú", "ÖĞ»ªÈËÃñ¹²ºÍ¹ú³ÉÁ¢ÁË",
+				"ä¸­é—´ä½ç½®", "ä¸­å›½äººæ°‘", "ä¸­åå¤§åœ°", "ä¸­åæ°‘å›½", "ä¸­åäººæ°‘å…±æœ‰çš„è´¢äº§", "ä¸­åäººæ°‘å…±å’Œå›½", "ä¸­åäººæ°‘å…±å’Œå›½æˆç«‹äº†",
 				"1360172", "13610238", "1362834", "2137138139", "134136137138139"
 				}){
 			Object o = m.match(s);

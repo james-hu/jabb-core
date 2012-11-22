@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * Definition of how the matching will should be done. <br>
- * Æ¥Åä·½Ê½¶¨Òå¡£
+ * åŒ¹é…æ–¹å¼å®šä¹‰ã€‚
  * <p>
  * It consists of three parts:
  * <ul>
@@ -39,17 +39,17 @@ import java.util.List;
  * need to be not null.
  * 
  * <p>
- * ËüÓÉÈıÏîÊı¾İ×é³É£º
+ * å®ƒç”±ä¸‰é¡¹æ•°æ®ç»„æˆï¼š
  * <ul>
- * 	<li><code>regularExpression</code>: ÓÃ×÷Æ¥ÅäµÄÕıÔò±í´ïÊ½¡£</li>
- * 	<li><code>exactMatchExamples</code>: ÄÜ¹»¸ÕºÃÆ¥Åä´ËÕıÔò±í´ïÊ½µÄÒ»×éÊ¾·¶×Ö·û´®¡£
- * 		ÕâĞ©×Ö·û´®±»ÓÃÀ´¡°ÑµÁ·¡±Æ¥ÅäÒıÇæ£¬ËùÒÔËüÃÇĞèÒªÄÜ¸²¸ÇÈ«²¿µÄÆ¥Åä×´Ì¬¡£</li>
- * 	<li><code>exactMatchExample</code>: ÄÜ¹»¸ÕºÃÆ¥Åä´ËÕıÔò±í´ïÊ½µÄÒ»¸öÊ¾·¶×Ö·û´®¡£
- * 		Õâ¸ö×Ö·û´®±»ÓÃÀ´¡°ÑµÁ·¡±Æ¥ÅäÒıÇæ£¬ ËùÒÔËüĞèÒªÄÜ¸²¸ÇÈ«²¿µÄÆ¥Åä×´Ì¬¡£</li>
- * 	<li><code>attachment</code>: Óë´ËÆ¥ÅäÌõ¼şÏà¹ØÁªµÄÒ»¸ö¸½¼ş£¬¿ÉÒÔÊÇÈÎÒâ¶ÔÏó¡£
- * 		Èç¹ûÆ¥Åä£¬Ëü»á±»×÷ÎªÆ¥ÅäµÄ½á¹û·µ»Ø¡£</li>
+ * 	<li><code>regularExpression</code>: ç”¨ä½œåŒ¹é…çš„æ­£åˆ™è¡¨è¾¾å¼ã€‚</li>
+ * 	<li><code>exactMatchExamples</code>: èƒ½å¤Ÿåˆšå¥½åŒ¹é…æ­¤æ­£åˆ™è¡¨è¾¾å¼çš„ä¸€ç»„ç¤ºèŒƒå­—ç¬¦ä¸²ã€‚
+ * 		è¿™äº›å­—ç¬¦ä¸²è¢«ç”¨æ¥â€œè®­ç»ƒâ€åŒ¹é…å¼•æ“ï¼Œæ‰€ä»¥å®ƒä»¬éœ€è¦èƒ½è¦†ç›–å…¨éƒ¨çš„åŒ¹é…çŠ¶æ€ã€‚</li>
+ * 	<li><code>exactMatchExample</code>: èƒ½å¤Ÿåˆšå¥½åŒ¹é…æ­¤æ­£åˆ™è¡¨è¾¾å¼çš„ä¸€ä¸ªç¤ºèŒƒå­—ç¬¦ä¸²ã€‚
+ * 		è¿™ä¸ªå­—ç¬¦ä¸²è¢«ç”¨æ¥â€œè®­ç»ƒâ€åŒ¹é…å¼•æ“ï¼Œ æ‰€ä»¥å®ƒéœ€è¦èƒ½è¦†ç›–å…¨éƒ¨çš„åŒ¹é…çŠ¶æ€ã€‚</li>
+ * 	<li><code>attachment</code>: ä¸æ­¤åŒ¹é…æ¡ä»¶ç›¸å…³è”çš„ä¸€ä¸ªé™„ä»¶ï¼Œå¯ä»¥æ˜¯ä»»æ„å¯¹è±¡ã€‚
+ * 		å¦‚æœåŒ¹é…ï¼Œå®ƒä¼šè¢«ä½œä¸ºåŒ¹é…çš„ç»“æœè¿”å›ã€‚</li>
  * </ul>
- * <code>exactMatchExamples</code>ºÍ<code>exactMatchExample</code>Ö»ĞèÒªÓĞÒ»¸öÎª·Çnull¡£
+ * <code>exactMatchExamples</code>å’Œ<code>exactMatchExample</code>åªéœ€è¦æœ‰ä¸€ä¸ªä¸ºénullã€‚
  * 
  * 
  * @author Zhengmao HU (James)
@@ -58,37 +58,37 @@ import java.util.List;
 public class MatchingDefinition {
 	/**
 	 * The regular expression used for matching.
-	 * <br>ÓÃ×÷Æ¥ÅäµÄÕıÔò±í´ïÊ½¡£
+	 * <br>ç”¨ä½œåŒ¹é…çš„æ­£åˆ™è¡¨è¾¾å¼ã€‚
 	 */
 	private String regularExpression;
 	/**
 	 * A list of example strings that could and only could match the regular expression.<br>
-	 * ÄÜ¹»¸ÕºÃÆ¥Åä´ËÕıÔò±í´ïÊ½µÄÒ»×éÊ¾·¶×Ö·û´®¡£
+	 * èƒ½å¤Ÿåˆšå¥½åŒ¹é…æ­¤æ­£åˆ™è¡¨è¾¾å¼çš„ä¸€ç»„ç¤ºèŒƒå­—ç¬¦ä¸²ã€‚
 	 * <p>
 	 * These example strings will be used to exercise the matching engine, so they should
 	 * cover all the possibilities of matching.
 	 * <p>
-	 * ÕâĞ©×Ö·û´®±»ÓÃÀ´¡°ÑµÁ·¡±Æ¥ÅäÒıÇæ£¬ËùÒÔËüÃÇĞèÒªÄÜ¸²¸ÇÈ«²¿µÄÆ¥Åä×´Ì¬¡£
+	 * è¿™äº›å­—ç¬¦ä¸²è¢«ç”¨æ¥â€œè®­ç»ƒâ€åŒ¹é…å¼•æ“ï¼Œæ‰€ä»¥å®ƒä»¬éœ€è¦èƒ½è¦†ç›–å…¨éƒ¨çš„åŒ¹é…çŠ¶æ€ã€‚
 	 */
 	private List<String> exactMatchExamples;
 	
 	/**
 	 * An example string that could and only could match the regular expression.<br>
-	 * ÄÜ¹»¸ÕºÃÆ¥Åä´ËÕıÔò±í´ïÊ½µÄÒ»¸öÊ¾·¶×Ö·û´®¡£
+	 * èƒ½å¤Ÿåˆšå¥½åŒ¹é…æ­¤æ­£åˆ™è¡¨è¾¾å¼çš„ä¸€ä¸ªç¤ºèŒƒå­—ç¬¦ä¸²ã€‚
 	 * <p>
 	 * The example string will be used to exercise the matching engine, so it should
 	 * cover all the possibilities of matching.
 	 * <p>
-	 * Õâ¸ö×Ö·û´®±»ÓÃÀ´¡°ÑµÁ·¡±Æ¥ÅäÒıÇæ£¬ËùÒÔËüĞèÒªÄÜ¸²¸ÇÈ«²¿µÄÆ¥Åä×´Ì¬¡£
+	 * è¿™ä¸ªå­—ç¬¦ä¸²è¢«ç”¨æ¥â€œè®­ç»ƒâ€åŒ¹é…å¼•æ“ï¼Œæ‰€ä»¥å®ƒéœ€è¦èƒ½è¦†ç›–å…¨éƒ¨çš„åŒ¹é…çŠ¶æ€ã€‚
 	 */
 	private String exactMatchExample;
 	/**
 	 * An attachment object that should be associated with this matching.<br>
-	 * Óë´ËÆ¥ÅäÌõ¼şÏà¹ØÁªµÄÒ»¸ö¸½¼ş£¬¿ÉÒÔÊÇÈÎÒâ¶ÔÏó¡£
+	 * ä¸æ­¤åŒ¹é…æ¡ä»¶ç›¸å…³è”çš„ä¸€ä¸ªé™„ä»¶ï¼Œå¯ä»¥æ˜¯ä»»æ„å¯¹è±¡ã€‚
 	 * <p>
 	 * If matched, this object will be returned.
 	 * <p>
-	 * Èç¹ûÆ¥Åä£¬Ëü»á±»×÷ÎªÆ¥ÅäµÄ½á¹û·µ»Ø¡£
+	 * å¦‚æœåŒ¹é…ï¼Œå®ƒä¼šè¢«ä½œä¸ºåŒ¹é…çš„ç»“æœè¿”å›ã€‚
 	 */
 	private Object attachment;
 	

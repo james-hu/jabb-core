@@ -24,7 +24,7 @@ import java.util.Map;
 import javolution.util.FastMap;
 
 /**
- * ´Êµä¡£
+ * è¯å…¸ã€‚
  * <p>
  * Dictionary of words.
  * 
@@ -39,7 +39,7 @@ public class Dictionary {
 	}
 
 	/**
-	 * ´´½¨Ò»¸öÊµÀı£¬ÆäÄÚÈİÊÇ¿½±´×ÔÁíÒ»¸öÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œå…¶å†…å®¹æ˜¯æ‹·è´è‡ªå¦ä¸€ä¸ªå®ä¾‹ã€‚
 	 * <p>
 	 * Create an instance which is a copy of another instance.
 	 * 
@@ -53,11 +53,11 @@ public class Dictionary {
 	}
 	
 	/**
-	 * ½«ÁíÒ»¸ö×ÖµäµÄÄÚÈİºÏ²¢½øÀ´¡£
+	 * å°†å¦ä¸€ä¸ªå­—å…¸çš„å†…å®¹åˆå¹¶è¿›æ¥ã€‚
 	 * <p>
 	 * Merge the words from another dictionary into this one.
 	 * 
-	 * @param dict	½«Òª±»ºÏ²¢½øÀ´µÄÁíÒ»¸ö×Öµä
+	 * @param dict	å°†è¦è¢«åˆå¹¶è¿›æ¥çš„å¦ä¸€ä¸ªå­—å…¸
 	 * 			<br>The other dictionary that will be merged into this one.
 	 */
 	public void merge(Dictionary dict){
@@ -67,13 +67,13 @@ public class Dictionary {
 	}
 
 	/**
-	 * ¼ÓÈëÒ»¸öĞÂ´ÊÌõ£¬Èç¹ûÕâ¸ö´ÊÌõÔÚ´ÊµäÖĞÒÑ¾­´æÔÚ£¬ÔòºÏ²¢¡£
+	 * åŠ å…¥ä¸€ä¸ªæ–°è¯æ¡ï¼Œå¦‚æœè¿™ä¸ªè¯æ¡åœ¨è¯å…¸ä¸­å·²ç»å­˜åœ¨ï¼Œåˆ™åˆå¹¶ã€‚
 	 * <p>
 	 * Add a new word, if this word already exists in the dictionary then the new definition will 
 	 * be merged into existing one.
 	 * 
 	 * @param newWord
-	 * @param makeCopy	ÊÇ·ñ¸´ÖÆ´ÊÌõ¶ÔÏó£¬¶ø·ÇÒıÓÃ
+	 * @param makeCopy	æ˜¯å¦å¤åˆ¶è¯æ¡å¯¹è±¡ï¼Œè€Œéå¼•ç”¨
 	 * 				<br>Whether or not to copy the Word object, rather than to refer it.
 	 */
 	public void addWord(Word newWord, boolean makeCopy){
@@ -92,8 +92,8 @@ public class Dictionary {
 	}
 	
 	/**
-	 * ¼ÓÈëÒ»¸öĞÂ´ÊÌõ£¬Èç¹ûÕâ¸ö´ÊÌõÔÚ´ÊµäÖĞÒÑ¾­´æÔÚ£¬ÔòºÏ²¢¡£
-	 * ´ÊÌõ¶ÔÏó²»»á±»¸´ÖÆ£¬¶øÊÇ»á±»ÒıÓÃ¡£
+	 * åŠ å…¥ä¸€ä¸ªæ–°è¯æ¡ï¼Œå¦‚æœè¿™ä¸ªè¯æ¡åœ¨è¯å…¸ä¸­å·²ç»å­˜åœ¨ï¼Œåˆ™åˆå¹¶ã€‚
+	 * è¯æ¡å¯¹è±¡ä¸ä¼šè¢«å¤åˆ¶ï¼Œè€Œæ˜¯ä¼šè¢«å¼•ç”¨ã€‚
 	 * <p>
 	 * Add a new word, if this word already exists in the dictionary then the new definition will 
 	 * be merged into existing one.
@@ -106,13 +106,13 @@ public class Dictionary {
 	}
 	
 	/**
-	 * ´ÓÁ÷ÖĞÔØÈëÒ»ÅúÖ¸¶¨ÀàĞÍµÄ´ÊÌõ¡£Èç¹ûÄ³¸ö´ÊÌõÔÚ´ÊµäÖĞÒÑ¾­´æÔÚ£¬ÔòºÏ²¢¡£
+	 * ä»æµä¸­è½½å…¥ä¸€æ‰¹æŒ‡å®šç±»å‹çš„è¯æ¡ã€‚å¦‚æœæŸä¸ªè¯æ¡åœ¨è¯å…¸ä¸­å·²ç»å­˜åœ¨ï¼Œåˆ™åˆå¹¶ã€‚
 	 * <p>
 	 * Load a batch of word of specified type from stream. If any word already exists in the dictionary,
 	 * then the new definition will be merged into existing one.
 	 * 
-	 * @param is	ÊäÈëÁ÷<br>The stream to read from.
-	 * @param wordType	ÀàĞÍ£¬¶¨ÒåÔÚWordÀàÖĞ<br>Type of the word, which is defined in the class Word.
+	 * @param is	è¾“å…¥æµ<br>The stream to read from.
+	 * @param wordType	ç±»å‹ï¼Œå®šä¹‰åœ¨Wordç±»ä¸­<br>Type of the word, which is defined in the class Word.
 	 * @throws IOException
 	 */
 	public void loadWords(InputStream is, int wordType) throws IOException{

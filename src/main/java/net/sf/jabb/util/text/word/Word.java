@@ -18,7 +18,7 @@ package net.sf.jabb.util.text.word;
 
 
 /**
- * ´ÊµäÀïµÄÖĞÎÄ´ÊÌõ¡£
+ * è¯å…¸é‡Œçš„ä¸­æ–‡è¯æ¡ã€‚
  * <p>
  * Chinese word defined in dictionary.
  * 
@@ -27,21 +27,21 @@ package net.sf.jabb.util.text.word;
  */
 public class Word {
 	/**
-	 * Õı³£´Ê»ã<br>Normal word
+	 * æ­£å¸¸è¯æ±‡<br>Normal word
 	 */
 	public static final int TYPE_NORMAL = 1;
 	/**
-	 * ĞèÏÈÌŞ³ıÈ»ºóÔÙ½øĞĞ·Ö´Ê´¦ÀíµÄ×Ö·û
+	 * éœ€å…ˆå‰”é™¤ç„¶åå†è¿›è¡Œåˆ†è¯å¤„ç†çš„å­—ç¬¦
 	 * <br>Characters that should be removed before word identifying
 	 */
 	public static final int TYPE_IGNORE = 2;
 	/**
-	 * ´ÊÓë´ÊÖ®¼äµÄ·Ö¸ô×Ö·û
+	 * è¯ä¸è¯ä¹‹é—´çš„åˆ†éš”å­—ç¬¦
 	 * <br>Characters that separate adjacent words
 	 */
 	public static final int TYPE_SEPARATOR = 4;
 	/**
-	 * ĞèÒªÌáÈ¡³öÀ´µÄ¹Ø¼ü´Ê
+	 * éœ€è¦æå–å‡ºæ¥çš„å…³é”®è¯
 	 * <br>Keywords that need to be identified
 	 */
 	public static final int TYPE_KEYWORD = 8;
@@ -55,8 +55,8 @@ public class Word {
 	}
 	
 	/**
-	 * ´´½¨Ò»¸öÊµÀı£¬ÆäÄÚÈİÊÇÁíÒ»¸öÊµÀıµÄ¿½±´¡£
-	 * ×¢Òâ£¬keywordAttachment²»»á±»¿½±´£¬Ëü»á±»ÒıÓÃ¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œå…¶å†…å®¹æ˜¯å¦ä¸€ä¸ªå®ä¾‹çš„æ‹·è´ã€‚
+	 * æ³¨æ„ï¼ŒkeywordAttachmentä¸ä¼šè¢«æ‹·è´ï¼Œå®ƒä¼šè¢«å¼•ç”¨ã€‚
 	 * <p>
 	 * Create an instance which is a copy of another instance.
 	 * Note that keywordAttachment will not be copied, it will be referenced.
@@ -64,21 +64,21 @@ public class Word {
 	 * @param original
 	 */
 	public Word(Word original){
-		this.word = original.word;  // ¹²ÓÃÒ»¸öStringµÄÊµÀı²»»áÓĞÎÊÌâ
+		this.word = original.word;  // å…±ç”¨ä¸€ä¸ªStringçš„å®ä¾‹ä¸ä¼šæœ‰é—®é¢˜
 		this.types = original.types;
 		this.keywordAttachment = original.keywordAttachment;
 	}
 	
 	
 	/**
-	 * @return ´ú±íÕâ¸ö´ÊµÄ×Ö·û´®
+	 * @return ä»£è¡¨è¿™ä¸ªè¯çš„å­—ç¬¦ä¸²
 	 * 		<br>String that represents the word
 	 */
 	public String getWord() {
 		return word;
 	}
 	/**
-	 * @param word ´ú±íÕâ¸ö´ÊµÄ×Ö·û´®
+	 * @param word ä»£è¡¨è¿™ä¸ªè¯çš„å­—ç¬¦ä¸²
 	 * 		<br>String that represents the word
 	 */
 	public void setWord(String word) {
@@ -86,28 +86,28 @@ public class Word {
 	}
 	
 	/**
-	 * ±êÖ¾Õâ¸ö´ÊÌõÊôÓÚÄ³ÖÖÀàĞÍ¡£×¢ÒâÍ¬Ò»¸ö´ÊÌõ¿ÉÄÜÍ¬Ê±ÊôÓÚ¶àÖÖÀàĞÍ¡£
+	 * æ ‡å¿—è¿™ä¸ªè¯æ¡å±äºæŸç§ç±»å‹ã€‚æ³¨æ„åŒä¸€ä¸ªè¯æ¡å¯èƒ½åŒæ—¶å±äºå¤šç§ç±»å‹ã€‚
 	 * <p>
 	 * Set the flag to indicate that this word belongs to a specified type.
 	 * Note that one word can belong to many types in one time.
-	 * @param type	ÀàĞÍ<br>the type
+	 * @param type	ç±»å‹<br>the type
 	 */
 	public void setType(int type){
 		types |= type;
 	}
 
 	/**
-	 * ±êÖ¾Õâ¸ö´ÊÌõ²»ÊôÓÚÄ³ÖÖÀàĞÍ¡£
+	 * æ ‡å¿—è¿™ä¸ªè¯æ¡ä¸å±äºæŸç§ç±»å‹ã€‚
 	 * <p>
 	 * Clear the flag to indicate this word does not belong to a specified type.
-	 * @param type	ÀàĞÍ<br>the type
+	 * @param type	ç±»å‹<br>the type
 	 */
 	public void clearType(int type){
 		types &= ~type;
 	}
 	
 	/**
-	 * ±êÊ¾Õâ¸ö´ÊÌõ²»ÊôÓÚÈÎºÎÒ»ÖÖÀàĞÍ¡£
+	 * æ ‡ç¤ºè¿™ä¸ªè¯æ¡ä¸å±äºä»»ä½•ä¸€ç§ç±»å‹ã€‚
 	 * <p>
 	 * Clear all flags to indicate that this word does not belong to any type.
 	 */
@@ -129,14 +129,14 @@ public class Word {
 	}
 	
 	/**
-	 * @return ½øĞĞ¹Ø¼ü´ÊÆ¥ÅäÊ±Õâ¸ö´ÊËù¶ÔÓ¦µÄ¸½¼ş¶ÔÏó
+	 * @return è¿›è¡Œå…³é”®è¯åŒ¹é…æ—¶è¿™ä¸ªè¯æ‰€å¯¹åº”çš„é™„ä»¶å¯¹è±¡
 	 * 		<br>Attachment object associated with this word when performing keyword matching 
 	 */
 	public Object getKeywordAttachment() {
 		return keywordAttachment;
 	}
 	/**
-	 * @param keywordAttachment ½øĞĞ¹Ø¼ü´ÊÆ¥ÅäÊ±Õâ¸ö´ÊËù¶ÔÓ¦µÄ¸½¼ş¶ÔÏó
+	 * @param keywordAttachment è¿›è¡Œå…³é”®è¯åŒ¹é…æ—¶è¿™ä¸ªè¯æ‰€å¯¹åº”çš„é™„ä»¶å¯¹è±¡
 	 * 		<br>Attachment object associated with this word when performing keyword matching 
 	 */
 	public void setKeywordAttachment(Object keywordAttachment) {

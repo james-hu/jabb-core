@@ -24,11 +24,11 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * A template for processing data in batch from a queue.<br>
- * Ò»¸ö´Ó¶ÓÁĞÖĞÈ¡µÃÊı¾İ²¢ÅúÁ¿´¦ÀíµÄÄ£°å£¬Êı¾İÒ»ÅúÅú±»È¡×ß²¢´¦Àí¡£
+ * ä¸€ä¸ªä»é˜Ÿåˆ—ä¸­å–å¾—æ•°æ®å¹¶æ‰¹é‡å¤„ç†çš„æ¨¡æ¿ï¼Œæ•°æ®ä¸€æ‰¹æ‰¹è¢«å–èµ°å¹¶å¤„ç†ã€‚
  * <p>
  * One working thread will be created for each instance of this class when necessary.
  * <p>
- * ±¾ÀàµÄÃ¿¸öÊµÀıÏàÓ¦µÄ»áÓĞÒ»¸ö¹¤×÷Ïß³ÌÔÚĞèÒªµÄÊ±ºò±»´´½¨¡£
+ * æœ¬ç±»çš„æ¯ä¸ªå®ä¾‹ç›¸åº”çš„ä¼šæœ‰ä¸€ä¸ªå·¥ä½œçº¿ç¨‹åœ¨éœ€è¦çš„æ—¶å€™è¢«åˆ›å»ºã€‚
  * <p>
  * For each batch, data will be taken from the queue as much as possible.
  * Maximum size of a batch and maximum time for waiting for new data can be configured.
@@ -39,13 +39,13 @@ import java.util.concurrent.TimeUnit;
  * taken from the queue in a batch, only one instance of those duplicated will be 
  * processed.
  * <p>
- * Ã¿Åú»á¾¡¿ÉÄÜµØ¶àÈ¡Ò»Ğ©Êı¾İ£¬¿ÉÒÔÉè¶¨Ã¿Åú×î´óµÄÊı¾İÁ¿£¬ÒÔ¼°×î³¤µÄµÈ´ıÊ±¼ä¡£
- * Èç¹û´ïµ½ÁËÕâ¸öÁ¿£¬»òÕßÊÇ´ïµ½ÁËÕâ¸öÊ±¼ä£¬Ôòµ±Ç°ÅúµÄÊı¾İ¾Í´¦Àíµô£¬È»ºó¿ªÊ¼ÏÂÒ»Åú¡£
- * Ã¿ÅúÊı¾İÖĞÈç¹ûÓĞÖØ¸´µÄ£¬»á±»ÌŞ³ıµô£¬Ò²¾ÍÊÇËµ£¬ÔÚÒ»Åúµ±ÖĞ²»»áÖØ¸´´¦Àí¡£
+ * æ¯æ‰¹ä¼šå°½å¯èƒ½åœ°å¤šå–ä¸€äº›æ•°æ®ï¼Œå¯ä»¥è®¾å®šæ¯æ‰¹æœ€å¤§çš„æ•°æ®é‡ï¼Œä»¥åŠæœ€é•¿çš„ç­‰å¾…æ—¶é—´ã€‚
+ * å¦‚æœè¾¾åˆ°äº†è¿™ä¸ªé‡ï¼Œæˆ–è€…æ˜¯è¾¾åˆ°äº†è¿™ä¸ªæ—¶é—´ï¼Œåˆ™å½“å‰æ‰¹çš„æ•°æ®å°±å¤„ç†æ‰ï¼Œç„¶åå¼€å§‹ä¸‹ä¸€æ‰¹ã€‚
+ * æ¯æ‰¹æ•°æ®ä¸­å¦‚æœæœ‰é‡å¤çš„ï¼Œä¼šè¢«å‰”é™¤æ‰ï¼Œä¹Ÿå°±æ˜¯è¯´ï¼Œåœ¨ä¸€æ‰¹å½“ä¸­ä¸ä¼šé‡å¤å¤„ç†ã€‚
  * 
  * @author Zhengmao HU (James)
  *
- * @param <E>	Type of the data in the queue.<br>¶ÓÁĞÖĞÊı¾İµÄÀàĞÍ
+ * @param <E>	Type of the data in the queue.<br>é˜Ÿåˆ—ä¸­æ•°æ®çš„ç±»å‹
  */
 abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	protected int maxBatchSize;
@@ -54,21 +54,21 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 
 	/**
 	 * Constructor to create an instance.<br>
-	 * ´´½¨Ò»¸öÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ã€‚
 	 * 
 	 * @param name				Name of this instance, which determines the naming of working thread.<br>
-	 * 							±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 							æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param executorService	Thread pool that working thread will be get from.<br>
-	 * 							Ö¸¶¨ÈÃ±¾ÊµÀı´ÓÕâÀï»ñµÃ¹¤×÷Ïß³Ì¡£
+	 * 							æŒ‡å®šè®©æœ¬å®ä¾‹ä»è¿™é‡Œè·å¾—å·¥ä½œçº¿ç¨‹ã€‚
 	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
-	 * 							Ò»Åú×î´ó°üº¬¶àÉÙ¸öÊı¾İ£¬³¬¹ıÕâ¸öÊıÁ¿µÄ¾ÍÒªÁôµ½ÏÂÒ»Åú´¦Àí
+	 * 							ä¸€æ‰¹æœ€å¤§åŒ…å«å¤šå°‘ä¸ªæ•°æ®ï¼Œè¶…è¿‡è¿™ä¸ªæ•°é‡çš„å°±è¦ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†
 	 * @param batchWaitTimeout	Maximum time period allowed for waiting for new data from the queue 
 	 * 							before current batch is processed, 0 means no waiting.<br>
-	 * 							³¬¹ıÕâ¸öÊ±¶ÎÈç¹ûÃ»ÓĞ¸ü¶àÊı¾İÔòÁôµ½ÏÂÒ»Åú´¦Àí£¬0±íÊ¾²»µÈ´ı¡£
+	 * 							è¶…è¿‡è¿™ä¸ªæ—¶æ®µå¦‚æœæ²¡æœ‰æ›´å¤šæ•°æ®åˆ™ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†ï¼Œ0è¡¨ç¤ºä¸ç­‰å¾…ã€‚
 	 * @param timeoutUnit		Unit of the batchWaitTimeout parameter.<br>		
-	 * 							batchWaitTimeoutµÄµ¥Î»
+	 * 							batchWaitTimeoutçš„å•ä½
 	 */
 	public QueueBatchUniqueProcessor(BlockingQueue<E> workQueue, String name, ExecutorService executorService,
 			int batchSize, long batchWaitTimeout, TimeUnit timeoutUnit){
@@ -80,19 +80,19 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	
 	/**
 	 * Constructor to create an instance.<br>
-	 * ´´½¨Ò»¸öÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ã€‚
 	 * 
 	 * @param name				Name of this instance, which determines the naming of working thread.<br>
-	 * 							±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 							æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 * @param executorService	Thread pool that working thread will be get from.<br>
-	 * 							Ö¸¶¨ÈÃ±¾ÊµÀı´ÓÕâÀï»ñµÃ¹¤×÷Ïß³Ì¡£
+	 * 							æŒ‡å®šè®©æœ¬å®ä¾‹ä»è¿™é‡Œè·å¾—å·¥ä½œçº¿ç¨‹ã€‚
 	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
-	 * 							Ò»Åú×î´ó°üº¬¶àÉÙ¸öÊı¾İ£¬³¬¹ıÕâ¸öÊıÁ¿µÄ¾ÍÒªÁôµ½ÏÂÒ»Åú´¦Àí
+	 * 							ä¸€æ‰¹æœ€å¤§åŒ…å«å¤šå°‘ä¸ªæ•°æ®ï¼Œè¶…è¿‡è¿™ä¸ªæ•°é‡çš„å°±è¦ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†
 	 * @param batchWaitTimeout	Maximum time period allowed for waiting for new data from the queue 
 	 * 							before current batch is processed, 0 means no waiting.<br>
-	 * 							³¬¹ıÕâ¸öÊ±¶ÎÈç¹ûÃ»ÓĞ¸ü¶àÊı¾İÔòÁôµ½ÏÂÒ»Åú´¦Àí£¬0±íÊ¾²»µÈ´ı¡£
+	 * 							è¶…è¿‡è¿™ä¸ªæ—¶æ®µå¦‚æœæ²¡æœ‰æ›´å¤šæ•°æ®åˆ™ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†ï¼Œ0è¡¨ç¤ºä¸ç­‰å¾…ã€‚
 	 * @param timeoutUnit		Unit of the batchWaitTimeout parameter.<br>		
-	 * 							batchWaitTimeoutµÄµ¥Î»
+	 * 							batchWaitTimeoutçš„å•ä½
 	 */
 	public QueueBatchUniqueProcessor(String name, ExecutorService executorService,
 			int batchSize, long batchWaitTimeout, TimeUnit timeoutUnit){
@@ -101,19 +101,19 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	
 	/**
 	 * Constructor to create an instance using default thread pool.<br>
-	 * ´´½¨Ò»¸öÊ¹ÓÃÈ±Ê¡Ïß³Ì³ØµÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªä½¿ç”¨ç¼ºçœçº¿ç¨‹æ± çš„å®ä¾‹ã€‚
 	 * 
 	 * @param name				Name of this instance, which determines the naming of working thread.<br>
-	 * 							±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 							æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
-	 * 							Ò»Åú×î´ó°üº¬¶àÉÙ¸öÊı¾İ£¬³¬¹ıÕâ¸öÊıÁ¿µÄ¾ÍÒªÁôµ½ÏÂÒ»Åú´¦Àí
+	 * 							ä¸€æ‰¹æœ€å¤§åŒ…å«å¤šå°‘ä¸ªæ•°æ®ï¼Œè¶…è¿‡è¿™ä¸ªæ•°é‡çš„å°±è¦ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†
 	 * @param batchWaitTimeout	Maximum time period allowed for waiting for new data from the queue 
 	 * 							before current batch is processed, 0 means no waiting.<br>
-	 * 							³¬¹ıÕâ¸öÊ±¶ÎÈç¹ûÃ»ÓĞ¸ü¶àÊı¾İÔòÁôµ½ÏÂÒ»Åú´¦Àí£¬0±íÊ¾²»µÈ´ı¡£
+	 * 							è¶…è¿‡è¿™ä¸ªæ—¶æ®µå¦‚æœæ²¡æœ‰æ›´å¤šæ•°æ®åˆ™ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†ï¼Œ0è¡¨ç¤ºä¸ç­‰å¾…ã€‚
 	 * @param timeoutUnit		Unit of the batchWaitTimeout parameter.<br>		
-	 * 							batchWaitTimeoutµÄµ¥Î»
+	 * 							batchWaitTimeoutçš„å•ä½
 	 */
 	public QueueBatchUniqueProcessor(BlockingQueue<E> workQueue, String name,
 			int batchSize, long batchWaitTimeout, TimeUnit timeoutUnit){
@@ -122,17 +122,17 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	
 	/**
 	 * Constructor to create an instance using default thread pool.<br>
-	 * ´´½¨Ò»¸öÊ¹ÓÃÈ±Ê¡Ïß³Ì³ØµÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªä½¿ç”¨ç¼ºçœçº¿ç¨‹æ± çš„å®ä¾‹ã€‚
 	 * 
 	 * @param name				Name of this instance, which determines the naming of working thread.<br>
-	 * 							±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 							æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
-	 * 							Ò»Åú×î´ó°üº¬¶àÉÙ¸öÊı¾İ£¬³¬¹ıÕâ¸öÊıÁ¿µÄ¾ÍÒªÁôµ½ÏÂÒ»Åú´¦Àí
+	 * 							ä¸€æ‰¹æœ€å¤§åŒ…å«å¤šå°‘ä¸ªæ•°æ®ï¼Œè¶…è¿‡è¿™ä¸ªæ•°é‡çš„å°±è¦ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†
 	 * @param batchWaitTimeout	Maximum time period allowed for waiting for new data from the queue 
 	 * 							before current batch is processed, 0 means no waiting.<br>
-	 * 							³¬¹ıÕâ¸öÊ±¶ÎÈç¹ûÃ»ÓĞ¸ü¶àÊı¾İÔòÁôµ½ÏÂÒ»Åú´¦Àí£¬0±íÊ¾²»µÈ´ı¡£
+	 * 							è¶…è¿‡è¿™ä¸ªæ—¶æ®µå¦‚æœæ²¡æœ‰æ›´å¤šæ•°æ®åˆ™ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†ï¼Œ0è¡¨ç¤ºä¸ç­‰å¾…ã€‚
 	 * @param timeoutUnit		Unit of the batchWaitTimeout parameter.<br>		
-	 * 							batchWaitTimeoutµÄµ¥Î»
+	 * 							batchWaitTimeoutçš„å•ä½
 	 */
 	public QueueBatchUniqueProcessor(String name,
 			int batchSize, long batchWaitTimeout, TimeUnit timeoutUnit){
@@ -141,17 +141,17 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	
 	/**
 	 * Constructor to create an instance with default name: QueueConsumer.class.getSimpleName()<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬ÆäÃû³ÆÊ¹ÓÃÈ±Ê¡Ãû³Æ£ºQueueConsumer.class.getSimpleName()¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œå…¶åç§°ä½¿ç”¨ç¼ºçœåç§°ï¼šQueueConsumer.class.getSimpleName()ã€‚
 	 * 
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
-	 * 							Ò»Åú×î´ó°üº¬¶àÉÙ¸öÊı¾İ£¬³¬¹ıÕâ¸öÊıÁ¿µÄ¾ÍÒªÁôµ½ÏÂÒ»Åú´¦Àí
+	 * 							ä¸€æ‰¹æœ€å¤§åŒ…å«å¤šå°‘ä¸ªæ•°æ®ï¼Œè¶…è¿‡è¿™ä¸ªæ•°é‡çš„å°±è¦ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†
 	 * @param batchWaitTimeout	Maximum time period allowed for waiting for new data from the queue 
 	 * 							before current batch is processed, 0 means no waiting.<br>
-	 * 							³¬¹ıÕâ¸öÊ±¶ÎÈç¹ûÃ»ÓĞ¸ü¶àÊı¾İÔòÁôµ½ÏÂÒ»Åú´¦Àí£¬0±íÊ¾²»µÈ´ı¡£
+	 * 							è¶…è¿‡è¿™ä¸ªæ—¶æ®µå¦‚æœæ²¡æœ‰æ›´å¤šæ•°æ®åˆ™ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†ï¼Œ0è¡¨ç¤ºä¸ç­‰å¾…ã€‚
 	 * @param timeoutUnit		Unit of the batchWaitTimeout parameter.<br>		
-	 * 							batchWaitTimeoutµÄµ¥Î»
+	 * 							batchWaitTimeoutçš„å•ä½
 	 */
 	public QueueBatchUniqueProcessor(BlockingQueue<E> workQueue,
 			int batchSize, long batchWaitTimeout, TimeUnit timeoutUnit){
@@ -160,15 +160,15 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	
 	/**
 	 * Constructor to create an instance with default name: QueueConsumer.class.getSimpleName()<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬ÆäÃû³ÆÊ¹ÓÃÈ±Ê¡Ãû³Æ£ºQueueConsumer.class.getSimpleName()¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œå…¶åç§°ä½¿ç”¨ç¼ºçœåç§°ï¼šQueueConsumer.class.getSimpleName()ã€‚
 	 * 
 	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
-	 * 							Ò»Åú×î´ó°üº¬¶àÉÙ¸öÊı¾İ£¬³¬¹ıÕâ¸öÊıÁ¿µÄ¾ÍÒªÁôµ½ÏÂÒ»Åú´¦Àí
+	 * 							ä¸€æ‰¹æœ€å¤§åŒ…å«å¤šå°‘ä¸ªæ•°æ®ï¼Œè¶…è¿‡è¿™ä¸ªæ•°é‡çš„å°±è¦ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†
 	 * @param batchWaitTimeout	Maximum time period allowed for waiting for new data from the queue 
 	 * 							before current batch is processed, 0 means no waiting.<br>
-	 * 							³¬¹ıÕâ¸öÊ±¶ÎÈç¹ûÃ»ÓĞ¸ü¶àÊı¾İÔòÁôµ½ÏÂÒ»Åú´¦Àí£¬0±íÊ¾²»µÈ´ı¡£
+	 * 							è¶…è¿‡è¿™ä¸ªæ—¶æ®µå¦‚æœæ²¡æœ‰æ›´å¤šæ•°æ®åˆ™ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†ï¼Œ0è¡¨ç¤ºä¸ç­‰å¾…ã€‚
 	 * @param timeoutUnit		Unit of the batchWaitTimeout parameter.<br>		
-	 * 							batchWaitTimeoutµÄµ¥Î»
+	 * 							batchWaitTimeoutçš„å•ä½
 	 */
 	public QueueBatchUniqueProcessor(int batchSize, long batchWaitTimeout, TimeUnit timeoutUnit){
 		this(null, QueueConsumer.class.getSimpleName(), batchSize, batchWaitTimeout, timeoutUnit);
@@ -176,16 +176,16 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	
 	/**
 	 * Constructor to create an instance that do not wait for new data.<br>
-	 * ´´½¨Ò»¸ö²»µÈ´ıĞÂÊı¾İµ½À´µÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªä¸ç­‰å¾…æ–°æ•°æ®åˆ°æ¥çš„å®ä¾‹ã€‚
 	 * 
 	 * @param name				Name of this instance, which determines the naming of working thread.<br>
-	 * 							±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 							æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param executorService	Thread pool that working thread will be get from.<br>
-	 * 							Ö¸¶¨ÈÃ±¾ÊµÀı´ÓÕâÀï»ñµÃ¹¤×÷Ïß³Ì¡£
+	 * 							æŒ‡å®šè®©æœ¬å®ä¾‹ä»è¿™é‡Œè·å¾—å·¥ä½œçº¿ç¨‹ã€‚
 	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
-	 * 							Ò»Åú×î´ó°üº¬¶àÉÙ¸öÊı¾İ£¬³¬¹ıÕâ¸öÊıÁ¿µÄ¾ÍÒªÁôµ½ÏÂÒ»Åú´¦Àí
+	 * 							ä¸€æ‰¹æœ€å¤§åŒ…å«å¤šå°‘ä¸ªæ•°æ®ï¼Œè¶…è¿‡è¿™ä¸ªæ•°é‡çš„å°±è¦ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†
 	 */
 	public QueueBatchUniqueProcessor(BlockingQueue<E> workQueue, String name, ExecutorService executorService,
 			int batchSize){
@@ -194,14 +194,14 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	
 	/**
 	 * Constructor to create an instance that do not wait for new data.<br>
-	 * ´´½¨Ò»¸ö²»µÈ´ıĞÂÊı¾İµ½À´µÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªä¸ç­‰å¾…æ–°æ•°æ®åˆ°æ¥çš„å®ä¾‹ã€‚
 	 * 
 	 * @param name				Name of this instance, which determines the naming of working thread.<br>
-	 * 							±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 							æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 * @param executorService	Thread pool that working thread will be get from.<br>
-	 * 							Ö¸¶¨ÈÃ±¾ÊµÀı´ÓÕâÀï»ñµÃ¹¤×÷Ïß³Ì¡£
+	 * 							æŒ‡å®šè®©æœ¬å®ä¾‹ä»è¿™é‡Œè·å¾—å·¥ä½œçº¿ç¨‹ã€‚
 	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
-	 * 							Ò»Åú×î´ó°üº¬¶àÉÙ¸öÊı¾İ£¬³¬¹ıÕâ¸öÊıÁ¿µÄ¾ÍÒªÁôµ½ÏÂÒ»Åú´¦Àí
+	 * 							ä¸€æ‰¹æœ€å¤§åŒ…å«å¤šå°‘ä¸ªæ•°æ®ï¼Œè¶…è¿‡è¿™ä¸ªæ•°é‡çš„å°±è¦ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†
 	 */
 	public QueueBatchUniqueProcessor(String name, ExecutorService executorService, int batchSize){
 		this(null, name, executorService, batchSize, 0, null);
@@ -209,14 +209,14 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	
 	/**
 	 * Constructor to create an instance that uses default thread pool and do not wait for new data.<br>
-	 * ´´½¨Ò»¸öÊ¹ÓÃÈ±Ê¡Ïß³Ì³ØÇÒ²»µÈ´ıĞÂÊı¾İµ½À´µÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªä½¿ç”¨ç¼ºçœçº¿ç¨‹æ± ä¸”ä¸ç­‰å¾…æ–°æ•°æ®åˆ°æ¥çš„å®ä¾‹ã€‚
 	 * 
 	 * @param name				Name of this instance, which determines the naming of working thread.<br>
-	 * 							±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 							æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
-	 * 							Ò»Åú×î´ó°üº¬¶àÉÙ¸öÊı¾İ£¬³¬¹ıÕâ¸öÊıÁ¿µÄ¾ÍÒªÁôµ½ÏÂÒ»Åú´¦Àí
+	 * 							ä¸€æ‰¹æœ€å¤§åŒ…å«å¤šå°‘ä¸ªæ•°æ®ï¼Œè¶…è¿‡è¿™ä¸ªæ•°é‡çš„å°±è¦ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†
 	 */
 	public QueueBatchUniqueProcessor(BlockingQueue<E> workQueue, String name,
 			int batchSize){
@@ -225,12 +225,12 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 
 	/**
 	 * Constructor to create an instance that uses default thread pool and do not wait for new data.<br>
-	 * ´´½¨Ò»¸öÊ¹ÓÃÈ±Ê¡Ïß³Ì³ØÇÒ²»µÈ´ıĞÂÊı¾İµ½À´µÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªä½¿ç”¨ç¼ºçœçº¿ç¨‹æ± ä¸”ä¸ç­‰å¾…æ–°æ•°æ®åˆ°æ¥çš„å®ä¾‹ã€‚
 	 * 
 	 * @param name				Name of this instance, which determines the naming of working thread.<br>
-	 * 							±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 							æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
-	 * 							Ò»Åú×î´ó°üº¬¶àÉÙ¸öÊı¾İ£¬³¬¹ıÕâ¸öÊıÁ¿µÄ¾ÍÒªÁôµ½ÏÂÒ»Åú´¦Àí
+	 * 							ä¸€æ‰¹æœ€å¤§åŒ…å«å¤šå°‘ä¸ªæ•°æ®ï¼Œè¶…è¿‡è¿™ä¸ªæ•°é‡çš„å°±è¦ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†
 	 */
 	public QueueBatchUniqueProcessor(String name, int batchSize){
 		this(null, name, defaultThreadPool, batchSize, 0, null);
@@ -239,12 +239,12 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	/**
 	 * Constructor to create an instance that uses default name - QueueConsumer.class.getSimpleName(), 
 	 * default thread pool and do not wait for new data.<br>
-	 * ´´½¨Ò»¸öÊ¹ÓÃÈ±Ê¡Ãû³Æ£¨QueueConsumer.class.getSimpleName()£©¡¢È±Ê¡Ïß³Ì³ØÇÒ²»µÈ´ıĞÂÊı¾İµ½À´µÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªä½¿ç”¨ç¼ºçœåç§°ï¼ˆQueueConsumer.class.getSimpleName()ï¼‰ã€ç¼ºçœçº¿ç¨‹æ± ä¸”ä¸ç­‰å¾…æ–°æ•°æ®åˆ°æ¥çš„å®ä¾‹ã€‚
 	 * 
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
-	 * 							Ò»Åú×î´ó°üº¬¶àÉÙ¸öÊı¾İ£¬³¬¹ıÕâ¸öÊıÁ¿µÄ¾ÍÒªÁôµ½ÏÂÒ»Åú´¦Àí
+	 * 							ä¸€æ‰¹æœ€å¤§åŒ…å«å¤šå°‘ä¸ªæ•°æ®ï¼Œè¶…è¿‡è¿™ä¸ªæ•°é‡çš„å°±è¦ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†
 	 */
 	public QueueBatchUniqueProcessor(BlockingQueue<E> workQueue,
 			int batchSize){
@@ -254,10 +254,10 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	/**
 	 * Constructor to create an instance that uses default name - QueueConsumer.class.getSimpleName(), 
 	 * default thread pool and do not wait for new data.<br>
-	 * ´´½¨Ò»¸öÊ¹ÓÃÈ±Ê¡Ãû³Æ£¨QueueConsumer.class.getSimpleName()£©¡¢È±Ê¡Ïß³Ì³ØÇÒ²»µÈ´ıĞÂÊı¾İµ½À´µÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªä½¿ç”¨ç¼ºçœåç§°ï¼ˆQueueConsumer.class.getSimpleName()ï¼‰ã€ç¼ºçœçº¿ç¨‹æ± ä¸”ä¸ç­‰å¾…æ–°æ•°æ®åˆ°æ¥çš„å®ä¾‹ã€‚
 	 * 
 	 * @param batchSize			Maximum size allowed for a batch, remaining data will be put into later batches.<br>
-	 * 							Ò»Åú×î´ó°üº¬¶àÉÙ¸öÊı¾İ£¬³¬¹ıÕâ¸öÊıÁ¿µÄ¾ÍÒªÁôµ½ÏÂÒ»Åú´¦Àí
+	 * 							ä¸€æ‰¹æœ€å¤§åŒ…å«å¤šå°‘ä¸ªæ•°æ®ï¼Œè¶…è¿‡è¿™ä¸ªæ•°é‡çš„å°±è¦ç•™åˆ°ä¸‹ä¸€æ‰¹å¤„ç†
 	 */
 	public QueueBatchUniqueProcessor(int batchSize){
 		this(null, QueueConsumer.class.getSimpleName(), batchSize, 0, null);
@@ -266,7 +266,7 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	/**
 	 * This method is overridden over parent class so that a batch of data is taken 
 	 * from the queue and {@link #process(Set)} is invoked.<br>
-	 * Õâ¸ö·½·¨±»ÖØÔØÁË£¬´Ó¶ø¶ÓÁĞÖĞµÄÒ»ÅúÊı¾İ»á±»È¡³ö²¢µ÷ÓÃ{@link #process(Set)}·½·¨¡£
+	 * è¿™ä¸ªæ–¹æ³•è¢«é‡è½½äº†ï¼Œä»è€Œé˜Ÿåˆ—ä¸­çš„ä¸€æ‰¹æ•°æ®ä¼šè¢«å–å‡ºå¹¶è°ƒç”¨{@link #process(Set)}æ–¹æ³•ã€‚
 	 */
 	@Override
 	protected void consume() {
@@ -302,10 +302,10 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 
 	/**
 	 * Process one piece of data - this method should be overridden in subclass.<br>
-	 * ´¦ÀíÒ»·İÊı¾İ¡ª¡ªÕâ¸ö·½·¨Ó¦¸ÃÔÚ×ÓÀàÖĞ±»ÖØÔØ¡£
+	 * å¤„ç†ä¸€ä»½æ•°æ®â€”â€”è¿™ä¸ªæ–¹æ³•åº”è¯¥åœ¨å­ç±»ä¸­è¢«é‡è½½ã€‚
 	 * <p>
 	 * This method may be interrupted while running, so please note the following:<br>
-	 * Õâ¸ö·½·¨ÔÚÔËĞĞ¹ı³ÌÖĞ¿ÉÄÜ»áÓöµ½Ïß³ÌµÄinterrupt£¬ËùÒÔÈç¹ûÓĞÒÔÏÂÇé¿öÒª×¢ÒâÕıÈ·´¦Àí£º
+	 * è¿™ä¸ªæ–¹æ³•åœ¨è¿è¡Œè¿‡ç¨‹ä¸­å¯èƒ½ä¼šé‡åˆ°çº¿ç¨‹çš„interruptï¼Œæ‰€ä»¥å¦‚æœæœ‰ä»¥ä¸‹æƒ…å†µè¦æ³¨æ„æ­£ç¡®å¤„ç†ï¼š
 	 * <p>
 	 *  If this thread is blocked in an invocation of the wait(), wait(long), or wait(long, int) 
 	 *  methods of the Object  class, or of the join(), join(long), join(long, int), sleep(long), 
@@ -321,7 +321,7 @@ abstract public class QueueBatchUniqueProcessor<E> extends QueueConsumer<E> {
 	 *  just as if the selector's wakeup method were invoked. 
 	 *  
 	 * @param batch	The data taken from queue, which needs to be processed<br>
-	 * 				´Ó¶ÓÁĞÖĞÈ¡³öµÄ´ı´¦ÀíÊı¾İ¡£
+	 * 				ä»é˜Ÿåˆ—ä¸­å–å‡ºçš„å¾…å¤„ç†æ•°æ®ã€‚
 	 */
 	abstract public void process(Set<E> batch);
 

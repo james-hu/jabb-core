@@ -29,13 +29,13 @@ import org.jboss.netty.channel.ChannelUpstreamHandler;
 /**
  * This utility provides convenient methods to work on Camel Registry, 
  * however CombinedRegistry is required in most of the cases.<br> 
- * Ìá¹©·½±ãµØ¶ÔCamelµÄRegistry½øĞĞ²Ù×÷µÄ·½·¨£¬²»¹ı´ó²¿·ÖµÄÊ±ºòÖ»ÓĞCombinedRegistry²Å±»Ö§³Ö¡£
+ * æä¾›æ–¹ä¾¿åœ°å¯¹Camelçš„Registryè¿›è¡Œæ“ä½œçš„æ–¹æ³•ï¼Œä¸è¿‡å¤§éƒ¨åˆ†çš„æ—¶å€™åªæœ‰CombinedRegistryæ‰è¢«æ”¯æŒã€‚
  * <p>
  * For example, it provides methods to add Codec(s) required by Netty to Registry.<br>
- * ±ÈÈçËµ£¬ËüÌá¹©ÏòRegistryÖĞÌí¼ÓNettyËùĞèµÄCodecµÄ·½·¨¡£
+ * æ¯”å¦‚è¯´ï¼Œå®ƒæä¾›å‘Registryä¸­æ·»åŠ Nettyæ‰€éœ€çš„Codecçš„æ–¹æ³•ã€‚
  * <p>
  * But you should be aware that it does not ensure multi-threads safe on the manipulation of Registry.<br>
- * µ«ÊÇ×¢Òâ£¬Ëü²»±£Ö¤¶ÔRegistryµÄ²Ù×÷ÊÇ¶àÏß³Ì°²È«µÄ¡£
+ * ä½†æ˜¯æ³¨æ„ï¼Œå®ƒä¸ä¿è¯å¯¹Registryçš„æ“ä½œæ˜¯å¤šçº¿ç¨‹å®‰å…¨çš„ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -46,10 +46,10 @@ public class RegistryUtility {
 	
 	/**
 	 * Gets CombinedRegistry from CamelContext.<br>
-	 * ´ÓCamelContextÖĞµÃµ½CombinedRegistryÀàĞÍµÄRegistry¡£
+	 * ä»CamelContextä¸­å¾—åˆ°CombinedRegistryç±»å‹çš„Registryã€‚
 	 * 
 	 * @param camelContext	The CamelContext must be based on CombinedRegistry, otherwise ClassCastException will be thrown.<br>
-	 * 						Õâ¸öcontext±ØĞëÊÇ²ÉÓÃCombinedRegistryÀàĞÍµÄRegistryµÄ£¬·ñÔò»áÅ×³ö¸ñÊ½×ª»»Òì³£¡£
+	 * 						è¿™ä¸ªcontextå¿…é¡»æ˜¯é‡‡ç”¨CombinedRegistryç±»å‹çš„Registryçš„ï¼Œå¦åˆ™ä¼šæŠ›å‡ºæ ¼å¼è½¬æ¢å¼‚å¸¸ã€‚
 	 * @return	The Registry that is of CombinedRegistry type.
 	 */
 	static public CombinedRegistry getCombinedRegistry(CamelContext camelContext){
@@ -65,13 +65,13 @@ public class RegistryUtility {
 	
 	/**
 	 * Adds an Netty encoder to Registry.<br>
-	 * ÏòRegistryÖĞÔö¼ÓÒ»¸ö¸øNettyÓÃµÄencoder¡£
+	 * å‘Registryä¸­å¢åŠ ä¸€ä¸ªç»™Nettyç”¨çš„encoderã€‚
 	 * @param context	The CamelContext must be based on CombinedRegistry, otherwise ClassCastException will be thrown.<br>
-	 * 					Õâ¸öcontext±ØĞëÊÇ²ÉÓÃCombinedRegistryÀàĞÍµÄRegistryµÄ£¬·ñÔò»áÅ×³ö¸ñÊ½×ª»»Òì³£¡£
+	 * 					è¿™ä¸ªcontextå¿…é¡»æ˜¯é‡‡ç”¨CombinedRegistryç±»å‹çš„Registryçš„ï¼Œå¦åˆ™ä¼šæŠ›å‡ºæ ¼å¼è½¬æ¢å¼‚å¸¸ã€‚
 	 * @param name		Name of the encoder in Registry.<br>
-	 * 					encoderÔÚRegistryÖĞµÄÃû×Ö¡£
+	 * 					encoderåœ¨Registryä¸­çš„åå­—ã€‚
 	 * @param encoder	The encoder that will be used by Netty.<br>
-	 * 					½«±»NettyÓÃµ½µÄencoder¡£
+	 * 					å°†è¢«Nettyç”¨åˆ°çš„encoderã€‚
 	 */
 	@SuppressWarnings("unchecked")
 	static public void addEncoder(CamelContext context, String name, ChannelDownstreamHandler encoder){
@@ -95,13 +95,13 @@ public class RegistryUtility {
 
 	/**
 	 * Adds an Netty decoder to Registry.<br>
-	 * ÏòRegistryÖĞÔö¼ÓÒ»¸ö¸øNettyÓÃµÄdecoder¡£
+	 * å‘Registryä¸­å¢åŠ ä¸€ä¸ªç»™Nettyç”¨çš„decoderã€‚
 	 * @param context	The CamelContext must be based on CombinedRegistry, otherwise ClassCastException will be thrown.<br>
-	 * 					Õâ¸öcontext±ØĞëÊÇ²ÉÓÃCombinedRegistryÀàĞÍµÄRegistryµÄ£¬·ñÔò»áÅ×³ö¸ñÊ½×ª»»Òì³£¡£
+	 * 					è¿™ä¸ªcontextå¿…é¡»æ˜¯é‡‡ç”¨CombinedRegistryç±»å‹çš„Registryçš„ï¼Œå¦åˆ™ä¼šæŠ›å‡ºæ ¼å¼è½¬æ¢å¼‚å¸¸ã€‚
 	 * @param name		Name of the decoder in Registry.<br>
-	 * 					decoderÔÚRegistryÖĞµÄÃû×Ö¡£
+	 * 					decoderåœ¨Registryä¸­çš„åå­—ã€‚
 	 * @param decoder	The decoder that will be used by Netty.<br>
-	 * 					½«±»NettyÓÃµ½µÄdecoder¡£
+	 * 					å°†è¢«Nettyç”¨åˆ°çš„decoderã€‚
 	 */
 	@SuppressWarnings("unchecked")
 	static public void addDecoder(CamelContext context, String name, ChannelUpstreamHandler decoder){
@@ -125,17 +125,17 @@ public class RegistryUtility {
 	
 	/**
 	 * Adds codec to Registry only, it will not handle the manipulating of encoders or decoders list in Registry.<br>
-	 * ½ö½ö°ÑcodecÖ±½Ó¼ÓÈëµ½RegistryÖĞ£¬¶ø²»´¦Àí¼ÓÈëµ½RegistryÀïµÄencoders»òdecodersÁĞ±íÖĞ¡£
+	 * ä»…ä»…æŠŠcodecç›´æ¥åŠ å…¥åˆ°Registryä¸­ï¼Œè€Œä¸å¤„ç†åŠ å…¥åˆ°Registryé‡Œçš„encodersæˆ–decodersåˆ—è¡¨ä¸­ã€‚
 	 * <p>
 	 * If a codec with the same name already exists in the Registry, IllegalArgumentException will be thrown.<br>
-	 * Èç¹ûRegistryÖĞÔ­ÏÈÒÑ¾­ÓĞÍ¬ÃûµÄ±ğµÄcodec£¬ÔòÅ×³öIllegalArgumentException¡£
+	 * å¦‚æœRegistryä¸­åŸå…ˆå·²ç»æœ‰åŒåçš„åˆ«çš„codecï¼Œåˆ™æŠ›å‡ºIllegalArgumentExceptionã€‚
 	 * 
 	 * @param registry	The CombinedRegistry that the codec will be added into.<br>
-	 * 					codec½«Òª±»¼ÓÈëµÄCombinedRegistry¡£
+	 * 					codecå°†è¦è¢«åŠ å…¥çš„CombinedRegistryã€‚
 	 * @param name		Name of the codec in Registry.<br>
-	 * 					codecÔÚRegistryÖĞµÄÃû×Ö¡£
+	 * 					codecåœ¨Registryä¸­çš„åå­—ã€‚
 	 * @param codec		The codec that will be used by Netty.<br>
-	 * 					½«±»NettyÊ¹ÓÃµÄcodec¡£
+	 * 					å°†è¢«Nettyä½¿ç”¨çš„codecã€‚
 	 */
 	static protected void addCodecOnly(CombinedRegistry registry, String name, ChannelHandler codec){
 		Object oldValue = registry.lookup(name);

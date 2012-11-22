@@ -18,7 +18,7 @@ package net.sf.jabb.util.bean;
 
 /**
  * Generic bean to contain result/response information.<br>
- * Í¨ÓÃµÄ´æ·Å·µ»Ø½á¹ûµÄBean¡£
+ * é€šç”¨çš„å­˜æ”¾è¿”å›ç»“æœçš„Beanã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -26,23 +26,23 @@ package net.sf.jabb.util.bean;
 public class GenericResult {
 	/**
 	 * Whether the request was processed successfully.<br>
-	 * ÊÇ·ñ³É¹¦´¦ÀíÁËÇëÇó¡£
+	 * æ˜¯å¦æˆåŠŸå¤„ç†äº†è¯·æ±‚ã€‚
 	 */
 	protected boolean successful;
 	/**
 	 * Detail of the error if there is any.<br>
-	 * ³ö´íÏûÏ¢£¨½öÕë¶Ô²Ù×÷²»³É¹¦µÄÇé¿ö£©
+	 * å‡ºé”™æ¶ˆæ¯ï¼ˆä»…é’ˆå¯¹æ“ä½œä¸æˆåŠŸçš„æƒ…å†µï¼‰
 	 */
 	protected String errorMessage;
 	/**
 	 * Any further information.<be>
-	 * ¸ü½øÒ»²½µÄĞÅÏ¢¡£
+	 * æ›´è¿›ä¸€æ­¥çš„ä¿¡æ¯ã€‚
 	 */
 	protected Object attachment;
 	
 	/**
 	 * Constructor.<br>
-	 * ´´½¨Ò»¸ö¶ÔÏóÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªå¯¹è±¡å®ä¾‹ã€‚
 	 * @param successful	Successful or not
 	 * @param errorMsg		Error message
 	 * @param att			Attachement

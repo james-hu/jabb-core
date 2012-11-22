@@ -34,14 +34,14 @@ import dk.brics.automaton.RunAutomaton;
 /**
  * To test which regular expression among several others can be matched by a given string
  * in the manner of "start with".<br>
- * ÓÃÀ´¼ì²éÄ³Ò»¸ö×Ö·û´®ÄÜÍ¬Ò»×éÕıÔò±í´ïÊ½ÖĞµÄÄÄÒ»¸ö·ûºÏ¡°ÒÔ´Ë¿ªÍ·¡±ĞÎÊ½µÄÆ¥Åä¡£
+ * ç”¨æ¥æ£€æŸ¥æŸä¸€ä¸ªå­—ç¬¦ä¸²èƒ½åŒä¸€ç»„æ­£åˆ™è¡¨è¾¾å¼ä¸­çš„å“ªä¸€ä¸ªç¬¦åˆâ€œä»¥æ­¤å¼€å¤´â€å½¢å¼çš„åŒ¹é…ã€‚
  * <p>
  * If one of the regular expression can be matched from 
  * the first character of the string, they are considered to be matched.
  * <br>For example:
  * <p>
- * Æ¥Åä´Ó×Ö·û´®µÄµÚÒ»¸ö×Ö·û¿ªÊ¼£¬Ö»Òª¿ªÍ·Ò»¶ÎÍêÕûÆ¥ÅäÄ³¸öÕıÔò±í´ïÊ½£¬¾ÍËãÊÇÆ¥Åä³É¹¦¡£
- * <br>±ÈÈç£º
+ * åŒ¹é…ä»å­—ç¬¦ä¸²çš„ç¬¬ä¸€ä¸ªå­—ç¬¦å¼€å§‹ï¼Œåªè¦å¼€å¤´ä¸€æ®µå®Œæ•´åŒ¹é…æŸä¸ªæ­£åˆ™è¡¨è¾¾å¼ï¼Œå°±ç®—æ˜¯åŒ¹é…æˆåŠŸã€‚
+ * <br>æ¯”å¦‚ï¼š
  * <br>
  * <br>I like eating Chinese food --- matched by ---> I .*
  * <br>I like eating Chinese food --- matched by ---> I like eating.*
@@ -57,15 +57,15 @@ import dk.brics.automaton.RunAutomaton;
  * Normally you don't need to use this class directly, using of its subclasses like
  * {@link StringStartWithMatcher} or {@link UrlStartWithMatcher} is preferred.
  * <p>
- * Ò»°ãÀ´Ëµ²»ĞèÒªÖ±½ÓÓÃÕâ¸öÀà£¬Ó¦¸ÃÊ¹ÓÃËüµÄ×ÓÀà£¬±ÈÈç{@link StringStartWithMatcher}»ò
- * {@link UrlStartWithMatcher}¡£
+ * ä¸€èˆ¬æ¥è¯´ä¸éœ€è¦ç›´æ¥ç”¨è¿™ä¸ªç±»ï¼Œåº”è¯¥ä½¿ç”¨å®ƒçš„å­ç±»ï¼Œæ¯”å¦‚{@link StringStartWithMatcher}æˆ–
+ * {@link UrlStartWithMatcher}ã€‚
  * 
  * <p>
  * It's underlying implementation is based on 
  * <a href="http://www.brics.dk/automaton/">dk.brics.automaton.RunAutomaton</a>.
  * <p>
- * µ×²ãÊµÏÖ»ùÓÚ
- * <a href="http://www.brics.dk/automaton/">dk.brics.automaton.RunAutomaton</a>¡£
+ * åº•å±‚å®ç°åŸºäº
+ * <a href="http://www.brics.dk/automaton/">dk.brics.automaton.RunAutomaton</a>ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -73,20 +73,20 @@ import dk.brics.automaton.RunAutomaton;
 public class StartWithMatcher implements Serializable{
 	private static final long serialVersionUID = -6180680492778552560L;
 	/**
-	 * ÊµÏÖÆ¥Åä×´Ì¬»úµÄÒıÇæ
+	 * å®ç°åŒ¹é…çŠ¶æ€æœºçš„å¼•æ“
 	 */
 	protected RunAutomaton runAutomaton;
 	/**
-	 * runAutomationµÄÃ¿Ò»¸östate¶ÔÓ¦Ò»¸öattachment¶ÔÏó¡£
+	 * runAutomationçš„æ¯ä¸€ä¸ªstateå¯¹åº”ä¸€ä¸ªattachmentå¯¹è±¡ã€‚
 	 */
 	protected Object[] attachments;
 	
 	/**
 	 * Create a copy, the copy will have exactly the same matching 
 	 * definitions as the original copy.<br>
-	 * ´´½¨Ò»¸ö¸±±¾£¬Õâ¸ö¸±±¾ÓëÔ­ÏÈµÄ¶ÔÏó¾ßÓĞÍêÈ«ÏàÍ¬Æ¥Åä·½Ê½¡£
+	 * åˆ›å»ºä¸€ä¸ªå‰¯æœ¬ï¼Œè¿™ä¸ªå‰¯æœ¬ä¸åŸå…ˆçš„å¯¹è±¡å…·æœ‰å®Œå…¨ç›¸åŒåŒ¹é…æ–¹å¼ã€‚
 	 * 
-	 * @param toBeCopied	The original copy.<br>Ô­±¾¡£
+	 * @param toBeCopied	The original copy.<br>åŸæœ¬ã€‚
 	 */
 	public StartWithMatcher(StartWithMatcher toBeCopied){
 		this.attachments = toBeCopied.attachments;
@@ -100,10 +100,10 @@ public class StartWithMatcher implements Serializable{
 	/**
 	 * Create an instance according to matching definitions, when creating internal
 	 * data structure, choose to consume more memory for better matching speed.<br>
-	 * ¸ù¾İÆ¥Åä·½Ê½¶¨Òå´´½¨Ò»¸öĞÂµÄ¶ÔÏóÊµÀı£»
-	 * ÔÚ´´½¨ÄÚ²¿Êı¾İ½á¹¹µÄÊ±ºò£¬Ñ¡ÔñÕ¼ÓÃ¸ü¶àÄÚ´æ£¬¶ø»»È¡ËÙ¶ÈÉÏµÄÌáÉı¡£
+	 * æ ¹æ®åŒ¹é…æ–¹å¼å®šä¹‰åˆ›å»ºä¸€ä¸ªæ–°çš„å¯¹è±¡å®ä¾‹ï¼›
+	 * åœ¨åˆ›å»ºå†…éƒ¨æ•°æ®ç»“æ„çš„æ—¶å€™ï¼Œé€‰æ‹©å ç”¨æ›´å¤šå†…å­˜ï¼Œè€Œæ¢å–é€Ÿåº¦ä¸Šçš„æå‡ã€‚
 	 * 
-	 * @param definitionList  Matching definitions<br>Ò»×éÆ¥Åä·½Ê½¶¨Òå¡£
+	 * @param definitionList  Matching definitions<br>ä¸€ç»„åŒ¹é…æ–¹å¼å®šä¹‰ã€‚
 	 */
 	public StartWithMatcher(Collection<MatchingDefinition> definitionList){
 		this.initialize(definitionList, true);
@@ -111,11 +111,11 @@ public class StartWithMatcher implements Serializable{
 
 	/**
 	 * Create an instance according to matching definitions.<br>
-	 * ¸ù¾İÆ¥Åä·½Ê½¶¨Òå´´½¨Ò»¸öĞÂµÄ¶ÔÏóÊµÀı¡£
+	 * æ ¹æ®åŒ¹é…æ–¹å¼å®šä¹‰åˆ›å»ºä¸€ä¸ªæ–°çš„å¯¹è±¡å®ä¾‹ã€‚
 	 * 
-	 * @param definitionList 	Matching definitions<br>Ò»×éÆ¥Åä·½Ê½¶¨Òå¡£
+	 * @param definitionList 	Matching definitions<br>ä¸€ç»„åŒ¹é…æ–¹å¼å®šä¹‰ã€‚
 	 * @param moreSpaceForSpeed  Whether or not to consume more memory for better matching speed.<br>
-	 * 							ÊÇ·ñÕ¼ÓÃ¸ü¶àÄÚ´æ£¬¶ø»»È¡ËÙ¶ÈÉÏµÄÌáÉı¡£
+	 * 							æ˜¯å¦å ç”¨æ›´å¤šå†…å­˜ï¼Œè€Œæ¢å–é€Ÿåº¦ä¸Šçš„æå‡ã€‚
 	 */
 	public StartWithMatcher(Collection<MatchingDefinition> definitionList, boolean moreSpaceForSpeed){
 		this.initialize(definitionList, moreSpaceForSpeed);
@@ -124,14 +124,14 @@ public class StartWithMatcher implements Serializable{
 	
 	/**
 	 * Initialize the state machine (dk.brics.automaton.RunAutomaton).<br>
-	 * ³õÊ¼»¯×´Ì¬»ú£¨dk.brics.automaton.RunAutomaton£©¡£
+	 * åˆå§‹åŒ–çŠ¶æ€æœºï¼ˆdk.brics.automaton.RunAutomatonï¼‰ã€‚
 	 * 
-	 * @param definitionList 	Matching definitions<br>Ò»×éÆ¥Åä·½Ê½¶¨Òå¡£
+	 * @param definitionList 	Matching definitions<br>ä¸€ç»„åŒ¹é…æ–¹å¼å®šä¹‰ã€‚
 	 * @param moreSpaceForSpeed  Whether or not to consume more memory for better matching speed.<br>
-	 * 							ÊÇ·ñÕ¼ÓÃ¸ü¶àÄÚ´æ£¬¶ø»»È¡ËÙ¶ÈÉÏµÄÌáÉı¡£
+	 * 							æ˜¯å¦å ç”¨æ›´å¤šå†…å­˜ï¼Œè€Œæ¢å–é€Ÿåº¦ä¸Šçš„æå‡ã€‚
 	 */
 	protected void initialize(Collection<MatchingDefinition> definitionList, boolean moreSpaceForSpeed){
-		// °ÑËùÓĞÕıÔò±í´ïÊ½unionÆğÀ´
+		// æŠŠæ‰€æœ‰æ­£åˆ™è¡¨è¾¾å¼unionèµ·æ¥
 		List<Automaton> list = new ArrayList<Automaton>(definitionList.size());
 		for (MatchingDefinition c: definitionList) {
 			Automaton a = new RegExp(c.getRegularExpression()).toAutomaton();
@@ -140,7 +140,7 @@ public class StartWithMatcher implements Serializable{
 		Automaton a = BasicOperations.union(list);
 		runAutomaton = new RunAutomaton(a, moreSpaceForSpeed);
 		
-		// ÀûÓÃ¾«È·Æ¥ÅäÊ¾·¶×Ö·û´®£¬ÕÒµ½¶ÔÓ¦µÄstate£¬²¢½«¸½¼ş¶ÔÏóÓëÖ®¹ØÁª
+		// åˆ©ç”¨ç²¾ç¡®åŒ¹é…ç¤ºèŒƒå­—ç¬¦ä¸²ï¼Œæ‰¾åˆ°å¯¹åº”çš„stateï¼Œå¹¶å°†é™„ä»¶å¯¹è±¡ä¸ä¹‹å…³è”
 		attachments = new Object[runAutomaton.getSize()];
 		for (MatchingDefinition c: definitionList) {
 			String exampleString = c.getExactMatchExample();
@@ -156,7 +156,7 @@ public class StartWithMatcher implements Serializable{
 		}
 		
 		/*
-		// ¼ì²éÊÇ·ñÃ¿¸ö×´Ì¬¶¼ÓĞ¸²¸Ç
+		// æ£€æŸ¥æ˜¯å¦æ¯ä¸ªçŠ¶æ€éƒ½æœ‰è¦†ç›–
 		for (int i = 0; i < runAutomaton.getSize(); i ++){
 			if (runAutomaton.isAccept(i) && attachments[i] != null){
 				// it is okay
@@ -174,30 +174,30 @@ public class StartWithMatcher implements Serializable{
 	
 	/**
 	 * Set attachment object for each state, by testing which state the example string can run into.<br>
-	 * ¸ù¾İÊ¾·¶×Ö·û´®£¬ÉèÖÃ¸÷×´Ì¬Ëù¶ÔÓ¦µÄ¸½¼ş¶ÔÏó¡£
+	 * æ ¹æ®ç¤ºèŒƒå­—ç¬¦ä¸²ï¼Œè®¾ç½®å„çŠ¶æ€æ‰€å¯¹åº”çš„é™„ä»¶å¯¹è±¡ã€‚
 	 * 
-	 * @param example	Example string.<br>Ê¾·¶×Ö·û´®
-	 * @param att		Attachment object.<br>¸½¼ş¶ÔÏó
+	 * @param example	Example string.<br>ç¤ºèŒƒå­—ç¬¦ä¸²
+	 * @param att		Attachment object.<br>é™„ä»¶å¯¹è±¡
 	 * @param exp		Regular expression which will only be used within the exception message.<br>
-	 * 					ÕıÔò±í´ïÊ½×Ö·û´®£¨½ö±»ÓÃÔÚÅ×³öµÄÒì³£ÏûÏ¢ÖĞ£©
+	 * 					æ­£åˆ™è¡¨è¾¾å¼å­—ç¬¦ä¸²ï¼ˆä»…è¢«ç”¨åœ¨æŠ›å‡ºçš„å¼‚å¸¸æ¶ˆæ¯ä¸­ï¼‰
 	 */
 	protected void setAttachmentByExample(String example, Object att, String exp){
 		int p = getLastAcceptedState(example, 0);
 		if (p != -1){
 			this.attachments[p] = att;
 		}else{
-			// ËµÃ÷¾«È·Æ¥ÅäÊ¾·¶×Ö·û´®ÓĞ´íÎó
+			// è¯´æ˜ç²¾ç¡®åŒ¹é…ç¤ºèŒƒå­—ç¬¦ä¸²æœ‰é”™è¯¯
 			throw new IllegalArgumentException("\"" + example + "\" can not match \"" + exp + "\"");
 		}
 	}
 
 	/**
 	 * By utilizing the state machine (dk.brics.automaton.RunAutomaton), get the last accepted matching state.<br>
-	 * ÀûÓÃ×´Ì¬»ú£¨dk.brics.automaton.RunAutomaton£©£¬È¡µÃ×îºóÒ»¸öÆ¥Åäµ½µÄ×´Ì¬¡£
+	 * åˆ©ç”¨çŠ¶æ€æœºï¼ˆdk.brics.automaton.RunAutomatonï¼‰ï¼Œå–å¾—æœ€åä¸€ä¸ªåŒ¹é…åˆ°çš„çŠ¶æ€ã€‚
 	 * 
-	 * @param text	The text to be tested.<br>´ı½øĞĞÆ¥Åä¼ì²éµÄÎÄ±¾¡£
+	 * @param text	The text to be tested.<br>å¾…è¿›è¡ŒåŒ¹é…æ£€æŸ¥çš„æ–‡æœ¬ã€‚
 	 * @return	The state number that matched, return -1 if no expression can match the text.<br>
-	 * 			Æ¥Åäµ½µÄ×´Ì¬±àºÅ£¬·µ»Ø-1±íÊ¾Ã»ÓĞÓëÈÎºÎÒ»¸öÕıÔò±í´ïÊ½ÏàÆ¥Åä¡£
+	 * 			åŒ¹é…åˆ°çš„çŠ¶æ€ç¼–å·ï¼Œè¿”å›-1è¡¨ç¤ºæ²¡æœ‰ä¸ä»»ä½•ä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼ç›¸åŒ¹é…ã€‚
 	 */
 	protected int getLastAcceptedState(CharSequence text){
 		return getLastAcceptedState(text, 0);
@@ -206,12 +206,12 @@ public class StartWithMatcher implements Serializable{
 	/**
 	 * By utilizing the state machine (dk.brics.automaton.RunAutomaton), get the last accepted matching state.
 	 * The matching test starts at specified position.<br>
-	 * ÀûÓÃ×´Ì¬»ú£¨dk.brics.automaton.RunAutomaton£©£¬È¡µÃ×îºóÒ»¸öÆ¥Åäµ½µÄ×´Ì¬¡£´ÓÖ¸¶¨Î»ÖÃ¿ªÊ¼½øĞĞÆ¥Åä¼ì²é¡£
+	 * åˆ©ç”¨çŠ¶æ€æœºï¼ˆdk.brics.automaton.RunAutomatonï¼‰ï¼Œå–å¾—æœ€åä¸€ä¸ªåŒ¹é…åˆ°çš„çŠ¶æ€ã€‚ä»æŒ‡å®šä½ç½®å¼€å§‹è¿›è¡ŒåŒ¹é…æ£€æŸ¥ã€‚
 	 * 
-	 * @param text				The text to be tested.<br>´ı½øĞĞÆ¥Åä¼ì²éµÄÎÄ±¾¡£
-	 * @param startIndex		The position to start matching test.<br>´ÓÎÄ±¾µÄÕâ¸öÎ»ÖÃ¿ªÊ¼Æ¥Åä¡£
+	 * @param text				The text to be tested.<br>å¾…è¿›è¡ŒåŒ¹é…æ£€æŸ¥çš„æ–‡æœ¬ã€‚
+	 * @param startIndex		The position to start matching test.<br>ä»æ–‡æœ¬çš„è¿™ä¸ªä½ç½®å¼€å§‹åŒ¹é…ã€‚
 	 * @return	The state number that matched, return -1 if no expression can match the text.<br>
-	 * 			Æ¥Åäµ½µÄ×´Ì¬±àºÅ£¬·µ»Ø-1±íÊ¾Ã»ÓĞÓëÈÎºÎÒ»¸öÕıÔò±í´ïÊ½ÏàÆ¥Åä¡£
+	 * 			åŒ¹é…åˆ°çš„çŠ¶æ€ç¼–å·ï¼Œè¿”å›-1è¡¨ç¤ºæ²¡æœ‰ä¸ä»»ä½•ä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼ç›¸åŒ¹é…ã€‚
 	 */
 	protected int getLastAcceptedState(CharSequence text, int startIndex){
 		int lastAcceptedState = -1;
@@ -237,12 +237,12 @@ public class StartWithMatcher implements Serializable{
 	/**
 	 * By utilizing the state machine (dk.brics.automaton.RunAutomaton), get all the accepted matching state.
 	 * The matching test starts at specified position.<br>
-	 * ÀûÓÃ×´Ì¬»ú£¨dk.brics.automaton.RunAutomaton£©£¬È¡µÃËùÓĞÆ¥Åäµ½µÄ×´Ì¬¡£´ÓÖ¸¶¨Î»ÖÃ¿ªÊ¼½øĞĞÆ¥Åä¼ì²é¡£
+	 * åˆ©ç”¨çŠ¶æ€æœºï¼ˆdk.brics.automaton.RunAutomatonï¼‰ï¼Œå–å¾—æ‰€æœ‰åŒ¹é…åˆ°çš„çŠ¶æ€ã€‚ä»æŒ‡å®šä½ç½®å¼€å§‹è¿›è¡ŒåŒ¹é…æ£€æŸ¥ã€‚
 	 * 
-	 * @param text				The text to be tested.<br>´ı½øĞĞÆ¥Åä¼ì²éµÄÎÄ±¾¡£
-	 * @param startIndex		The position to start matching test.<br>´ÓÎÄ±¾µÄÕâ¸öÎ»ÖÃ¿ªÊ¼Æ¥Åä¡£
+	 * @param text				The text to be tested.<br>å¾…è¿›è¡ŒåŒ¹é…æ£€æŸ¥çš„æ–‡æœ¬ã€‚
+	 * @param startIndex		The position to start matching test.<br>ä»æ–‡æœ¬çš„è¿™ä¸ªä½ç½®å¼€å§‹åŒ¹é…ã€‚
 	 * @return	List of the state numbers that are matched, return null if no expression can match the text.<br>
-	 * 			Æ¥Åäµ½µÄËùÓĞ×´Ì¬±àºÅµÄÁĞ±í£¬·µ»Ønull±íÊ¾Ã»ÓĞÓëÈÎºÎÒ»¸öÕıÔò±í´ïÊ½ÏàÆ¥Åä¡£
+	 * 			åŒ¹é…åˆ°çš„æ‰€æœ‰çŠ¶æ€ç¼–å·çš„åˆ—è¡¨ï¼Œè¿”å›nullè¡¨ç¤ºæ²¡æœ‰ä¸ä»»ä½•ä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼ç›¸åŒ¹é…ã€‚
 	 */
 	protected List<Integer> getAllAcceptedStates(CharSequence text, int startIndex){
 		List<Integer> states = new ArrayList<Integer>();
@@ -275,19 +275,19 @@ public class StartWithMatcher implements Serializable{
 	 * Begin from the specified position, test if the text string can be matched 
 	 * by any of the regular expression, 
 	 * return the attachment of the longest matching one.<br>
-	 * ´ÓÖ¸¶¨Î»ÖÃ¿ªÊ¼ÅĞ¶ÏÎÄ±¾×Ö·û´®ÊÇ·ñ¿ÉÒÔ±»ÈÎÒâÒ»¸öÕıÔò±í´ïÊ½ËùÆ¥Åä£¬
-	 * ·µ»ØËùÄÜÆ¥Åäµ½µÄÄÇ¸ö×î³¤ÕıÔò±í´ïÊ½µÄ¸½¼ş¶ÔÏó¡£
+	 * ä»æŒ‡å®šä½ç½®å¼€å§‹åˆ¤æ–­æ–‡æœ¬å­—ç¬¦ä¸²æ˜¯å¦å¯ä»¥è¢«ä»»æ„ä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼æ‰€åŒ¹é…ï¼Œ
+	 * è¿”å›æ‰€èƒ½åŒ¹é…åˆ°çš„é‚£ä¸ªæœ€é•¿æ­£åˆ™è¡¨è¾¾å¼çš„é™„ä»¶å¯¹è±¡ã€‚
 	 * <p>
 	 * The test starts from the specified position.
 	 * Caution: if the beginning part matches, the whole text is considered to match. 
 	 * <p>
-	 * Æ¥Åä´ÓÖ¸¶¨µÄÎ»ÖÃ¿ªÊ¼¡£ ×¢Òâ£ºÖ»Òª¿ªÍ·Æ¥ÅäÁË¾ÍËãÆ¥Åä¡£
+	 * åŒ¹é…ä»æŒ‡å®šçš„ä½ç½®å¼€å§‹ã€‚ æ³¨æ„ï¼šåªè¦å¼€å¤´åŒ¹é…äº†å°±ç®—åŒ¹é…ã€‚
 	 * 
-	 * @param text			Text string to be tested for matching.<br>¶ÔÕâ¸ö×Ö·û´®½øĞĞÆ¥ÅäÅĞ¶Ï¡£
-	 * @param startIndex 	The starting position of the testing.<br>´ÓÎÄ±¾µÄÕâ¸öÎ»ÖÃ¿ªÊ¼Æ¥Åä¡£
+	 * @param text			Text string to be tested for matching.<br>å¯¹è¿™ä¸ªå­—ç¬¦ä¸²è¿›è¡ŒåŒ¹é…åˆ¤æ–­ã€‚
+	 * @param startIndex 	The starting position of the testing.<br>ä»æ–‡æœ¬çš„è¿™ä¸ªä½ç½®å¼€å§‹åŒ¹é…ã€‚
 	 * @return	Attachment object of the regular expression that matches the text string;
 	 * 			null is returned if no matching can be found.<br>
-	 * 			Æ¥Åäµ½µÄÄÇ¸öÕıÔò±í´ïÊ½Ëù¶ÔÓ¦µÄ¸½¼ş£»·µ»Ønull±íÊ¾Ã»ÓĞÆ¥Åäµ½ÈÎºÎÒ»¸öÕıÔò±í´ïÊ½¡£
+	 * 			åŒ¹é…åˆ°çš„é‚£ä¸ªæ­£åˆ™è¡¨è¾¾å¼æ‰€å¯¹åº”çš„é™„ä»¶ï¼›è¿”å›nullè¡¨ç¤ºæ²¡æœ‰åŒ¹é…åˆ°ä»»ä½•ä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼ã€‚
 	 */
 	public Object match(CharSequence text, int startIndex){
 		int p = getLastAcceptedState(text, startIndex);
@@ -298,19 +298,19 @@ public class StartWithMatcher implements Serializable{
 	 * Begin from the specified position, test if the text string can be matched 
 	 * by any of the regular expression,
 	 * return list of the attachments of all the matching regular expressions.<br>
-	 * ´ÓÖ¸¶¨Î»ÖÃ¿ªÊ¼ÅĞ¶ÏÎÄ±¾×Ö·û´®ÊÇ·ñ¿ÉÒÔ±»ÈÎÒâÒ»¸öÕıÔò±í´ïÊ½ËùÆ¥Åä£¬
-	 * ·µ»ØËùÓĞÄÜÆ¥Åäµ½µÄÕıÔò±í´ïÊ½µÄ¸½¼ş¶ÔÏóµÄÁĞ±í¡£
+	 * ä»æŒ‡å®šä½ç½®å¼€å§‹åˆ¤æ–­æ–‡æœ¬å­—ç¬¦ä¸²æ˜¯å¦å¯ä»¥è¢«ä»»æ„ä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼æ‰€åŒ¹é…ï¼Œ
+	 * è¿”å›æ‰€æœ‰èƒ½åŒ¹é…åˆ°çš„æ­£åˆ™è¡¨è¾¾å¼çš„é™„ä»¶å¯¹è±¡çš„åˆ—è¡¨ã€‚
 	 * <p>
 	 * The test starts from the specified position.
 	 * Caution: if the beginning part matches, the whole text is considered to match. 
 	 * <p>
-	 * Æ¥Åä´ÓÖ¸¶¨µÄÎ»ÖÃ¿ªÊ¼¡£ ×¢Òâ£ºÖ»Òª¿ªÍ·Æ¥ÅäÁË¾ÍËãÆ¥Åä¡£
+	 * åŒ¹é…ä»æŒ‡å®šçš„ä½ç½®å¼€å§‹ã€‚ æ³¨æ„ï¼šåªè¦å¼€å¤´åŒ¹é…äº†å°±ç®—åŒ¹é…ã€‚
 	 * 
-	 * @param text			Text string to be tested for matching.<br>¶ÔÕâ¸ö×Ö·û´®½øĞĞÆ¥ÅäÅĞ¶Ï¡£
-	 * @param startIndex 	The starting position of the testing.<br>´ÓÎÄ±¾µÄÕâ¸öÎ»ÖÃ¿ªÊ¼Æ¥Åä¡£
+	 * @param text			Text string to be tested for matching.<br>å¯¹è¿™ä¸ªå­—ç¬¦ä¸²è¿›è¡ŒåŒ¹é…åˆ¤æ–­ã€‚
+	 * @param startIndex 	The starting position of the testing.<br>ä»æ–‡æœ¬çš„è¿™ä¸ªä½ç½®å¼€å§‹åŒ¹é…ã€‚
 	 * @return	List of attachment objects of the regular expressions that matche the text string;
 	 * 			null is returned if no matching can be found.<br>
-	 * 			Æ¥Åäµ½µÄÄÇĞ©ÕıÔò±í´ïÊ½Ëù¶ÔÓ¦µÄ¸½¼şµÄÁĞ±í£»·µ»Ønull±íÊ¾Ã»ÓĞÆ¥Åäµ½ÈÎºÎÒ»¸öÕıÔò±í´ïÊ½¡£
+	 * 			åŒ¹é…åˆ°çš„é‚£äº›æ­£åˆ™è¡¨è¾¾å¼æ‰€å¯¹åº”çš„é™„ä»¶çš„åˆ—è¡¨ï¼›è¿”å›nullè¡¨ç¤ºæ²¡æœ‰åŒ¹é…åˆ°ä»»ä½•ä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼ã€‚
 	 */
 	public List<Object> matchAll(CharSequence text, int startIndex){
 		List<Integer> states = getAllAcceptedStates(text, startIndex);
@@ -327,17 +327,17 @@ public class StartWithMatcher implements Serializable{
 
 	/**
 	 * Test if the text string can be matched by any of the regular expression. <br>
-	 * ÅĞ¶ÏÎÄ±¾×Ö·û´®ÊÇ·ñ¿ÉÒÔ±»ÈÎÒâÒ»¸öÕıÔò±í´ïÊ½ËùÆ¥Åä¡£
+	 * åˆ¤æ–­æ–‡æœ¬å­—ç¬¦ä¸²æ˜¯å¦å¯ä»¥è¢«ä»»æ„ä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼æ‰€åŒ¹é…ã€‚
 	 * <p>
 	 * The test starts from the beginning.
 	 * Caution: if the beginning part matches, the whole text is considered to match. 
 	 * <p>
-	 * Æ¥Åä´ÓÍ·¿ªÊ¼¡£ ×¢Òâ£ºÖ»Òª¿ªÍ·Æ¥ÅäÁË¾ÍËãÆ¥Åä¡£
+	 * åŒ¹é…ä»å¤´å¼€å§‹ã€‚ æ³¨æ„ï¼šåªè¦å¼€å¤´åŒ¹é…äº†å°±ç®—åŒ¹é…ã€‚
 	 * 
-	 * @param text	Text string to be tested for matching.<br>¶ÔÕâ¸ö×Ö·û´®½øĞĞÆ¥ÅäÅĞ¶Ï¡£
+	 * @param text	Text string to be tested for matching.<br>å¯¹è¿™ä¸ªå­—ç¬¦ä¸²è¿›è¡ŒåŒ¹é…åˆ¤æ–­ã€‚
 	 * @return	Attachment object of the regular expression that matches the text string;
 	 * 			null is returned if no matching can be found.<br>
-	 * 			Æ¥Åäµ½µÄÄÇ¸öÕıÔò±í´ïÊ½Ëù¶ÔÓ¦µÄ¸½¼ş¡£·µ»Ønull±íÊ¾Ã»ÓĞÆ¥Åäµ½ÈÎºÎÒ»¸öÕıÔò±í´ïÊ½¡£
+	 * 			åŒ¹é…åˆ°çš„é‚£ä¸ªæ­£åˆ™è¡¨è¾¾å¼æ‰€å¯¹åº”çš„é™„ä»¶ã€‚è¿”å›nullè¡¨ç¤ºæ²¡æœ‰åŒ¹é…åˆ°ä»»ä½•ä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼ã€‚
 	 */
 	public Object match(CharSequence text){
 		return this.match(text, 0);
@@ -346,18 +346,18 @@ public class StartWithMatcher implements Serializable{
 	/**
 	 * Test if the text string can be matched by any of the regular expression,
 	 * return list of the attachments of all the matching regular expressions.<br>
-	 * ÅĞ¶ÏÎÄ±¾×Ö·û´®ÊÇ·ñ¿ÉÒÔ±»ÈÎÒâÒ»¸öÕıÔò±í´ïÊ½ËùÆ¥Åä£¬
-	 * ·µ»ØËùÓĞÄÜÆ¥Åäµ½µÄÕıÔò±í´ïÊ½µÄ¸½¼ş¶ÔÏóµÄÁĞ±í¡£
+	 * åˆ¤æ–­æ–‡æœ¬å­—ç¬¦ä¸²æ˜¯å¦å¯ä»¥è¢«ä»»æ„ä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼æ‰€åŒ¹é…ï¼Œ
+	 * è¿”å›æ‰€æœ‰èƒ½åŒ¹é…åˆ°çš„æ­£åˆ™è¡¨è¾¾å¼çš„é™„ä»¶å¯¹è±¡çš„åˆ—è¡¨ã€‚
 	 * <p>
 	 * The test starts from the beginning.
 	 * Caution: if the beginning part matches, the whole text is considered to match. 
 	 * <p>
-	 * Æ¥Åä´ÓÍ·¿ªÊ¼¡£ ×¢Òâ£ºÖ»Òª¿ªÍ·Æ¥ÅäÁË¾ÍËãÆ¥Åä¡£
+	 * åŒ¹é…ä»å¤´å¼€å§‹ã€‚ æ³¨æ„ï¼šåªè¦å¼€å¤´åŒ¹é…äº†å°±ç®—åŒ¹é…ã€‚
 	 * 
-	 * @param text			Text string to be tested for matching.<br>¶ÔÕâ¸ö×Ö·û´®½øĞĞÆ¥ÅäÅĞ¶Ï¡£
+	 * @param text			Text string to be tested for matching.<br>å¯¹è¿™ä¸ªå­—ç¬¦ä¸²è¿›è¡ŒåŒ¹é…åˆ¤æ–­ã€‚
 	 * @return	List of attachment objects of the regular expressions that matche the text string;
 	 * 			null is returned if no matching can be found.<br>
-	 * 			Æ¥Åäµ½µÄÄÇĞ©ÕıÔò±í´ïÊ½Ëù¶ÔÓ¦µÄ¸½¼şµÄÁĞ±í£»·µ»Ønull±íÊ¾Ã»ÓĞÆ¥Åäµ½ÈÎºÎÒ»¸öÕıÔò±í´ïÊ½¡£
+	 * 			åŒ¹é…åˆ°çš„é‚£äº›æ­£åˆ™è¡¨è¾¾å¼æ‰€å¯¹åº”çš„é™„ä»¶çš„åˆ—è¡¨ï¼›è¿”å›nullè¡¨ç¤ºæ²¡æœ‰åŒ¹é…åˆ°ä»»ä½•ä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼ã€‚
 	 */
 	public List<Object> matchAll(CharSequence text){
 		return this.matchAll(text, 0);
@@ -366,7 +366,7 @@ public class StartWithMatcher implements Serializable{
 
 	/**
 	 * Escape special characters according to syntax of regular expression.<br>
-	 * °´ÕıÔò±í´ïÊ½Óï·¨£¬¶Ô×Ö·û´®½øĞĞescape¡£
+	 * æŒ‰æ­£åˆ™è¡¨è¾¾å¼è¯­æ³•ï¼Œå¯¹å­—ç¬¦ä¸²è¿›è¡Œescapeã€‚
 	 * 
 	 * @param s	The string to be escaped
 	 * @return	The result of escaping
@@ -385,7 +385,7 @@ public class StartWithMatcher implements Serializable{
 	
 	/**
 	 * Make a copy of the internal state machine (dk.brics.automaton.RunAutomaton) of this instance.<br>
-	 * °Ñ×Ô¼ºÄÚ²¿µÄ×´Ì¬»ú£¨dk.brics.automaton.RunAutomaton£©¶ÔÏó¸´ÖÆÒ»·İ¡£
+	 * æŠŠè‡ªå·±å†…éƒ¨çš„çŠ¶æ€æœºï¼ˆdk.brics.automaton.RunAutomatonï¼‰å¯¹è±¡å¤åˆ¶ä¸€ä»½ã€‚
 	 * 
 	 * @return	a copy made by serializing and then de-serializing
 	 * @throws IOException

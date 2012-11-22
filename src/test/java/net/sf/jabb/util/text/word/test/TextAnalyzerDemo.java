@@ -9,7 +9,7 @@ public class TextAnalyzerDemo {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String text = "Yellow fox jump过大片河流，so caused chaos. 这可怎么办？";
+		String text = "Yellow fox jump杩囧ぇ鐗囨渤娴侊紝so caused chaos. 杩欏彲鎬庝箞鍔烇紵";
 		TextAnalyzer analyzer = TextAnalyzer.createInstance(TextAnalyzer.TYPE_MMSEG_SIMPLE);
 		AnalyzedText at = analyzer.analyze(text);
 		System.out.println(at);

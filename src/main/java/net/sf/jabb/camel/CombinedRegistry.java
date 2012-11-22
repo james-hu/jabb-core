@@ -26,15 +26,15 @@ import org.apache.camel.spi.Registry;
 
 /**
  * It enables you to combine several Registry(s) into one.<br>
- * ËüÊ¹µÃÄã¿ÉÒÔ°ÑºÃ¼¸¸öRegistryºÏ²¢ÔÚÒ»Æğ¡£
+ * å®ƒä½¿å¾—ä½ å¯ä»¥æŠŠå¥½å‡ ä¸ªRegistryåˆå¹¶åœ¨ä¸€èµ·ã€‚
  * <p>
  * When looking up something in it, it will try those encapsulated Registry(s) one by one. 
  * And it has an internal SimpleRegistry, as the last one to try. You can also write code to
  * add entries to the internal SimpleRegistry.
  * <p>
- * µ±²éÕÒ¶«Î÷µÄÊ±ºò£¬Ëü»áÖğ¸ö³¢ÊÔÕâĞ©¸öRegistry¡£¶øÇÒ£¬ËüÄÚÖÃÒ»¸öSimpleRegistry£¬
- * ×÷Îª×îºóÒ»¸ö³¢ÊÔµÄRegistry¡£Äã»¹¿ÉÒÔÍ¨¹ıÄÚÖÃµÄSimpleRegistryÀ´ÀûÓÃ
- * ³ÌĞòÌí¼Ó×Ô¼º¶îÍâµÄÄÚÈİ¡£
+ * å½“æŸ¥æ‰¾ä¸œè¥¿çš„æ—¶å€™ï¼Œå®ƒä¼šé€ä¸ªå°è¯•è¿™äº›ä¸ªRegistryã€‚è€Œä¸”ï¼Œå®ƒå†…ç½®ä¸€ä¸ªSimpleRegistryï¼Œ
+ * ä½œä¸ºæœ€åä¸€ä¸ªå°è¯•çš„Registryã€‚ä½ è¿˜å¯ä»¥é€šè¿‡å†…ç½®çš„SimpleRegistryæ¥åˆ©ç”¨
+ * ç¨‹åºæ·»åŠ è‡ªå·±é¢å¤–çš„å†…å®¹ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -45,7 +45,7 @@ public class CombinedRegistry implements Registry {
 	
 	/**
 	 * Constructs an instance that contains only an internal SimpleRegistry.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬Ëü½öº¬ÓĞÄÚÖÃµÄSimpleRegistry¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œå®ƒä»…å«æœ‰å†…ç½®çš„SimpleRegistryã€‚
 	 */
 	public CombinedRegistry(){
 		defaultSimpleRegistry = new SimpleRegistry();
@@ -56,7 +56,7 @@ public class CombinedRegistry implements Registry {
 	/**
 	 * Constructs an instance that contains not only an internal SimpleRegistry, 
 	 * but also the Registry specified.<br>
-	 * ´´½¨Ò»¸ö³ıÁËÄÚÖÃµÄSimpleRegistryÖ®Íâ£¬»¹°üº¬Ö¸¶¨RegistryµÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªé™¤äº†å†…ç½®çš„SimpleRegistryä¹‹å¤–ï¼Œè¿˜åŒ…å«æŒ‡å®šRegistryçš„å®ä¾‹ã€‚
 	 * 
 	 * @param registry	The Registry that will be encapsulated.
 	 */
@@ -68,7 +68,7 @@ public class CombinedRegistry implements Registry {
 	/**
 	 * Constructs an instance that contains not only an internal SimpleRegistry, 
 	 * but also several Registry(s) specified.<br>
-	 * ´´½¨Ò»¸ö³ıÁËÄÚÖÃµÄSimpleRegistryÖ®Íâ£¬»¹°üº¬Ö¸¶¨µÄÒ»Ğ©RegistryµÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªé™¤äº†å†…ç½®çš„SimpleRegistryä¹‹å¤–ï¼Œè¿˜åŒ…å«æŒ‡å®šçš„ä¸€äº›Registryçš„å®ä¾‹ã€‚
 	 * 
 	 * @param registries	The Registry(s) that will be encapsulated.
 	 */
@@ -79,7 +79,7 @@ public class CombinedRegistry implements Registry {
 	
 	/**
 	 * Adds a Registry which will be put after all others but just before the internal SimpleRegistry.<br>
-	 * Ìí¼ÓÒ»¸öRegistry£¬ËüµÄÎ»ÖÃ»áÎ»ÓÚÆäËûRegistryÖ®ºó£¬µ«ÊÇÔÚÈ±Ê¡µÄSimpleRegistryÖ®Ç°¡£
+	 * æ·»åŠ ä¸€ä¸ªRegistryï¼Œå®ƒçš„ä½ç½®ä¼šä½äºå…¶ä»–Registryä¹‹åï¼Œä½†æ˜¯åœ¨ç¼ºçœçš„SimpleRegistryä¹‹å‰ã€‚
 	 */
 	public void addRegistry(Registry registry){
 		registryList.add(registryList.size()-1, registry);
@@ -87,7 +87,7 @@ public class CombinedRegistry implements Registry {
 	
 	/**
 	 * Adds several Registry(s) which will be put after all others but just before the internal SimpleRegistry.<br>
-	 * Ìí¼ÓÒ»Ğ©Registry£¬ËüÃÇµÄÎ»ÖÃ»áÎ»ÓÚÆäËûRegistryÖ®ºó£¬µ«ÊÇÔÚÈ±Ê¡µÄSimpleRegistryÖ®Ç°¡£
+	 * æ·»åŠ ä¸€äº›Registryï¼Œå®ƒä»¬çš„ä½ç½®ä¼šä½äºå…¶ä»–Registryä¹‹åï¼Œä½†æ˜¯åœ¨ç¼ºçœçš„SimpleRegistryä¹‹å‰ã€‚
 	 */
 	public void addRegistry(Registry... registries){
 		for (Registry registry: registries){
@@ -98,11 +98,11 @@ public class CombinedRegistry implements Registry {
 
 	/** 
 	 * Looks up from all encapsulated Registry(s) one by one, and returns the first result found.<br>
-	 * °´´ÎĞò´ÓËù·â×°µÄRegistryÖĞ²éÕÒ£¬·µ»ØµÚÒ»¸öÕÒµ½µÄ½á¹û¡£
+	 * æŒ‰æ¬¡åºä»æ‰€å°è£…çš„Registryä¸­æŸ¥æ‰¾ï¼Œè¿”å›ç¬¬ä¸€ä¸ªæ‰¾åˆ°çš„ç»“æœã€‚
 	 * <p>
 	 * If no result can be found, null will be returned.
 	 * <p>
-	 * Èç¹ûÈ«¶¼ÕÒ²»µ½£¬Ôò·µ»Ønull¡£
+	 * å¦‚æœå…¨éƒ½æ‰¾ä¸åˆ°ï¼Œåˆ™è¿”å›nullã€‚
 	 * 
 	 * @see org.apache.camel.spi.Registry#lookup(java.lang.String)
 	 */
@@ -119,11 +119,11 @@ public class CombinedRegistry implements Registry {
 
 	/**
 	 * Looks up from all encapsulated Registry(s) one by one, and returns the first result found.<br>
-	 * °´´ÎĞò´ÓËù·â×°µÄRegistryÖĞ²éÕÒ£¬·µ»ØµÚÒ»¸öÕÒµ½µÄ½á¹û¡£
+	 * æŒ‰æ¬¡åºä»æ‰€å°è£…çš„Registryä¸­æŸ¥æ‰¾ï¼Œè¿”å›ç¬¬ä¸€ä¸ªæ‰¾åˆ°çš„ç»“æœã€‚
 	 * <p>
 	 * If no result can be found, null will be returned.
 	 * <p>
-	 * Èç¹ûÈ«¶¼ÕÒ²»µ½£¬Ôò·µ»Ønull¡£
+	 * å¦‚æœå…¨éƒ½æ‰¾ä¸åˆ°ï¼Œåˆ™è¿”å›nullã€‚
 	 * 
 	 * @see org.apache.camel.spi.Registry#lookup(java.lang.String, java.lang.Class)
 	 */
@@ -140,11 +140,11 @@ public class CombinedRegistry implements Registry {
 
 	/**
 	 * Looks up from all encapsulated Registry(s) one by one, and returns all the result found.<br>
-	 * °´´ÎĞò´ÓËù·â×°µÄRegistryÖĞ²éÕÒ£¬²¢·µ»ØËùÓĞÄÜÕÒµ½µÄ½á¹û¡£
+	 * æŒ‰æ¬¡åºä»æ‰€å°è£…çš„Registryä¸­æŸ¥æ‰¾ï¼Œå¹¶è¿”å›æ‰€æœ‰èƒ½æ‰¾åˆ°çš„ç»“æœã€‚
 	 * <p>
 	 * If no result can be found, an empty Map will be returned.
 	 * <p>
-	 * Èç¹ûÈ«¶¼ÕÒ²»µ½£¬Ôò·µ»ØÒ»¸ö¿ÕµÄMap¡£
+	 * å¦‚æœå…¨éƒ½æ‰¾ä¸åˆ°ï¼Œåˆ™è¿”å›ä¸€ä¸ªç©ºçš„Mapã€‚
 	 * 
 	 * @see org.apache.camel.spi.Registry#lookupByType(java.lang.Class)
 	 */
@@ -159,7 +159,7 @@ public class CombinedRegistry implements Registry {
 
 	/**
 	 * Gets the internal SimpleRegistry which can be manipulated later.<br>
-	 * »ñµÃÆäÄÚÖÃµÄÈ±Ê¡SimpleRegistry£¬Æäºó¿ÉÒÔÏòËü½øĞĞÔöÉ¾¸Ä²é²Ù×÷¡£
+	 * è·å¾—å…¶å†…ç½®çš„ç¼ºçœSimpleRegistryï¼Œå…¶åå¯ä»¥å‘å®ƒè¿›è¡Œå¢åˆ æ”¹æŸ¥æ“ä½œã€‚
 	 * 
 	 * @return	The internal SimpleRegistry.
 	 */

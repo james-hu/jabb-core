@@ -28,10 +28,10 @@ import org.jboss.netty.handler.codec.oneone.OneToOneDecoder;
 
 /**
  * A decoder for Netty to handle XML messages.<br>
- * Ê¹µÃNettyÄÜ¹»¶ÔXMLÎÄ±¾ÏûÏ¢½øĞĞ·Ö¶ÎµÄdecoder¡£
+ * ä½¿å¾—Nettyèƒ½å¤Ÿå¯¹XMLæ–‡æœ¬æ¶ˆæ¯è¿›è¡Œåˆ†æ®µçš„decoderã€‚
  * <p>
  * The usage is as the following:<br>
- * Ê¹ÓÃ·½·¨ÈçÏÂ£º
+ * ä½¿ç”¨æ–¹æ³•å¦‚ä¸‹ï¼š
  * <pre>
  * {@link ChannelPipeline} pipeline = ...;
  * 
@@ -69,15 +69,15 @@ public class XmlDecoder {
 	/**
 	 * Constructor after which both its {@link #getFrameDecoder()} and {@link #getStringDecoder()} methods should be
 	 * called to get two decoders for Netty.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬´´½¨ºÃÖ®ºó£¬ËüµÄ{@link #getFrameDecoder()}·½·¨ºÍ{@link #getStringDecoder()}·½·¨¶¼Ó¦¸Ã±»µ÷ÓÃ
-	 * ÒÔ»ñµÃ¸øNettyÓÃµÄÁ½¸ödecoder¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œåˆ›å»ºå¥½ä¹‹åï¼Œå®ƒçš„{@link #getFrameDecoder()}æ–¹æ³•å’Œ{@link #getStringDecoder()}æ–¹æ³•éƒ½åº”è¯¥è¢«è°ƒç”¨
+	 * ä»¥è·å¾—ç»™Nettyç”¨çš„ä¸¤ä¸ªdecoderã€‚
 	 * 
 	 * @param maxFrameLength	Maximum length of XML text messages that might be received.<br>
-	 * 							¿ÉÄÜ½ÓÊÕµ½µÄXMLÏûÏ¢µÄ×î´ó³¤¶È¡£
+	 * 							å¯èƒ½æ¥æ”¶åˆ°çš„XMLæ¶ˆæ¯çš„æœ€å¤§é•¿åº¦ã€‚
 	 * @param topLevelTagName	Top level XML tag that marks the beginning and ending of XML messages.<br>
-	 * 							ÓÃÀ´±ê¼ÇÃ¿¶ÎXMLÏûÏ¢¿ªÍ·Óë½áÊøµÄ¶¥²ãXML±êÇ©¡£
+	 * 							ç”¨æ¥æ ‡è®°æ¯æ®µXMLæ¶ˆæ¯å¼€å¤´ä¸ç»“æŸçš„é¡¶å±‚XMLæ ‡ç­¾ã€‚
 	 * @param charset			Character set that the text messages are encoded in.<br>
-	 * 							Ëù½ÓÊÕµ½µÄÏûÏ¢µÄ±àÂë×Ö·û¼¯¡£
+	 * 							æ‰€æ¥æ”¶åˆ°çš„æ¶ˆæ¯çš„ç¼–ç å­—ç¬¦é›†ã€‚
 	 */
 	public XmlDecoder(int maxFrameLength, String topLevelTagName, Charset charset){
 		frameDecoder = new DelimiterBasedFrameDecoder(maxFrameLength, true, 
@@ -87,14 +87,14 @@ public class XmlDecoder {
 	
 	/**
 	 * Creates delimiters that will be used to construct {@link DelimiterBasedFrameDecoder}.<br>
-	 * ¸ù¾İXML±êÇ©µÄÃû³Æ£¬Éú³ÉÊÊºÏ{@link DelimiterBasedFrameDecoder}ÓÃµÄdelimiters¡£
+	 * æ ¹æ®XMLæ ‡ç­¾çš„åç§°ï¼Œç”Ÿæˆé€‚åˆ{@link DelimiterBasedFrameDecoder}ç”¨çš„delimitersã€‚
 	 * 
 	 * @param tagName	Name of the top level XML tag (not including &lt;, /, etc).<br>
-	 * 					XML±êÇ©µÄÃû³Æ£¨²»°üÀ¨¼âÀ¨ºÅ¡¢Ğ±¸ÜÕâĞ©£©
+	 * 					XMLæ ‡ç­¾çš„åç§°ï¼ˆä¸åŒ…æ‹¬å°–æ‹¬å·ã€æ–œæ è¿™äº›ï¼‰
 	 * @param charset	Character set encoding of the messages to be processed.<br>
-	 * 					´ı½âÎöµÄXMLÎÄ±¾Ëù²ÉÓÃµÄ×Ö·û¼¯±àÂë·½Ê½
+	 * 					å¾…è§£æçš„XMLæ–‡æœ¬æ‰€é‡‡ç”¨çš„å­—ç¬¦é›†ç¼–ç æ–¹å¼
 	 * @return 			Four delimiters in an array.<br>
-	 * 					¹²4¸ödelimiter·ÅÔÚÒ»¸öÊı×éÀï£¬¶¼ÒÔ¡°&lt;/¡±¿ªÍ·£¬È»ºóÊÇtagµÄÃû³Æ£¬ÔÙ½Ó×Å·Ö±ğÊÇ¿Õ¸ñ¡¢ÖÆ±í·û£¨TAB£©¡¢»Ø³µ¡¢»»ĞĞ
+	 * 					å…±4ä¸ªdelimiteræ”¾åœ¨ä¸€ä¸ªæ•°ç»„é‡Œï¼Œéƒ½ä»¥â€œ&lt;/â€å¼€å¤´ï¼Œç„¶åæ˜¯tagçš„åç§°ï¼Œå†æ¥ç€åˆ†åˆ«æ˜¯ç©ºæ ¼ã€åˆ¶è¡¨ç¬¦ï¼ˆTABï¼‰ã€å›è½¦ã€æ¢è¡Œ
 	 */
 	protected ChannelBuffer[] buildDelimiters(String tagName, Charset charset){
 		byte[] nameBytes = tagName.getBytes(charset);
@@ -115,13 +115,13 @@ public class XmlDecoder {
 
 	/**
 	 * Get the frame decoder to be used by Netty.<br>
-	 * »ñµÃ¸øNettyÓÃµÄframe decoder¡£
+	 * è·å¾—ç»™Nettyç”¨çš„frame decoderã€‚
 	 * <p>
 	 * Always use this method together with {@link #getStringDecoder()}.<br>
-	 * Õâ¸ö·½·¨×ÜÊÇÓë{@link #getStringDecoder()}·½·¨½áºÏÆğÀ´Ò»ÆğÓÃ¡£
+	 * è¿™ä¸ªæ–¹æ³•æ€»æ˜¯ä¸{@link #getStringDecoder()}æ–¹æ³•ç»“åˆèµ·æ¥ä¸€èµ·ç”¨ã€‚
 	 * 
 	 * @return	The decoder that separates XML messages.<br>
-	 * 			ÓÃÀ´°ÑXMLÏûÏ¢Çø·Ö¿ªÀ´µÄdecoder¡£
+	 * 			ç”¨æ¥æŠŠXMLæ¶ˆæ¯åŒºåˆ†å¼€æ¥çš„decoderã€‚
 	 */
 	public DelimiterBasedFrameDecoder getFrameDecoder() {
 		return frameDecoder;
@@ -129,13 +129,13 @@ public class XmlDecoder {
 
 	/**
 	 * Get the string decoder to be used by Netty.<br>
-	 * »ñµÃ¸øNettyÓÃµÄstring decoder¡£
+	 * è·å¾—ç»™Nettyç”¨çš„string decoderã€‚
 	 * <p>
 	 * Always use this method together with {@link #getFrameDecoder()}.<br>
-	 * Õâ¸ö·½·¨×ÜÊÇÓë{@link #getFrameDecoder()}·½·¨½áºÏÆğÀ´Ò»ÆğÓÃ¡£
+	 * è¿™ä¸ªæ–¹æ³•æ€»æ˜¯ä¸{@link #getFrameDecoder()}æ–¹æ³•ç»“åˆèµ·æ¥ä¸€èµ·ç”¨ã€‚
 	 * 
 	 * @return the decoder that do final clean up for XML messages.<br>
-	 * 			ÓÃÀ´¶ÔXMLÏûÏ¢½øĞĞ×îÖÕÇåÀíµÄdecoder¡£
+	 * 			ç”¨æ¥å¯¹XMLæ¶ˆæ¯è¿›è¡Œæœ€ç»ˆæ¸…ç†çš„decoderã€‚
 	 */
 	public OneToOneDecoder getStringDecoder() {
 		return stringDecoder;
@@ -144,11 +144,11 @@ public class XmlDecoder {
 	/**
 	 * Further process the messages already processed by 
 	 * FrameDecoder to make it clean XML text messages.<br>
-	 * °Ñ¾­¹ıFrameDecoder´¦Àí¹ıºóµÄÏûÏ¢£¬½øÒ»²½¼Ó¹¤ÎªÍ·Î²ÍêÕû¸É¾»µÄXMLÎÄ±¾¡£
+	 * æŠŠç»è¿‡FrameDecoderå¤„ç†è¿‡åçš„æ¶ˆæ¯ï¼Œè¿›ä¸€æ­¥åŠ å·¥ä¸ºå¤´å°¾å®Œæ•´å¹²å‡€çš„XMLæ–‡æœ¬ã€‚
 	 * <p>
 	 * Don't use this class directly. It is a supporting class for XmlDecoder.
 	 * <p>
-	 * ²»ÒªÖ±½ÓÓÃÕâ¸öÀà£¬ËüÊÇÖ§³ÅXmlDecoderµÄ¡£
+	 * ä¸è¦ç›´æ¥ç”¨è¿™ä¸ªç±»ï¼Œå®ƒæ˜¯æ”¯æ’‘XmlDecoderçš„ã€‚
 	 * 
 	 * @author Zhengmao HU (James)
 	 *
@@ -160,7 +160,7 @@ public class XmlDecoder {
 		
 		/**
 		 * Constructor.<br>
-		 * ´´½¨Ò»¸öÊµÀı¡£
+		 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ã€‚
 		 * @param tagName
 		 * @param charset
 		 */
@@ -176,7 +176,7 @@ public class XmlDecoder {
 
 		/**
 		 * Get the text and process its beginning and ending to make it a clean XML text.<br>
-		 * ÏÈÈ¡µ½×Ö·û´®£¬È»ºó°ÑÈ¡µÃµÄ×Ö·û´®½øÒ»²½¼Ó¹¤£¬ÒÔĞÎ³ÉÍ·Î²ÍêÕû¸É¾»µÄXMLÎÄ±¾¡£
+		 * å…ˆå–åˆ°å­—ç¬¦ä¸²ï¼Œç„¶åæŠŠå–å¾—çš„å­—ç¬¦ä¸²è¿›ä¸€æ­¥åŠ å·¥ï¼Œä»¥å½¢æˆå¤´å°¾å®Œæ•´å¹²å‡€çš„XMLæ–‡æœ¬ã€‚
 		 */
 	    @Override
 	    protected Object decode(

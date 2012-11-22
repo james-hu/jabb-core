@@ -26,8 +26,8 @@ import org.apache.commons.lang.mutable.MutableInt;
 /**
  * Information about the text after analysis, including: original text, list of segmented words,
  * list of segmented words after de-duplication, text length category, and result of keywords matching.<br>
- * ¶ÔÎÄ±¾½øĞĞ·ÖÎöÖ®ºóµÄĞÅÏ¢£¬°üÀ¨£ºÔ­ÎÄ¡¢²ğ·Ö¿ªµÄ´Ê»ò×ÖµÄÇåµ¥¡¢È¥ÖØ¸´Ö®ºóµÄ²ğ·Ö¿ªµÄ´Ê»ò×ÖµÄÇåµ¥¡¢
- * ÎÄ±¾³¤¶ÈÀà±ğ¡¢¹Ø¼ü´Ê×ÖÆ¥Åä½á¹û¡£
+ * å¯¹æ–‡æœ¬è¿›è¡Œåˆ†æä¹‹åçš„ä¿¡æ¯ï¼ŒåŒ…æ‹¬ï¼šåŸæ–‡ã€æ‹†åˆ†å¼€çš„è¯æˆ–å­—çš„æ¸…å•ã€å»é‡å¤ä¹‹åçš„æ‹†åˆ†å¼€çš„è¯æˆ–å­—çš„æ¸…å•ã€
+ * æ–‡æœ¬é•¿åº¦ç±»åˆ«ã€å…³é”®è¯å­—åŒ¹é…ç»“æœã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -51,14 +51,14 @@ public class AnalyzedText {
 	}
 	
 	/**
-	 * @return ¹©·ÖÎöµÄÔ­Ê¼ÎÄ±¾
+	 * @return ä¾›åˆ†æçš„åŸå§‹æ–‡æœ¬
 	 * 		<br>Original text for analysis.
 	 */
 	public String getText() {
 		return text;
 	}
 	/**
-	 * @return ×é³ÉÔ­ÎÄµÄÈ«²¿´Ê¡¢×Ö£¬°´³öÏÖµÄ´ÎĞòÅÅÁĞ¡£
+	 * @return ç»„æˆåŸæ–‡çš„å…¨éƒ¨è¯ã€å­—ï¼ŒæŒ‰å‡ºç°çš„æ¬¡åºæ’åˆ—ã€‚
 	 * 		<br>All words that consist the original text, in the order of appearance.
 	 */
 	public List<String> getWords() {
@@ -70,14 +70,14 @@ public class AnalyzedText {
 		return words;
 	}
 	/**
-	 * @param words ÇĞ·ÖºóµÄÈ«²¿´Ê¡¢×Ö£¬°´³öÏÖµÄ´ÎĞòÅÅÁĞ¡£
+	 * @param words åˆ‡åˆ†åçš„å…¨éƒ¨è¯ã€å­—ï¼ŒæŒ‰å‡ºç°çš„æ¬¡åºæ’åˆ—ã€‚
 	 * 		<br>All words that consist the original text, in the order of appearance.
 	 */
 	void setWords(List<String> words) {
 		this.words = words;
 	}
 	/**
-	 * @return ×é³ÉÔ­ÎÄµÄ²»ÖØ¸´µÄ´Ê¡¢×Ö¡£
+	 * @return ç»„æˆåŸæ–‡çš„ä¸é‡å¤çš„è¯ã€å­—ã€‚
 	 * 		<br>Unique words that consist the original text.
 	 */
 	public Set<String> getUniqueWords() {
@@ -89,14 +89,14 @@ public class AnalyzedText {
 		return uniqueWords;
 	}
 	/**
-	 * @param uniqueWords ×é³ÉÔ­ÎÄµÄ²»ÖØ¸´µÄ´Ê¡¢×Ö¡£
+	 * @param uniqueWords ç»„æˆåŸæ–‡çš„ä¸é‡å¤çš„è¯ã€å­—ã€‚
 	 * 		<br>Unique words that consist the original text.
 	 */
 	void setUniqueWords(Set<String> uniqueWords) {
 		this.uniqueWords = uniqueWords;
 	}
 	/**
-	 * @return ÎÄ±¾³¤¶ÈÀà±ğ
+	 * @return æ–‡æœ¬é•¿åº¦ç±»åˆ«
 	 * 		<br>Category according to the length of the original text.
 	 */
 	public Object getLengthCategory() {
@@ -108,14 +108,14 @@ public class AnalyzedText {
 		return lengthCategory;
 	}
 	/**
-	 * @param lengthCategory ÎÄ±¾³¤¶ÈÀà±ğ
+	 * @param lengthCategory æ–‡æœ¬é•¿åº¦ç±»åˆ«
 	 * 		<br>Category according to the length of the original text.
 	 */
 	void setLengthCategory(Object lengthCategory) {
 		this.lengthCategory = lengthCategory;
 	}
 	/**
-	 * @return Æ¥ÅäÉÏµÄ¹Ø¼ü´ÊËù¶ÔÓ¦µÄattachment£¨ÔÚMapµÄKeyÖĞ£©£¬ÒÔ¼°ËüÃÇ³öÏÖµÄ´ÎÊı£¨ÔÚMapµÄValueÖĞ£©
+	 * @return åŒ¹é…ä¸Šçš„å…³é”®è¯æ‰€å¯¹åº”çš„attachmentï¼ˆåœ¨Mapçš„Keyä¸­ï¼‰ï¼Œä»¥åŠå®ƒä»¬å‡ºç°çš„æ¬¡æ•°ï¼ˆåœ¨Mapçš„Valueä¸­ï¼‰
 	 * 			<br>For each keywords that find in the text, return its attachment (as the Key
 	 * 			in the Map) and occurrences count (as the Value in the Map).
 	 */
@@ -128,7 +128,7 @@ public class AnalyzedText {
 		return matchedKeywords;
 	}
 	/**
-	 * @param matchedKeywords Æ¥ÅäÉÏµÄ¹Ø¼ü´ÊËù¶ÔÓ¦µÄattachment£¨ÔÚMapµÄKeyÖĞ£©£¬ÒÔ¼°ËüÃÇ³öÏÖµÄ´ÎÊı£¨ÔÚMapµÄValueÖĞ£©
+	 * @param matchedKeywords åŒ¹é…ä¸Šçš„å…³é”®è¯æ‰€å¯¹åº”çš„attachmentï¼ˆåœ¨Mapçš„Keyä¸­ï¼‰ï¼Œä»¥åŠå®ƒä»¬å‡ºç°çš„æ¬¡æ•°ï¼ˆåœ¨Mapçš„Valueä¸­ï¼‰
 	 * 			<br>For each keywords that find in the text, return its attachment (as the Key
 	 * 			in the Map) and occurrences count (as the Value in the Map).
 	 */

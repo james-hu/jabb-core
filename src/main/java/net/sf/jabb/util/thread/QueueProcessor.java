@@ -21,28 +21,28 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * A template for processing data one by one from a queue.<br>
- * Ò»¸ö´Ó¶ÓÁĞÖĞÖğ¸öÈ¡µÃÊı¾İ½øĞĞ´¦ÀíµÄÄ£°å£¬Êı¾İÒ»¸öÒ»¸ö±»È¡×ß²¢´¦Àí¡£
+ * ä¸€ä¸ªä»é˜Ÿåˆ—ä¸­é€ä¸ªå–å¾—æ•°æ®è¿›è¡Œå¤„ç†çš„æ¨¡æ¿ï¼Œæ•°æ®ä¸€ä¸ªä¸€ä¸ªè¢«å–èµ°å¹¶å¤„ç†ã€‚
  * <p>
  * One working thread will be created for each instance of this class when necessary.
  * <p>
- * ±¾ÀàµÄÃ¿¸öÊµÀıÏàÓ¦µÄ»áÓĞÒ»¸ö¹¤×÷Ïß³ÌÔÚĞèÒªµÄÊ±ºò±»´´½¨¡£
+ * æœ¬ç±»çš„æ¯ä¸ªå®ä¾‹ç›¸åº”çš„ä¼šæœ‰ä¸€ä¸ªå·¥ä½œçº¿ç¨‹åœ¨éœ€è¦çš„æ—¶å€™è¢«åˆ›å»ºã€‚
  * 
  * @author Zhengmao HU (James)
  *
- * @param <E>	Type of the data in the queue.<br>¶ÓÁĞÖĞÊı¾İµÄÀàĞÍ
+ * @param <E>	Type of the data in the queue.<br>é˜Ÿåˆ—ä¸­æ•°æ®çš„ç±»å‹
  */
 abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 
 	/**
 	 * Constructor to create an instance.<br>
-	 * ´´½¨Ò»¸öÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ã€‚
 	 * 
 	 * @param name			Name of this instance, which determines the naming of working thread.<br>
-	 * 						±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 						æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 * @param executorService	Thread pool that working thread will be get from.<br>
-	 * 							Ö¸¶¨ÈÃ±¾ÊµÀı´ÓÕâÀï»ñµÃ¹¤×÷Ïß³Ì¡£
+	 * 							æŒ‡å®šè®©æœ¬å®ä¾‹ä»è¿™é‡Œè·å¾—å·¥ä½œçº¿ç¨‹ã€‚
 	 */
 	public QueueProcessor(BlockingQueue<E> workQueue, String name, ExecutorService executorService){
 		super(workQueue, name, executorService);
@@ -50,12 +50,12 @@ abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 	
 	/**
 	 * Constructor to create an instance.<br>
-	 * ´´½¨Ò»¸öÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ã€‚
 	 * 
 	 * @param name			Name of this instance, which determines the naming of working thread.<br>
-	 * 						±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 						æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 * @param executorService	Thread pool that working thread will be get from.<br>
-	 * 							Ö¸¶¨ÈÃ±¾ÊµÀı´ÓÕâÀï»ñµÃ¹¤×÷Ïß³Ì¡£
+	 * 							æŒ‡å®šè®©æœ¬å®ä¾‹ä»è¿™é‡Œè·å¾—å·¥ä½œçº¿ç¨‹ã€‚
 	 */
 	public QueueProcessor(String name, ExecutorService executorService){
 		super(null, name, executorService);
@@ -63,12 +63,12 @@ abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 	
 	/**
 	 * Constructor to create an instance using default thread pool.<br>
-	 * ´´½¨Ò»¸öÊ¹ÓÃÈ±Ê¡Ïß³Ì³ØµÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªä½¿ç”¨ç¼ºçœçº¿ç¨‹æ± çš„å®ä¾‹ã€‚
 	 * 
 	 * @param name			Name of this instance, which determines the naming of working thread.<br>
-	 * 						±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 						æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 */
 	public QueueProcessor(BlockingQueue<E> workQueue, String name){
 		this(workQueue, name, defaultThreadPool);
@@ -76,10 +76,10 @@ abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 	
 	/**
 	 * Constructor to create an instance using default thread pool.<br>
-	 * ´´½¨Ò»¸öÊ¹ÓÃÈ±Ê¡Ïß³Ì³ØµÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªä½¿ç”¨ç¼ºçœçº¿ç¨‹æ± çš„å®ä¾‹ã€‚
 	 * 
 	 * @param name			Name of this instance, which determines the naming of working thread.<br>
-	 * 						±¾¸öÊµÀıµÄÃû³Æ£¬»á±»ÓÃÔÚ¹¤×÷Ïß³ÌÃûÀï¡£
+	 * 						æœ¬ä¸ªå®ä¾‹çš„åç§°ï¼Œä¼šè¢«ç”¨åœ¨å·¥ä½œçº¿ç¨‹åé‡Œã€‚
 	 */
 	public QueueProcessor(String name){
 		this(null, name, defaultThreadPool);
@@ -87,10 +87,10 @@ abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 
 	/**
 	 * Constructor to create an instance with default name and using default thread pool.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬Ê¹ÓÃÈ±Ê¡µÄÃû³ÆºÍÈ±Ê¡µÄÏß³Ì³Ø¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œä½¿ç”¨ç¼ºçœçš„åç§°å’Œç¼ºçœçš„çº¿ç¨‹æ± ã€‚
 	 * 
 	 * @param workQueue			The queue that data for processing will be fetched from.<br>
-	 * 							±¾ÊµÀı½«´ÓÕâ¸ö¶ÓÁĞÈ¡µÃ´ı´¦ÀíÊı¾İ¡£
+	 * 							æœ¬å®ä¾‹å°†ä»è¿™ä¸ªé˜Ÿåˆ—å–å¾—å¾…å¤„ç†æ•°æ®ã€‚
 	 */
 	public QueueProcessor(BlockingQueue<E> workQueue){
 		this(workQueue, QueueConsumer.class.getSimpleName());
@@ -98,7 +98,7 @@ abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 	
 	/**
 	 * Constructor to create an instance with default name and using default thread pool.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬Ê¹ÓÃÈ±Ê¡µÄÃû³ÆºÍÈ±Ê¡µÄÏß³Ì³Ø¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œä½¿ç”¨ç¼ºçœçš„åç§°å’Œç¼ºçœçš„çº¿ç¨‹æ± ã€‚
 	 */
 	public QueueProcessor(){
 		this(null, QueueConsumer.class.getSimpleName());
@@ -107,7 +107,7 @@ abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 	/**
 	 * This method is overridden over parent class so that one piece of data is taken 
 	 * from the queue and {@link #process(Object)} is invoked.<br>
-	 * Õâ¸ö·½·¨±»ÖØÔØÁË£¬´Ó¶ø¶ÓÁĞÖĞµÄÒ»·İÊı¾İ»á±»È¡³ö²¢µ÷ÓÃ{@link #process(Object)}·½·¨¡£
+	 * è¿™ä¸ªæ–¹æ³•è¢«é‡è½½äº†ï¼Œä»è€Œé˜Ÿåˆ—ä¸­çš„ä¸€ä»½æ•°æ®ä¼šè¢«å–å‡ºå¹¶è°ƒç”¨{@link #process(Object)}æ–¹æ³•ã€‚
 	 */
 	@Override
 	protected void consume() {
@@ -123,10 +123,10 @@ abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 
 	/**
 	 * Process one piece of data - this method should be overridden in subclass.<br>
-	 * ´¦ÀíÒ»·İÊı¾İ¡ª¡ªÕâ¸ö·½·¨Ó¦¸ÃÔÚ×ÓÀàÖĞ±»ÖØÔØ¡£
+	 * å¤„ç†ä¸€ä»½æ•°æ®â€”â€”è¿™ä¸ªæ–¹æ³•åº”è¯¥åœ¨å­ç±»ä¸­è¢«é‡è½½ã€‚
 	 * <p>
 	 * This method may be interrupted while running, so please note the following:<br>
-	 * Õâ¸ö·½·¨ÔÚÔËĞĞ¹ı³ÌÖĞ¿ÉÄÜ»áÓöµ½Ïß³ÌµÄinterrupt£¬ËùÒÔÈç¹ûÓĞÒÔÏÂÇé¿öÒª×¢ÒâÕıÈ·´¦Àí£º
+	 * è¿™ä¸ªæ–¹æ³•åœ¨è¿è¡Œè¿‡ç¨‹ä¸­å¯èƒ½ä¼šé‡åˆ°çº¿ç¨‹çš„interruptï¼Œæ‰€ä»¥å¦‚æœæœ‰ä»¥ä¸‹æƒ…å†µè¦æ³¨æ„æ­£ç¡®å¤„ç†ï¼š
 	 * <p>
 	 *  If this thread is blocked in an invocation of the wait(), wait(long), or wait(long, int) 
 	 *  methods of the Object  class, or of the join(), join(long), join(long, int), sleep(long), 
@@ -142,7 +142,7 @@ abstract public class QueueProcessor<E> extends QueueConsumer<E> {
 	 *  just as if the selector's wakeup method were invoked. 
 	 *  
 	 * @param obj	The data taken from queue, which needs to be processed<br>
-	 * 				´Ó¶ÓÁĞÖĞÈ¡³öµÄ´ı´¦ÀíÊı¾İ¡£
+	 * 				ä»é˜Ÿåˆ—ä¸­å–å‡ºçš„å¾…å¤„ç†æ•°æ®ã€‚
 	 */
 	abstract public void process(E obj );
 

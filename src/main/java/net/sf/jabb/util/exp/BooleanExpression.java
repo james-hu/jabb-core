@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * Logical expression that results in true or false.<br>
- * ²úÉútrue»òfalse½á¹ûµÄÂß¼­±í´ïÊ½¡£
+ * äº§ç”Ÿtrueæˆ–falseç»“æœçš„é€»è¾‘è¡¨è¾¾å¼ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -67,9 +67,9 @@ public class BooleanExpression {
 	}
 	
 	/**
-	 * ´´½¨ÓÃANDÁ¬½ÓµÄ±í´ïÊ½
+	 * åˆ›å»ºç”¨ANDè¿æ¥çš„è¡¨è¾¾å¼
 	 * @param operands
-	 * @return	ÓÃANDÁ¬½ÓÖ®ºóµÄ±í´ïÊ½
+	 * @return	ç”¨ANDè¿æ¥ä¹‹åçš„è¡¨è¾¾å¼
 	 */
 	static public BooleanExpression AND(BooleanExpression... operands){
 		BooleanExpression result = new BooleanExpression(OPERATOR_AND);
@@ -78,9 +78,9 @@ public class BooleanExpression {
 	}
 
 	/**
-	 * ´´½¨ÓÃANDÁ¬½ÓµÄ±í´ïÊ½
+	 * åˆ›å»ºç”¨ANDè¿æ¥çš„è¡¨è¾¾å¼
 	 * @param operands
-	 * @return	ÓÃANDÁ¬½ÓÖ®ºóµÄ±í´ïÊ½
+	 * @return	ç”¨ANDè¿æ¥ä¹‹åçš„è¡¨è¾¾å¼
 	 */
 	static public BooleanExpression AND(Collection<? extends BooleanExpression> operands){
 		BooleanExpression result = new BooleanExpression(OPERATOR_AND);
@@ -89,9 +89,9 @@ public class BooleanExpression {
 	}
 
 	/**
-	 * ´´½¨ÓÃORÁ¬½ÓµÄ±í´ïÊ½
+	 * åˆ›å»ºç”¨ORè¿æ¥çš„è¡¨è¾¾å¼
 	 * @param operands
-	 * @return	ÓÃORÁ¬½ÓÖ®ºóµÄ±í´ïÊ½
+	 * @return	ç”¨ORè¿æ¥ä¹‹åçš„è¡¨è¾¾å¼
 	 */
 	static public BooleanExpression OR(BooleanExpression... operands){
 		BooleanExpression result = new BooleanExpression(OPERATOR_OR);
@@ -100,9 +100,9 @@ public class BooleanExpression {
 	}
 
 	/**
-	 * ´´½¨ÓÃORÁ¬½ÓµÄ±í´ïÊ½
+	 * åˆ›å»ºç”¨ORè¿æ¥çš„è¡¨è¾¾å¼
 	 * @param operands
-	 * @return	ÓÃORÁ¬½ÓÖ®ºóµÄ±í´ïÊ½
+	 * @return	ç”¨ORè¿æ¥ä¹‹åçš„è¡¨è¾¾å¼
 	 */
 	static public BooleanExpression OR(Collection<? extends BooleanExpression> operands){
 		BooleanExpression result = new BooleanExpression(OPERATOR_OR);
@@ -111,9 +111,9 @@ public class BooleanExpression {
 	}
 	
 	/**
-	 * ´´½¨ÓÃNOTĞŞÊÎµÄ±í´ïÊ½
+	 * åˆ›å»ºç”¨NOTä¿®é¥°çš„è¡¨è¾¾å¼
 	 * @param operand
-	 * @return	ÓÃNOTĞŞÊÎÖ®ºóµÄ±í´ïÊ½
+	 * @return	ç”¨NOTä¿®é¥°ä¹‹åçš„è¡¨è¾¾å¼
 	 */
 	static public BooleanExpression NOT(BooleanExpression operand){
 		BooleanExpression result = new BooleanExpression(OPERATOR_NOT);
@@ -142,7 +142,7 @@ public class BooleanExpression {
 	}
 	
 	/**
-	 * ´´½¨Ò»¸öÊµÀı
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹
 	 * @param operatorType
 	 */
 	protected BooleanExpression(int operatorType){
@@ -153,7 +153,7 @@ public class BooleanExpression {
 	}
 	
 	/**
-	 * ¸ø±í´ïÊ½Ôö¼ÓÔËËãÊı
+	 * ç»™è¡¨è¾¾å¼å¢åŠ è¿ç®—æ•°
 	 * @param operand
 	 */
 	public void addOperand(BooleanExpression operand){
@@ -161,7 +161,7 @@ public class BooleanExpression {
 	}
 
 	/**
-	 * ¸ø±í´ïÊ½Ôö¼ÓÔËËãÊı
+	 * ç»™è¡¨è¾¾å¼å¢åŠ è¿ç®—æ•°
 	 * @param operands
 	 */
 	public void addOperand(BooleanExpression... operands){
@@ -171,7 +171,7 @@ public class BooleanExpression {
 	}
 
 	/**
-	 * ¸ø±í´ïÊ½Ôö¼ÓÔËËãÊı
+	 * ç»™è¡¨è¾¾å¼å¢åŠ è¿ç®—æ•°
 	 * @param operands
 	 */
 	public void addOperand(Collection<? extends BooleanExpression> operands){
@@ -179,7 +179,7 @@ public class BooleanExpression {
 	}
 
 	/**
-	 * »ñµÃ±í´ïÊ½µÄ½á¹û¡£×ÓÀà¿ÉÒÔÖØÔØÕâ¸ö·½·¨¡£
+	 * è·å¾—è¡¨è¾¾å¼çš„ç»“æœã€‚å­ç±»å¯ä»¥é‡è½½è¿™ä¸ªæ–¹æ³•ã€‚
 	 * @param context
 	 * @return result
 	 */
@@ -211,7 +211,7 @@ public class BooleanExpression {
 	}
 	
 	/**
-	 * ÓÃnull×÷Îªcontext»ñµÃ±í´ïÊ½µÄ½á¹û¡£×ÓÀà²»±ØÖØÔØÕâ¸ö·½·¨¡£
+	 * ç”¨nullä½œä¸ºcontextè·å¾—è¡¨è¾¾å¼çš„ç»“æœã€‚å­ç±»ä¸å¿…é‡è½½è¿™ä¸ªæ–¹æ³•ã€‚
 	 * @return	evaluate(null)
 	 */
 	public boolean evaluate(){
@@ -219,7 +219,7 @@ public class BooleanExpression {
 	}
 	
 	/**
-	 * ×ª³É×Ö·û´®±íÊ¾¡£×ÓÀà¿ÉÒÔÖØÔØÕâ¸ö·½·¨¡£
+	 * è½¬æˆå­—ç¬¦ä¸²è¡¨ç¤ºã€‚å­ç±»å¯ä»¥é‡è½½è¿™ä¸ªæ–¹æ³•ã€‚
 	 */
 	public String toString(){
 		StringBuilder sb = new StringBuilder();

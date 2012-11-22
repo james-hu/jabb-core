@@ -36,12 +36,12 @@ public class WordIdentifier extends MMSeg {
 		try {
 			while(true) {
 				word = this.next();
-				if (word != null){	// MMSeg·Ö³öÀ´µÄ·ÇÖĞÎÄ´ÊÌõ
+				if (word != null){	// MMSegåˆ†å‡ºæ¥çš„éä¸­æ–‡è¯æ¡
 					words.add(word.getString());
-				} else if (identifiedWords.size() > 0){	//×Ô¼º·Ö³öÀ´µÄÖĞÎÄ´ÊÌõ
+				} else if (identifiedWords.size() > 0){	//è‡ªå·±åˆ†å‡ºæ¥çš„ä¸­æ–‡è¯æ¡
 					words.addAll(identifiedWords);
 					identifiedWords.clear();
-				} else {	//Ã»´ÊÁË
+				} else {	//æ²¡è¯äº†
 					break;
 				}
 				

@@ -29,15 +29,15 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * As a wrapper, it controls the CamelContext, for example, start, stop, suspend and resume.<br>
- * ×÷ÎªÒ»¸ö°ü×°²ã£¬Ëü¿ØÖÆCamelContextµÄÆô¶¯¡¢Í£Ö¹¡¢ÔİÍ£¡¢¼ÌĞøµÈ¡£
+ * ä½œä¸ºä¸€ä¸ªåŒ…è£…å±‚ï¼Œå®ƒæ§åˆ¶CamelContextçš„å¯åŠ¨ã€åœæ­¢ã€æš‚åœã€ç»§ç»­ç­‰ã€‚
  * <p>
  * The CamelContextController opens a server socket port and receives control commands from the port.
  * It controls the CamelContext according to the commands received.
  * Its runtime logging information are sent to commons-logging.
  * <p>
- * CamelContextController´ò¿ªÒ»¸ö·şÎñ¶Ë¿Ú²¢ÇÒ´ÓÕâ¸ö¶Ë¿Ú½ÓÊÕ¿ØÖÆÃüÁî£¬¸ù¾İ»ñµÃµÄÃüÁî£¬
- * ¶ÔËù°ü×°µÄCamelContext½øĞĞ¿ØÖÆ¡£
- * ËüµÄÔËĞĞÊ±logĞÅÏ¢±»ËÍ¸øcommons-logging¡£ 
+ * CamelContextControlleræ‰“å¼€ä¸€ä¸ªæœåŠ¡ç«¯å£å¹¶ä¸”ä»è¿™ä¸ªç«¯å£æ¥æ”¶æ§åˆ¶å‘½ä»¤ï¼Œæ ¹æ®è·å¾—çš„å‘½ä»¤ï¼Œ
+ * å¯¹æ‰€åŒ…è£…çš„CamelContextè¿›è¡Œæ§åˆ¶ã€‚
+ * å®ƒçš„è¿è¡Œæ—¶logä¿¡æ¯è¢«é€ç»™commons-loggingã€‚ 
  * 
  * @author Zhengmao HU (James)
  *
@@ -62,16 +62,16 @@ public class CamelContextController implements Runnable{
 	 * Creates an instance which wraps a specified CamelContext, 
 	 * listens at a specified port and controls the CamelContext according to 
 	 * commands received from that port.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬Ëü°ü×°Ö¸¶¨µÄÄ³¸öCamelContext£¬ÔÚÖ¸¶¨µÄ¶Ë¿ÚÉÏ¼àÌı£¬
-	 * ²¢¸ù¾İ½ÓÊÜµ½µÄÃüÁî¶Ô°ü×°µÄCamelContext½øĞĞ¿ØÖÆ¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œå®ƒåŒ…è£…æŒ‡å®šçš„æŸä¸ªCamelContextï¼Œåœ¨æŒ‡å®šçš„ç«¯å£ä¸Šç›‘å¬ï¼Œ
+	 * å¹¶æ ¹æ®æ¥å—åˆ°çš„å‘½ä»¤å¯¹åŒ…è£…çš„CamelContextè¿›è¡Œæ§åˆ¶ã€‚
 	 * 
 	 * @param camelContext	The CamelContext that will be controlled.<br>
-	 * 						½«±»¿ØÖÆµÄCamelContext¡£
+	 * 						å°†è¢«æ§åˆ¶çš„CamelContextã€‚
 	 * @param serverUri		The listening port in Camel Netty URI format, for example: <br>
-	 * 						¼àÌı¶Ë¿ÚµÄURI£¬ÏòÕâ¸ö¶Ë¿Ú·¢ËÍÃüÁî¾Í¿ÉÒÔ¿ØÖÆCamelContext¡£Ëü×ñÑ­CamelÖĞNetty×é¼şµÄURI¸ñÊ½£¬±ÈÈç£º
+	 * 						ç›‘å¬ç«¯å£çš„URIï¼Œå‘è¿™ä¸ªç«¯å£å‘é€å‘½ä»¤å°±å¯ä»¥æ§åˆ¶CamelContextã€‚å®ƒéµå¾ªCamelä¸­Nettyç»„ä»¶çš„URIæ ¼å¼ï¼Œæ¯”å¦‚ï¼š
 	 * 						<p><code>tcp://localhost:99999?keepAlive=true</code> 
 	 * @param autoDisconnect	Whether disconnect the socket connection from server side after each control command was received.<br>
-	 * 							ÊÇ·ñÔÚÊÕµ½Ã¿¸ö¿ØÖÆÃüÁîÖ®ºó¾Í×Ô¶¯´Ó·şÎñÆ÷¶Ë¶Ï¿ªsocketÁ¬½Ó¡£
+	 * 							æ˜¯å¦åœ¨æ”¶åˆ°æ¯ä¸ªæ§åˆ¶å‘½ä»¤ä¹‹åå°±è‡ªåŠ¨ä»æœåŠ¡å™¨ç«¯æ–­å¼€socketè¿æ¥ã€‚
 	 * @throws Exception
 	 */
 	public CamelContextController(final CamelContext camelContext, final String serverUri, final boolean autoDisconnect) throws Exception{
@@ -106,17 +106,17 @@ public class CamelContextController implements Runnable{
 	 * Creates an instance which wraps a specified CamelContext, 
 	 * listens at a specified port and controls the CamelContext according to 
 	 * commands received from that port.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬Ëü°ü×°Ö¸¶¨µÄÄ³¸öCamelContext£¬ÔÚÖ¸¶¨µÄ¶Ë¿ÚÉÏ¼àÌı£¬
-	 * ²¢¸ù¾İ½ÓÊÜµ½µÄÃüÁî¶Ô°ü×°µÄCamelContext½øĞĞ¿ØÖÆ¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œå®ƒåŒ…è£…æŒ‡å®šçš„æŸä¸ªCamelContextï¼Œåœ¨æŒ‡å®šçš„ç«¯å£ä¸Šç›‘å¬ï¼Œ
+	 * å¹¶æ ¹æ®æ¥å—åˆ°çš„å‘½ä»¤å¯¹åŒ…è£…çš„CamelContextè¿›è¡Œæ§åˆ¶ã€‚
 	 * <p>
 	 * The socket connection will be disconnected from server side after each command
 	 * is received from client side.<br>
-	 * Ã¿µ±´Ó¿Í»§¶Ë½ÓÊÕµ½Ò»¸öÃüÁî£¬·şÎñÆ÷¶Ë¾Í»á×Ô¶¯¶Ï¿ªsocketÁ¬½Ó¡£  
+	 * æ¯å½“ä»å®¢æˆ·ç«¯æ¥æ”¶åˆ°ä¸€ä¸ªå‘½ä»¤ï¼ŒæœåŠ¡å™¨ç«¯å°±ä¼šè‡ªåŠ¨æ–­å¼€socketè¿æ¥ã€‚  
 	 * 
 	 * @param camelContext	The CamelContext that will be controlled.<br>
-	 * 						½«±»¿ØÖÆµÄCamelContext¡£
+	 * 						å°†è¢«æ§åˆ¶çš„CamelContextã€‚
 	 * @param serverUri		The listening port in Camel Netty URI format, for example: <br>
-	 * 						¼àÌı¶Ë¿ÚµÄURI£¬ÏòÕâ¸ö¶Ë¿Ú·¢ËÍÃüÁî¾Í¿ÉÒÔ¿ØÖÆCamelContext¡£Ëü×ñÑ­CamelÖĞNetty×é¼şµÄURI¸ñÊ½£¬±ÈÈç£º
+	 * 						ç›‘å¬ç«¯å£çš„URIï¼Œå‘è¿™ä¸ªç«¯å£å‘é€å‘½ä»¤å°±å¯ä»¥æ§åˆ¶CamelContextã€‚å®ƒéµå¾ªCamelä¸­Nettyç»„ä»¶çš„URIæ ¼å¼ï¼Œæ¯”å¦‚ï¼š
 	 * 						<p><code>tcp://localhost:99999?keepAlive=true</code> 
 	 * @throws Exception
 	 */
@@ -126,15 +126,15 @@ public class CamelContextController implements Runnable{
 	
 	/**
 	 * Sends command to the control command queue.<br>
-	 * Ïò´ı´¦ÀíµÄ¿ØÖÆÃüÁî¶ÓÁĞÖĞ·¢ËÍÒ»¸öÃüÁî¡£
+	 * å‘å¾…å¤„ç†çš„æ§åˆ¶å‘½ä»¤é˜Ÿåˆ—ä¸­å‘é€ä¸€ä¸ªå‘½ä»¤ã€‚
 	 * <p>
 	 * Usually this method should not be called from external directly, 
 	 * commands should be sent to the listening port instead.
 	 * <p>
-	 * Ò»°ã²»´ÓÍâ²¿Ö±½Óµ÷ÓÃÕâ¸ö·½·¨£¬¶øÊÇÏò¼àÌı¶Ë¿Ú·¢ËÍÃüÁî¡£
+	 * ä¸€èˆ¬ä¸ä»å¤–éƒ¨ç›´æ¥è°ƒç”¨è¿™ä¸ªæ–¹æ³•ï¼Œè€Œæ˜¯å‘ç›‘å¬ç«¯å£å‘é€å‘½ä»¤ã€‚
 	 * 
 	 * @param cmd	Control commands, for example, start, stop, suspend, resume, and status.<br>
-	 * 				¿ØÖÆÃüÁî£¬±ÈÈçstart, stop, suspend, resume, status¡£
+	 * 				æ§åˆ¶å‘½ä»¤ï¼Œæ¯”å¦‚start, stop, suspend, resume, statusã€‚
 	 */
 	public String command(String cmd){
 		cmd = cmd.trim().toLowerCase();
@@ -161,7 +161,7 @@ public class CamelContextController implements Runnable{
 	
 	/**
 	 * Starts the command processing loop, exit until "exit" command was received.<br>
-	 * Ñ­»·´¦Àí¿ØÖÆÃüÁî£¬Ö±µ½ÊÕµ½¡°exit¡±ÃüÁî¡£
+	 * å¾ªç¯å¤„ç†æ§åˆ¶å‘½ä»¤ï¼Œç›´åˆ°æ”¶åˆ°â€œexitâ€å‘½ä»¤ã€‚
 	 */
 	public void run(){
 		while(true){
@@ -193,11 +193,11 @@ public class CamelContextController implements Runnable{
 	
 	/**
 	 * Starts the CamelContext and the CamelContextController.<br>
-	 * Æô¶¯CamelContext¼°CamelContextController¡£
+	 * å¯åŠ¨CamelContextåŠCamelContextControllerã€‚
 	 * <p>
 	 * They will not exit until the "exit" command was received by CamelContextController.
 	 * <p>
-	 * ËüÃÇÖ±µ½ÊÕµ½exitÃüÁî²ÅÒ»ÆğÍË³ö¡£
+	 * å®ƒä»¬ç›´åˆ°æ”¶åˆ°exitå‘½ä»¤æ‰ä¸€èµ·é€€å‡ºã€‚
 	 */
 	public void start(){
 		command("start");

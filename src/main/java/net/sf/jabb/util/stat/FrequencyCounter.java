@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Æµ´Î¼ÆÊıÆ÷µÄ»ùÀà£¬ËüÊµÏÖÁËÒ»Ğ©¹«¹²µÄ·½·¨£¬²¢Áô³ö¾ßÌåÊµÏÖ·½·¨¸ø×ÓÀàÈ¥ÊµÏÖ¡£
+ * é¢‘æ¬¡è®¡æ•°å™¨çš„åŸºç±»ï¼Œå®ƒå®ç°äº†ä¸€äº›å…¬å…±çš„æ–¹æ³•ï¼Œå¹¶ç•™å‡ºå…·ä½“å®ç°æ–¹æ³•ç»™å­ç±»å»å®ç°ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -29,181 +29,181 @@ public abstract class FrequencyCounter {
 
 
 	/**
-	 * ¼ÇÂ¼ÔÚÄ³Ê±¿Ì·¢ÉúÁË¶àÉÙ´Î
-	 * @param when		·¢ÉúµÄÊ±¿Ì
-	 * @param times		·¢ÉúµÄ´ÎÊı
+	 * è®°å½•åœ¨æŸæ—¶åˆ»å‘ç”Ÿäº†å¤šå°‘æ¬¡
+	 * @param when		å‘ç”Ÿçš„æ—¶åˆ»
+	 * @param times		å‘ç”Ÿçš„æ¬¡æ•°
 	 */
 	public abstract void count(long when, int times);
 
 	/**
-	 * »ñµÃÄ³Ê±¿ÌµÄÍ³¼ÆÊı
-	 * @param when	Ê±¿Ì
-	 * @return		Í³¼ÆÊı
+	 * è·å¾—æŸæ—¶åˆ»çš„ç»Ÿè®¡æ•°
+	 * @param when	æ—¶åˆ»
+	 * @return		ç»Ÿè®¡æ•°
 	 */
 	public abstract long getCount(long when);
 
 	/**
-	 * »ñµÃÔÚÄ³Ê±¶ÎÄÚµÄ×ÜÍ³¼ÆÊı
-	 * @param fromWhen		¿ªÊ¼Ê±¼ä
-	 * @param toWhen		½áÊøÊ±¼ä
-	 * @param fromInclusive	ÊÇ·ñ°üº¬¿ªÊ¼Ê±¼ä
-	 * @param toInclusive	ÊÇ·ñ°üº¬½áÊøÊ±¼ä
-	 * @return				Í³¼ÆÊı
+	 * è·å¾—åœ¨æŸæ—¶æ®µå†…çš„æ€»ç»Ÿè®¡æ•°
+	 * @param fromWhen		å¼€å§‹æ—¶é—´
+	 * @param toWhen		ç»“æŸæ—¶é—´
+	 * @param fromInclusive	æ˜¯å¦åŒ…å«å¼€å§‹æ—¶é—´
+	 * @param toInclusive	æ˜¯å¦åŒ…å«ç»“æŸæ—¶é—´
+	 * @return				ç»Ÿè®¡æ•°
 	 */
 	public abstract long getCount(long fromWhen, long toWhen, boolean fromInclusive,
 			boolean toInclusive);
 
 	/**
-	 * Çå³ı¹ı¾ÉµÄÀúÊ·Êı¾İ
-	 * @param tillWhen	Çå³ıµ½ÄÄ¸öÊ±¼äµãÎªÖ¹
+	 * æ¸…é™¤è¿‡æ—§çš„å†å²æ•°æ®
+	 * @param tillWhen	æ¸…é™¤åˆ°å“ªä¸ªæ—¶é—´ç‚¹ä¸ºæ­¢
 	 */
 	public abstract void purge(long tillWhen);
 
 	/**
-	 * ¼ÇÂ¼ÔÚÄ³¸öÊ±¼ä·¢ÉúÁË¼¸´Î
-	 * @param when	·¢ÉúÊ±¼ä
-	 * @param times	·¢Éú´ÎÊı
+	 * è®°å½•åœ¨æŸä¸ªæ—¶é—´å‘ç”Ÿäº†å‡ æ¬¡
+	 * @param when	å‘ç”Ÿæ—¶é—´
+	 * @param times	å‘ç”Ÿæ¬¡æ•°
 	 */
 	public void count(Date when, int times) {
 		count(when.getTime(), times);
 	}
 
 	/**
-	 * ¼ÇÂ¼ÔÚÄ³¸öÊ±¼ä·¢ÉúÁËÒ»´Î
-	 * @param when	·¢ÉúµÄÊ±¼ä
+	 * è®°å½•åœ¨æŸä¸ªæ—¶é—´å‘ç”Ÿäº†ä¸€æ¬¡
+	 * @param when	å‘ç”Ÿçš„æ—¶é—´
 	 */
 	public void count(long when) {
 		count(when, 1);
 	}
 	
 	/**
-	 * ¼ÇÂ¼ÔÚµ±Ç°Ê±¼ä·¢ÉúÁËÒ»´Î
+	 * è®°å½•åœ¨å½“å‰æ—¶é—´å‘ç”Ÿäº†ä¸€æ¬¡
 	 */
 	public void count(){
 		count(System.currentTimeMillis(), 1);
 	}
 
 	/**
-	 * ¼ÇÂ¼ÔÚµ±Ç°Ê±¼ä·¢ÉúÁË¼¸´Î
-	 * @param times	·¢ÉúµÄ´ÎÊı
+	 * è®°å½•åœ¨å½“å‰æ—¶é—´å‘ç”Ÿäº†å‡ æ¬¡
+	 * @param times	å‘ç”Ÿçš„æ¬¡æ•°
 	 */
 	public void count(int times){
 		count(System.currentTimeMillis(), times);
 	}
 
 	/**
-	 * ¼ÇÂ¼ÔÚÄ³¸öÊ±¼ä·¢ÉúÁËÒ»´Î
-	 * @param when	·¢ÉúµÄÊ±¼ä
+	 * è®°å½•åœ¨æŸä¸ªæ—¶é—´å‘ç”Ÿäº†ä¸€æ¬¡
+	 * @param when	å‘ç”Ÿçš„æ—¶é—´
 	 */
 	public void count(Date when) {
 		count(when.getTime(), 1);
 	}
 
 	/**
-	 * »ñµÃÄ³¸öÊ±¼äµÄ¼ÆÊı
-	 * @param when	Ê±¿Ì
-	 * @return		Í³¼ÆÊı
+	 * è·å¾—æŸä¸ªæ—¶é—´çš„è®¡æ•°
+	 * @param when	æ—¶åˆ»
+	 * @return		ç»Ÿè®¡æ•°
 	 */
 	public long getCount(Date when) {
 		return getCount(when.getTime());
 	}
 
 	/**
-	 * »ñµÃÄ³Ê±¼äÇø¼äµÄ¼ÆÊı
-	 * @param fromWhen		¿ªÊ¼Ê±¼ä
-	 * @param toWhen		½áÊøÊ±¼ä
-	 * @return				Í³¼ÆÊı
+	 * è·å¾—æŸæ—¶é—´åŒºé—´çš„è®¡æ•°
+	 * @param fromWhen		å¼€å§‹æ—¶é—´
+	 * @param toWhen		ç»“æŸæ—¶é—´
+	 * @return				ç»Ÿè®¡æ•°
 	 */
 	public long getCount(long fromWhen, long toWhen) {
 		return getCount(fromWhen, toWhen, true, false);
 	}
 
 	/**
-	 * »ñµÃÄ³Ê±¼äÇø¼äµÄ¼ÆÊı
-	 * @param fromWhen		¿ªÊ¼Ê±¼ä
-	 * @param toWhen		½áÊøÊ±¼ä
-	 * @param fromInclusive	ÊÇ·ñ°üº¬¿ªÊ¼Ê±¼ä
-	 * @param toInclusive	ÊÇ·ñ°üº¬½áÊøÊ±¼ä
-	 * @return				Í³¼ÆÊı
+	 * è·å¾—æŸæ—¶é—´åŒºé—´çš„è®¡æ•°
+	 * @param fromWhen		å¼€å§‹æ—¶é—´
+	 * @param toWhen		ç»“æŸæ—¶é—´
+	 * @param fromInclusive	æ˜¯å¦åŒ…å«å¼€å§‹æ—¶é—´
+	 * @param toInclusive	æ˜¯å¦åŒ…å«ç»“æŸæ—¶é—´
+	 * @return				ç»Ÿè®¡æ•°
 	 */
 	public long getCount(Date fromWhen, Date toWhen, boolean fromInclusive, boolean toInclusive) {
 		return getCount(fromWhen.getTime(), toWhen.getTime(), true, false);
 	}
 
 	/**
-	 * »ñµÃÄ³Ê±¼äÇø¼äµÄ¼ÆÊı
-	 * @param fromWhen		¿ªÊ¼Ê±¼ä
-	 * @param toWhen		½áÊøÊ±¼ä
-	 * @return				Í³¼ÆÊı
+	 * è·å¾—æŸæ—¶é—´åŒºé—´çš„è®¡æ•°
+	 * @param fromWhen		å¼€å§‹æ—¶é—´
+	 * @param toWhen		ç»“æŸæ—¶é—´
+	 * @return				ç»Ÿè®¡æ•°
 	 */
 	public long getCount(Date fromWhen, Date toWhen) {
 		return getCount(fromWhen.getTime(), toWhen.getTime(), true, false);
 	}
 
 	/**
-	 * »ñµÃÄ³Ê±¼äÇø¼äµÄ¼ÆÊı
-	 * @param toWhen	µ½Ä³¸öÊ±¼äÎªÖ¹
-	 * @param period	ÏòÇ°ÍÆ¶àÉÙÊ±¼ä
-	 * @param unit		ÏòÇ°ÍÆ¶àÉÙÊ±¼äµÄµ¥Î»
-	 * @return			Í³¼ÆÊı
+	 * è·å¾—æŸæ—¶é—´åŒºé—´çš„è®¡æ•°
+	 * @param toWhen	åˆ°æŸä¸ªæ—¶é—´ä¸ºæ­¢
+	 * @param period	å‘å‰æ¨å¤šå°‘æ—¶é—´
+	 * @param unit		å‘å‰æ¨å¤šå°‘æ—¶é—´çš„å•ä½
+	 * @return			ç»Ÿè®¡æ•°
 	 */
 	public long getCount(long toWhen, long period, TimeUnit unit) {
 		return getCount(toWhen - TimeUnit.MILLISECONDS.convert(period, unit), toWhen);
 	}
 
 	/**
-	 * »ñµÃÄ³Ê±¼äÇø¼äµÄ¼ÆÊı
-	 * @param toWhen	µ½Ä³¸öÊ±¼äÎªÖ¹
-	 * @param period	ÏòÇ°ÍÆ¶àÉÙÊ±¼ä
-	 * @param unit		ÏòÇ°ÍÆ¶àÉÙÊ±¼äµÄµ¥Î»
-	 * @return			Í³¼ÆÊı
+	 * è·å¾—æŸæ—¶é—´åŒºé—´çš„è®¡æ•°
+	 * @param toWhen	åˆ°æŸä¸ªæ—¶é—´ä¸ºæ­¢
+	 * @param period	å‘å‰æ¨å¤šå°‘æ—¶é—´
+	 * @param unit		å‘å‰æ¨å¤šå°‘æ—¶é—´çš„å•ä½
+	 * @return			ç»Ÿè®¡æ•°
 	 */
 	public long getCount(Date toWhen, long period, TimeUnit unit) {
 		return getCount(toWhen.getTime(), period, unit);
 	}
 
 	/**
-	 * »ñµÃ×î½üÒ»¶ÎÊ±¼äµÄ¼ÆÊı
-	 * @param period	ÏòÇ°ÍÆ¶àÉÙÊ±¼ä
-	 * @param unit		ÏòÇ°ÍÆ¶àÉÙÊ±¼äµÄµ¥Î»
-	 * @return			Í³¼ÆÊı
+	 * è·å¾—æœ€è¿‘ä¸€æ®µæ—¶é—´çš„è®¡æ•°
+	 * @param period	å‘å‰æ¨å¤šå°‘æ—¶é—´
+	 * @param unit		å‘å‰æ¨å¤šå°‘æ—¶é—´çš„å•ä½
+	 * @return			ç»Ÿè®¡æ•°
 	 */
 	public long getCount(long period, TimeUnit unit) {
 		return getCount(System.currentTimeMillis(), period, unit);
 	}
 
 	/**
-	 * É¾³ıµôÔçÓÚÒ»¶¨Ê±¼äµÄ¼ÇÂ¼
-	 * @param tillWhen	Çå³ıµ½ÄÄ¸öÊ±¼äµãÎªÖ¹
+	 * åˆ é™¤æ‰æ—©äºä¸€å®šæ—¶é—´çš„è®°å½•
+	 * @param tillWhen	æ¸…é™¤åˆ°å“ªä¸ªæ—¶é—´ç‚¹ä¸ºæ­¢
 	 */
 	public void purge(Date tillWhen) {
 		purge(tillWhen.getTime());
 	}
 
 	/**
-	 * É¾³ıµôÔçÓÚÒ»¶¨Ê±¼äµÄ¼ÇÂ¼
-	 * @param baseTime			´ÓÊ²Ã´Ê±¼äËãÆğ
-	 * @param periodBefore		¶àÉÙÊ±¼äÖ®Ç°µÄÒªÉ¾µô
-	 * @param unit				Ê±¼äµ¥Î»
+	 * åˆ é™¤æ‰æ—©äºä¸€å®šæ—¶é—´çš„è®°å½•
+	 * @param baseTime			ä»ä»€ä¹ˆæ—¶é—´ç®—èµ·
+	 * @param periodBefore		å¤šå°‘æ—¶é—´ä¹‹å‰çš„è¦åˆ æ‰
+	 * @param unit				æ—¶é—´å•ä½
 	 */
 	public void purge(long baseTime, long periodBefore, TimeUnit unit) {
 		purge(baseTime - TimeUnit.MILLISECONDS.convert(periodBefore, unit));
 	}
 
 	/**
-	 * É¾³ıµôÔçÓÚÒ»¶¨Ê±¼äµÄ¼ÇÂ¼
-	 * @param baseTime		´ÓÊ²Ã´Ê±¼äËãÆğ
-	 * @param periodBefore	¶àÉÙÊ±¼äÖ®Ç°µÄÒªÉ¾µô
-	 * @param unit			Ê±¼äµ¥Î»
+	 * åˆ é™¤æ‰æ—©äºä¸€å®šæ—¶é—´çš„è®°å½•
+	 * @param baseTime		ä»ä»€ä¹ˆæ—¶é—´ç®—èµ·
+	 * @param periodBefore	å¤šå°‘æ—¶é—´ä¹‹å‰çš„è¦åˆ æ‰
+	 * @param unit			æ—¶é—´å•ä½
 	 */
 	public void purge(Date baseTime, long periodBefore, TimeUnit unit) {
 		purge(baseTime.getTime(), periodBefore, unit);
 	}
 
 	/**
-	 * É¾³ıµôÔçÓÚÒ»¶¨Ê±¼äµÄ¼ÇÂ¼
-	 * @param periodBefore	´ÓÏÖÔÚËãÆğ£¬¶àÉÙÊ±¼äÖ®Ç°
-	 * @param unit			Ê±¼äµ¥Î»
+	 * åˆ é™¤æ‰æ—©äºä¸€å®šæ—¶é—´çš„è®°å½•
+	 * @param periodBefore	ä»ç°åœ¨ç®—èµ·ï¼Œå¤šå°‘æ—¶é—´ä¹‹å‰
+	 * @param unit			æ—¶é—´å•ä½
 	 */
 	public void purge(long periodBefore, TimeUnit unit) {
 		purge(System.currentTimeMillis() - TimeUnit.MILLISECONDS.convert(periodBefore, unit));

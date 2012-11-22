@@ -1,5 +1,5 @@
 /*
-Copyright 2011 Zhengmao HU (James)
+Copyright 2011-2012 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,29 +21,30 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+import net.sf.jabb.util.col.PutIfAbsentMap;
 import net.sf.jabb.util.col.PutOnGetMap;
 import net.sf.jabb.util.stat.BasicNumberStatistics;
 import net.sf.jabb.util.text.DurationFormatter;
 
 /**
  * Record of time spent on something.<br>
- * ¶ÔÄ³Ïî¹¤×÷Ëù»¨Ê±¼äµÄ¼ÇÂ¼¡£
+ * å¯¹æŸé¡¹å·¥ä½œæ‰€èŠ±æ—¶é—´çš„è®°å½•ã€‚
  * <p>
  * Duration is defined to be the period of time from the beginning to the end of an action.
  * Run Time is defined to be the accumulated duration spent in all working threads.
  * If there is no multi-threading, then Run Time should be the same as Duration.
  * <p>
- * DurationµÄ¶¨ÒåÊÇÄ³Ïî»î¶¯´Ó¿ªÊ¼µ½½áÊøµÄÊ±¼ä¶Î¡£
- * Run TimeµÄ¶¨ÒåÊÇËùÓĞ¹¤×÷Ïß³ÌµÄDurationÖ®ºÍ¡£
- * Èç¹ûÃ»ÓĞ¶àÏß³Ì´¦Àí£¬ÔòRun TimeÓëDurationÊÇÒ»ÑùµÄ¡£
+ * Durationçš„å®šä¹‰æ˜¯æŸé¡¹æ´»åŠ¨ä»å¼€å§‹åˆ°ç»“æŸçš„æ—¶é—´æ®µã€‚
+ * Run Timeçš„å®šä¹‰æ˜¯æ‰€æœ‰å·¥ä½œçº¿ç¨‹çš„Durationä¹‹å’Œã€‚
+ * å¦‚æœæ²¡æœ‰å¤šçº¿ç¨‹å¤„ç†ï¼Œåˆ™Run Timeä¸Durationæ˜¯ä¸€æ ·çš„ã€‚
  * <p>
  * start() and end() must be invoked in pair in same thread. 
  * But pairs of start() and end() can be invoked in multi-thread environment.
  * add() is equivalent to a pair of start() and end().
  * <p>
- * start()ºÍend()±ØĞëÔÚÍ¬Ò»¸öÏß³ÌÖĞ³É¶Ôµ÷ÓÃ¡£
- * µ«ÊÇ¸÷¶Ôstart()ºÍend()¿ÉÒÔÔÚ¶àÏß³ÌÇé¿öÏÂÊ¹ÓÃ¡£
- * add()¿ÉÒÔÓÃÀ´´úÌæÒ»¶Ôstart()ºÍend()¡£
+ * start()å’Œend()å¿…é¡»åœ¨åŒä¸€ä¸ªçº¿ç¨‹ä¸­æˆå¯¹è°ƒç”¨ã€‚
+ * ä½†æ˜¯å„å¯¹start()å’Œend()å¯ä»¥åœ¨å¤šçº¿ç¨‹æƒ…å†µä¸‹ä½¿ç”¨ã€‚
+ * add()å¯ä»¥ç”¨æ¥ä»£æ›¿ä¸€å¯¹start()å’Œend()ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -52,7 +53,7 @@ public class RunTime {
 	protected static final String INDENT = "  ";
 	
 	protected String description;
-	protected PutOnGetMap<String, RunTime> detail;
+	protected PutIfAbsentMap<String, RunTime> detail;
 	protected Object attachment;
 	
 	protected BasicNumberStatistics statistics;
@@ -62,7 +63,7 @@ public class RunTime {
 	
 	/**
 	 * Constructor.<br>
-	 * ¹¹Ôì·½·¨¡£
+	 * æ„é€ æ–¹æ³•ã€‚
 	 * 
 	 * @param description	Any text that describes this RunTime.
 	 */
@@ -73,17 +74,17 @@ public class RunTime {
 	
 	/**
 	 * Construct an instance without description text.
-	 * ´´½¨Ò»¸ödescriptionÎª¿ÕµÄÊµÀı¡£
+	 * åˆ›å»ºä¸€ä¸ªdescriptionä¸ºç©ºçš„å®ä¾‹ã€‚
 	 */
 	public RunTime(){
 		statistics = new BasicNumberStatistics();
 		firstRunStartTime = new AtomicLong(0);
-		detail = new PutOnGetMap<String, RunTime>(new LinkedHashMap<String, RunTime>(), RunTime.class);
+		detail = new PutIfAbsentMap<String, RunTime>(new LinkedHashMap<String, RunTime>(), RunTime.class);
 	}
 	
 	/**
 	 * Reset to initial status.<br>
-	 * »Ø¸´µ½³õÊ¼×´Ì¬¡£
+	 * å›å¤åˆ°åˆå§‹çŠ¶æ€ã€‚
 	 */
 	public void reset(){
 		statistics.reset();
@@ -94,7 +95,7 @@ public class RunTime {
 	
 	/**
 	 * Create a detail record and add it as a child.<br>
-	 * ´´½¨Ò»ÌõÏêÏ¸¼ÇÂ¼²¢¼ÓÎªÏÂ¼¶¡£
+	 * åˆ›å»ºä¸€æ¡è¯¦ç»†è®°å½•å¹¶åŠ ä¸ºä¸‹çº§ã€‚
 	 * 
 	 * @param description	Any text that describes the detailed RunTime.
 	 * @return	The detailed RunTime created.
@@ -107,7 +108,7 @@ public class RunTime {
 	
 	/**
 	 * Add an existing detail record as a child.<br>
-	 * ½«Ò»ÌõÒÑÓĞµÄÏêÏ¸¼ÇÂ¼¼ÓÎªÏÂ¼¶¡£
+	 * å°†ä¸€æ¡å·²æœ‰çš„è¯¦ç»†è®°å½•åŠ ä¸ºä¸‹çº§ã€‚
 	 * 
 	 * @param child 	an existing record that need to be added as a child.
 	 */
@@ -117,12 +118,12 @@ public class RunTime {
 	
 	/**
 	 * Get specified detail record, if it does not exist yet, create it first.<br>
-	 * »ñµÃÖ¸¶¨µÄÏêÏ¸¼ÇÂ¼£¬Èç¹û²»´æÔÚÔòÏÈ´´½¨Ò»¸ö¡£
+	 * è·å¾—æŒ‡å®šçš„è¯¦ç»†è®°å½•ï¼Œå¦‚æœä¸å­˜åœ¨åˆ™å…ˆåˆ›å»ºä¸€ä¸ªã€‚
 	 * 
 	 * @param description  description of the detail record.<br>
-	 * 						ÕâÌõÏêÏ¸¼ÇÂ¼µÄdescription¡£
+	 * 						è¿™æ¡è¯¦ç»†è®°å½•çš„descriptionã€‚
 	 * @return  The detail record with specified description.<br>
-	 * 			¾ßÓĞÖ¸¶¨descriptionµÄÏêÏ¸¼ÇÂ¼¡£
+	 * 			å…·æœ‰æŒ‡å®šdescriptionçš„è¯¦ç»†è®°å½•ã€‚
 	 */
 	public RunTime getDetail(String description){
 		RunTime child = detail.get(description);
@@ -134,7 +135,7 @@ public class RunTime {
 	
 	/**
 	 * Starts the calculation of run time. <br>
-	 * ¿ªÊ¼¼ÆÊ±£¬Ëü±ØĞëÓë½áÊø¼ÆÊ±ÔÚÍ¬Ò»¸öÏß³ÌÖĞ±»µ÷ÓÃ¡£
+	 * å¼€å§‹è®¡æ—¶ï¼Œå®ƒå¿…é¡»ä¸ç»“æŸè®¡æ—¶åœ¨åŒä¸€ä¸ªçº¿ç¨‹ä¸­è¢«è°ƒç”¨ã€‚
 	 * <p>
 	 * The pair of start() and end() must be called from the same thread.
 	 */
@@ -145,9 +146,9 @@ public class RunTime {
 	
 	/**
 	 * Starts the calculation of run time of a detail record.<br>
-	 * ¿ªÊ¼¶ÔÒ»¸öÏêÏ¸¼ÇÂ¼µÄ¼ÆÊ±£¬Ëü±ØĞëÓë½áÊø¼ÆÊ±ÔÚÍ¬Ò»¸öÏß³ÌÖĞ±»µ÷ÓÃ¡£
+	 * å¼€å§‹å¯¹ä¸€ä¸ªè¯¦ç»†è®°å½•çš„è®¡æ—¶ï¼Œå®ƒå¿…é¡»ä¸ç»“æŸè®¡æ—¶åœ¨åŒä¸€ä¸ªçº¿ç¨‹ä¸­è¢«è°ƒç”¨ã€‚
 	 * @param desc	Description of the detail record.<br>
-	 * 				ÏêÏ¸¼ÇÂ¼µÄDescription
+	 * 				è¯¦ç»†è®°å½•çš„Description
 	 */
 	public void startDetail(String desc){
 		this.getDetail(desc).start();
@@ -155,9 +156,9 @@ public class RunTime {
 	
 	/**
 	 * Ends the calculation of run time of a detail record.<br>
-	 * ½áÊø¶ÔÒ»¸öÏêÏ¸¼ÇÂ¼µÄ¼ÆÊ±£¬Ëü±ØĞëÓë¿ªÊ¼¼ÆÊ±ÔÚÍ¬Ò»¸öÏß³ÌÖĞ±»µ÷ÓÃ¡£
+	 * ç»“æŸå¯¹ä¸€ä¸ªè¯¦ç»†è®°å½•çš„è®¡æ—¶ï¼Œå®ƒå¿…é¡»ä¸å¼€å§‹è®¡æ—¶åœ¨åŒä¸€ä¸ªçº¿ç¨‹ä¸­è¢«è°ƒç”¨ã€‚
 	 * @param desc	Description of the detail record.<br>
-	 * 				ÏêÏ¸¼ÇÂ¼µÄDescription
+	 * 				è¯¦ç»†è®°å½•çš„Description
 	 */
 	public void endDetail(String desc){
 		this.getDetail(desc).end();
@@ -165,7 +166,7 @@ public class RunTime {
 	
 	/**
 	 * Ends the calculation of run time.<br>
-	 * ½áÊø¼ÆÊ±£¬Ëü±ØĞëÓë¿ªÊ¼¼ÆÊ±ÔÚÍ¬Ò»¸öÏß³ÌÖĞ±»µ÷ÓÃ¡£
+	 * ç»“æŸè®¡æ—¶ï¼Œå®ƒå¿…é¡»ä¸å¼€å§‹è®¡æ—¶åœ¨åŒä¸€ä¸ªçº¿ç¨‹ä¸­è¢«è°ƒç”¨ã€‚
 	 * <p>
 	 * The pair of start() and end() must be called from the same thread.
 	 */
@@ -175,7 +176,7 @@ public class RunTime {
 	
 	/**
 	 * Add one run time.<br>
-	 * Ôö¼ÓÒ»´ÎRunTime¡£
+	 * å¢åŠ ä¸€æ¬¡RunTimeã€‚
 	 * 
 	 * @param milliStartTime	Start time in milliseconds (usually from System.currentTimeMillis())
 	 * @param nanoDurationTime	Run time duration in nanoseconds.
@@ -187,10 +188,10 @@ public class RunTime {
 	
 	/**
 	 * Add one run time to a specified detail record.<br>
-	 * ¸øÖ¸¶¨µÄÏêÏ¸¼ÇÂ¼Ôö¼ÓÒ»´ÎRunTime¡£
+	 * ç»™æŒ‡å®šçš„è¯¦ç»†è®°å½•å¢åŠ ä¸€æ¬¡RunTimeã€‚
 	 * 
 	 * @param desc	Description of the detail record.<br>
-	 * 				ÏêÏ¸¼ÇÂ¼µÄDescription
+	 * 				è¯¦ç»†è®°å½•çš„Description
 	 * @param milliStartTime	Start time in milliseconds (usually from System.currentTimeMillis())
 	 * @param nanoDurationTime	Run time duration in nanoseconds.
 	 */
@@ -200,10 +201,10 @@ public class RunTime {
 
 	/**
 	 * Output to a TAB separated text which can be pasted into Excel.<br>
-	 * Êä³ö³É¿ÉÒÔÌù½øExcelµÄÓÉTAB·Ö¸ôµÄÎÄ±¾¡£
+	 * è¾“å‡ºæˆå¯ä»¥è´´è¿›Excelçš„ç”±TABåˆ†éš”çš„æ–‡æœ¬ã€‚
 	 * <p>
 	 * The first row is the column headers. Fields in each following line:<br>
-	 * µÚÒ»ĞĞÊÇÁĞ±êÌâ¡£ºóĞøÃ¿ĞĞµÄ×Ö¶ÎÈçÏÂ£º<p>
+	 * ç¬¬ä¸€è¡Œæ˜¯åˆ—æ ‡é¢˜ã€‚åç»­æ¯è¡Œçš„å­—æ®µå¦‚ä¸‹ï¼š<p>
 	 * <code>
 	 * Description with left indent according to hierarchical structure
 	 * First Run Start Time (in text format, in milliseconds)
@@ -282,7 +283,7 @@ public class RunTime {
 	
 	/**
 	 * Get run time which is the add-up of the run duration of all threads.<br>
-	 * »ñµÃÊµ¼ÊµÄÔËĞĞÊ±¼ä£¬ËüÊÇËùÓĞÏß³ÌµÄÖ´ĞĞÊ±¼äÖ®ºÍ¡£
+	 * è·å¾—å®é™…çš„è¿è¡Œæ—¶é—´ï¼Œå®ƒæ˜¯æ‰€æœ‰çº¿ç¨‹çš„æ‰§è¡Œæ—¶é—´ä¹‹å’Œã€‚
 	 * 
 	 * @return add-up of the run duration of all threads
 	 */
@@ -304,7 +305,7 @@ public class RunTime {
 	
 	/**
 	 * Get the duration.<b>
-	 * »ñµÃÔËĞĞÆÚ¼äËù¿çµÄÊ±¼ä¶Î¡£
+	 * è·å¾—è¿è¡ŒæœŸé—´æ‰€è·¨çš„æ—¶é—´æ®µã€‚
 	 * 
 	 * @return	in nanoseconds
 	 */

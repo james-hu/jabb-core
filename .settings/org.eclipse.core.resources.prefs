@@ -1,6 +1,5 @@
 eclipse.preferences.version=1
-encoding//src/main/java=GB18030
 encoding//src/main/resources=GB18030
 encoding//src/test/java=GB18030
 encoding//src/test/resources=GB18030
-encoding/<project>=GB18030
+encoding/<project>=UTF-8

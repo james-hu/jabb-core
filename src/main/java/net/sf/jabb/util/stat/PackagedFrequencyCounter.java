@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * ´ò°ü·â×°ºÃµÄÆµ´Î¼ÆÊı¹¤¾ß
+ * æ‰“åŒ…å°è£…å¥½çš„é¢‘æ¬¡è®¡æ•°å·¥å…·
  * 
  * @author Zhengmao HU (James)
  *
@@ -32,8 +32,8 @@ public class PackagedFrequencyCounter extends FrequencyCounter{
 	protected Map<Object, BasicFrequencyCounter> counters;
 	
 	/**
-	 * ´´½¨°üº¬¶à¸öBasicFrequencyCounter¶ÔÏóµÄ¼ÆÊıÆ÷×éºÏ
-	 * @param counterDefinitions	¸÷¸öBasicFrequencyCounterµÄÅäÖÃĞÅÏ¢£¬Çë×¢ÒâËüÃÇµÄID±ØĞëÉèÖÃ
+	 * åˆ›å»ºåŒ…å«å¤šä¸ªBasicFrequencyCounterå¯¹è±¡çš„è®¡æ•°å™¨ç»„åˆ
+	 * @param counterDefinitions	å„ä¸ªBasicFrequencyCounterçš„é…ç½®ä¿¡æ¯ï¼Œè¯·æ³¨æ„å®ƒä»¬çš„IDå¿…é¡»è®¾ç½®
 	 */
 	public PackagedFrequencyCounter(Collection<FrequencyCounterDefinition> counterDefinitions){
 		counters = new HashMap<Object, BasicFrequencyCounter>(counterDefinitions.size());
@@ -44,8 +44,8 @@ public class PackagedFrequencyCounter extends FrequencyCounter{
 	}
 	
 	/**
-	 * ´´½¨°üº¬¶à¸öBasicFrequencyCounter¶ÔÏóµÄ¼ÆÊıÆ÷×éºÏ
-	 * @param counterDefinitions	¸÷¸öBasicFrequencyCounterµÄÅäÖÃĞÅÏ¢£¬Çë×¢ÒâËüÃÇµÄID±ØĞëÉèÖÃ
+	 * åˆ›å»ºåŒ…å«å¤šä¸ªBasicFrequencyCounterå¯¹è±¡çš„è®¡æ•°å™¨ç»„åˆ
+	 * @param counterDefinitions	å„ä¸ªBasicFrequencyCounterçš„é…ç½®ä¿¡æ¯ï¼Œè¯·æ³¨æ„å®ƒä»¬çš„IDå¿…é¡»è®¾ç½®
 	 */
 	public PackagedFrequencyCounter(FrequencyCounterDefinition... counterDefinitions){
 		counters = new HashMap<Object, BasicFrequencyCounter>(counterDefinitions.length);
@@ -56,9 +56,9 @@ public class PackagedFrequencyCounter extends FrequencyCounter{
 	}
 
 	/**
-	 * ¸ù¾İID£¬»ñÈ¡IDËù¶ÔÓ¦µÄBasicFrequencyCounter
-	 * @param id	Òª»ñµÃµÄBasicFrequencyCounterµÄID
-	 * @return		ÓëÖ¸¶¨IDËù¶ÔÓ¦µÄBasicFrequencyCounter
+	 * æ ¹æ®IDï¼Œè·å–IDæ‰€å¯¹åº”çš„BasicFrequencyCounter
+	 * @param id	è¦è·å¾—çš„BasicFrequencyCounterçš„ID
+	 * @return		ä¸æŒ‡å®šIDæ‰€å¯¹åº”çš„BasicFrequencyCounter
 	 */
 	public BasicFrequencyCounter getCounter(Object id){
 		return counters.get(id);
@@ -94,7 +94,7 @@ public class PackagedFrequencyCounter extends FrequencyCounter{
 	}
 	
 	/**
-	 * ×ªÎª×Ö·û´®
+	 * è½¬ä¸ºå­—ç¬¦ä¸²
 	 */
 	public String toString(){
 		StringBuilder sb = new StringBuilder();

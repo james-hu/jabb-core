@@ -19,13 +19,13 @@ package net.sf.jabb.util.stat;
 /**
  * It stores the minimum value; 
  * the compare-and-change procedure is synchronized so that multi-thread safe is ensured.<br>
- * ´æ·Å×îĞ¡Öµ£¬¡°±È½ÏÈ»ºó½»»»¡±µÄ¹ı³ÌÊÇÍ¬²½µÄ£¬ËùÒÔËüÊÇ¶àÏß³Ì°²È«µÄ¡£
+ * å­˜æ”¾æœ€å°å€¼ï¼Œâ€œæ¯”è¾ƒç„¶åäº¤æ¢â€çš„è¿‡ç¨‹æ˜¯åŒæ­¥çš„ï¼Œæ‰€ä»¥å®ƒæ˜¯å¤šçº¿ç¨‹å®‰å…¨çš„ã€‚
  *
  */
 public class AtomicMinLong extends AtomicMinMaxLong {
 	/**
 	 * Constructs an instance to store the minimum value.<br>
-	 * ´´½¨Ò»¸öÊµÀı£¬ÓÃÀ´±£´æ×îĞ¡Öµ¡£
+	 * åˆ›å»ºä¸€ä¸ªå®ä¾‹ï¼Œç”¨æ¥ä¿å­˜æœ€å°å€¼ã€‚
 	 */
 	public AtomicMinLong(){
 		super(Long.MAX_VALUE);
@@ -34,10 +34,10 @@ public class AtomicMinLong extends AtomicMinMaxLong {
 	/**
 	 * Compare a value with current minimal value and make the less one the new minimum value;
 	 * New minimum value after comparison is returned.<br>
-	 * ÄÃÒ»¸öÖµÍ¬µ±Ç°Öµ±È½Ï£¬°ÑÆäÖĞĞ¡µÄÄÇ¸öÉèÖÃÎªĞÂµÄ×îĞ¡Öµ£¬·µ»Ø±È½ÏÖ®ºóµÄĞÂµÄ×îĞ¡Öµ¡£
+	 * æ‹¿ä¸€ä¸ªå€¼åŒå½“å‰å€¼æ¯”è¾ƒï¼ŒæŠŠå…¶ä¸­å°çš„é‚£ä¸ªè®¾ç½®ä¸ºæ–°çš„æœ€å°å€¼ï¼Œè¿”å›æ¯”è¾ƒä¹‹åçš„æ–°çš„æœ€å°å€¼ã€‚
 	 * 
-	 * @param newValue	ÄÃÀ´×÷±È½ÏµÄÖµ¡£
-	 * @return		New minimum value after comparison<br>±È½ÏÖ®ºóµÄĞÂµÄ×îĞ¡Öµ
+	 * @param newValue	æ‹¿æ¥ä½œæ¯”è¾ƒçš„å€¼ã€‚
+	 * @return		New minimum value after comparison<br>æ¯”è¾ƒä¹‹åçš„æ–°çš„æœ€å°å€¼
 	 */
 	public long minAndGet(long newValue){
 		synchronized(updateLock){
@@ -51,10 +51,10 @@ public class AtomicMinLong extends AtomicMinMaxLong {
 	/**
 	 * Compare a value with current minimal value and make the less one the new minimum value;
 	 * Old minimum value before comparison is returned.<br>
-	 * ÄÃÒ»¸öÖµÍ¬µ±Ç°Öµ±È½Ï£¬°ÑÆäÖĞĞ¡µÄÄÇ¸öÉèÖÃÎªĞÂµÄ×îĞ¡Öµ£¬·µ»Ø±È½ÏÖ®Ç°µÄ¾ÉµÄ×îĞ¡Öµ¡£
+	 * æ‹¿ä¸€ä¸ªå€¼åŒå½“å‰å€¼æ¯”è¾ƒï¼ŒæŠŠå…¶ä¸­å°çš„é‚£ä¸ªè®¾ç½®ä¸ºæ–°çš„æœ€å°å€¼ï¼Œè¿”å›æ¯”è¾ƒä¹‹å‰çš„æ—§çš„æœ€å°å€¼ã€‚
 	 * 
-	 * @param newValue	ÄÃÀ´×÷±È½ÏµÄÖµ¡£
-	 * @return		Old minimum value before comparison<br>±È½ÏÖ®Ç°µÄ¾ÉµÄ×îĞ¡Öµ
+	 * @param newValue	æ‹¿æ¥ä½œæ¯”è¾ƒçš„å€¼ã€‚
+	 * @return		Old minimum value before comparison<br>æ¯”è¾ƒä¹‹å‰çš„æ—§çš„æœ€å°å€¼
 	 */
 	public long getAndMin(long newValue){
 		long oldValue;
@@ -69,9 +69,9 @@ public class AtomicMinLong extends AtomicMinMaxLong {
 	
 	/**
 	 * Compare a value with current minimum value and make the less one the new minimum value.<br>
-	 * ÄÃÒ»¸öÖµÍ¬µ±Ç°Öµ±È½Ï£¬°ÑÆäÖĞĞ¡µÄÄÇ¸öÉèÖÃÎªĞÂµÄ×îĞ¡Öµ¡£
+	 * æ‹¿ä¸€ä¸ªå€¼åŒå½“å‰å€¼æ¯”è¾ƒï¼ŒæŠŠå…¶ä¸­å°çš„é‚£ä¸ªè®¾ç½®ä¸ºæ–°çš„æœ€å°å€¼ã€‚
 	 * 
-	 * @param newValue	ÄÃÀ´×÷±È½ÏµÄÖµ¡£
+	 * @param newValue	æ‹¿æ¥ä½œæ¯”è¾ƒçš„å€¼ã€‚
 	 */
 	public void min(long newValue){
 		minAndGet(newValue);
@@ -79,7 +79,7 @@ public class AtomicMinLong extends AtomicMinMaxLong {
 
 	/**
 	 * Reset to initial status.<br>
-	 * »Ø¸´µ½³õÊ¼×´Ì¬¡£
+	 * å›å¤åˆ°åˆå§‹çŠ¶æ€ã€‚
 	 */
 	@Override
 	public void reset() {

@@ -25,7 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Ò»¸öÒ»¸ö³¢ÊÔ¡£
+ * ä¸€ä¸ªä¸€ä¸ªå°è¯•ã€‚
  * @author Zhengmao HU (James)
  *
  */

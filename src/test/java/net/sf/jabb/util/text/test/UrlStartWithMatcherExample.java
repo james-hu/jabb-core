@@ -34,16 +34,16 @@ import net.sf.jabb.util.text.UrlStartWithMatcher;
 public class UrlStartWithMatcherExample {
 
 	/**
-	 * ÕâÊÇÒ»¸öÓÃ·¨Ê¾Àı¡£
+	 * è¿™æ˜¯ä¸€ä¸ªç”¨æ³•ç¤ºä¾‹ã€‚
 	 * @param args
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
 	 */
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		System.out.println("==== Ò»°ã¹¦ÄÜÊ¾·¶ ====");
+		System.out.println("==== ä¸€èˆ¬åŠŸèƒ½ç¤ºèŒƒ ====");
 		UrlStartWithMatcher m = showExample(null);
 		
-		System.out.println("==== ĞòÁĞ»¯Ê¾·¶ ====");
+		System.out.println("==== åºåˆ—åŒ–ç¤ºèŒƒ ====");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ObjectOutputStream oos = new ObjectOutputStream(baos);
 		oos.writeObject(m);
@@ -53,7 +53,7 @@ public class UrlStartWithMatcherExample {
 		UrlStartWithMatcher m2 = (UrlStartWithMatcher) ois.readObject();
 		showExample(m2);
 		
-		System.out.println("==== ¸´ÖÆÊ¾·¶ ====");
+		System.out.println("==== å¤åˆ¶ç¤ºèŒƒ ====");
 		UrlStartWithMatcher m3 = new UrlStartWithMatcher(m);
 		showExample(m3);
 
@@ -64,7 +64,7 @@ public class UrlStartWithMatcherExample {
 		if (m == null){
 			Map<String, Object> heads = new HashMap<String, Object>();
 
-			////////////  URLÆ¥Åä  ///////////////
+			////////////  URLåŒ¹é…  ///////////////
 			heads.clear();
 			for (String s: new String[] {
 					"news.sina.com.cn",
@@ -81,7 +81,7 @@ public class UrlStartWithMatcherExample {
 				}){
 				heads.put(s, s);
 			}
-			System.out.println("   ------- Æ¥Åä¶ÔÓ¦±í -------");
+			System.out.println("   ------- åŒ¹é…å¯¹åº”è¡¨ -------");
 			for (String pattern: heads.keySet()){
 				System.out.format("   %-35s ---> %s\n", pattern, heads.get(pattern));
 			}
@@ -89,7 +89,7 @@ public class UrlStartWithMatcherExample {
 			
 			m = new UrlStartWithMatcher(heads);
 		}
-		System.out.println("   ------- Æ¥Åä½á¹û -------");
+		System.out.println("   ------- åŒ¹é…ç»“æœ -------");
 		for (String s: new String[] {
 				"http://new-s.sina.com.cn",
 				"http://news.sina.com.cn",

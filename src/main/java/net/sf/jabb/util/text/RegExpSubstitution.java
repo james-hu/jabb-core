@@ -30,7 +30,7 @@ import dk.brics.automaton.RunAutomaton;
 /**
  * The utility to substitute part of the String that matches specified regular
  * expression(s) with another specified String.<br>
- * Ò»¸ö¹¤¾ßÀà£¬Ëü¿ÉÒÔ¶ÔÒ»¸ö»ò¶à¸öÕıÔò±í´ïÊ½ËùÆ¥Åäµ½µÄ×Ö·û´®ÖĞµÄÄÚÈİ×÷Ìæ»»¡£
+ * ä¸€ä¸ªå·¥å…·ç±»ï¼Œå®ƒå¯ä»¥å¯¹ä¸€ä¸ªæˆ–å¤šä¸ªæ­£åˆ™è¡¨è¾¾å¼æ‰€åŒ¹é…åˆ°çš„å­—ç¬¦ä¸²ä¸­çš„å†…å®¹ä½œæ›¿æ¢ã€‚
  * <p>
  * An instance of this class can be used many times for substitution for different Strings.
  * The performance overhead of each time of substitution is very small. Therefore it is very suitble
@@ -38,9 +38,9 @@ import dk.brics.automaton.RunAutomaton;
  * are of huge volume.
  * Please be aware that regular expressions here do not support <code>"^"</code> and <code>"$"</code>
  * <p>
- * Õâ¸öÀàµÄÒ»¸öÊµÀı¿ÉÓÃÀ´¶à´Î¶Ô²»Í¬µÄ×Ö·û´®½øĞĞÌæ»»£¬Ã¿´ÎÌæ»»Ê±µÄĞÔÄÜ¿ªÏúºÜĞ¡¡£Òò´ËËüÊÊºÏÓÃÔÚÌæ»»Ìõ¼ş¹Ì¶¨£¬
- * µ«´ıÌæ»»×Ö·û´®ÊıÁ¿¾Ş´óµÄÇéĞÎÏÂ¡£
- * ×¢ÒâÕâÀïµÄÕıÔò±í´ïÊ½²»Ö§³Ö¡°^¡±ºÍ¡°$¡±¡£
+ * è¿™ä¸ªç±»çš„ä¸€ä¸ªå®ä¾‹å¯ç”¨æ¥å¤šæ¬¡å¯¹ä¸åŒçš„å­—ç¬¦ä¸²è¿›è¡Œæ›¿æ¢ï¼Œæ¯æ¬¡æ›¿æ¢æ—¶çš„æ€§èƒ½å¼€é”€å¾ˆå°ã€‚å› æ­¤å®ƒé€‚åˆç”¨åœ¨æ›¿æ¢æ¡ä»¶å›ºå®šï¼Œ
+ * ä½†å¾…æ›¿æ¢å­—ç¬¦ä¸²æ•°é‡å·¨å¤§çš„æƒ…å½¢ä¸‹ã€‚
+ * æ³¨æ„è¿™é‡Œçš„æ­£åˆ™è¡¨è¾¾å¼ä¸æ”¯æŒâ€œ^â€å’Œâ€œ$â€ã€‚
  * 
  * @author Zhengmao HU (James)
  *
@@ -54,12 +54,12 @@ public class RegExpSubstitution implements Serializable{
 
 	/**
 	 * Constructor with one regular expression.<br>
-	 * ¹¹Ôì·½·¨£¬ÓÃÓÚÖ»ÓĞÒ»¸öÕıÔò±í´ïÊ½µÄÇé¿ö¡£
+	 * æ„é€ æ–¹æ³•ï¼Œç”¨äºåªæœ‰ä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼çš„æƒ…å†µã€‚
 	 * 
 	 * @param replaceStr	The string to be replaced with<br>
-	 * 						Ìæ»»ÎªÕâ¸ö×Ö·û´®
+	 * 						æ›¿æ¢ä¸ºè¿™ä¸ªå­—ç¬¦ä¸²
 	 * @param regExp		Part of the string that matches with this regular expression will be replaced.<br>
-	 * 						Æ¥Åäµ½Õâ¸öÕıÔò±í´ïÊ½µÄ²¿·Ö»á±»Ìæ»»
+	 * 						åŒ¹é…åˆ°è¿™ä¸ªæ­£åˆ™è¡¨è¾¾å¼çš„éƒ¨åˆ†ä¼šè¢«æ›¿æ¢
 	 */
 	public RegExpSubstitution(String replaceStr, String regExp){
 		replacement = replaceStr;
@@ -68,12 +68,12 @@ public class RegExpSubstitution implements Serializable{
 	
 	/**
 	 * Constructor with several regular expressions.<br>
-	 * ¹¹Ôì·½·¨£¬ÓÃÓÚÓĞ¶à¸öÕıÔò±í´ïÊ½µÄÇé¿ö¡£
+	 * æ„é€ æ–¹æ³•ï¼Œç”¨äºæœ‰å¤šä¸ªæ­£åˆ™è¡¨è¾¾å¼çš„æƒ…å†µã€‚
 	 * 
 	 * @param replaceStr	The string to be replaced with<br>
-	 * 						Ìæ»»ÎªÕâ¸ö×Ö·û´®
+	 * 						æ›¿æ¢ä¸ºè¿™ä¸ªå­—ç¬¦ä¸²
 	 * @param regExps		Part of the string that matches with any of these regular expressions will be replaced.<br>
-	 * 						Æ¥Åäµ½ÕâĞ©ÕıÔò±í´ïÊ½ÖĞµÄÈÎÒâÒ»¸öµÄ²¿·Ö¶¼»á±»Ìæ»»
+	 * 						åŒ¹é…åˆ°è¿™äº›æ­£åˆ™è¡¨è¾¾å¼ä¸­çš„ä»»æ„ä¸€ä¸ªçš„éƒ¨åˆ†éƒ½ä¼šè¢«æ›¿æ¢
 	 */
 	public RegExpSubstitution(String replaceStr, String... regExps){
 		replacement = replaceStr;
@@ -87,12 +87,12 @@ public class RegExpSubstitution implements Serializable{
 	
 	/**
 	 * Constructor with several regular expressions.<br>
-	 * ¹¹Ôì·½·¨£¬ÓÃÓÚÓĞ¶à¸öÕıÔò±í´ïÊ½µÄÇé¿ö¡£
+	 * æ„é€ æ–¹æ³•ï¼Œç”¨äºæœ‰å¤šä¸ªæ­£åˆ™è¡¨è¾¾å¼çš„æƒ…å†µã€‚
 	 * 
 	 * @param replaceStr	The string to be replaced with<br>
-	 * 						Ìæ»»ÎªÕâ¸ö×Ö·û´®
+	 * 						æ›¿æ¢ä¸ºè¿™ä¸ªå­—ç¬¦ä¸²
 	 * @param regExps		Part of the string that matches with any of these regular expressions will be replaced.<br>
-	 * 						Æ¥Åäµ½ÕâĞ©ÕıÔò±í´ïÊ½ÖĞµÄÈÎÒâÒ»¸öµÄ²¿·Ö¶¼»á±»Ìæ»»
+	 * 						åŒ¹é…åˆ°è¿™äº›æ­£åˆ™è¡¨è¾¾å¼ä¸­çš„ä»»æ„ä¸€ä¸ªçš„éƒ¨åˆ†éƒ½ä¼šè¢«æ›¿æ¢
 	 */
 	public RegExpSubstitution(String replaceStr, Collection<String> regExps){
 		replacement = replaceStr;
@@ -106,14 +106,14 @@ public class RegExpSubstitution implements Serializable{
 	
 	/**
 	 * Do replacement.<br>
-	 * ½øĞĞÌæ»»¡£
+	 * è¿›è¡Œæ›¿æ¢ã€‚
 	 * 
-	 * @param text	The original String.<br>Ìæ»»Ç°µÄÔ­Ê¼×Ö·û´®¡£
+	 * @param text	The original String.<br>æ›¿æ¢å‰çš„åŸå§‹å­—ç¬¦ä¸²ã€‚
 	 * @param firstOnly		If true, then only do replacement upon the first occurrence; 
 	 * 						otherwise, replace in all the occurrences.<br>
-	 * 						Èç¹ûÎªtrueÔòÖ»Ìæ»»µÚÒ»¸ö³öÏÖµÄµØ·½£¬·ñÔòÈ«²¿Ìæ»»¡£
+	 * 						å¦‚æœä¸ºtrueåˆ™åªæ›¿æ¢ç¬¬ä¸€ä¸ªå‡ºç°çš„åœ°æ–¹ï¼Œå¦åˆ™å…¨éƒ¨æ›¿æ¢ã€‚
 	 * @return		The String after substitution; If no match found, the same String as the input one will be returned.<br>
-	 * 				Ìæ»»ºóµÄ½á¹û£»Èç¹ûÃ»ÓĞ·¢ÉúÌæ»»£¬Ôò½á¹ûÓëÔ­À´ÊäÈëµÄ×Ö·û´®ÍêÈ«ÏàÍ¬¡£
+	 * 				æ›¿æ¢åçš„ç»“æœï¼›å¦‚æœæ²¡æœ‰å‘ç”Ÿæ›¿æ¢ï¼Œåˆ™ç»“æœä¸åŸæ¥è¾“å…¥çš„å­—ç¬¦ä¸²å®Œå…¨ç›¸åŒã€‚
 	 */
 	protected String replace(CharSequence text, boolean firstOnly){
 		StringBuilder sb = new StringBuilder();
@@ -130,10 +130,10 @@ public class RegExpSubstitution implements Serializable{
 	
 	/**
 	 * Replace only the first occurrence.<br>
-	 * Ö»Ìæ»»µÚÒ»¸ö³öÏÖµÄµØ·½
-	 * @param text	The original String.<br>Ìæ»»Ç°µÄÔ­Ê¼×Ö·û´®¡£
+	 * åªæ›¿æ¢ç¬¬ä¸€ä¸ªå‡ºç°çš„åœ°æ–¹
+	 * @param text	The original String.<br>æ›¿æ¢å‰çš„åŸå§‹å­—ç¬¦ä¸²ã€‚
 	 * @return		The String after substitution; If no match found, the same String as the input one will be returned.<br>
-	 * 				Ìæ»»ºóµÄ½á¹û£»Èç¹ûÃ»ÓĞ·¢ÉúÌæ»»£¬Ôò½á¹ûÓëÔ­À´ÊäÈëµÄ×Ö·û´®ÍêÈ«ÏàÍ¬¡£
+	 * 				æ›¿æ¢åçš„ç»“æœï¼›å¦‚æœæ²¡æœ‰å‘ç”Ÿæ›¿æ¢ï¼Œåˆ™ç»“æœä¸åŸæ¥è¾“å…¥çš„å­—ç¬¦ä¸²å®Œå…¨ç›¸åŒã€‚
 	 */
 	public String replaceFirst(CharSequence text){
 		return replace(text, true);
@@ -141,10 +141,10 @@ public class RegExpSubstitution implements Serializable{
 	
 	/**
 	 * Replace all the occurrences.<br>
-	 * Ìæ»»ËùÓĞ³öÏÖµÄµØ·½
-	 * @param text	The original String.<br>Ìæ»»Ç°µÄÔ­Ê¼×Ö·û´®¡£
+	 * æ›¿æ¢æ‰€æœ‰å‡ºç°çš„åœ°æ–¹
+	 * @param text	The original String.<br>æ›¿æ¢å‰çš„åŸå§‹å­—ç¬¦ä¸²ã€‚
 	 * @return		The String after substitution; If no match found, the same String as the input one will be returned.<br>
-	 * 				Ìæ»»ºóµÄ½á¹û£»Èç¹ûÃ»ÓĞ·¢ÉúÌæ»»£¬Ôò½á¹ûÓëÔ­À´ÊäÈëµÄ×Ö·û´®ÍêÈ«ÏàÍ¬¡£
+	 * 				æ›¿æ¢åçš„ç»“æœï¼›å¦‚æœæ²¡æœ‰å‘ç”Ÿæ›¿æ¢ï¼Œåˆ™ç»“æœä¸åŸæ¥è¾“å…¥çš„å­—ç¬¦ä¸²å®Œå…¨ç›¸åŒã€‚
 	 */
 	public String replaceAll(CharSequence text){
 		return replace(text, false);
@@ -152,10 +152,10 @@ public class RegExpSubstitution implements Serializable{
 	
 	/**
 	 * Replace only the last occurrence.<br>
-	 * Ìæ»»µô×îºóÒ»¸ö³öÏÖµÄµØ·½
-	 * @param text	The original String.<br>Ìæ»»Ç°µÄÔ­Ê¼×Ö·û´®¡£
+	 * æ›¿æ¢æ‰æœ€åä¸€ä¸ªå‡ºç°çš„åœ°æ–¹
+	 * @param text	The original String.<br>æ›¿æ¢å‰çš„åŸå§‹å­—ç¬¦ä¸²ã€‚
 	 * @return		The String after substitution; If no match found, the same String as the input one will be returned.<br>
-	 * 				Ìæ»»ºóµÄ½á¹û£»Èç¹ûÃ»ÓĞ·¢ÉúÌæ»»£¬Ôò½á¹ûÓëÔ­À´ÊäÈëµÄ×Ö·û´®ÍêÈ«ÏàÍ¬¡£
+	 * 				æ›¿æ¢åçš„ç»“æœï¼›å¦‚æœæ²¡æœ‰å‘ç”Ÿæ›¿æ¢ï¼Œåˆ™ç»“æœä¸åŸæ¥è¾“å…¥çš„å­—ç¬¦ä¸²å®Œå…¨ç›¸åŒã€‚
 	 */
 	public String replaceLast(CharSequence text){
 		StringBuilder sb = new StringBuilder();
