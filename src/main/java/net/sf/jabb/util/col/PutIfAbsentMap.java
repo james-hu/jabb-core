@@ -17,7 +17,6 @@ limitations under the License.
 package net.sf.jabb.util.col;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;

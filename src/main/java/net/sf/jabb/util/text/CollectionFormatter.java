@@ -15,7 +15,6 @@ limitations under the License.
 */
 package net.sf.jabb.util.text;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import org.apache.commons.beanutils.PropertyUtils;

@@ -28,7 +28,7 @@ public class PasswordUtility {
 	private static final Pattern URL_PATTERN = Pattern.compile("[a-z]+://.*");
 	private static final Pattern PASSWORD_IN_URL_PATTERN = Pattern.compile(":(?:[^/]+)@");
 	private static final String PASSWORD_IN_URL_MASK = ":*****@";
-	private static final String PASSWORD_IN_URL_MASK_REGEXP = PASSWORD_IN_URL_MASK.replace("*", "\\*");
+	//private static final String PASSWORD_IN_URL_MASK_REGEXP = PASSWORD_IN_URL_MASK.replace("*", "\\*");
 
 	/**
 	 * Mask password in URL.

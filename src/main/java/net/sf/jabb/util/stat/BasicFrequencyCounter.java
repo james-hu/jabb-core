@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import net.sf.jabb.util.col.PutIfAbsentMap;
-import net.sf.jabb.util.col.PutOnGetMap;
 
 /**
  * 频次计数器
