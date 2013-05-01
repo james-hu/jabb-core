@@ -18,7 +18,7 @@ package net.sf.jabb.util.text.word;
 
 import java.util.Map;
 
-import org.apache.commons.lang.mutable.MutableInt;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 
 import net.sf.jabb.util.text.StringStartWithMatcher;

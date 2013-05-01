@@ -11,7 +11,7 @@ import java.util.Map;
 import net.sf.jabb.util.exp.BooleanExpression;
 import net.sf.jabb.util.text.KeywordMatcher;
 
-import org.apache.commons.lang.mutable.MutableInt;
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

@@ -30,7 +30,7 @@ import net.sf.jabb.util.bean.jstree.JsTreeResult;
 import net.sf.jabb.util.vfs.VfsUtility;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.vfs2.AllFileSelector;
