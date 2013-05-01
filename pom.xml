@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.jabb</groupId>
 	<artifactId>jabb-core</artifactId>
-	<version>1.0.11</version>
+	<version>1.0.12</version>
 	<name>JABB</name>
 	<url>http://jabb.sourceforge.net/</url>
 	<description>JABB is a collection of reusable Java components. </description>
@@ -171,9 +171,9 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>com.chenlb</groupId>
+			<groupId>com.chenlb.mmseg4j</groupId>
 			<artifactId>mmseg4j-core</artifactId>
-			<version>1.8.4-with-dic</version>
+			<version>1.9.0</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
