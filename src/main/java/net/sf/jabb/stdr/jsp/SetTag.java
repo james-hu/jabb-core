@@ -1,5 +1,5 @@
 /*
-   Copyright 2009, 2011 James (Zhengmao HU)
+   Copyright 2009, 2011, 2013 James (Zhengmao HU)
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package net.sf.jabb.stdr.jsp;
 
 
-import net.sf.jabb.stdr.dispatcher.TemplateDispatcherResult;
+import net.sf.jabb.stdr.StdrUtil;
 
 /**
  * @author James (Zhengmao HU)
@@ -28,7 +28,7 @@ public class SetTag extends org.apache.struts2.views.jsp.SetTag {
 
 	public void setParamName(String paramName){
 		this.setValue("#request." + 
-				TemplateDispatcherResult.TEMPLATE_PARAMETER_MAP
+				StdrUtil.TEMPLATE_PARAMETER_MAP
 				+ "['" + paramName + "']");
 	}
 

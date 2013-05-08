@@ -1,5 +1,5 @@
 /*
-   Copyright 2009, 2011 James (Zhengmao HU)
+   Copyright 2009, 2011, 2013 James (Zhengmao HU)
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import net.sf.jabb.stdr.dispatcher.TemplateDispatcherResult;
+import net.sf.jabb.stdr.StdrUtil;
 
 /**
  * @author James (Zhengmao HU)
@@ -31,13 +31,18 @@ public class IncludeTag extends org.apache.struts2.views.jsp.IncludeTag {
 	protected static final Log log = LogFactory.getLog(IncludeTag.class);
 	
 	public void setParamName(String name){
-		@SuppressWarnings("unchecked")
-		Map<String, String> templateParameterMap = (Map<String, String>)
-			pageContext.getRequest().getAttribute(
-				TemplateDispatcherResult.TEMPLATE_PARAMETER_MAP);
+		Map<String, String> templateParameterMap = StdrUtil.getParameters(pageContext.getRequest());
 		if (templateParameterMap != null){
 			String url = templateParameterMap.get(name);
 			if (url != null){
+				String prefix = templateParameterMap.get(StdrUtil.URL_PREFIX_PARAMETER);
+				if (prefix != null){
+					url = prefix + url;
+				}
+				String postfix = templateParameterMap.get(StdrUtil.URL_POSTFIX_PARAMETER);
+				if (postfix != null){
+					url = url + postfix;
+				}
 				this.setValue(url);
 			}else{
 				log.error("Can't find value for parameter '" 
@@ -46,7 +51,7 @@ public class IncludeTag extends org.apache.struts2.views.jsp.IncludeTag {
 			}
 		}else{
 			log.error("Can't find parameter map from attribute '" 
-					+ TemplateDispatcherResult.TEMPLATE_PARAMETER_MAP
+					+ StdrUtil.TEMPLATE_PARAMETER_MAP
 					+ "' in request context.");
 		}
 	}

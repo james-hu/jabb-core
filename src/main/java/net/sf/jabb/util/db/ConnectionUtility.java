@@ -25,6 +25,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import net.sf.jabb.util.col.MapLister;
@@ -99,7 +101,7 @@ public class ConnectionUtility {
 				dataSourceProviders.put(providerName, dsp);
 			} catch (Throwable t) {
 				if (t instanceof NoClassDefFoundError){
-					log.debug("DataSourceProvider not initialized for '" + providerName + "' because the provider class as not found: " + t.getMessage());
+					log.debug("DataSourceProvider not initialized for '" + providerName + "' because the provider class was not found: " + t.getMessage());
 				}else{
 					log.error("Cannot instantiate DataSourceProvider for '" + providerName + "': " + providerClassName, t);
 				}
@@ -147,7 +149,7 @@ public class ConnectionUtility {
 	 * @param source	配置信息
 	 * @return the DataSource created
 	 */
-	protected static DataSource createDataSource(String source){
+	public static DataSource createDataSource(String source){
 		DataSource ds = null;
 		String typeAndConfig = configuration.getProperty(source);
 		if (typeAndConfig == null){
@@ -177,6 +179,26 @@ public class ConnectionUtility {
 		
 		return ds;
 	}
+	
+	/**
+	 * Create DataSource and bind it to JNDI
+	 * @param source	configuration
+	 * @param jndiName	JNDI name that the DataSource needs to be bind to
+	 * @return	The DataSource created
+	 */
+	public static DataSource createDataSource(String source, String jndiName){
+		DataSource ds = createDataSource(source);
+		if (ds != null && jndiName != null){
+			InitialContext ic;
+			try {
+				ic = new InitialContext();
+				ic.bind(jndiName, ds);
+			} catch (NamingException e) {
+				log.error("Failed to bind data source '" + source + "' to JNDI name: " + jndiName, e);
+			}
+		}
+		return ds;
+	}	
 	
 	/**
 	 * 获得Statement.executeBatch()所修改的总记录数。

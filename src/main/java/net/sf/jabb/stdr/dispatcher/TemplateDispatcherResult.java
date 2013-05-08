@@ -1,5 +1,5 @@
 /*
-   Copyright 2009, 2011 James (Zhengmao HU)
+   Copyright 2009, 2011, 2013 James (Zhengmao HU)
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.jabb.stdr.StdrUtil;
 import ognl.ObjectPropertyAccessor;
 import ognl.OgnlException;
 import ognl.OgnlRuntime;
@@ -60,11 +61,6 @@ public class TemplateDispatcherResult extends ServletDispatcherResult {
     protected List<String> predefinedResultParam = Arrays.asList(new String[] {
             DEFAULT_PARAM, "namespace", "encode", "parse", "location"});
     
-    /**
-     * The attribute name in request context to pass the parameters: net_sf_jabb_stdr_templateParameterMap
-     */
-    static public final String TEMPLATE_PARAMETER_MAP = "net_sf_jabb_stdr_templateParameterMap";
-
     static{
     	OgnlRuntime.setPropertyAccessor(TemplateDispatcherResult.class, 
     			new TemplateDispatcherResult.TemplatePropertyAccessor());
@@ -99,7 +95,7 @@ public class TemplateDispatcherResult extends ServletDispatcherResult {
             }
         }
         
-        request.setAttribute(TEMPLATE_PARAMETER_MAP, templateParameterMap);
+        StdrUtil.setParameters(request, templateParameterMap);
 		super.doExecute(finalLocation, invocation);
 	}
 

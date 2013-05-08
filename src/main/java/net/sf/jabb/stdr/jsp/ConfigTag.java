@@ -1,5 +1,5 @@
 /*
-   Copyright 2009, 2011 James (Zhengmao HU)
+   Copyright 2009, 2011, 2013 James (Zhengmao HU)
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-import net.sf.jabb.stdr.dispatcher.TemplateDispatcherResult;
+import net.sf.jabb.stdr.StdrUtil;
 
 /**
  * @author James (Zhengmao HU)
@@ -56,10 +56,7 @@ public class ConfigTag extends BodyTagSupport {
 	}
 	
 	public int doEndTag() throws JspTagException{
-		@SuppressWarnings("unchecked")
-		Map<String, String> templateParameterMap = (Map<String, String>)
-			pageContext.getRequest().getAttribute(
-				TemplateDispatcherResult.TEMPLATE_PARAMETER_MAP);
+		Map<String, String> templateParameterMap = StdrUtil.getParameters(pageContext.getRequest());
 		if (valueFrom == null){
 			templateParameterMap.put(paramName, value);
 		}else{
