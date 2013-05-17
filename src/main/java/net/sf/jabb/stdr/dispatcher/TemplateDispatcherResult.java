@@ -78,7 +78,7 @@ public class TemplateDispatcherResult extends ServletDispatcherResult {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		
         // the object to pass parameters
-        Map<String, String> templateParameterMap = new HashMap<String, String>();
+        Map<String, Object> templateParameterMap = new HashMap<String, Object>();
 
         String resultCode = invocation.getResultCode();
         if (resultCode != null) {
@@ -95,7 +95,7 @@ public class TemplateDispatcherResult extends ServletDispatcherResult {
             }
         }
         
-        StdrUtil.setParameters(request, templateParameterMap);
+        StdrUtil.getParameters(request).putAll(templateParameterMap);
 		super.doExecute(finalLocation, invocation);
 	}
 

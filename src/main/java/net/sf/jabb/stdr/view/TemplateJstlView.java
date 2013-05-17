@@ -58,7 +58,7 @@ public class TemplateJstlView extends JstlView {
 	protected void exposeHelpers(HttpServletRequest request) throws Exception {
 		Map<String, String> templateParameters = extractTemplateParameters(originalViewName);
 		if (templateParameters != null){
-			StdrUtil.setParameters(request, templateParameters);
+			StdrUtil.getParameters(request).putAll(templateParameters);
 		}
 		super.exposeHelpers(request);
 	}

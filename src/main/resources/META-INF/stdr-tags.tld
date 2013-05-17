@@ -30,7 +30,7 @@
       <rtexprvalue>false</rtexprvalue>
     </attribute>
     <attribute>
-      <description><![CDATA[The param name for which its value will be assigned to the variable named <i>name</i>]]></description>
+      <description><![CDATA[The param name for which its value will be assigned to the variable named <i>var</i>]]></description>
       <name>paramName</name>
       <required>false</required>
       <rtexprvalue>false</rtexprvalue>
@@ -38,6 +38,14 @@
     <attribute>
       <description><![CDATA[Name used to reference the value pushed into the Value Stack]]></description>
       <name>var</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <description><![CDATA[The type for which its value will be assigned to the variable named <i>var</i>.
+      						Valid types are: WebAppConfig, CurrentMenuItem
+      ]]></description>
+      <name>type</name>
       <required>false</required>
       <rtexprvalue>false</rtexprvalue>
     </attribute>

@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
@@ -51,63 +50,7 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 	protected String jQueryTheme;
 	protected ApplicationContext appContext;
 	protected Map<String, WebMenuItem> menus;
-	
-	@SuppressWarnings("serial")
-	static class MenuItemExt extends WebMenuItem {
-		String path;
-		String menuName;
-		int order;
-
-		MenuItemExt(WebMenu def, RequestMapping mapping){
-			// try to get url from RequestMapping annotation
-			if (mapping != null){
-				String[] urls = mapping.value();
-				if (urls != null && urls.length > 0){
-					this.url = urls[0];
-				}
-			}
-			
-			if (def != null){
-				// get url from WebMenu annotation
-				String explicitUrl = def.url();
-				if (explicitUrl != null && explicitUrl.length() > 0){
-					this.url = def.url();
-				}
-				
-				this.title = def.value();
-				this.path = def.path();
-				this.order = def.order();
-				this.menuName = def.menu();
-			}
-			
-			if (this.path == null || this.path.length() == 0){
-				this.path = this.url;
-			}
-		}
-		
-		public WebMenuItem toWebMenuItem(){
-			WebMenuItem result = new WebMenuItem();
-			result.title = this.title;
-			result.url = this.url;
-			result.subMenu = this.subMenu;
-			result.breadcrumbs = this.breadcrumbs;
-			return result;
-		}
-		
-		@Override
-		public String toString(){
-			return ToStringBuilder.reflectionToString(this);
-		}
-
-		@Override
-		public int compareTo(WebMenuItem o) {
-			if (o instanceof MenuItemExt){
-				return order - ((MenuItemExt)o).order;
-			}else{
-				return 0;
-			}
-		}
-	}
+	protected Map<String, Map<String, WebMenuItem>> menuItemPaths;		// <menuName, <menuPath, WebMenuItem>>
 	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)
@@ -144,36 +87,32 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 			// Check class level annotations first
 			RequestMapping classRequestMapping = beanClass.getAnnotation(RequestMapping.class);
 			WebMenu classWebMenu = beanClass.getAnnotation(WebMenu.class);
-			MenuItemExt classMenuItem = new MenuItemExt(classWebMenu, classRequestMapping);
-			
-			String baseMenuName = classMenuItem.menuName;
-			String baseUrl = classMenuItem.getUrl() != null ? classMenuItem.getUrl() : "";
-			String basePath = classMenuItem.path != null ? classMenuItem.path : "";
-			
-			if(classMenuItem.menuName != null){		// it is also a menu item
-				MenuItemExt existing = allMenuItems.get(classMenuItem.menuName).put(basePath, classMenuItem);
-				if (existing != null){
-					log.error("Duplicated web menu item definitions in " + beanClass.getName() 
-							+ ".\n\tExisting: " + existing + "\n\tCurrent: " + classMenuItem);
-				}
-			}
-			
-			// Then look into all the methods
-			for(Method method : beanClass.getDeclaredMethods()) {
-				RequestMapping methodRequestMapping = method.getAnnotation(RequestMapping.class);
-				WebMenu methodWebMenu = method.getAnnotation(WebMenu.class);
-				MenuItemExt methodMenuItem = new MenuItemExt(methodWebMenu, methodRequestMapping);
+			if (classWebMenu.value().length() != 0){	// not hidden
+				MenuItemExt classMenuItem = new MenuItemExt(classWebMenu, classRequestMapping);
 				
-				if (methodMenuItem.menuName != null){
-					if ("".equals(methodMenuItem.menuName)){
-						methodMenuItem.menuName = baseMenuName;
-					}
-					methodMenuItem.url = baseUrl + methodMenuItem.getUrl();
-					methodMenuItem.path = basePath + methodMenuItem.path;
-					MenuItemExt existing = allMenuItems.get(methodMenuItem.menuName).put(methodMenuItem.path, methodMenuItem);
+				String basePath = classMenuItem.path != null ? classMenuItem.path : "";
+				if(classMenuItem.menuName != null){		// it is also a menu item
+					MenuItemExt existing = allMenuItems.get(classMenuItem.menuName).put(basePath, classMenuItem);
 					if (existing != null){
-						log.error("Duplicated web menu item definitions in " + beanClass.getName() + "." + method.toGenericString() 
-								+ ".\n\tExisting: " + existing + "\n\tCurrent: " + methodMenuItem);
+						log.error("Duplicated web menu item definitions in " + beanClass.getName() 
+								+ ".\n\tExisting: " + existing + "\n\tCurrent: " + classMenuItem);
+					}
+				}
+				
+				// Then look into all the methods
+				for(Method method : beanClass.getDeclaredMethods()) {
+					RequestMapping methodRequestMapping = method.getAnnotation(RequestMapping.class);
+					WebMenu methodWebMenu = method.getAnnotation(WebMenu.class);
+					if (methodWebMenu.value().length() != 0){	// not hidden
+						MenuItemExt methodMenuItem = new MenuItemExt(methodWebMenu, methodRequestMapping, classMenuItem);
+						
+						if (methodMenuItem.menuName != null){
+							MenuItemExt existing = allMenuItems.get(methodMenuItem.menuName).put(methodMenuItem.path, methodMenuItem);
+							if (existing != null){
+								log.error("Duplicated web menu item definitions in " + beanClass.getName() + "." + method.toGenericString() 
+										+ ".\n\tExisting: " + existing + "\n\tCurrent: " + methodMenuItem);
+							}
+						}
 					}
 				}
 			}
@@ -181,12 +120,17 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 		
 		// construct menu trees
 		menus = new HashMap<String, WebMenuItem>();
+		menuItemPaths = new HashMap<String, Map<String, WebMenuItem>>();
 		
 		for (Map.Entry<String, Map<String, MenuItemExt>> menuItems: allMenuItems.entrySet()){
 			String menuName = menuItems.getKey();
 			Map<String, MenuItemExt> items = menuItems.getValue();
 			WebMenuItem root = new WebMenuItem();
+			root.title = menuName;			// for the root, set its title as menu name
+			root.breadcrumbs = new ArrayList<WebMenuItem>(1);
+			root.breadcrumbs.add(root);		// root is the first in breadcrumbs
 			menus.put(menuName, root);
+			menuItemPaths.put(menuName, new HashMap<String, WebMenuItem>());
 			for (MenuItemExt itemExt: items.values()){
 				String path = itemExt.path;
 				WebMenuItem parent = null;
@@ -202,7 +146,7 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 			}
 			
 			// clean up the tree
-			cleanUpMenuTree(root);
+			cleanUpMenuTree(root, menuName);
 			log.info("Menu '" + menuName + "' loaded:\n" + root);
 		}
 	}
@@ -211,7 +155,7 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 	 * Convert MenuItemExt to WebMenuItem, and clean up all data
 	 * @param root
 	 */
-	protected void cleanUpMenuTree(WebMenuItem root){
+	protected void cleanUpMenuTree(WebMenuItem root, String menuName){
 		List<WebMenuItem> subMenu = root.getSubMenu();
 		List<WebMenuItem> rootBreadcrumbs = root.getBreadcrumbs();
 		if (subMenu != null && subMenu.size() > 0){
@@ -222,15 +166,57 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 					MenuItemExt itemExt = (MenuItemExt)item;
 					item = itemExt.toWebMenuItem();
 					subMenu.set(i, item);
+					menuItemPaths.get(menuName).put(itemExt.path, item);
 				}
 				item.breadcrumbs = new ArrayList<WebMenuItem>();
 				if (rootBreadcrumbs != null){
 					item.breadcrumbs.addAll(rootBreadcrumbs);
 				}
 				item.breadcrumbs.add(item);
-				cleanUpMenuTree(item);
+				cleanUpMenuTree(item, menuName);
 			}
 		}
+	}
+	
+	/**
+	 * Get the menu tree by the menu's name
+	 * @param menuName
+	 * @return
+	 */
+	public WebMenuItem getMenu(String menuName){
+		return menus.get(menuName);
+	}
+	
+	/**
+	 * Get the default menu tree
+	 * @return
+	 */
+	public WebMenuItem getMenu(){
+		return getMenu("");
+	}
+	
+	/**
+	 * Get the menu item by menu and path
+	 * @param menuName
+	 * @param path
+	 * @return
+	 */
+	public WebMenuItem getMenuItem(String menuName, String path){
+		try{
+			return menuItemPaths.get(menuName).get(path);
+		}catch(Exception e){
+			log.error("Error when getting menu item for: menuName='" + menuName + "', path='" + path + "'");
+			return null;
+		}
+	}
+	
+	/**
+	 * Get the menu item by path in default menu
+	 * @param path
+	 * @return
+	 */
+	public WebMenuItem getMenuItem(String path){
+		return getMenuItem("", path);
 	}
 
 	/**

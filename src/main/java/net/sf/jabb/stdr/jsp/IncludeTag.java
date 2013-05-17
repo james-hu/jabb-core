@@ -31,15 +31,15 @@ public class IncludeTag extends org.apache.struts2.views.jsp.IncludeTag {
 	protected static final Log log = LogFactory.getLog(IncludeTag.class);
 	
 	public void setParamName(String name){
-		Map<String, String> templateParameterMap = StdrUtil.getParameters(pageContext.getRequest());
+		Map<String, Object> templateParameterMap = StdrUtil.getParameters(pageContext.getRequest());
 		if (templateParameterMap != null){
-			String url = templateParameterMap.get(name);
+			String url = (String)templateParameterMap.get(name);
 			if (url != null){
-				String prefix = templateParameterMap.get(StdrUtil.URL_PREFIX_PARAMETER);
+				String prefix = (String)templateParameterMap.get(StdrUtil.URL_PREFIX_PARAMETER);
 				if (prefix != null){
 					url = prefix + url;
 				}
-				String postfix = templateParameterMap.get(StdrUtil.URL_POSTFIX_PARAMETER);
+				String postfix = (String)templateParameterMap.get(StdrUtil.URL_POSTFIX_PARAMETER);
 				if (postfix != null){
 					url = url + postfix;
 				}

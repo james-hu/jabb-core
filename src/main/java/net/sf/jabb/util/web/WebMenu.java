@@ -17,10 +17,10 @@ import java.lang.annotation.ElementType;
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface WebMenu {
 	/**
-	 * Title of this menu item
+	 * Title of this menu item. It can be omitted, which means the menu item should be hidden
 	 * @return	title of this menu item
 	 */
-	public String value();
+	public String value() default "";
 	
 	/**
 	 * URL overriding. Null means URL should be read from Spring MVC RequestMapping annotation
@@ -45,4 +45,6 @@ public @interface WebMenu {
 	 * @return	name of the manu tree
 	 */
 	public String menu() default "";
+	
+
 }

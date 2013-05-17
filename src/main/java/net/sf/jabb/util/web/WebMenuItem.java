@@ -34,7 +34,7 @@ public class WebMenuItem implements Serializable, Comparable<WebMenuItem>{
 	@Override
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
-		if (title == null && url == null){	// it is root node
+		if (breadcrumbs == null || breadcrumbs.get(0) == this){	// it is root node
 			if (subMenu != null && subMenu.size() > 0){
 				for (WebMenuItem subItem: subMenu){
 					sb.append(subItem.toString());
@@ -64,7 +64,30 @@ public class WebMenuItem implements Serializable, Comparable<WebMenuItem>{
 		// subclass will handle
 		return 0;
 	}
+	
+	/**
+	 * Get the highest level of menu items.
+	 * @return
+	 */
+	public List<WebMenuItem> getTopMenuItems(){
+		return breadcrumbs.get(0).subMenu;
+	}
+	
+	/**
+	 * Is this menu item a leaf node in the menu tree?
+	 * @return
+	 */
+	public boolean isLeaf(){
+		return subMenu == null || subMenu.size() == 0;
+	}
 
+	/**
+	 * Is this menu item a leaf node in the menu tree?
+	 * @return
+	 */
+	public boolean getIsLeaf(){
+		return isLeaf();
+	}
 
 	public String getTitle() {
 		return title;

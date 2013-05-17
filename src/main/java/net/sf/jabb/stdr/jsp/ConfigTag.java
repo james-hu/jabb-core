@@ -56,7 +56,7 @@ public class ConfigTag extends BodyTagSupport {
 	}
 	
 	public int doEndTag() throws JspTagException{
-		Map<String, String> templateParameterMap = StdrUtil.getParameters(pageContext.getRequest());
+		Map<String, Object> templateParameterMap = StdrUtil.getParameters(pageContext.getRequest());
 		if (valueFrom == null){
 			templateParameterMap.put(paramName, value);
 		}else{
