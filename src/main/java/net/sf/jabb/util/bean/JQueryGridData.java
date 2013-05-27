@@ -78,18 +78,30 @@ public class JQueryGridData {
 	public int getTotal() {
 		return total;
 	}
+	/**
+	 * Set total number of pages
+	 * @param total
+	 */
 	public void setTotal(int total) {
 		this.total = total;
 	}
 	public int getPage() {
 		return page;
 	}
+	/**
+	 * Set current page number
+	 * @param page
+	 */
 	public void setPage(int page) {
 		this.page = page;
 	}
 	public int getRecords() {
 		return records;
 	}
+	/**
+	 * Set total number of records
+	 * @param records
+	 */
 	public void setRecords(int records) {
 		this.records = records;
 	}

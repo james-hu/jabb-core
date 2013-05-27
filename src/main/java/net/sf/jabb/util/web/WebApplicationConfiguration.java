@@ -87,11 +87,11 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 			// Check class level annotations first
 			RequestMapping classRequestMapping = beanClass.getAnnotation(RequestMapping.class);
 			WebMenu classWebMenu = beanClass.getAnnotation(WebMenu.class);
-			if (classWebMenu.value().length() != 0){	// not hidden
+			if (true) {//classWebMenu != null && classWebMenu.value().length() != 0){	// not hidden
 				MenuItemExt classMenuItem = new MenuItemExt(classWebMenu, classRequestMapping);
 				
 				String basePath = classMenuItem.path != null ? classMenuItem.path : "";
-				if(classMenuItem.menuName != null){		// it is also a menu item
+				if(classMenuItem.title != null && classMenuItem.title.length() > 0){		// it is also a visible menu item
 					MenuItemExt existing = allMenuItems.get(classMenuItem.menuName).put(basePath, classMenuItem);
 					if (existing != null){
 						log.error("Duplicated web menu item definitions in " + beanClass.getName() 
@@ -103,7 +103,7 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 				for(Method method : beanClass.getDeclaredMethods()) {
 					RequestMapping methodRequestMapping = method.getAnnotation(RequestMapping.class);
 					WebMenu methodWebMenu = method.getAnnotation(WebMenu.class);
-					if (methodWebMenu.value().length() != 0){	// not hidden
+					if (methodWebMenu != null && methodWebMenu.value().length() != 0){	// not hidden
 						MenuItemExt methodMenuItem = new MenuItemExt(methodWebMenu, methodRequestMapping, classMenuItem);
 						
 						if (methodMenuItem.menuName != null){
