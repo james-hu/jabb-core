@@ -56,7 +56,7 @@ public class WebMenuInterceptor extends HandlerInterceptorAdapter {
 						+ controllerClass.getName() + "." + handlerMethod.getMethod().getName() + " : " + menuItem);
 			}
 		}else{
-			log.error("The handler is not of type HandlerMethod. WebMenuInterceptor skipped processing.");
+			log.debug("The handler is not of type HandlerMethod. WebMenuInterceptor skipped processing.");
 		}
 		
 	}
