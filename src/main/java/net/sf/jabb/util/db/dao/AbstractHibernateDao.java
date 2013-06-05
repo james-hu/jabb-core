@@ -200,7 +200,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     
     @Transactional
     public void update(final T entity) {
-    	this.getCurrentSession().merge(entity);
+    	this.getCurrentSession().saveOrUpdate(entity); //.merge(entity);
     }
  
     @Transactional
