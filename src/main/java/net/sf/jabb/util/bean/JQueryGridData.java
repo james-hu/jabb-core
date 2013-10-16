@@ -15,8 +15,15 @@ limitations under the License.
 */
 package net.sf.jabb.util.bean;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * JSON data required by jqGrid.
@@ -53,10 +60,9 @@ public class JQueryGridData {
 	
 	public JQueryGridData(){
 		rows = new LinkedList<Object>();
-	}
-	
-	public void addRow(Row row){
-		rows.add(row);
+		total = 1;
+		records = 0;
+		page = 1;
 	}
 	
 	public void addRow(Object row){
@@ -67,8 +73,46 @@ public class JQueryGridData {
 		rows.add(new Row(id, cell));
 	}
 	
-	public void addRows(List<?> rows) {
-		this.rows.addAll(rows);
+	public void addRows(Collection<?> rows) {
+		for (Object row: rows){
+			addRow(row);
+		}
+	}
+	
+	/**
+	 * Add rows from a JDBC ResultSet. Each row will be a HashMap mapped from a record of ResultSet.
+	 * @param rs
+	 * @throws SQLException 
+	 */
+	public void addRows(ResultSet rs) throws SQLException{
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int columnCount = rsmd.getColumnCount();
+		
+		while (rs.next()) {
+			Map<String, Object> row = new HashMap<String, Object>();
+			for (int i = 1; i < columnCount + 1; i++) {
+				String colName = rsmd.getColumnName(i);
+				Object colObj = rs.getObject(i);
+				row.put(colName, colObj);
+				/*
+				if (colObj == null){		// avoid error if trying to convert data types
+					row.put(colName, colObj);
+				}else{
+					switch (rsmd.getColumnType(i)) {
+						case java.sql.Types.TIMESTAMP:
+							row.put(colName, new Date(((java.sql.Timestamp)colObj).getTime()));
+							break;
+						case java.sql.Types.DATE:
+							row.put(colName, new Date(((java.sql.Date)colObj).getTime()));
+							break;
+						default:
+							row.put(colName, colObj);
+					}
+				}
+				*/
+			}
+			addRow(row);
+		}
 	}
 	
 	public void clearRows(){
@@ -105,6 +149,14 @@ public class JQueryGridData {
 	public void setRecords(int records) {
 		this.records = records;
 	}
+	/**
+	 * Set number of records according to current size of the rows list.
+	 * @param records
+	 */
+	public void setRecords() {
+		this.records = rows.size();
+	}
+	
 	public List<Object> getRows() {
 		return rows;
 	}
