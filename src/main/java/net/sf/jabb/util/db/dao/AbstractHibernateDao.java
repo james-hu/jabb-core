@@ -116,7 +116,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
  
     @Transactional
 	public List<T> getAll() {
-        return getAllByHql(null, null, null);
+        return getAllByHql(null, null, null, null, null);
     }
 
 	/**
@@ -126,7 +126,19 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
 	 */
     @Transactional
 	public List< T> getAllByHql(String secondHalfOfHql) {
-		return getAllByHql(secondHalfOfHql, null, null);
+		return getAllByHql(secondHalfOfHql, null, null, null, null);
+	}
+ 
+    /**
+     * 
+     * @param secondHalfOfHql
+     * @param offset		the number of first record in the whole query result to be returned, records numbers start from 0
+     * @param limit			the maximum number of records to return
+     * @return
+     */
+    @Transactional
+	public List< T> getAllByHql(String secondHalfOfHql, Integer offset, Integer limit) {
+		return getAllByHql(secondHalfOfHql, null, null, offset, limit);
 	}
  
 	/**
@@ -139,6 +151,21 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     @SuppressWarnings("unchecked")
     @Transactional
 	public List< T> getAllByHql(String secondHalfOfHql, Object[] paramValues, Type[] paramTypes) {
+        return getAllByHql(secondHalfOfHql, paramValues, paramTypes, null, null);
+    }
+    
+    /**
+     * 
+	 * @param secondHalfOfHql	parts after "from <class_name> "
+     * @param paramValues
+     * @param paramTypes
+     * @param offset		the number of first record in the whole query result to be returned, records numbers start from 0
+     * @param limit			the maximum number of records to return
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    @Transactional
+	public List< T> getAllByHql(String secondHalfOfHql, Object[] paramValues, Type[] paramTypes, Integer offset, Integer limit) {
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append("from ")
     		.append(this.clazz.getName())
@@ -153,10 +180,17 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     	if (paramValues != null && paramTypes != null){
         	query.setParameters(paramValues, paramTypes);
     	}
+    	if (offset != null){
+        	query.setFirstResult(offset);
+    	}
+    	if (limit != null){
+        	query.setMaxResults(limit);
+    	}
     	List<T> result = (List<T>) query.list();
         //tx.commit();
         return result;
     }
+
     
     /**
      * 
@@ -165,9 +199,20 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      */
     @Transactional
 	public List< T> getAllBySql(String secondHalfOfSql) {
-		return getAllBySql(secondHalfOfSql, null, null);
+		return getAllBySql(secondHalfOfSql, null, null, null, null);
 	}
-		
+	
+    /**
+     * 
+     * @param secondHalfOfSql		parts after "select * from "
+     * @param offset		the number of first record in the whole query result to be returned, records numbers start from 0
+     * @param limit			the maximum number of records to return
+     * @return
+     */
+    @Transactional
+	public List< T> getAllBySql(String secondHalfOfSql, Integer offset, Integer limit) {
+		return getAllBySql(secondHalfOfSql, null, null, offset, limit);
+	}
  
     /**
      * 
@@ -179,6 +224,21 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     @SuppressWarnings("unchecked")
     @Transactional
 	public List< T> getAllBySql(String secondHalfOfSql, Object[] paramValues, Type[] paramTypes) {
+        return getAllBySql(secondHalfOfSql, paramValues, paramTypes, null, null);
+    }
+ 
+    /**
+     * 
+     * @param secondHalfOfSql	parts after "select * from "
+     * @param paramValues
+     * @param paramTypes
+     * @param offset		the number of first record in the whole query result to be returned, records numbers start from 0
+     * @param limit			the maximum number of records to return
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    @Transactional
+	public List< T> getAllBySql(String secondHalfOfSql, Object[] paramValues, Type[] paramTypes, Integer offset, Integer limit) {
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append("select * from ");
    		queryStr.append(secondHalfOfSql);
@@ -187,6 +247,12 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     	Query query = session.createQuery(queryStr.toString());
     	if (paramValues != null && paramTypes != null){
         	query.setParameters(paramValues, paramTypes);
+    	}
+    	if (offset != null){
+        	query.setFirstResult(offset);
+    	}
+    	if (limit != null){
+        	query.setMaxResults(limit);
     	}
     	List<T> result = (List<T>) query.list();
         return result;

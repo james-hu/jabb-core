@@ -93,23 +93,21 @@ public class JQueryGridData {
 			for (int i = 1; i < columnCount + 1; i++) {
 				String colName = rsmd.getColumnName(i);
 				Object colObj = rs.getObject(i);
-				row.put(colName, colObj);
-				/*
 				if (colObj == null){		// avoid error if trying to convert data types
 					row.put(colName, colObj);
 				}else{
-					switch (rsmd.getColumnType(i)) {
-						case java.sql.Types.TIMESTAMP:
-							row.put(colName, new Date(((java.sql.Timestamp)colObj).getTime()));
-							break;
-						case java.sql.Types.DATE:
-							row.put(colName, new Date(((java.sql.Date)colObj).getTime()));
-							break;
-						default:
-							row.put(colName, colObj);
+					if (colObj instanceof oracle.sql.Datum){
+						colObj = ((oracle.sql.TIMESTAMP)colObj).toJdbc();
+					}
+					
+					if (colObj instanceof java.sql.Timestamp){
+						row.put(colName, new Date(((java.sql.Timestamp)colObj).getTime()));
+					}else if (colObj instanceof java.sql.Date){
+						row.put(colName, new Date(((java.sql.Date)colObj).getTime()));
+					}else{
+						row.put(colName, colObj);
 					}
 				}
-				*/
 			}
 			addRow(row);
 		}
