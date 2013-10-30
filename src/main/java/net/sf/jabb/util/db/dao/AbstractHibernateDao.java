@@ -248,28 +248,30 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     
     /**
      * Get the count of all records in database
-     * @param secondHalfOfSql	parts after "from <class_name> "
+     * @param secondHalfOfHql	parts after "from <class_name> "
      * @return
      */
     @Transactional
-    public int countByHql(String secondHalfOfSql){
-    	return countByHql(secondHalfOfSql, null, null);
+    public int countByHql(String secondHalfOfHql){
+    	return countByHql(secondHalfOfHql, null, null);
     }
     
     /**
      * Get the count of all records in database
-     * @param secondHalfOfSql	parts after "from <class_name> "
+     * @param secondHalfOfHql	parts after "from <class_name> "
      * @param paramValues
      * @param paramTypes
      * @return
      */
     @Transactional
-    public int countByHql(String secondHalfOfSql, Object[] paramValues, Type[] paramTypes){
+    public int countByHql(String secondHalfOfHql, Object[] paramValues, Type[] paramTypes){
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append("select count(*) from ")
 			.append(this.clazz.getName())
 			.append(" ");
-   		queryStr.append(secondHalfOfSql);
+    	if (secondHalfOfHql != null){
+    		queryStr.append(secondHalfOfHql);
+     	}
     	
         Session session = this.getCurrentSession();
     	Query query = session.createQuery(queryStr.toString());
