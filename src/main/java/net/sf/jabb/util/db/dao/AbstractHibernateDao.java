@@ -231,7 +231,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     @Transactional
 	public List< T> getAllBySql(String fullSql, Object[] paramValues, Type[] paramTypes, Integer offset, Integer limit) {
         Session session = this.getCurrentSession();
-    	Query query = session.createQuery(fullSql);
+    	Query query = session.createSQLQuery(fullSql).addEntity(this.clazz);
     	setupQuery(query, paramValues, paramTypes, offset, limit);
     	List<T> result = (List<T>) query.list();
         return result;
@@ -297,7 +297,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     @Transactional
     public int countBySql(String fullSql, Object[] paramValues, Type[] paramTypes){
         Session session = this.getCurrentSession();
-    	Query query = session.createQuery(fullSql);
+    	Query query = session.createSQLQuery(fullSql);
     	setupQuery(query, paramValues, paramTypes, null, null);
         return (Integer)query.uniqueResult();
     }
