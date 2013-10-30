@@ -242,7 +242,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @return
      */
     @Transactional
-    public int countAll(){
+    public long countAll(){
     	return countByHql(null);
     }
     
@@ -252,7 +252,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @return
      */
     @Transactional
-    public int countByHql(String secondHalfOfHql){
+    public long countByHql(String secondHalfOfHql){
     	return countByHql(secondHalfOfHql, null, null);
     }
     
@@ -264,7 +264,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @return
      */
     @Transactional
-    public int countByHql(String secondHalfOfHql, Object[] paramValues, Type[] paramTypes){
+    public long countByHql(String secondHalfOfHql, Object[] paramValues, Type[] paramTypes){
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append("select count(*) from ")
 			.append(this.clazz.getName())
@@ -276,7 +276,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
         Session session = this.getCurrentSession();
     	Query query = session.createQuery(queryStr.toString());
     	setupQuery(query, paramValues, paramTypes, null, null);
-        return (Integer)query.uniqueResult();
+        return ((Number)query.uniqueResult()).longValue();
     }
     
     /**
@@ -285,7 +285,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @return
      */
     @Transactional
-    public int countBySql(String fullSql){
+    public long countBySql(String fullSql){
     	return countBySql(fullSql, null, null);
     }
     
@@ -297,11 +297,11 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @return
      */
     @Transactional
-    public int countBySql(String fullSql, Object[] paramValues, Type[] paramTypes){
+    public long countBySql(String fullSql, Object[] paramValues, Type[] paramTypes){
         Session session = this.getCurrentSession();
     	Query query = session.createSQLQuery(fullSql);
     	setupQuery(query, paramValues, paramTypes, null, null);
-        return (Integer)query.uniqueResult();
+        return ((Number)query.uniqueResult()).longValue();
     }
     
     /**
