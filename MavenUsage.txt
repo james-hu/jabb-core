@@ -4,9 +4,9 @@ mvn install:install-file -Dfile=ojdbc14.jar -DgroupId=com.oracle -DartifactId=oj
 mvn install:install-file -Dfile=mmseg4j-core-1.8.4-with-dic.jar -DgroupId=com.chenlb -DartifactId=mmseg4j-core -Dversion=1.8.4-with-dic -Dpackaging=jar
 
 jar:      mvn -DskipTests clean package
-deploy:   mvn deploy
+deploy:   mvn -DskipTests deploy
 web site: ssh -t james-hu,jabb@shell.sourceforge.net create
-          mvn javadoc:javadoc site:site site:deploy
-zip:      mvn javadoc:javadoc site:site assembly:single
-all:      mvn clean package deploy javadoc:javadoc site:site site:deploy assembly:single
+          mvn -DskipTests javadoc:javadoc site:site site:deploy
+zip:      mvn -DskipTests javadoc:javadoc site:site assembly:single
+all:      mvn -DskipTests clean package deploy javadoc:javadoc site:site site:deploy assembly:single
 

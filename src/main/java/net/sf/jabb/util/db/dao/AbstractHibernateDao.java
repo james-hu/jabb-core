@@ -177,15 +177,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
         Session session = this.getCurrentSession();
         //Transaction tx = session.beginTransaction();
     	Query query = session.createQuery(queryStr.toString());
-    	if (paramValues != null && paramTypes != null){
-        	query.setParameters(paramValues, paramTypes);
-    	}
-    	if (offset != null){
-        	query.setFirstResult(offset);
-    	}
-    	if (limit != null){
-        	query.setMaxResults(limit);
-    	}
+    	setupQuery(query, paramValues, paramTypes, offset, limit);
     	List<T> result = (List<T>) query.list();
         //tx.commit();
         return result;
@@ -194,42 +186,41 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     
     /**
      * 
-     * @param secondHalfOfSql		parts after "select * from "
+     * @param fullSql		
      * @return
      */
     @Transactional
-	public List< T> getAllBySql(String secondHalfOfSql) {
-		return getAllBySql(secondHalfOfSql, null, null, null, null);
+	public List< T> getAllBySql(String fullSql) {
+		return getAllBySql(fullSql, null, null, null, null);
 	}
 	
     /**
      * 
-     * @param secondHalfOfSql		parts after "select * from "
+     * @param fullSql
      * @param offset		the number of first record in the whole query result to be returned, records numbers start from 0
      * @param limit			the maximum number of records to return
      * @return
      */
     @Transactional
-	public List< T> getAllBySql(String secondHalfOfSql, Integer offset, Integer limit) {
-		return getAllBySql(secondHalfOfSql, null, null, offset, limit);
+	public List< T> getAllBySql(String fullSql, Integer offset, Integer limit) {
+		return getAllBySql(fullSql, null, null, offset, limit);
 	}
  
     /**
      * 
-     * @param secondHalfOfSql		parts after "select * from "
+     * @param fullSql		
      * @param paramValues
      * @param paramTypes
      * @return
      */
-    @SuppressWarnings("unchecked")
     @Transactional
-	public List< T> getAllBySql(String secondHalfOfSql, Object[] paramValues, Type[] paramTypes) {
-        return getAllBySql(secondHalfOfSql, paramValues, paramTypes, null, null);
+	public List< T> getAllBySql(String fullSql, Object[] paramValues, Type[] paramTypes) {
+        return getAllBySql(fullSql, paramValues, paramTypes, null, null);
     }
  
     /**
      * 
-     * @param secondHalfOfSql	parts after "select * from "
+     * @param fullSql	
      * @param paramValues
      * @param paramTypes
      * @param offset		the number of first record in the whole query result to be returned, records numbers start from 0
@@ -238,13 +229,88 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      */
     @SuppressWarnings("unchecked")
     @Transactional
-	public List< T> getAllBySql(String secondHalfOfSql, Object[] paramValues, Type[] paramTypes, Integer offset, Integer limit) {
+	public List< T> getAllBySql(String fullSql, Object[] paramValues, Type[] paramTypes, Integer offset, Integer limit) {
+        Session session = this.getCurrentSession();
+    	Query query = session.createQuery(fullSql);
+    	setupQuery(query, paramValues, paramTypes, offset, limit);
+    	List<T> result = (List<T>) query.list();
+        return result;
+    }
+ 
+    /**
+     * Get the count of all records in database
+     * @return
+     */
+    @Transactional
+    public int countAll(){
+    	return countByHql(null);
+    }
+    
+    /**
+     * Get the count of all records in database
+     * @param secondHalfOfSql	parts after "from <class_name> "
+     * @return
+     */
+    @Transactional
+    public int countByHql(String secondHalfOfSql){
+    	return countByHql(secondHalfOfSql, null, null);
+    }
+    
+    /**
+     * Get the count of all records in database
+     * @param secondHalfOfSql	parts after "from <class_name> "
+     * @param paramValues
+     * @param paramTypes
+     * @return
+     */
+    @Transactional
+    public int countByHql(String secondHalfOfSql, Object[] paramValues, Type[] paramTypes){
     	StringBuilder queryStr = new StringBuilder();
-    	queryStr.append("select * from ");
+    	queryStr.append("select count(*) from ")
+			.append(this.clazz.getName())
+			.append(" ");
    		queryStr.append(secondHalfOfSql);
     	
         Session session = this.getCurrentSession();
     	Query query = session.createQuery(queryStr.toString());
+    	setupQuery(query, paramValues, paramTypes, null, null);
+        return (Integer)query.uniqueResult();
+    }
+    
+    /**
+     * Get the count of all records in database
+     * @param fullSql
+     * @return
+     */
+    @Transactional
+    public int countBySql(String fullSql){
+    	return countBySql(fullSql, null, null);
+    }
+    
+    /**
+     * Get the count of all records in database
+     * @param fullSql
+     * @param paramValues
+     * @param paramTypes
+     * @return
+     */
+    @Transactional
+    public int countBySql(String fullSql, Object[] paramValues, Type[] paramTypes){
+        Session session = this.getCurrentSession();
+    	Query query = session.createQuery(fullSql);
+    	setupQuery(query, paramValues, paramTypes, null, null);
+        return (Integer)query.uniqueResult();
+    }
+    
+    /**
+     * Setup a query with parameters and other configurations.
+     * @param query
+     * @param paramValues
+     * @param paramTypes
+     * @param offset
+     * @param limit
+     */
+    private void setupQuery(Query query, Object[] paramValues, Type[] paramTypes, Integer offset, Integer limit){
     	if (paramValues != null && paramTypes != null){
         	query.setParameters(paramValues, paramTypes);
     	}
@@ -254,8 +320,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     	if (limit != null){
         	query.setMaxResults(limit);
     	}
-    	List<T> result = (List<T>) query.list();
-        return result;
     }
  
 
