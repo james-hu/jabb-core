@@ -39,6 +39,17 @@ public class BasicNumberStatistics {
 	}
 	
 	/**
+	 * Merge the statistics from another object into this one
+	 * @param other
+	 */
+	public void merge(BasicNumberStatistics other){
+		min.min(other.min.get());
+		max.max(other.max.get());
+		sum.addAndGet(other.sum.get());
+		count.addAndGet(other.count.get());
+	}
+	
+	/**
 	 * 把一个值提供给统计
 	 * @param value		需要提供给统计的值
 	 */
@@ -112,4 +123,8 @@ public class BasicNumberStatistics {
 		count.set(0);
 	}
 
+	@Override
+	public String toString(){
+		return "count=" + count + ", sum=" + sum + ", min=" + min + ", max=" + max + ", avg=" + getAvg();
+	}
 }

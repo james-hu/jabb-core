@@ -63,6 +63,11 @@ abstract class AtomicMinMaxLong {
 		return (int) value;
 	}
 	
+	@Override
+	public String toString(){
+		return String.valueOf(value);
+	}
+	
 	/**
 	 * Reset to initial status.<br>
 	 * 回复到初始状态。

@@ -16,7 +16,15 @@ limitations under the License.
 
 package net.sf.jabb.util.text;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
+import net.sf.jabb.util.col.MapValueFactory;
+import net.sf.jabb.util.col.PutIfAbsentMap;
 
 /**
  * Definition of how the matching will should be done. <br>
@@ -110,6 +118,74 @@ public class MatchingDefinition {
 
 		return sb.toString();
 		
+	}
+	
+	/**
+	 * Loads definitions from properties. For example:
+	 * <br>name1.expression=...
+	 * <br>name1.example.1=...
+	 * <br>name1.example.2=...
+	 * <br>...
+	 * <br>name1.attachment=...
+	 * <br>
+	 * <br>name2.expression=...
+	 * <br>name2.example.1=...
+	 * <br>name2.example.2=...
+	 * <br>...
+	 * <br>name2.attachment=...
+	 * <br>...
+	 * @param props
+	 * @return
+	 */
+	static public List<MatchingDefinition> load(Map<? extends Object, ? extends Object> props){
+		List<MatchingDefinition> result = new LinkedList<MatchingDefinition>();
+		
+		Map<String, Map<String, Object>> defs = new PutIfAbsentMap<String, Map<String, Object>>(new HashMap<String, Map<String, Object>>(), new MapValueFactory<String, Map<String, Object>>(){
+			@Override
+			public Map<String, Object> createValue(String key) {
+				return new HashMap<String, Object>();
+			}
+		});
+		
+		// classify
+		for (Map.Entry<? extends Object,? extends Object> entry: props.entrySet()){
+			String key = (String)entry.getKey();
+			String name = StringUtils.substringBefore(key, ".");
+			String postfix = StringUtils.substringAfter(key, ".");
+			defs.get(name).put(postfix, entry.getValue());
+		}
+		
+		// process
+		for (Map.Entry<String, Map<String, Object>> entry: defs.entrySet()){
+			Map<String, Object> def = entry.getValue();
+			String expression = null;
+			Object attachment = null;
+			List<String> examples = new LinkedList<String>();
+			for (Map.Entry<String, Object> defEntry: def.entrySet()){
+				String key = defEntry.getKey();
+				Object value = defEntry.getValue();
+				if (key != null){
+					if (key.equalsIgnoreCase("expression")){
+						expression = (String)value;
+					}else if (key.startsWith("example")){
+						examples.add((String)value);
+					}else if (key.equalsIgnoreCase("attachment")){
+						attachment = value;
+					}else{
+						// ignore
+					}
+				}
+			}
+			if (expression != null){
+				MatchingDefinition mDef = new MatchingDefinition();
+				mDef.setRegularExpression(expression);
+				mDef.setExactMatchExamples(examples);
+				mDef.setAttachment(attachment);
+				result.add(mDef);
+			}
+		}
+		
+		return result;
 	}
 
 	public String getRegularExpression() {
