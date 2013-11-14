@@ -334,4 +334,19 @@ public class ConnectionUtility {
 		closeStatement(st2);
 		closeConnection(conn);
 	}
+	
+	/**
+	 * Summarize the returned array of {@link java.sql.Statement#executeBatch()}
+	 * @param result	result of {@link java.sql.Statement#executeBatch()}
+	 * @return		at least how many rows had been successfully updated
+	 */
+	public static int totalUpdateCount(int[] result){
+		int total = 0;
+		for (int i: result){
+			if (i >= 0){
+				total += i;
+			}
+		}
+		return total;
+	}
 }
