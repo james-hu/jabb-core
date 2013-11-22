@@ -264,19 +264,24 @@ public abstract class QueueConsumer<E> implements Runnable{
 
 	public void run() {
 		thread = Thread.currentThread();	// run from thread in executor
+		String previousName = thread.getName();
 		thread.setName(name);
-		if (!mode.compareAndSet(MODE_START, MODE_RUNNING)){
-			throw new IllegalStateException("Should be in state MODE_START, but actully not.");
+		try{
+			if (!mode.compareAndSet(MODE_START, MODE_RUNNING)){
+				throw new IllegalStateException("Should be in state MODE_START, but actully not.");
+			}
+			
+			int m;	//保证值一致
+			while(((m = mode.get()) == MODE_RUNNING) || (m == MODE_STOP_WHEN_EMPTY && queue.size() > 0)){
+				consume();
+			}
+			if (!mode.compareAndSet(MODE_STOP_WHEN_EMPTY, MODE_STOPPED) && !mode.compareAndSet(MODE_STOP_ASAP, MODE_STOPPED)){
+				throw new IllegalStateException("Should be in state MODE_STOP_WHEN_EMPTY or MODE_STOP_ASAP, but actully not.");
+			}
+			thread.interrupt();
+		}finally{
+			thread.setName(previousName);
 		}
-		
-		int m;	//保证值一致
-		while(((m = mode.get()) == MODE_RUNNING) || (m == MODE_STOP_WHEN_EMPTY && queue.size() > 0)){
-			consume();
-		}
-		if (!mode.compareAndSet(MODE_STOP_WHEN_EMPTY, MODE_STOPPED) && !mode.compareAndSet(MODE_STOP_ASAP, MODE_STOPPED)){
-			throw new IllegalStateException("Should be in state MODE_STOP_WHEN_EMPTY or MODE_STOP_ASAP, but actully not.");
-		}
-		thread.interrupt();
 	}
 	
 	/**

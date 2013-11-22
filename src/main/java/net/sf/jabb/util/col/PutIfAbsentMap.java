@@ -294,5 +294,9 @@ public class PutIfAbsentMap<K, V> implements Map<K, V>{
 		return map.values();
 	}
 
+	@Override
+	public String toString(){
+		return map.toString();
+	}
 
 }
