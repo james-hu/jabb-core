@@ -12,7 +12,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.type.Type;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 public abstract class AbstractHibernateDao <T extends Serializable> {
@@ -91,7 +90,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     
 	private final Class<T> clazz;
 	
-	@Autowired
     protected SessionFactory sessionFactory;
     
     
