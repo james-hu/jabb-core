@@ -12,7 +12,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.type.Type;
-import org.springframework.transaction.annotation.Transactional;
 
 public abstract class AbstractHibernateDao <T extends Serializable> {
 	static private final Log log = LogFactory.getLog(AbstractHibernateDao.class);
@@ -101,7 +100,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     	return clazz.getClass();
     }
 
-    @Transactional
     @SuppressWarnings("unchecked")
 	public T getById(final Serializable id) {
         if (id == null){
@@ -112,7 +110,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
         return result;
     }
  
-    @Transactional
 	public List<T> getAll() {
         return getAllByHql(null, null, null, null, null);
     }
@@ -122,7 +119,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
 	 * @param secondHalfOfHql	parts after "from <class_name> "
 	 * @return
 	 */
-    @Transactional
 	public List< T> getAllByHql(String secondHalfOfHql) {
 		return getAllByHql(secondHalfOfHql, null, null, null, null);
 	}
@@ -134,7 +130,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @param limit			the maximum number of records to return
      * @return
      */
-    @Transactional
 	public List< T> getAllByHql(String secondHalfOfHql, Integer offset, Integer limit) {
 		return getAllByHql(secondHalfOfHql, null, null, offset, limit);
 	}
@@ -147,7 +142,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
 	 * @return
 	 */
     @SuppressWarnings("unchecked")
-    @Transactional
 	public List< T> getAllByHql(String secondHalfOfHql, Object[] paramValues, Type[] paramTypes) {
         return getAllByHql(secondHalfOfHql, paramValues, paramTypes, null, null);
     }
@@ -162,7 +156,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    @Transactional
 	public List< T> getAllByHql(String secondHalfOfHql, Object[] paramValues, Type[] paramTypes, Integer offset, Integer limit) {
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append("from ")
@@ -187,7 +180,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @param fullSql		
      * @return
      */
-    @Transactional
 	public List< T> getAllBySql(String fullSql) {
 		return getAllBySql(fullSql, null, null, null, null);
 	}
@@ -199,7 +191,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @param limit			the maximum number of records to return
      * @return
      */
-    @Transactional
 	public List< T> getAllBySql(String fullSql, Integer offset, Integer limit) {
 		return getAllBySql(fullSql, null, null, offset, limit);
 	}
@@ -211,7 +202,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @param paramTypes
      * @return
      */
-    @Transactional
 	public List< T> getAllBySql(String fullSql, Object[] paramValues, Type[] paramTypes) {
         return getAllBySql(fullSql, paramValues, paramTypes, null, null);
     }
@@ -226,7 +216,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    @Transactional
 	public List< T> getAllBySql(String fullSql, Object[] paramValues, Type[] paramTypes, Integer offset, Integer limit) {
         Session session = this.getCurrentSession();
     	Query query = session.createSQLQuery(fullSql).addEntity(this.clazz);
@@ -239,7 +228,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * Get the count of all records in database
      * @return
      */
-    @Transactional
     public long countAll(){
     	return countByHql(null);
     }
@@ -249,7 +237,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @param secondHalfOfHql	parts after "from <class_name> "
      * @return
      */
-    @Transactional
     public long countByHql(String secondHalfOfHql){
     	return countByHql(secondHalfOfHql, null, null);
     }
@@ -261,7 +248,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @param paramTypes
      * @return
      */
-    @Transactional
     public long countByHql(String secondHalfOfHql, Object[] paramValues, Type[] paramTypes){
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append("select count(*) from ")
@@ -282,7 +268,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @param fullSql
      * @return
      */
-    @Transactional
     public long countBySql(String fullSql){
     	return countBySql(fullSql, null, null);
     }
@@ -294,7 +279,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @param paramTypes
      * @return
      */
-    @Transactional
     public long countBySql(String fullSql, Object[] paramValues, Type[] paramTypes){
         Session session = this.getCurrentSession();
     	Query query = session.createSQLQuery(fullSql);
@@ -323,22 +307,18 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     }
  
 
-    @Transactional
     public void create(final T entity) {
     	this.getCurrentSession().persist(entity);
     }
     
-    @Transactional
     public void update(final T entity) {
     	this.getCurrentSession().saveOrUpdate(entity); //.merge(entity);
     }
  
-    @Transactional
     public void delete(final T entity) {
     	this.getCurrentSession().persist(entity);
    }
  
-    @Transactional
     public void deleteById(final Serializable entityId) {
         final T entity = this.getById(entityId);
         if (entity != null){
@@ -370,6 +350,10 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
         this.sessionFactory = sessionFactory;
     }
  
+    /**
+     * Get current session. However DAO should not expose this. That's why this method is protected.
+     * @return current session
+     */
     protected final Session getCurrentSession() {
         return this.sessionFactory.getCurrentSession();
     }

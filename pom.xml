@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.jabb</groupId>
 	<artifactId>jabb-core</artifactId>
-	<version>1.0.29</version>
+	<version>1.0.31</version>
 	<name>JABB</name>
 	<url>http://jabb.sourceforge.net/</url>
 	<description>JABB is a collection of reusable Java components. </description>
@@ -259,22 +259,22 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.9</version>
+	            <configuration>
+	                <additionalparam>-Xdoclint:none</additionalparam>
+	            </configuration>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
 						<goals>
 							<goal>jar</goal>
 						</goals>
-            <configuration>
-                <additionalparam>-Xdoclint:none</additionalparam>
-            </configuration>
 					</execution>
 				</executions>
 			</plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.1</version>
+        <version>3.3</version>
         <configuration>
           <outputEncoding>UTF-8</outputEncoding>
           <!-- <locales>en,zh_CN</locales> -->
