@@ -316,7 +316,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     }
  
     public void delete(final T entity) {
-    	this.getCurrentSession().persist(entity);
+    	this.getCurrentSession().delete(entity);
    }
  
     public void deleteById(final Serializable entityId) {

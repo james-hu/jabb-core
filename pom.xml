@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.jabb</groupId>
 	<artifactId>jabb-core</artifactId>
-	<version>1.0.31</version>
+	<version>1.0.33</version>
 	<name>JABB</name>
 	<url>http://jabb.sourceforge.net/</url>
 	<description>JABB is a collection of reusable Java components. </description>
@@ -217,6 +217,12 @@
 			<artifactId>quartz</artifactId>
 			<version>2.2.1</version>
 			<optional>true</optional>
+			<exclusions>
+				<exclusion>
+					<artifactId>c3p0</artifactId>
+					<groupId>c3p0</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>info.magnolia</groupId>
@@ -228,6 +234,18 @@
 			<groupId>info.magnolia</groupId>
 			<artifactId>magnolia-core</artifactId>
 			<version>5.2</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant</artifactId>
+			<version>1.9.4</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant-commons-logging</artifactId>
+			<version>1.9.4</version>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
