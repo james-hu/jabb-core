@@ -23,7 +23,7 @@ package net.sf.jabb.util.bean;
  * @author Zhengmao HU (James)
  *
  */
-public class GenericResult {
+public class GenericResult<T> {
 	/**
 	 * Whether the request was processed successfully.<br>
 	 * 是否成功处理了请求。
@@ -38,7 +38,7 @@ public class GenericResult {
 	 * Any further information.<be>
 	 * 更进一步的信息。
 	 */
-	protected Object attachment;
+	protected T attachment;
 	
 	/**
 	 * Constructor.<br>
@@ -47,7 +47,7 @@ public class GenericResult {
 	 * @param errorMsg		Error message
 	 * @param att			Attachement
 	 */
-	public GenericResult(boolean successful, String errorMsg, Object att){
+	public GenericResult(boolean successful, String errorMsg, T att){
 		this.successful = successful;
 		this.errorMessage = errorMsg;
 		this.attachment = att;
@@ -87,10 +87,10 @@ public class GenericResult {
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
-	public Object getAttachment() {
+	public T getAttachment() {
 		return attachment;
 	}
-	public void setAttachment(Object attachment) {
+	public void setAttachment(T attachment) {
 		this.attachment = attachment;
 	}
 

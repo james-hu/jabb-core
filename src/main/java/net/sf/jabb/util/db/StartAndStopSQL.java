@@ -75,6 +75,8 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 	protected boolean useAnt = false;
 	protected String startSqlCondition;
 	protected String stopSqlCondition;
+	protected String startSqlConditionResource;
+	protected String stopSqlConditionResource;
 	
 	protected ApplicationContext context;
 	
@@ -124,7 +126,7 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 		}finally{
 			IOUtils.closeQuietly(in);
 		}
-		if (sql != null && sql.length() > 0){
+		if (StringUtils.isNotBlank(sql)){
 			executeSQL(sql);
 		}
 	}
@@ -142,7 +144,9 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 	public void start() {
 		if (state.compareAndSet(UNKNOWN, STARTING)){
 			log.debug("Starting...");
-			if (StringUtils.isBlank(startSqlCondition) || isInCondition(startSqlCondition)){
+			if ( (StringUtils.isBlank(startSqlCondition) || isInCondition(startSqlCondition))
+					&& (StringUtils.isBlank(startSqlConditionResource) || isInConditionResource(startSqlConditionResource))
+					){
 				if (StringUtils.isNotBlank(startSQL)){
 					executeSQL(startSQL);
 				} else if (StringUtils.isNotBlank(startSqlResource)){
@@ -161,7 +165,9 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 	public void stop() {
 		if (state.compareAndSet(RUNNING, STOPPING)){
 			log.debug("Stopping...");
-			if (StringUtils.isBlank(stopSqlCondition) || isInCondition(stopSqlCondition)){
+			if ( (StringUtils.isBlank(stopSqlCondition) || isInCondition(stopSqlCondition))
+					&& (StringUtils.isBlank(stopSqlConditionResource) || isInConditionResource(stopSqlConditionResource))
+					){
 				if (StringUtils.isNotBlank(stopSQL)){
 					executeSQL(stopSQL);
 				} else if (StringUtils.isNotBlank(stopSqlResource)){
@@ -178,7 +184,6 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 	 * Check if the database is in a specific condition by checking the result of a SQL statement
 	 * @param sql the SQL statement that would return a number
 	 * @return true if the returned number is greater than 0
-	 * @throws SQLException 
 	 */
 	protected boolean isInCondition(String sql){
 		Connection conn = null;
@@ -199,6 +204,31 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 		}
 	}
 	
+	/**
+	 * Check if the database is in a specific condition by checking the result of a SQL statement loaded as a resource.
+	 * @param resource  the resource containing the SQL statement that would return a number
+	 * @return true if the returned number is greater than 0
+	 */
+	protected boolean isInConditionResource(String resource){
+		Resource sqlResource = context.getResource(resource);
+		InputStream in = null;
+		String sql = null;
+		try{
+			in = sqlResource.getInputStream();
+			sql = IOUtils.toString(in);
+		} catch(IOException ioe){
+			throw new RuntimeException("Failed to get condition SQL (" + ioe.getMessage() + ") from: " + resource, ioe);
+		}finally{
+			IOUtils.closeQuietly(in);
+		}
+		if (StringUtils.isNotBlank(sql)){
+			return isInCondition(sql);
+		}else{
+			return true;
+		}
+	}
+
+
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		start();
@@ -270,6 +300,10 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 		return startSQL;
 	}
 
+	/**
+	 * Multiple SQL statements is allowed if useAnt is true.
+	 * @param startSQL
+	 */
 	public void setStartSQL(String startSQL) {
 		this.startSQL = startSQL;
 	}
@@ -278,6 +312,10 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 		return stopSQL;
 	}
 
+	/**
+	 * Multiple SQL statements is allowed if useAnt is true.
+	 * @param shutdownSQL
+	 */
 	public void setStopSQL(String shutdownSQL) {
 		this.stopSQL = shutdownSQL;
 	}
@@ -290,10 +328,18 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 		return stopSqlResource;
 	}
 
+	/**
+	 * Multiple SQL statements can be contained in the resource if useAnt is true.
+	 * @param startSqlResource
+	 */
 	public void setStartSqlResource(String startSqlResource) {
 		this.startSqlResource = startSqlResource;
 	}
 
+	/**
+	 * Multiple SQL statements can be contained in the resource if useAnt is true.
+	 * @param stopSqlResource
+	 */
 	public void setStopSqlResource(String stopSqlResource) {
 		this.stopSqlResource = stopSqlResource;
 	}
@@ -310,6 +356,10 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 		return startSqlCondition;
 	}
 
+	/**
+	 * This must be a single SQL statement returning a number
+	 * @param startSqlCondition
+	 */
 	public void setStartSqlCondition(String startSqlCondition) {
 		this.startSqlCondition = startSqlCondition;
 	}
@@ -318,8 +368,36 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 		return stopSqlCondition;
 	}
 
+	/**
+	 * This must be a single SQL statement returning a number
+	 * @param stopSqlCondition
+	 */
 	public void setStopSqlCondition(String stopSqlCondition) {
 		this.stopSqlCondition = stopSqlCondition;
+	}
+
+	public String getStopSqlConditionResource() {
+		return stopSqlConditionResource;
+	}
+
+	/**
+	 * The resource must contain only a single SQL statement returning a number.
+	 * @param stopSqlConditionResource
+	 */
+	public void setStopSqlConditionResource(String stopSqlConditionResource) {
+		this.stopSqlConditionResource = stopSqlConditionResource;
+	}
+
+	public String getStartSqlConditionResource() {
+		return startSqlConditionResource;
+	}
+
+	/**
+	 * The resource must contain only a single SQL statement returning a number.
+	 * @param startSqlConditionResource
+	 */
+	public void setStartSqlConditionResource(String startSqlConditionResource) {
+		this.startSqlConditionResource = startSqlConditionResource;
 	}
 
 
