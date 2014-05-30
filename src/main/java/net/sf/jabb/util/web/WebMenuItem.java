@@ -17,6 +17,7 @@ public class WebMenuItem implements Serializable, Comparable<WebMenuItem>{
 
 	protected String title;
 	protected String url;
+	protected boolean dynamic;
 	protected List<WebMenuItem> subMenu;
 	protected List<WebMenuItem> breadcrumbs;
 	
@@ -44,6 +45,9 @@ public class WebMenuItem implements Serializable, Comparable<WebMenuItem>{
 		}else{
 			sb.append('"').append(title).append('"');
 			sb.append('(').append(url).append(')');
+			if (dynamic){
+				sb.append(" [Dynamic]");
+			}
 			if (subMenu != null && subMenu.size() > 0){
 				sb.append('\n');
 				for (WebMenuItem subItem: subMenu){
@@ -107,6 +111,14 @@ public class WebMenuItem implements Serializable, Comparable<WebMenuItem>{
 
 	public void setBreadcrumbs(List<WebMenuItem> breadcrumbs) {
 		this.breadcrumbs = breadcrumbs;
+	}
+
+	public boolean isDynamic() {
+		return dynamic;
+	}
+
+	public void setDynamic(boolean dynamic) {
+		this.dynamic = dynamic;
 	}
 
 

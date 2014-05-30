@@ -8,6 +8,7 @@ class MenuItemExt extends WebMenuItem {
 	String path;
 	String menuName;
 	int order;
+	boolean dynamic;
 
 	/**
 	 * Construct an instance from annotations on method level.
@@ -34,6 +35,9 @@ class MenuItemExt extends WebMenuItem {
 			this.path = def.path();
 			this.order = def.order();
 			this.menuName = def.menu();
+			this.dynamic = def.dynamic();
+		}else{
+			this.menuName = "";
 		}
 		
 		if (this.path == null || this.path.length() == 0){
@@ -56,14 +60,15 @@ class MenuItemExt extends WebMenuItem {
 		if ("".equals(menuName)){
 			menuName = baseMenuName;
 		}
-		url = baseUrl + url;
-		path = basePath + path;
+		url = (baseUrl + url);//.replace("//", "/");  // replace possible duplicated //
+		path = (basePath + path);//.replace("//", "/");  // replace possible duplicated //
 	}
 	
 	public WebMenuItem toWebMenuItem(){
 		WebMenuItem result = new WebMenuItem();
 		result.title = this.title;
 		result.url = this.url;
+		result.dynamic = this.dynamic;
 		result.subMenu = this.subMenu;
 		result.breadcrumbs = this.breadcrumbs;
 		if (result.subMenu != null && result.subMenu.size() == 0){
@@ -71,6 +76,11 @@ class MenuItemExt extends WebMenuItem {
 		}
 		if (result.subMenu != null){
 			result.url = null;				// if there is sub menu, then no url needed
+		}else{
+			// make the url look better by removing "//" from the beginning
+			if (result.url.startsWith("//")){
+				result.url = result.url.substring(1);
+			}
 		}
 		return result;
 	}
