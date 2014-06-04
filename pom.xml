@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.jabb</groupId>
 	<artifactId>jabb-core</artifactId>
-	<version>1.0.37</version>
+	<version>1.0.38</version>
 	<name>JABB</name>
 	<url>http://jabb.sourceforge.net/</url>
 	<description>JABB is a collection of reusable Java components. </description>
@@ -61,6 +61,10 @@
 		        <exclusion>
 		        	<artifactId>javassist</artifactId>
 		        	<groupId>javassist</groupId>
+		        </exclusion>
+		        <exclusion>
+		        	<artifactId>asm</artifactId>
+		        	<groupId>asm</groupId>
 		        </exclusion>
 		    </exclusions>
 		</dependency>
@@ -140,6 +144,10 @@
 				<exclusion>
 					<artifactId>javassist</artifactId>
 					<groupId>javassist</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>asm</artifactId>
+					<groupId>asm</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -274,6 +282,24 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<version>${spring.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>commons-dbutils</groupId>
+			<artifactId>commons-dbutils</artifactId>
+			<version>1.5</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>3.1</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>5.0.3</version>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
