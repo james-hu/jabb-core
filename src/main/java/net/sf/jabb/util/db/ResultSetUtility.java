@@ -60,7 +60,7 @@ public class ResultSetUtility {
 		return convertToMap(rs, null);
 	}
 	
-	protected Map<String, Object> convertToMap(ResultSet rs, Map<String, String> alreadyDeterminedMappings) throws SQLException{
+	public Map<String, Object> convertToMap(ResultSet rs, Map<String, String> alreadyDeterminedMappings) throws SQLException{
 		ResultSetMetaData rsmd = rs.getMetaData();
 		Map<String, String> columnToPropertyMappings = alreadyDeterminedMappings;
 		if (columnToPropertyMappings == null){
@@ -229,7 +229,7 @@ public class ResultSetUtility {
 	 * @return the mapping that already applied overridden
 	 * @throws SQLException 
 	 */
-	protected Map<String, String> createColumnToPropertyMappings(final ResultSetMetaData rsmd) throws SQLException{
+	public Map<String, String> createColumnToPropertyMappings(final ResultSetMetaData rsmd) throws SQLException{
 		Map<String, String> columnToPropertyMappings = new HashMap<String, String>(columnToPropertyOverrides);
 		int cols = rsmd.getColumnCount();
 		for (int col = 1; col <= cols; col++) {
@@ -278,7 +278,14 @@ public class ResultSetUtility {
 		return columnNameToPropertyName(columnName);
 	}
 	
-	protected String columnLabelOrName(ResultSetMetaData rsmd, int col) throws SQLException{
+	/**
+	 * Get the label or name of a column
+	 * @param rsmd
+	 * @param col
+	 * @return
+	 * @throws SQLException
+	 */
+	public String columnLabelOrName(ResultSetMetaData rsmd, int col) throws SQLException{
 		String columnName = rsmd.getColumnLabel(col);
 		if (null == columnName || 0 == columnName.length()) {
 			columnName = rsmd.getColumnName(col);
