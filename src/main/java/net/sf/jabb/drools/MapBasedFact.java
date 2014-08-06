@@ -23,14 +23,54 @@ public class MapBasedFact implements Fact {
 	protected Map<String, Object> map;
 	protected FactTemplate factTemplate;
 	protected long factId;
+	protected String factTemplateName;
 	
+	/**
+	 * If we already have the FactTemplate
+	 * @param factTemplate
+	 * @param dataMap
+	 */
 	public MapBasedFact(FactTemplate factTemplate, Map<String, Object> dataMap){
-		this.factTemplate = factTemplate;
+		this(dataMap);
+		if (factTemplate != null){
+			this.factTemplate = factTemplate;
+			this.factTemplateName = factTemplate.getName();
+		}
+	}
+
+	/**
+	 * If we only have the name of FactTemplate
+	 * @param factTemplateName
+	 * @param dataMap
+	 */
+	public MapBasedFact(String factTemplateName, Map<String, Object> dataMap){
+		this(dataMap);
+		this.factTemplateName = factTemplateName;
+	}
+	
+	protected MapBasedFact(Map<String, Object> dataMap){
 		this.map = dataMap;
 		this.factId = globalFactId.addAndGet(1);
 		if (this.map == null){
 			this.map = new HashMap<String, Object>();
 		}
+	}
+	
+	/**
+	 * Associate this fact with a package which has a FactTemplate defined with the same FactTemplate name
+	 * @param pkg
+	 */
+	public void associateWithPackage(org.drools.core.rule.Package pkg){
+		factTemplate = pkg.getFactTemplate(factTemplateName);
+	}
+
+	/**
+	 * Associate this fact with a FactTemplate
+	 * @param factTemplate
+	 */
+	public void associateWithFactTemplate(FactTemplate factTemplate){
+		this.factTemplate = factTemplate;
+		this.factTemplateName = factTemplate.getName();
 	}
 
 	@Override
@@ -40,8 +80,7 @@ public class MapBasedFact implements Fact {
 
 	@Override
 	public FactTemplate getFactTemplate() {
-		// TODO Auto-generated method stub
-		return null;
+		return factTemplate;
 	}
 
 	@Override

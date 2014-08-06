@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.sf.cglib.beans.BeanGenerator;
 
@@ -60,9 +61,9 @@ public class ResultSetUtility {
 		return convertToMap(rs, null);
 	}
 	
-	public Map<String, Object> convertToMap(ResultSet rs, Map<String, String> alreadyDeterminedMappings) throws SQLException{
+	public Map<String, Object> convertToMap(ResultSet rs, Map<String, ColumnMetaData> alreadyDeterminedMappings) throws SQLException{
 		ResultSetMetaData rsmd = rs.getMetaData();
-		Map<String, String> columnToPropertyMappings = alreadyDeterminedMappings;
+		Map<String, ColumnMetaData> columnToPropertyMappings = alreadyDeterminedMappings;
 		if (columnToPropertyMappings == null){
 			columnToPropertyMappings = createColumnToPropertyMappings(rsmd);
 		}
@@ -74,7 +75,7 @@ public class ResultSetUtility {
 			String columnName = columnLabelOrName(rsmd, col);
 			
 			// property name
-			String propertyName = columnToPropertyMappings.get(columnName);		// not possible to get null from this
+			String propertyName = columnToPropertyMappings.get(columnName).getPropertyName();		// not possible to get null from this
 
 			map.put(propertyName, rs.getObject(col));
 		}		
@@ -89,9 +90,22 @@ public class ResultSetUtility {
 	 * @throws SQLException
 	 */
 	public List<Map<String, Object>> convertAllToMaps(ResultSet rs) throws SQLException{
+		return convertAllToMaps(rs, null);
+	}
+	
+	/**
+	 * Convert all rows of the ResultSet to a Map. The keys of the Map are property names transformed from column names.
+	 * @param rs
+	 * @param alreadyDeterminedMappings
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Map<String, Object>> convertAllToMaps(ResultSet rs, Map<String, ColumnMetaData> alreadyDeterminedMappings) throws SQLException{
 		ResultSetMetaData rsmd = rs.getMetaData();
-		
-		Map<String, String> columnToPropertyMappings = createColumnToPropertyMappings(rsmd);
+		Map<String, ColumnMetaData> columnToPropertyMappings = alreadyDeterminedMappings;
+		if (columnToPropertyMappings == null){
+			columnToPropertyMappings = createColumnToPropertyMappings(rsmd);
+		}
 		
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
 		while(rs.next()){
@@ -111,10 +125,10 @@ public class ResultSetUtility {
 	public Object convertToDynamicBean(ResultSet rs) throws SQLException{
 		ResultSetMetaData rsmd = rs.getMetaData();
 		
-		Map<String, String> columnToPropertyMappings = createColumnToPropertyMappings(rsmd);
+		Map<String, ColumnMetaData> columnToPropertyMappings = createColumnToPropertyMappings(rsmd);
 		
 		Class<?> beanClass = reuseOrBuildBeanClass(rsmd, columnToPropertyMappings);
-		BeanProcessor beanProcessor = new BeanProcessor(columnToPropertyMappings);
+		BeanProcessor beanProcessor = new BeanProcessor(simpleColumnToPropertyMappings(columnToPropertyMappings));
 		return beanProcessor.toBean(rs, beanClass);
 	}
 	
@@ -127,11 +141,24 @@ public class ResultSetUtility {
 	public List<?> convertAllToDynamicBeans(ResultSet rs) throws SQLException{
 		ResultSetMetaData rsmd = rs.getMetaData();
 		
-		Map<String, String> columnToPropertyMappings = createColumnToPropertyMappings(rsmd);
+		Map<String, ColumnMetaData> columnToPropertyMappings = createColumnToPropertyMappings(rsmd);
 		
 		Class<?> beanClass = reuseOrBuildBeanClass(rsmd, columnToPropertyMappings);
-		BeanProcessor beanProcessor = new BeanProcessor(columnToPropertyMappings);
+		BeanProcessor beanProcessor = new BeanProcessor(simpleColumnToPropertyMappings(columnToPropertyMappings));
 		return beanProcessor.toBeanList(rs, beanClass);
+	}
+	
+	/**
+	 * Convert Map&lt;String, ColumnMetaData&gt; to Map&lt;String, String&gt; with only the propertyName in value
+	 * @param cm
+	 * @return
+	 */
+	private Map<String, String> simpleColumnToPropertyMappings(Map<String, ColumnMetaData> cm){
+		Map<String, String> result = new HashMap<String, String>(cm.size());
+		for (Entry<String, ColumnMetaData> entry: cm.entrySet()){
+			result.put(entry.getKey(), entry.getValue().getPropertyName());
+		}
+		return result;
 	}
 
 	/**
@@ -141,7 +168,7 @@ public class ResultSetUtility {
 	 * @return
 	 * @throws SQLException
 	 */
-	protected Class<?> reuseOrBuildBeanClass(ResultSetMetaData rsmd, Map<String, String> columnToPropertyMappings) throws SQLException {
+	protected Class<?> reuseOrBuildBeanClass(ResultSetMetaData rsmd, Map<String, ColumnMetaData> columnToPropertyMappings) throws SQLException {
 		Class<?> result = beanClasses.get(rsmd);
 		if (result == null){
 			synchronized(beanClasses){
@@ -162,7 +189,7 @@ public class ResultSetUtility {
 	 * @return
 	 * @throws SQLException
 	 */
-	protected Class<?> buildBeanClass(final ResultSetMetaData rsmd, Map<String, String> columnToPropertyMappings) throws SQLException {
+	protected Class<?> buildBeanClass(final ResultSetMetaData rsmd, Map<String, ColumnMetaData> columnToPropertyMappings) throws SQLException {
 		BeanGenerator bg = new BeanGenerator();
 		
 		int cols = rsmd.getColumnCount();
@@ -171,7 +198,7 @@ public class ResultSetUtility {
 			String columnName = columnLabelOrName(rsmd, col);
 			
 			// property name
-			String propertyName = columnToPropertyMappings.get(columnName);		// not possible to get null from this
+			String propertyName = columnToPropertyMappings.get(columnName).getPropertyName();		// not possible to get null from this
 			if (propertyName != null){
 				// property type
 				Class<?> propertyClass = Object.class; //null;
@@ -229,24 +256,18 @@ public class ResultSetUtility {
 	 * @return the mapping that already applied overridden
 	 * @throws SQLException 
 	 */
-	public Map<String, String> createColumnToPropertyMappings(final ResultSetMetaData rsmd) throws SQLException{
-		Map<String, String> columnToPropertyMappings = new HashMap<String, String>(columnToPropertyOverrides);
-		int cols = rsmd.getColumnCount();
-		for (int col = 1; col <= cols; col++) {
-			// column name
-			String columnName = rsmd.getColumnLabel(col);
-			if (null == columnName || 0 == columnName.length()) {
-				columnName = rsmd.getColumnName(col);
-			}
-			
+	public Map<String, ColumnMetaData> createColumnToPropertyMappings(final ResultSetMetaData rsmd) throws SQLException{
+		Map<String, ColumnMetaData> columnToPropertyMappings = ColumnMetaData.createMapByLabelOrName(rsmd);
+		for (ColumnMetaData cm: columnToPropertyMappings.values()) {
 			// property name
 			String propertyName = null;
-			propertyName = columnToPropertyMappings.get(columnName);
+			propertyName = columnToPropertyOverrides.get(cm.getLabelOrName());
 			
 			if (propertyName == null){
-				propertyName = columnNameToPropertyName(columnName);
-				columnToPropertyMappings.put(columnName, propertyName);
+				propertyName = columnNameToPropertyName(cm.getLabelOrName());
 			}
+			
+			cm.setPropertyName(propertyName);
 		}
 		return columnToPropertyMappings;
 	}

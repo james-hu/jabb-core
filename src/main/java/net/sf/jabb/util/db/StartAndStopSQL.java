@@ -73,6 +73,8 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 	protected String startSqlResource;
 	protected String stopSqlResource;
 	protected boolean useAnt = false;
+	protected String delimiter;
+	protected String delimiterType;
 	protected String startSqlCondition;
 	protected String stopSqlCondition;
 	protected String startSqlConditionResource;
@@ -90,7 +92,7 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 		
 		if (useAnt){
 			try{
-				AntSqlExec sqlExec = new AntSqlExec(dataSource, sql);
+				AntSqlExec sqlExec = new AntSqlExec(dataSource, sql, delimiter, delimiterType);
 				sqlExec.execute();
 				log.info("SQL executed with Ant: " + sql);
 			}catch(BuildException be){
@@ -249,7 +251,7 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 		private DataSource dataSource;
 		private Connection conn;
 		
-		public AntSqlExec(DataSource dataSource, String sql){
+		public AntSqlExec(DataSource dataSource, String sql, String delimiter, String delimiterType){
 			super();
 			Project project = new Project();
             project.init();
@@ -257,6 +259,13 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
             setProject(project);
             setTaskType("sql");
             setTaskName("sql");
+            
+            if (delimiter != null){
+            	this.setDelimiter(delimiter);
+            }
+            if (delimiterType != null){
+            	this.setDelimiterType((DelimiterType)DelimiterType.getInstance(DelimiterType.class, delimiterType));
+            }
             
             this.dataSource = dataSource;
             this.setAutocommit(true);
@@ -350,6 +359,22 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 
 	public void setUseAnt(boolean useAnt) {
 		this.useAnt = useAnt;
+	}
+
+	public String getDelimiter() {
+		return delimiter;
+	}
+
+	public void setDelimiter(String delimiter) {
+		this.delimiter = delimiter;
+	}
+
+	public String getDelimiterType() {
+		return delimiterType;
+	}
+
+	public void setDelimiterType(String delimiterType) {
+		this.delimiterType = delimiterType;
 	}
 
 	public String getStartSqlCondition() {
