@@ -3,10 +3,15 @@
  */
 package net.sf.jabb.util.web;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jabb.stdr.StdrUtil;
+import net.sf.jabb.util.bean.DoubleValueBean;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,13 +30,37 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class WebMenuInterceptor extends HandlerInterceptorAdapter {
 	private static final Log log = LogFactory.getLog(HandlerInterceptor.class);
 	
+	protected static WebMenuItem NULL_WEB_MENU_ITEM = new WebMenuItem();	// use this instance to represent "found a null value"
+	
 	protected WebApplicationConfiguration webApplicationConfiguration;
+	
+	protected Map<Object, WebMenuItem> webMenuItemCache 
+		= new ConcurrentHashMap<Object, WebMenuItem>();
 
 	@Override
 	public void postHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
+
+		WebMenuItem menuItem = null;
+		// try to get from cache first
+		menuItem = webMenuItemCache.get(handler);
 		
+		if (menuItem == null){
+			menuItem = findMenuItem(handler);
+			webMenuItemCache.put(handler, menuItem);
+		}
+		
+		if (menuItem != NULL_WEB_MENU_ITEM){
+			StdrUtil.getParameters(request).put(StdrUtil.CURRENT_MENU_ITEM_PARAMETER, menuItem);
+			if (log.isDebugEnabled()){
+				log.debug("WebMenuItem set into request for " + handler + " : " + menuItem);
+			}
+		}
+	}
+	
+	protected WebMenuItem findMenuItem(Object handler){
+		WebMenuItem menuItem = NULL_WEB_MENU_ITEM;
 		if (handler instanceof HandlerMethod){
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
 			
@@ -40,9 +69,11 @@ public class WebMenuInterceptor extends HandlerInterceptorAdapter {
 			
 			if (methodRequestMapping != null && methodWebMenu != null){
 				Class<?> controllerClass = handlerMethod.getMethod().getDeclaringClass();
-				
+
 				RequestMapping classRequestMapping = controllerClass.getAnnotation(RequestMapping.class);
 				WebMenu classWebMenu = controllerClass.getAnnotation(WebMenu.class);
+				
+				
 				MenuItemExt classMenuItem = new MenuItemExt(classWebMenu, classRequestMapping);
 
 				MenuItemExt methodMenuItem = new MenuItemExt(methodWebMenu, methodRequestMapping, classMenuItem);
@@ -50,15 +81,19 @@ public class WebMenuInterceptor extends HandlerInterceptorAdapter {
 				String menuName = methodMenuItem.menuName;
 				String menuPath = methodMenuItem.path;
 				
-				WebMenuItem menuItem = webApplicationConfiguration.getMenuItem(menuName, menuPath);
-				StdrUtil.getParameters(request).put(StdrUtil.CURRENT_MENU_ITEM_PARAMETER, menuItem);
-				log.debug("WebMenuItem set into request for " 
-						+ controllerClass.getName() + "." + handlerMethod.getMethod().getName() + " : " + menuItem);
+				menuItem = webApplicationConfiguration.getMenuItem(menuName, menuPath);
+
+				if (menuItem != null){
+					log.info("WebMenuItem found for " 
+							+ controllerClass.getName() + "." + handlerMethod.getMethod().getName() + " : " + menuItem);
+				}
 			}
+			
 		}else{
-			log.debug("The handler is not of type HandlerMethod. WebMenuInterceptor skipped processing.");
+			log.warn("The handler is not of type HandlerMethod. WebMenuInterceptor ignores it.");
 		}
 		
+		return menuItem;
 	}
 
 	@Override

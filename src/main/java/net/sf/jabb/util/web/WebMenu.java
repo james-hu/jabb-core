@@ -16,7 +16,6 @@ import java.lang.annotation.ElementType;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-@Inherited
 public @interface WebMenu {
 	/**
 	 * Title of this menu item. It can be omitted, which means a menu item will 

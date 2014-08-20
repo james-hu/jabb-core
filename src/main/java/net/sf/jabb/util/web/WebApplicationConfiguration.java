@@ -26,6 +26,7 @@ import java.util.TreeMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.aop.framework.Advised;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -83,7 +84,13 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 		
 		// Find all menu items 
 		for (Object bean: beans.values()){
-			Class<? extends Object> beanClass = bean.getClass();
+			Class<?> beanClass;
+			if (bean instanceof Advised){		// if EnhancerBySpringCGLIB
+				beanClass = ((Advised)bean).getTargetClass();
+			}else{
+				beanClass = bean.getClass();
+			}
+			
 			// Check class level annotations first
 			RequestMapping classRequestMapping = beanClass.getAnnotation(RequestMapping.class);
 			WebMenu classWebMenu = beanClass.getAnnotation(WebMenu.class);
