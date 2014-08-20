@@ -111,16 +111,16 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     }
  
 	public List<T> getAll() {
-        return getAllByHql(null, null, null, null, null);
+        return getAllByHql(null, null, null, (Integer)null, (Integer)null);
     }
 
 	/**
 	 * 
-	 * @param secondHalfOfHql	parts after "from <class_name> "
+	 * @param secondHalfOfHql	parts after "from &lt;class_name&gt; "
 	 * @return
 	 */
 	public List< T> getAllByHql(String secondHalfOfHql) {
-		return getAllByHql(secondHalfOfHql, null, null, null, null);
+		return getAllByHql(secondHalfOfHql, null, null, (Integer)null, (Integer)null);
 	}
  
     /**
@@ -136,7 +136,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
  
 	/**
 	 * 
-	 * @param secondHalfOfHql	parts after "from <class_name> "
+	 * @param secondHalfOfHql	parts after "from &lt;class_name&gt; "
 	 * @param paramValues
 	 * @param paramTypes
 	 * @return
@@ -147,8 +147,47 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     }
     
     /**
+     * Get all by HQL with one pair of parameterType-value
+     * @param secondHalfOfHql
+     * @param paramValue
+     * @param paramType
+     * @return
+     */
+	public List< T> getAllByHql(String secondHalfOfHql, Object paramValue, Type paramType) {
+        return getAllByHql(secondHalfOfHql, new Object[] {paramValue}, new Type[]{paramType}, null, null);
+    }
+    
+	/**
+	 * Get all by HQL with two pairs of parameterType-value
+	 * @param secondHalfOfHql
+	 * @param paramValue1
+	 * @param paramType1
+	 * @param paramValue2
+	 * @param paramType2
+	 * @return
+	 */
+	public List< T> getAllByHql(String secondHalfOfHql, Object paramValue1, Type paramType1, Object paramValue2, Type paramType2) {
+        return getAllByHql(secondHalfOfHql, new Object[] {paramValue1, paramValue2}, new Type[]{paramType2, paramType2}, null, null);
+    }
+    
+	/**
+	 * Get all by HQL with three pairs of parameterType-value
+	 * @param secondHalfOfHql
+	 * @param paramValue1
+	 * @param paramType1
+	 * @param paramValue2
+	 * @param paramType2
+	 * @param paramValue3
+	 * @param paramType3
+	 * @return
+	 */
+	public List< T> getAllByHql(String secondHalfOfHql, Object paramValue1, Type paramType1, Object paramValue2, Type paramType2, Object paramValue3, Type paramType3) {
+        return getAllByHql(secondHalfOfHql, new Object[] {paramValue1, paramValue2, paramValue3}, new Type[]{paramType1, paramType2, paramType3}, null, null);
+    }
+    
+    /**
      * 
-	 * @param secondHalfOfHql	parts after "from <class_name> "
+	 * @param secondHalfOfHql	parts after "from &lt;class_name&gt; "
      * @param paramValues
      * @param paramTypes
      * @param offset		the number of first record in the whole query result to be returned, records numbers start from 0
@@ -181,11 +220,11 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
      * @return
      */
 	public List< T> getAllBySql(String fullSql) {
-		return getAllBySql(fullSql, null, null, null, null);
+		return getAllBySql(fullSql, null, null, (Integer)null, (Integer)null);
 	}
 	
     /**
-     * 
+     * Get all by SQL with specific offset and limit
      * @param fullSql
      * @param offset		the number of first record in the whole query result to be returned, records numbers start from 0
      * @param limit			the maximum number of records to return
@@ -196,7 +235,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
 	}
  
     /**
-     * 
+     * Get all by SQL with pairs of parameterType-value
      * @param fullSql		
      * @param paramValues
      * @param paramTypes
@@ -205,6 +244,48 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
 	public List< T> getAllBySql(String fullSql, Object[] paramValues, Type[] paramTypes) {
         return getAllBySql(fullSql, paramValues, paramTypes, null, null);
     }
+	
+	/**
+	 * Get all by SQL with one pair of parameterType-value
+	 * @param fullSql
+	 * @param paramValue
+	 * @param paramType
+	 * @return
+	 */
+	public List< T> getAllBySql(String fullSql, Object paramValue, Type paramType) {
+        return getAllBySql(fullSql, new Object[]{paramValue}, new Type[]{paramType}, null, null);
+    }
+	
+	/**
+	 * Get all by SQL with two pairs of parameterType-value
+	 * @param fullSql
+	 * @param paramValue1
+	 * @param paramType1
+	 * @param paramValue2
+	 * @param paramType2
+	 * @return
+	 */
+	public List< T> getAllBySql(String fullSql, Object paramValue1, Type paramType1, Object paramValue2, Type paramType2) {
+        return getAllBySql(fullSql, new Object[]{paramValue1, paramValue2}, new Type[]{paramType1, paramType2}, null, null);
+    }
+	
+	/**
+	 * Get all by SQL with three pairs of parameterType-value
+	 * @param fullSql
+	 * @param paramValue1
+	 * @param paramType1
+	 * @param paramValue2
+	 * @param paramType2
+	 * @param paramValue3
+	 * @param paramType3
+	 * @return
+	 */
+	public List< T> getAllBySql(String fullSql, Object paramValue1, Type paramType1, Object paramValue2, Type paramType2, Object paramValue3, Type paramType3) {
+        return getAllBySql(fullSql, new Object[]{paramValue1, paramValue2, paramValue3}, new Type[]{paramType1, paramType2, paramType3}, null, null);
+    }
+	
+	
+	
  
     /**
      * 
@@ -234,7 +315,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     
     /**
      * Get the count of all records in database
-     * @param secondHalfOfHql	parts after "from <class_name> "
+     * @param secondHalfOfHql	parts after "from &lt;class_name&gt; "
      * @return
      */
     public long countByHql(String secondHalfOfHql){
@@ -243,7 +324,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     
     /**
      * Get the count of all records in database
-     * @param secondHalfOfHql	parts after "from <class_name> "
+     * @param secondHalfOfHql	parts after "from &lt;class_name&gt; "
      * @param paramValues
      * @param paramTypes
      * @return

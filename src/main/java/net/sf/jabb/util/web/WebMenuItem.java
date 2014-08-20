@@ -18,6 +18,7 @@ public class WebMenuItem implements Serializable, Comparable<WebMenuItem>{
 	protected String title;
 	protected String url;
 	protected boolean dynamic;
+	protected String authority;
 	protected List<WebMenuItem> subMenu;
 	protected List<WebMenuItem> breadcrumbs;
 	
@@ -47,6 +48,9 @@ public class WebMenuItem implements Serializable, Comparable<WebMenuItem>{
 			sb.append('(').append(url).append(')');
 			if (dynamic){
 				sb.append(" [Dynamic]");
+			}
+			if (authority != null && authority.length() > 0){
+				sb.append(" {" + authority + "}");
 			}
 			if (subMenu != null && subMenu.size() > 0){
 				sb.append('\n');
@@ -119,6 +123,14 @@ public class WebMenuItem implements Serializable, Comparable<WebMenuItem>{
 
 	public void setDynamic(boolean dynamic) {
 		this.dynamic = dynamic;
+	}
+
+	public String getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(String authority) {
+		this.authority = authority;
 	}
 
 

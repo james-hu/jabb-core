@@ -9,6 +9,7 @@ class MenuItemExt extends WebMenuItem {
 	String menuName;
 	int order;
 	boolean dynamic;
+	String authority;
 
 	/**
 	 * Construct an instance from annotations on method level.
@@ -36,6 +37,7 @@ class MenuItemExt extends WebMenuItem {
 			this.order = def.order();
 			this.menuName = def.menu();
 			this.dynamic = def.dynamic();
+			this.authority = def.authority();
 		}else{
 			this.menuName = "";
 		}
@@ -69,6 +71,7 @@ class MenuItemExt extends WebMenuItem {
 		result.title = this.title;
 		result.url = this.url;
 		result.dynamic = this.dynamic;
+		result.authority = this.authority;
 		result.subMenu = this.subMenu;
 		result.breadcrumbs = this.breadcrumbs;
 		if (result.subMenu != null && result.subMenu.size() == 0){

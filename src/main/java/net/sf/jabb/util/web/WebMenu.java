@@ -3,6 +3,7 @@
  */
 package net.sf.jabb.util.web;
 
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.annotation.RetentionPolicy;
@@ -15,6 +16,7 @@ import java.lang.annotation.ElementType;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
+@Inherited
 public @interface WebMenu {
 	/**
 	 * Title of this menu item. It can be omitted, which means a menu item will 
@@ -57,8 +59,15 @@ public @interface WebMenu {
 	/**
 	 * Whether the menu item is dynamic or not. Normally a dynamic menu item will only
 	 * be shown when current URL is associated with it.
-	 * @return
+	 * @return whether it is dynamic or not
 	 */
 	public boolean dynamic() default false;
+	
+	/**
+	 * The authority associated with this menu item. Normally only users with authority granted
+	 * will be able to see this menu item.
+	 * @return the name of this authority
+	 */
+	public String authority() default "";
 
 }
