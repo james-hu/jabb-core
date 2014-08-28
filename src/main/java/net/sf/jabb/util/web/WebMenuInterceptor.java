@@ -30,7 +30,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class WebMenuInterceptor extends HandlerInterceptorAdapter {
 	private static final Log log = LogFactory.getLog(HandlerInterceptor.class);
 	
-	protected static WebMenuItem NULL_WEB_MENU_ITEM = new WebMenuItem();	// use this instance to represent "found a null value"
+	protected static WebMenuItem NOT_FOUND = new WebMenuItem();	// use this instance to represent "found a null value"
 	
 	protected WebApplicationConfiguration webApplicationConfiguration;
 	
@@ -48,10 +48,13 @@ public class WebMenuInterceptor extends HandlerInterceptorAdapter {
 		
 		if (menuItem == null){
 			menuItem = findMenuItem(handler);
+			if (menuItem == null){
+				menuItem = NOT_FOUND;
+			}
 			webMenuItemCache.put(handler, menuItem);
 		}
 		
-		if (menuItem != NULL_WEB_MENU_ITEM){
+		if (menuItem != NOT_FOUND){
 			StdrUtil.getParameters(request).put(StdrUtil.CURRENT_MENU_ITEM_PARAMETER, menuItem);
 			if (log.isDebugEnabled()){
 				log.debug("WebMenuItem set into request for " + handler + " : " + menuItem);
@@ -60,7 +63,7 @@ public class WebMenuInterceptor extends HandlerInterceptorAdapter {
 	}
 	
 	protected WebMenuItem findMenuItem(Object handler){
-		WebMenuItem menuItem = NULL_WEB_MENU_ITEM;
+		WebMenuItem menuItem = NOT_FOUND;
 		if (handler instanceof HandlerMethod){
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
 			
