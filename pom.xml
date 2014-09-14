@@ -8,9 +8,9 @@
 	<url>http://jabb.sourceforge.net/</url>
 	<description>JABB is a collection of reusable Java components. </description>
 	<scm>
-		<url>http://jabb.svn.sourceforge.net/svnroot/jabb/trunk/code/jabb-core/</url>
-		<connection>scm:svn:http://jabb.svn.sourceforge.net/svnroot/jabb/trunk/code/jabb-core/</connection>
-		<developerConnection>scm:svn:https://jabb.svn.sourceforge.net/svnroot/jabb/trunk/code/jabb-core/</developerConnection>
+		<url>https://github.com/james-hu/jabb-core</url>
+		<connection>scm:git:https://github.com/james-hu/jabb-core.git</connection>
+		<developerConnection>scm:git:https://github.com/james-hu/jabb-core.git</developerConnection>
 	</scm>
 	<licenses>
 		<license>
