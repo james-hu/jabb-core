@@ -10,7 +10,6 @@
 		<url>https://github.com/james-hu/jabb-core</url>
 		<connection>scm:git:https://github.com/james-hu/jabb-core.git</connection>
 		<developerConnection>scm:git:https://github.com/james-hu/jabb-core.git</developerConnection>
-	  <tag>jabb-core-1.0.50</tag>
   </scm>
 	<licenses>
 		<license>
@@ -317,6 +316,7 @@
 				<version>2.5</version>
 				<configuration>
 					<arguments>-DskipTests</arguments>
+					<pushChanges>false</pushChanges>
 				</configuration>
 			</plugin>
 			<plugin>
