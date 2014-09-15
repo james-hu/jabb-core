@@ -318,6 +318,8 @@
 				<configuration>
 					<arguments>-DskipTests</arguments>
 					<pushChanges>false</pushChanges>
+					<localCheckout>true</localCheckout>
+					<tagNameFormat>release/@{project.artifactId}-@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
 			<plugin>
