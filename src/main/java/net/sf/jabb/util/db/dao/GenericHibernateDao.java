@@ -12,10 +12,10 @@ import org.hibernate.SessionFactory;
  * @author james.hu
  *
  */
-public class HibernateDao<T extends Serializable> extends
+public class GenericHibernateDao<T extends Serializable> extends
 		AbstractHibernateDao<T> {
 
-	public HibernateDao(final Class< T> entityClass, final SessionFactory sessionFactory){
+	public GenericHibernateDao(final Class< T> entityClass, final SessionFactory sessionFactory){
 		super(entityClass);
 		this.setSessionFactory(sessionFactory);
 	}
