@@ -17,7 +17,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
 	static private final Log log = LogFactory.getLog(AbstractHibernateDao.class);
 	
 	private static enum OperationType{
-		CREATE, UPDATE, DELETE
+		CREATE, MERGE, DELETE
 	}
 
     private static class DelayedOperation <E extends Serializable> implements Runnable{
@@ -50,14 +50,14 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
 			        case CREATE:
 			        	session.persist(entity);
 			        	break;
-			        case UPDATE:
+			        case MERGE:
 			        	session.merge(entity);
 			        	break;
 			        case DELETE:
 			        	if (entity != null){
 				        	session.delete(entity);
 			        	}else{
-			        		entity = (E) session.get(dao.clazz, id);
+			        		entity = (E) session.load(dao.clazz, id);
 			        		session.delete(entity);
 			        	}
 			        	break;
@@ -84,20 +84,20 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
 		}
     }
     
-    private static ExecutorService delayedExecutor = Executors.newFixedThreadPool(2);
+    private static ExecutorService delayedExecutor = Executors.newFixedThreadPool(5);
 
     
 	private final Class<T> clazz;
 	
-    protected SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
     
     
     public AbstractHibernateDao(final Class< T> clazzToSet) {
         this.clazz = clazzToSet;
     }
     
-    protected Class<?> getEntityClass(){
-    	return clazz.getClass();
+    protected Class<T> getEntityClass(){
+    	return clazz;
     }
 
     @SuppressWarnings("unchecked")
@@ -141,7 +141,6 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
 	 * @param paramTypes
 	 * @return
 	 */
-    @SuppressWarnings("unchecked")
 	public List< T> getAllByHql(String secondHalfOfHql, Object[] paramValues, Type[] paramTypes) {
         return getAllByHql(secondHalfOfHql, paramValues, paramTypes, null, null);
     }
@@ -395,13 +394,18 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     public void update(final T entity) {
     	this.getCurrentSession().saveOrUpdate(entity); //.merge(entity);
     }
+    
+    public void merge(final T entity){
+    	this.getCurrentSession().merge(entity);
+    }
  
     public void delete(final T entity) {
     	this.getCurrentSession().delete(entity);
-   }
+	}
  
-    public void deleteById(final Serializable entityId) {
-        final T entity = this.getById(entityId);
+    @SuppressWarnings("unchecked")
+	public void deleteById(final Serializable entityId) {
+		final T entity = (T) this.getCurrentSession().load(this.clazz, entityId);
         if (entity != null){
             this.delete(entity);
         }else{
@@ -409,12 +413,90 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
         }
     }
     
+    /**
+     * Delete by criteria specified as HQL
+     * @param secondHalfOfHql
+     * @param paramValues
+     * @param paramTypes
+     * @return	the number of records deleted
+     */
+    public int deleteByHql(String secondHalfOfHql, Object[] paramValues, Type[] paramTypes){
+    	StringBuilder queryStr = new StringBuilder();
+    	queryStr.append("delete from ")
+			.append(this.clazz.getName())
+			.append(" ");
+    	if (secondHalfOfHql != null){
+    		queryStr.append(secondHalfOfHql);
+     	}
+    	
+        Session session = this.getCurrentSession();
+    	Query query = session.createQuery(queryStr.toString());
+    	setupQuery(query, paramValues, paramTypes, null, null);
+        return query.executeUpdate();
+    }
+    
+    public int deleteByHql(String secondHalfOfHql, Object paramValue1, Type paramType1){
+    	return deleteByHql(secondHalfOfHql, new Object[]{paramValue1}, new Type[]{paramType1});
+    }
+    public int deleteByHql(String secondHalfOfHql, Object paramValue1, Type paramType1, Object paramValue2, Type paramType2){
+    	return deleteByHql(secondHalfOfHql, new Object[]{paramValue1, paramValue2}, new Type[]{paramType1, paramType2});
+    }
+    public int deleteByHql(String secondHalfOfHql, Object paramValue1, Type paramType1, Object paramValue2, Type paramType2, Object paramValue3, Type paramType3){
+    	return deleteByHql(secondHalfOfHql, new Object[]{paramValue1, paramValue2, paramValue3}, new Type[]{paramType1, paramType2, paramType3});
+    }
+   
+    /**
+     * Update by criteria specified as HQL
+     * @param secondHalfOfHql
+     * @param paramValues
+     * @param paramTypes
+     * @return	the number of records updated
+     */
+    public int updateByHql(String secondHalfOfHql, Object[] paramValues, Type[] paramTypes){
+    	StringBuilder queryStr = new StringBuilder();
+    	queryStr.append("update ")
+			.append(this.clazz.getName())
+			.append(" ");
+    	if (secondHalfOfHql != null){
+    		queryStr.append(secondHalfOfHql);
+     	}
+    	
+        Session session = this.getCurrentSession();
+    	Query query = session.createQuery(queryStr.toString());
+    	setupQuery(query, paramValues, paramTypes, null, null);
+        return query.executeUpdate();
+    }
+    
+    public int updateByHql(String secondHalfOfHql, Object paramValue1, Type paramType1){
+    	return updateByHql(secondHalfOfHql, new Object[]{paramValue1}, new Type[]{paramType1});
+    }
+    public int updateByHql(String secondHalfOfHql, Object paramValue1, Type paramType1, Object paramValue2, Type paramType2){
+    	return updateByHql(secondHalfOfHql, new Object[]{paramValue1, paramValue2}, new Type[]{paramType1, paramType2});
+    }
+    public int updateByHql(String secondHalfOfHql, Object paramValue1, Type paramType1, Object paramValue2, Type paramType2, Object paramValue3, Type paramType3){
+    	return updateByHql(secondHalfOfHql, new Object[]{paramValue1, paramValue2, paramValue3}, new Type[]{paramType1, paramType2, paramType3});
+    }
+   
+
+    /**
+     * Get the first element in the list
+     * @param list
+     * @return  null if the list is null or is empty, otherwise the first element of the list
+     */
+    public static <E> E firstInList(List<E> list){
+    	if (list == null || list.size() == 0){
+    		return null;
+    	}else{
+    		return list.get(0);
+    	}
+    }
+    
     public void delayedCreate(final T entity){
     	delayedExecutor.execute(new DelayedOperation<T>(this, entity, OperationType.CREATE));
     }
  
-    public void delayedUpdate(final T entity) {
-    	delayedExecutor.execute(new DelayedOperation<T>(this, entity, OperationType.UPDATE));
+    public void delayedMerge(final T entity) {
+    	delayedExecutor.execute(new DelayedOperation<T>(this, entity, OperationType.MERGE));
     }
  
     public void delayedDelete(final T entity) {
@@ -426,6 +508,7 @@ public abstract class AbstractHibernateDao <T extends Serializable> {
     }
     
 
+    
  
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
