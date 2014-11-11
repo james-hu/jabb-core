@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2012 Zhengmao HU (James)
+Copyright 2010-2012, 2014 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,8 +18,11 @@ package net.sf.jabb.util.stat;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -49,7 +52,7 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	public BasicFrequencyCounter(long granularity, TimeUnit unit,
 			long purgePeriod, TimeUnit purgeUnit){
 		counters = new PutIfAbsentMap<Long, AtomicLong>(
-				new ConcurrentSkipListMap<Long, AtomicLong>(), AtomicLong.class);
+				new HashMap<Long, AtomicLong>(), AtomicLong.class);
 		this.granularity = TimeUnit.MILLISECONDS.convert(granularity, unit);
 		if (purgePeriod == 0){
 			this.purgeBefore = 0;
@@ -104,6 +107,18 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	 */
 	public Map<Long, AtomicLong> getCounts(){
 		return counters.getMap();
+	}
+	
+	/**
+	 * Get the summary value of all the counts
+	 * @return the summary value of all the counts
+	 */
+	public BigInteger getTotalCounts(){
+		BigInteger result = BigInteger.ZERO;
+		for (AtomicLong c: counters.getMap().values()){
+			result = result.add(BigInteger.valueOf(c.get()));
+		}
+		return result;
 	}
 	
 	/**

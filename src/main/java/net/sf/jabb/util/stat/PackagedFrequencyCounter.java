@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2011 Zhengmao HU (James)
+Copyright 2010-2011, 2014 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,11 +16,13 @@ limitations under the License.
 
 package net.sf.jabb.util.stat;
 
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 打包封装好的频次计数工具
@@ -29,18 +31,20 @@ import java.util.TreeSet;
  *
  */
 public class PackagedFrequencyCounter extends FrequencyCounter{
-	protected Map<Object, BasicFrequencyCounter> counters;
+	protected Map<Object, BasicFrequencyCounter> countersMap;
+	protected Collection<BasicFrequencyCounter> counters;
 	
 	/**
 	 * 创建包含多个BasicFrequencyCounter对象的计数器组合
 	 * @param counterDefinitions	各个BasicFrequencyCounter的配置信息，请注意它们的ID必须设置
 	 */
 	public PackagedFrequencyCounter(Collection<FrequencyCounterDefinition> counterDefinitions){
-		counters = new HashMap<Object, BasicFrequencyCounter>(counterDefinitions.size());
+		countersMap = new HashMap<Object, BasicFrequencyCounter>(counterDefinitions.size());
 		for (FrequencyCounterDefinition def: counterDefinitions){
 			BasicFrequencyCounter counter = new BasicFrequencyCounter(def);
-			counters.put(def.getId(), counter);
+			countersMap.put(def.getId(), counter);
 		}
+		counters = countersMap.values();
 	}
 	
 	/**
@@ -48,11 +52,12 @@ public class PackagedFrequencyCounter extends FrequencyCounter{
 	 * @param counterDefinitions	各个BasicFrequencyCounter的配置信息，请注意它们的ID必须设置
 	 */
 	public PackagedFrequencyCounter(FrequencyCounterDefinition... counterDefinitions){
-		counters = new HashMap<Object, BasicFrequencyCounter>(counterDefinitions.length);
+		countersMap = new HashMap<Object, BasicFrequencyCounter>(counterDefinitions.length);
 		for (FrequencyCounterDefinition def: counterDefinitions){
 			BasicFrequencyCounter counter = new BasicFrequencyCounter(def);
-			counters.put(def.getId(), counter);
+			countersMap.put(def.getId(), counter);
 		}
+		counters = countersMap.values();
 	}
 
 	/**
@@ -61,20 +66,27 @@ public class PackagedFrequencyCounter extends FrequencyCounter{
 	 * @return		与指定ID所对应的BasicFrequencyCounter
 	 */
 	public BasicFrequencyCounter getCounter(Object id){
-		return counters.get(id);
+		return countersMap.get(id);
 	}
 	
-
+	/**
+	 * Get all the counters encapsulated
+	 * @return the counters as a map with ID as the key
+	 */
+	public Map<Object, BasicFrequencyCounter> getCounters(){
+		return countersMap;
+	}
+	
 	@Override
 	public void purge(long tillWhen) {
-		for (BasicFrequencyCounter counter: counters.values()){
+		for (BasicFrequencyCounter counter: counters){
 			counter.purge(tillWhen);
 		}
 	}
 
 	@Override
 	public void count(long when, int times) {
-		for (BasicFrequencyCounter counter: counters.values()){
+		for (BasicFrequencyCounter counter: counters){
 			counter.count(when, times);
 		}
 		
@@ -99,7 +111,7 @@ public class PackagedFrequencyCounter extends FrequencyCounter{
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		Set<Object> keySet = new TreeSet<Object>();
-		keySet.addAll(counters.keySet());
+		keySet.addAll(countersMap.keySet());
 		
 		boolean isFirst = true;
 		for (Object id: keySet){
@@ -111,7 +123,7 @@ public class PackagedFrequencyCounter extends FrequencyCounter{
 			sb.append("id=\"");
 			sb.append(id);
 			sb.append("\" ");
-			sb.append(counters.get(id));
+			sb.append(countersMap.get(id));
 		}
 		return sb.toString();
 	}
