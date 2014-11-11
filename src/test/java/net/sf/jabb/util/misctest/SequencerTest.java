@@ -1,5 +1,6 @@
 package net.sf.jabb.util.misctest;
 
+import static org.junit.Assert.*;
 import net.sf.jabb.util.thread.Sequencer;
 import net.sf.jabb.util.thread.RangedSequencer;
 
@@ -7,23 +8,26 @@ import org.junit.Test;
 
 
 public class SequencerTest {
-	//@Ignore
 	@Test
 	public void nature(){
 		Sequencer s = new Sequencer();
-		for (int i=0; i <10; i ++){
-			System.out.println(s.next());
+		for (long l = 0; l < 666666; l ++){
+			assertEquals(l, s.next());
 		}
 
 		s = new Sequencer(500);
-		for (int i=0; i <10; i ++){
-			System.out.println(s.next());
+		for (long l=0; l <666666; l ++){
+			assertEquals(l+500, s.next());
 		}
 		
 		s = new Sequencer(Long.MAX_VALUE-2);
-		for (int i=0; i <30; i ++){
-			System.out.println(s.next());
+		for (int i=0; i <=2; i ++){
+			assertEquals(Long.MAX_VALUE - 2 + i, s.next());
 		}
+		for (long l = 0; l < 666666; l ++){
+			assertEquals(l, s.next());
+		}
+		
 	}
 
 	@Test

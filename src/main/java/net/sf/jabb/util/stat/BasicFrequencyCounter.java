@@ -22,7 +22,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -51,14 +51,16 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	 */
 	public BasicFrequencyCounter(long granularity, TimeUnit unit,
 			long purgePeriod, TimeUnit purgeUnit){
-		counters = new PutIfAbsentMap<Long, AtomicLong>(
-				new HashMap<Long, AtomicLong>(), AtomicLong.class);
+		Map<Long, AtomicLong> map = null;
 		this.granularity = TimeUnit.MILLISECONDS.convert(granularity, unit);
 		if (purgePeriod == 0){
 			this.purgeBefore = 0;
+			map = new HashMap<Long, AtomicLong>();
 		} else {
 			this.purgeBefore = TimeUnit.MILLISECONDS.convert(purgePeriod, purgeUnit);
+			map = new ConcurrentSkipListMap<Long, AtomicLong>();
 		}
+		counters = new PutIfAbsentMap<Long, AtomicLong>(map, AtomicLong.class);
 	}
 
 	/**
@@ -134,7 +136,8 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	}
 	
 	/**
-	 * 获得在指定时间范围内的总频次
+	 * 获得在指定时间范围内的总频次.
+	 * Please not that this method is not usable if the counter was created with a zero purgePeriod.
 	 * @param fromWhen		开始时间
 	 * @param toWhen		结束时间
 	 * @param fromInclusive	是否包含开始时间
@@ -143,7 +146,7 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	 */
 	@Override
 	public long getCount(long fromWhen, long toWhen,  boolean fromInclusive, boolean toInclusive){
-		NavigableMap<Long, AtomicLong> range = ((ConcurrentSkipListMap<Long, AtomicLong>)counters.getMap()).subMap(fromWhen, fromInclusive, toWhen, toInclusive);
+		NavigableMap<Long, AtomicLong> range = ((NavigableMap<Long, AtomicLong>)counters.getMap()).subMap(fromWhen, fromInclusive, toWhen, toInclusive);
 		long count = 0;
 		for(AtomicLong c: range.values()){
 			count += c.longValue();
@@ -158,7 +161,7 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	@Override
 	public void purge(long tillWhen){
 		Long t;
-		while((t = ((ConcurrentSkipListMap<Long, AtomicLong>)counters.getMap()).firstKey()) != null && t < tillWhen){
+		while((t = ((NavigableMap<Long, AtomicLong>)counters.getMap()).firstKey()) != null && t < tillWhen){
 			counters.remove(t);
 		}
 	}
@@ -166,13 +169,14 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 	/**
 	 * 转成String
 	 */
+	@Override
 	public String toString(){
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
 		pw.format("granularity=%d(ms) purgeBefore=%d(ms)\n", granularity, purgeBefore);
 		
 		boolean isFirst = true;
-		for (Long t: counters.keySet()){
+		for (Long t: new TreeSet<Long>(counters.keySet())){
 			if (isFirst){
 				isFirst = false;
 			}else{

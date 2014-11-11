@@ -1,6 +1,7 @@
 package net.sf.jabb.util.text.test;
 
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicLong;
 
 import junit.framework.Assert;
@@ -13,6 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class NameDeduplicatorTest {
+	static final int NUMBER_OF_THREADS = 100;
+	
 	NameDeduplicator nd;
 	boolean stopNow = false;
 	BasicFrequencyCounter fc;
@@ -30,9 +33,10 @@ public class NameDeduplicatorTest {
 
 	@Test
 	public void test() throws InterruptedException {
-		System.out.print("Starting threads: ");
-		for (int i = 0; i < 100; i ++){
-			new Thread(new Runnable(){
+		//System.out.print("Starting threads: ");
+		Thread[] threads = new Thread[NUMBER_OF_THREADS];
+		for (int i = 0; i < NUMBER_OF_THREADS; i ++){
+			threads[i] = new Thread(){
 
 				public void run() {
 					while (!stopNow){
@@ -42,23 +46,26 @@ public class NameDeduplicatorTest {
 					
 				}
 				
-			}).start();
-			System.out.print(", " + i);
+			};
+			threads[i].start();
 		}
-		System.out.println("\nAll started.");
+		//System.out.println("\nStarted " + NUMBER_OF_THREADS + " threads.");
 		Thread.sleep(10*1000);
 		stopNow = true;
-		System.out.println("Stopping...");
+		//System.out.println("Stopping...");
 		
-		Thread.sleep(3*1000);
-		System.out.println("Checking...");
-		long id = -1;
-		for (Map.Entry<Long, AtomicLong> e: fc.getCounts().entrySet()){
-			Assert.assertTrue(e.getKey() == id + 1);
-			id = e.getKey();
-			Assert.assertTrue(e.getValue().get() == 1);
+		for (Thread thread: threads){
+			thread.join();
 		}
-		System.out.println("Done.");
+		
+		//System.out.println("Checking...");
+		long id = 0;
+		for (Long k: new TreeSet<Long>(fc.getCounts().keySet())){
+			Assert.assertEquals(Long.valueOf(id), k);
+			Assert.assertEquals(1, fc.getCount(k));
+			id++;
+		}
+		//System.out.println("Done.");
 	}
 
 }
