@@ -1,6 +1,3 @@
-install 3rd party jar files:
-(cd lib; ./install_to_maven_local.sh)
-
 jar:      mvn -DskipTests clean package
 deploy:   mvn -DskipTests deploy
 web site: ssh -t james-hu,jabb@shell.sourceforge.net create
