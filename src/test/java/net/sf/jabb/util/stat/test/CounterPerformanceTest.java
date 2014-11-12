@@ -32,18 +32,18 @@ public class CounterPerformanceTest {
 				new FrequencyCounterDefinition("5 minute", 5, TimeUnit.MINUTES);
 		FrequencyCounterDefinition d10m = 
 			new FrequencyCounterDefinition("10 minutes", 10, TimeUnit.MINUTES);
+		FrequencyCounterDefinition d30m = 
+				new FrequencyCounterDefinition("30 minutes", 10, TimeUnit.MINUTES);
 		FrequencyCounterDefinition d1h = 
 				new FrequencyCounterDefinition("1 hour", 1, TimeUnit.HOURS);
-		FrequencyCounterDefinition d1d = 
-			new FrequencyCounterDefinition("1 day", 1, TimeUnit.DAYS);
 		
 		List<FrequencyCounterDefinition> defs = new LinkedList<FrequencyCounterDefinition>();
 		defs.add(d1s);
 		defs.add(d1m);
 		defs.add(d5m);
 		defs.add(d10m);
+		defs.add(d30m);
 		defs.add(d1h);
-		defs.add(d1d);
 		
 		return new PackagedFrequencyCounter(defs);
 	}

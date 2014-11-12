@@ -44,6 +44,7 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 
 	/**
 	 * 创建一个实例，如果purgePeriod参数不为0则会自动进行历史数据清除。
+	 * The granularity must not exceed one hour.
 	 * @param granularity	计数颗粒度
 	 * @param unit			颗粒度的单位
 	 * @param purgePeriod	历史数据的保留时间长度
@@ -53,12 +54,15 @@ public class BasicFrequencyCounter extends FrequencyCounter {
 			long purgePeriod, TimeUnit purgeUnit){
 		Map<Long, AtomicLong> map = null;
 		this.granularity = TimeUnit.MILLISECONDS.convert(granularity, unit);
+		if (this.granularity > TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)){
+			throw new IllegalArgumentException("The granularity cannot exceed 1 hour.");
+		}
 		if (purgePeriod == 0){
 			this.purgeBefore = 0;
-			map = new HashMap<Long, AtomicLong>();
+			map = new HashMap<Long, AtomicLong>();	// better performance, but doesn't no guarantee on ordering
 		} else {
 			this.purgeBefore = TimeUnit.MILLISECONDS.convert(purgePeriod, purgeUnit);
-			map = new ConcurrentSkipListMap<Long, AtomicLong>();
+			map = new ConcurrentSkipListMap<Long, AtomicLong>();	// ordering guaranteed
 		}
 		counters = new PutIfAbsentMap<Long, AtomicLong>(map, AtomicLong.class);
 	}
