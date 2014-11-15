@@ -20,7 +20,7 @@ public enum AggregationPeriodUnit{
         }else if ("MONTHS".equals(name)){
 			calendarField = Calendar.MONTH;
 		}else if ("DAYS".equals(name)){
-			calendarField = Calendar.DAY;
+			calendarField = Calendar.DAY_OF_MONTH;
 		}else if ("HOURS".equals(name)){
 			calendarField = Calendar.HOUR_OF_DAY;
 		}else{
