@@ -1,5 +1,5 @@
 /*
-Copyright 2014 Zhengmao HU (James)
+Copyright 2014 Zhengmao HU (James Hu)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,32 +25,24 @@ import java.util.Calendar;
  *  For units equals to or larger then hour, they are represented as Calendar fields.
  */
 public enum AggregationPeriodUnit{
-    NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, 
-	HOURS, DAYS, MONTHS, YEARS;
+    MILLISECONDS(TimeUnit.MILLISECONDS, Calendar.MILLISECOND, true), 
+    SECONDS(TimeUnit.SECONDS, Calendar.SECOND, true), 
+    MINUTES(TimeUnit.MINUTES, Calendar.MINUTE, true), 
+	HOURS(TimeUnit.HOURS, Calendar.HOUR_OF_DAY, false), 
+	DAYS(null, Calendar.DAY_OF_MONTH, false),  // 1 means 1st day of a month
+	MONTHS(null, Calendar.MONTH, false),  // 0 means January
+	YEARS(null, Calendar.YEAR, false);
     
     private TimeUnit timeUnit;
     private int calendarField;
+    boolean smallerThanHour;
     
-    AggregationPeriodUnit(){
-        String name = this.name();
-		
-        if ("YEARS".equals(name)){
-            calendarField = Calendar.YEAR;
-        }else if ("MONTHS".equals(name)){
-			calendarField = Calendar.MONTH;
-		}else if ("DAYS".equals(name)){
-			calendarField = Calendar.DAY_OF_MONTH;
-		}else if ("HOURS".equals(name)){
-			calendarField = Calendar.HOUR_OF_DAY;
-		}else{
-			timeUnit = TimeUnit.valueOf(name);
-		}
+    AggregationPeriodUnit(TimeUnit timeUnit, int calendarField, boolean smallerThanHour){
+    	this.timeUnit = timeUnit;
+    	this.calendarField = calendarField;
+    	this.smallerThanHour = smallerThanHour;
     }
 	
-	public boolean isSmallerThanHour(){
-		return timeUnit != null;
-	}
-    
     public TimeUnit toTimeUnit(){
         return timeUnit;
     }
@@ -58,4 +50,8 @@ public enum AggregationPeriodUnit{
     public int toCalendarField(){
         return calendarField;
     }
+
+	public boolean isSmallerThanHour() {
+		return smallerThanHour;
+	}
 }
