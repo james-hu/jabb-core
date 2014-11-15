@@ -15,7 +15,7 @@ import org.junit.Test;
 public class BeanGeneratorTest {
 
 	@Test
-	public void test() {
+	public void test() throws NoSuchMethodException, SecurityException {
 	    final Map<String, Class<?>> properties =
 	            new HashMap<String, Class<?>>();
 	        properties.put("foo", Integer.class);
@@ -24,10 +24,11 @@ public class BeanGeneratorTest {
 
 	        final Class<?> beanClass =
 	            createBeanClass("some.ClassName", properties);
-	        System.out.println(beanClass);
-	        for(final Method method : beanClass.getDeclaredMethods()){
-	            System.out.println(method);
-	        }
+	        assertNotNull(beanClass);
+	        assertEquals("some.ClassName", beanClass.getName());
+	        
+	        assertNotNull(beanClass.getDeclaredMethod("getNewName"));
+	        assertNotNull(beanClass.getDeclaredMethod("setNewName", String.class));
 
 	}
 	
