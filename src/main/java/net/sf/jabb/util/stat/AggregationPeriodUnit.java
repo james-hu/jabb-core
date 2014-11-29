@@ -29,13 +29,13 @@ public enum AggregationPeriodUnit{
     SECONDS(TimeUnit.SECONDS, Calendar.SECOND, true), 
     MINUTES(TimeUnit.MINUTES, Calendar.MINUTE, true), 
 	HOURS(TimeUnit.HOURS, Calendar.HOUR_OF_DAY, false), 
-	DAYS(null, Calendar.DAY_OF_MONTH, false),  // 1 means 1st day of a month
+	DAYS(TimeUnit.DAYS, Calendar.DAY_OF_MONTH, false),  // 1 means 1st day of a month
 	MONTHS(null, Calendar.MONTH, false),  // 0 means January
 	YEARS(null, Calendar.YEAR, false);
     
     private TimeUnit timeUnit;
     private int calendarField;
-    boolean smallerThanHour;
+    private boolean smallerThanHour;
     
     AggregationPeriodUnit(TimeUnit timeUnit, int calendarField, boolean smallerThanHour){
     	this.timeUnit = timeUnit;
@@ -54,4 +54,5 @@ public enum AggregationPeriodUnit{
 	public boolean isSmallerThanHour() {
 		return smallerThanHour;
 	}
+	
 }
