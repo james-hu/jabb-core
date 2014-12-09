@@ -24,7 +24,8 @@ public class ProfileActivationInitializer implements Ordered,
 	ApplicationContextInitializer<ConfigurableApplicationContext> {
 
 	public static final String PROPERTY_SOURCE_NAME = ProfileActivationInitializer.class.getSimpleName();
-	public static final String PLACEHOLDER_NAME = "ini.mainProfile";
+	public static final String FIRST_PROFILE_PLACEHOLDER_NAME = "ini.firstActiveProfile";
+	public static final String SECOND_PROFILE_PLACEHOLDER_NAME = "ini.secondActiveProfile";
 	public static final String HOSTNAME_PROPERTY_NAME = "profile.activation.hostname";
 	public static final String SUBHOSTNAME_PROPERTY_NAME = "profile.activation.subhostname";
 	public static final String PRIMARY_CONFIG_RESOURCE = "/hostname-profiles.properties";
@@ -67,12 +68,18 @@ public class ProfileActivationInitializer implements Ordered,
 		// set additional properties
 		activeProfiles = env.getActiveProfiles();
 		if (activeProfiles != null && activeProfiles.length > 0){
-			String mainProfile = activeProfiles[0];				// the first one is the "main" one
+			String firstProfile = activeProfiles[0];				// the first one is the "main" one
 			MutablePropertySources propertySources = env.getPropertySources();
 			Map<String, Object> additionalProperties = new HashMap<String, Object>();
-			additionalProperties.put(PLACEHOLDER_NAME, mainProfile);
+			additionalProperties.put(FIRST_PROFILE_PLACEHOLDER_NAME, firstProfile);
+			logger.info("Property (can be used as placeholder) '{}' has been set to: {}", FIRST_PROFILE_PLACEHOLDER_NAME, firstProfile);
+
+			if (activeProfiles.length > 1){
+				String secondProfile = activeProfiles[1];
+				additionalProperties.put(SECOND_PROFILE_PLACEHOLDER_NAME, secondProfile);
+				logger.info("Property (can be used as placeholder) '{}' has been set to: {}", SECOND_PROFILE_PLACEHOLDER_NAME, secondProfile);
+			}
 			propertySources.addFirst(new MapPropertySource(PROPERTY_SOURCE_NAME, additionalProperties));
-			logger.info("Property (can be used as placeholder) '" + PLACEHOLDER_NAME + "' has been set to: " + mainProfile);
 		}
 	}
 	
