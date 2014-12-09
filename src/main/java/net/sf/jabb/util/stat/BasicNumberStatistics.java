@@ -125,6 +125,7 @@ public class BasicNumberStatistics {
 
 	@Override
 	public String toString(){
-		return "count=" + count + ", sum=" + sum + ", min=" + min + ", max=" + max + ", avg=" + getAvg();
+		return "count=" + count + ", sum=" + sum + 
+				(count.get() == 0? "" : ", min=" + min + ", max=" + max + ", avg=" + getAvg());
 	}
 }
