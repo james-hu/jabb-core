@@ -72,12 +72,14 @@ public class ProfileActivationInitializer implements Ordered,
 			MutablePropertySources propertySources = env.getPropertySources();
 			Map<String, Object> additionalProperties = new HashMap<String, Object>();
 			additionalProperties.put(FIRST_PROFILE_PLACEHOLDER_NAME, firstProfile);
-			logger.info("Property (can be used as placeholder) '{}' has been set to: {}", FIRST_PROFILE_PLACEHOLDER_NAME, firstProfile);
+			System.setProperty(FIRST_PROFILE_PLACEHOLDER_NAME, firstProfile);
+			logger.info("Property (can be used as a placeholder) '{}' has been set to: {}", FIRST_PROFILE_PLACEHOLDER_NAME, firstProfile);
 
 			if (activeProfiles.length > 1){
 				String secondProfile = activeProfiles[1];
 				additionalProperties.put(SECOND_PROFILE_PLACEHOLDER_NAME, secondProfile);
-				logger.info("Property (can be used as placeholder) '{}' has been set to: {}", SECOND_PROFILE_PLACEHOLDER_NAME, secondProfile);
+				System.setProperty(SECOND_PROFILE_PLACEHOLDER_NAME, secondProfile);
+				logger.info("Property (can be used as a placeholder) '{}' has been set to: {}", SECOND_PROFILE_PLACEHOLDER_NAME, secondProfile);
 			}
 			propertySources.addFirst(new MapPropertySource(PROPERTY_SOURCE_NAME, additionalProperties));
 		}
