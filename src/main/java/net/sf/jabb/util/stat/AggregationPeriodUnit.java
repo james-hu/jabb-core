@@ -25,22 +25,24 @@ import java.util.Calendar;
  *  For units equals to or larger then hour, they are represented as Calendar fields.
  */
 public enum AggregationPeriodUnit{
-    MILLISECONDS(TimeUnit.MILLISECONDS, Calendar.MILLISECOND, true), 
-    SECONDS(TimeUnit.SECONDS, Calendar.SECOND, true), 
-    MINUTES(TimeUnit.MINUTES, Calendar.MINUTE, true), 
-	HOURS(TimeUnit.HOURS, Calendar.HOUR_OF_DAY, false), 
-	DAYS(TimeUnit.DAYS, Calendar.DAY_OF_MONTH, false),  // 1 means 1st day of a month
-	MONTHS(null, Calendar.MONTH, false),  // 0 means January
-	YEARS(null, Calendar.YEAR, false);
+    MILLISECONDS(TimeUnit.MILLISECONDS, Calendar.MILLISECOND, true, 1L), 
+    SECONDS(TimeUnit.SECONDS, Calendar.SECOND, true, 1000L), 
+    MINUTES(TimeUnit.MINUTES, Calendar.MINUTE, true, 1000L * 60), 
+	HOURS(TimeUnit.HOURS, Calendar.HOUR_OF_DAY, false, 1000L * 60 * 60), 
+	DAYS(TimeUnit.DAYS, Calendar.DAY_OF_MONTH, false, 1000L * 3600 * 24),  // 1 means 1st day of a month
+	MONTHS(null, Calendar.MONTH, false, 2630000000L),  // 0 means January
+	YEARS(null, Calendar.YEAR, false, 31556900000L);
     
     private TimeUnit timeUnit;
     private int calendarField;
     private boolean smallerThanHour;
+    private long milliseconds;
     
-    AggregationPeriodUnit(TimeUnit timeUnit, int calendarField, boolean smallerThanHour){
+    AggregationPeriodUnit(TimeUnit timeUnit, int calendarField, boolean smallerThanHour, long milliseconds){
     	this.timeUnit = timeUnit;
     	this.calendarField = calendarField;
     	this.smallerThanHour = smallerThanHour;
+    	this.milliseconds = milliseconds;
     }
 	
     public TimeUnit toTimeUnit(){
@@ -53,6 +55,14 @@ public enum AggregationPeriodUnit{
 
 	public boolean isSmallerThanHour() {
 		return smallerThanHour;
+	}
+	
+	public long toMilliseconds(){
+		return milliseconds;
+	}
+	
+	public long toMilliseconds(int duration){
+		return milliseconds * duration;
 	}
 	
 }
