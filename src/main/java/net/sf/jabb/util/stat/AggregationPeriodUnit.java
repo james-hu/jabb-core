@@ -20,6 +20,10 @@ package net.sf.jabb.util.stat;
 import java.util.concurrent.TimeUnit;
 import java.util.Calendar;
 
+import org.apache.commons.lang3.StringUtils;
+
+import net.sf.jabb.util.bean.DoubleValueBean;
+
 /**
  *  For units smaller than hour, they are represented as TimeUnit;
  *  For units equals to or larger then hour, they are represented as Calendar fields.
@@ -64,5 +68,34 @@ public enum AggregationPeriodUnit{
 	public long toMilliseconds(int duration){
 		return milliseconds * duration;
 	}
+	
+	/**
+	 * Parse a string to get the AggregationPeriodUnit
+	 * @param unitString the string to be parsed, it should just be the name of an AggregationPeriodUnit enum, 
+	 *  but can contain leading and trailing blank spaces, 
+	 * 	can have mixed upper and lower cases, and can have the last letter 's' missing. 
+	 * 	For example, 'hour', 'Hour', 'HOUR', 'hours', and 'hOUrs' are all valid.
+	 * @return	the AggregationPeriodUnit represented by the input string
+	 */
+	static public AggregationPeriodUnit parse(String unitString) {
+		unitString = unitString.trim().toUpperCase();
+		if(unitString.charAt(unitString.length() - 1) != 'S') {
+			unitString = unitString + "S";
+		}
+		return AggregationPeriodUnit.valueOf(unitString);
+	}
+
+	/**
+	 * Parse strings like '1 hour', '2 days', '3 Years', '12 minute'
+	 * @param quantityAndUnit	the string to be parsed
+	 * @return	Both quantity and unit
+	 */
+	static public DoubleValueBean<Integer, AggregationPeriodUnit> parseWithQuantity(String quantityAndUnit) {
+		String[] durationAndUnit = StringUtils.split(quantityAndUnit);
+		Integer duration = Integer.valueOf(durationAndUnit[0]);
+		AggregationPeriodUnit unit = parse(durationAndUnit[1]);
+		return new DoubleValueBean<Integer, AggregationPeriodUnit>(duration, unit);
+	}
+
 	
 }
