@@ -17,12 +17,15 @@ package net.sf.jabb.util.bean;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 /**
  * @author Zhengmao Hu
  * 
  * a bean that contains two value properties.
  */
-public class DoubleValueBean<V1, V2>  implements Serializable{
+public class DoubleValueBean<V1, V2>  implements Serializable, Comparable<DoubleValueBean<V1, V2>>{
 	private static final long serialVersionUID = -6737961503575937877L;
 
 	private V1 value1;
@@ -54,9 +57,49 @@ public class DoubleValueBean<V1, V2>  implements Serializable{
 		return value2;
 	}
 
+	@Override
 	public String toString() {
 		return "(" + (value1 == null ? "<null>" : value1.toString()) + ","
 				+ (value2 == null ? "<null>" : value2.toString()) + ")";
 	}
+	
+	@Override
+	public int hashCode(){
+		int result = 0;
+		if (value1 != null){
+			result += value1.hashCode();
+		}
+		if (value2 != null){
+			result += 10 * value2.hashCode();
+		}
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		DoubleValueBean<?, ?> rhs = (DoubleValueBean<?, ?>) obj;
+		return new EqualsBuilder()
+				.appendSuper(super.equals(obj))
+				.append(value1, rhs.value1)
+				.append(value2, rhs.value2)
+				.isEquals();
+	}
 
+	@Override
+	public int compareTo(DoubleValueBean<V1, V2> rhs) {
+		return new CompareToBuilder()
+				// .appendSuper(super.compareTo(o)
+				.append(this.value1, rhs.value1)
+				.append(this.value2, rhs.value2)
+				.toComparison();
+	}
 }

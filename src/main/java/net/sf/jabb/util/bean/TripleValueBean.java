@@ -17,12 +17,15 @@ package net.sf.jabb.util.bean;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 /**
  * @author Zhengmao Hu
  * 
  * a bean that contains three value properties.
  */
-public class TripleValueBean<V1, V2, V3>  implements Serializable{
+public class TripleValueBean<V1, V2, V3>  implements Serializable, Comparable<TripleValueBean<V1, V2, V3>>{
 	private static final long serialVersionUID = -3680410437574200875L;
 
 	private V1 value1;
@@ -65,10 +68,56 @@ public class TripleValueBean<V1, V2, V3>  implements Serializable{
 		this.value3 = value3;
 	}
 
+	@Override
 	public String toString() {
 		return "(" + (value1 == null ? "<null>" : value1.toString()) + ","
 				+ (value2 == null ? "<null>" : value2.toString()) + ","
 				+ (value3 == null ? "<null>" : value3.toString()) + ")";
+	}
+
+	@Override
+	public int hashCode(){
+		int result = 0;
+		if (value1 != null){
+			result += value1.hashCode();
+		}
+		if (value2 != null){
+			result += 10 * value2.hashCode();
+		}
+		if (value3 != null){
+			result += 10 * value3.hashCode();
+		}
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		TripleValueBean<?, ?, ?> rhs = (TripleValueBean<?, ?, ?>) obj;
+		return new EqualsBuilder()
+				.appendSuper(super.equals(obj))
+				.append(value1, rhs.value1)
+				.append(value2, rhs.value2)
+				.append(value3, rhs.value3)
+				.isEquals();
+	}
+
+	@Override
+	public int compareTo(TripleValueBean<V1, V2, V3> rhs) {
+		return new CompareToBuilder()
+				// .appendSuper(super.compareTo(o)
+				.append(this.value1, rhs.value1)
+				.append(this.value2, rhs.value2)
+				.append(this.value3, rhs.value3)
+				.toComparison();
 	}
 
 }

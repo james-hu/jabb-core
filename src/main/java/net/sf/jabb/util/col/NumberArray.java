@@ -18,6 +18,8 @@ package net.sf.jabb.util.col;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+
 /**
  * Encapsulates multiple objects of Number(such as Integer, Long, Double) into one object,
  * which is suitable to be used as the key object of Map.<br>
@@ -31,7 +33,7 @@ import java.io.Serializable;
  *
  * @param <T extends Number>	Number类型
  */
-public class NumberArray<T extends Number> implements Comparable<Object>, Serializable{
+public class NumberArray<T extends Number> implements Comparable<NumberArray<? extends Number>>, Serializable{
 	private static final long serialVersionUID = 3101324164832289477L;
 
 	protected T[] values;
@@ -142,8 +144,10 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	public int hashCode(){
 		long result = 0;
 		for (T l: values){
-			result += l.hashCode();
-			result ^= l.hashCode() * 31;
+			if (l != null){
+				result += l.hashCode();
+				result ^= l.hashCode() * 31;
+			}
 		}
 		return (int) result;
 	}
@@ -156,33 +160,25 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	 * @param obj	The object to be compared with
 	 * @return	-1 if little than obj, 0 if equals, 1 if greater than.
 	 */
-	public int compareTo(Object obj) {
-		if (! (obj instanceof NumberArray<?>)){
-			throw new IllegalArgumentException("Only comparing to MultipleNumbers is supported.");
-		}
-		NumberArray<?> to = (NumberArray<?>) obj;
-		
-		if (this.values.length < to.values.length){
-			return -1;
-		}else if (this.values.length > to.values.length){
+	public int compareTo(NumberArray<? extends Number> to) {
+		if (to == null || this.values.length > to.values.length){
 			return 1;
+		}else if (this.values.length < to.values.length){
+			return -1;
 		}
 		
-		int result = 0;
-		int i = 0;
-		while (result == 0 && i < this.values.length){
-			if (this.values[i].doubleValue() < to.values[i].doubleValue()){
-				result = -1;
-			}else if (this.values[i].doubleValue() > to.values[i].doubleValue()){
-				result = 1;
-			}
-			i ++;
+		CompareToBuilder b = new CompareToBuilder();
+		for (int i = 0; i < this.values.length; i ++){
+			b.append(this.values[i], to.values[i]);
 		}
-		return result;
+		return b.toComparison();
 	}
 	
 	@Override
 	public boolean equals(Object obj){
+		if (obj == null) {
+			return false;
+		}
 		//check for self-comparison
 	    if ( this == obj ) 
 	    	return true;
@@ -195,7 +191,7 @@ public class NumberArray<T extends Number> implements Comparable<Object>, Serial
 	    if ( !(obj instanceof NumberArray) ) 
 	    	return false;
 
-		return compareTo(obj) == 0;
+		return compareTo((NumberArray<? extends Number>)obj) == 0;
 	}
 	
 	@Override

@@ -37,7 +37,7 @@ import java.io.Serializable;
  *
  */
 @SuppressWarnings("rawtypes")
-public class ComparableArray implements Comparable<Object>, Serializable{
+public class ComparableArray implements Comparable<ComparableArray>, Serializable{
 	private static final long serialVersionUID = 2978159654591722222L;
 
 	protected Comparable[] values;
@@ -90,12 +90,7 @@ public class ComparableArray implements Comparable<Object>, Serializable{
 	}
 
 	@SuppressWarnings("unchecked")
-	public int compareTo(Object obj) {
-		if (! (obj instanceof ComparableArray)){
-			throw new IllegalArgumentException("Only comparing to ComparableArray is supported.");
-		}
-		ComparableArray to = (ComparableArray) obj;
-		
+	public int compareTo(ComparableArray to) {
 		if (this.values.length < to.values.length){
 			return -1;
 		}else if (this.values.length > to.values.length){
@@ -117,6 +112,9 @@ public class ComparableArray implements Comparable<Object>, Serializable{
 	
 	@Override
 	public boolean equals(Object obj){
+		if (obj == null){
+			return false;
+		}
 		//check for self-comparison
 	    if ( this == obj ) 
 	    	return true;
@@ -130,11 +128,7 @@ public class ComparableArray implements Comparable<Object>, Serializable{
 	    if ( !(obj instanceof ComparableArray) ) 
 	    	return false;
 
-	    try{
-			return compareTo(obj) == 0;
-	    }catch(Exception e){
-	    	return false;
-	    }
+		return compareTo((ComparableArray)obj) == 0;
 	}
 
 	@Override

@@ -18,6 +18,8 @@ package net.sf.jabb.util.col;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+
 /**
  * Encapsulates multiple int type values into one object, which
  * is suitable to be used as key object of Map.<br>
@@ -30,7 +32,7 @@ import java.io.Serializable;
  * @author Zhengmao HU (James)
  *
  */
-public class LongArray implements Comparable<Object>, Serializable{
+public class LongArray implements Comparable<LongArray>, Serializable{
 	private static final long serialVersionUID = -8516762858218377073L;
 	
 	protected long[] values;
@@ -109,33 +111,25 @@ public class LongArray implements Comparable<Object>, Serializable{
 	 * @param obj	The object to be compared with
 	 * @return	-1 if little than obj, 0 if equals, 1 if greater than.
 	 */
-	public int compareTo(Object obj) {
-		if (! (obj instanceof LongArray)){
-			throw new IllegalArgumentException("Only comparing to LongArray is supported.");
-		}
-		LongArray to = (LongArray) obj;
-		
-		if (this.values.length < to.values.length){
-			return -1;
-		}else if (this.values.length > to.values.length){
+	public int compareTo(LongArray to) {
+		if (to == null || this.values.length > to.values.length){
 			return 1;
+		}else if (this.values.length < to.values.length){
+			return -1;
 		}
 		
-		int result = 0;
-		int i = 0;
-		while (result == 0 && i < this.values.length){
-			if (this.values[i] < to.values[i]){
-				result = -1;
-			}else if (this.values[i] > to.values[i]){
-				result = 1;
-			}
-			i ++;
+		CompareToBuilder b = new CompareToBuilder();
+		for (int i = 0; i < this.values.length; i ++){
+			b.append(this.values[i], to.values[i]);
 		}
-		return result;
+		return b.toComparison();
 	}
 	
 	@Override
 	public boolean equals(Object obj){
+		if (obj == null) {
+			return false;
+		}
 		//check for self-comparison
 	    if ( this == obj ) 
 	    	return true;
@@ -148,7 +142,7 @@ public class LongArray implements Comparable<Object>, Serializable{
 	    if ( !(obj instanceof LongArray) ) 
 	    	return false;
 
-		return compareTo(obj) == 0;
+		return compareTo((LongArray)obj) == 0;
 	}
 	
 	@Override
