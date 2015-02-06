@@ -17,6 +17,8 @@ package net.sf.jabb.util.col;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+
 /**
  * Encapsulates multiple Comparable (implements Comparable Interface) values into one object, which
  * is suitable to be used as key object of Map.<br>
@@ -82,32 +84,27 @@ public class ComparableArray implements Comparable<ComparableArray>, Serializabl
 	public int hashCode(){
 		long result = 0;
 		for (Object o: values){
-			long h = o.hashCode();
-			result += h << 32;
-			result ^= h * 31;
+			if (o != null){
+				long h = o.hashCode();
+				result += h << 32;
+				result ^= h * 31;
+			}
 		}
 		return (int) result;
 	}
 
-	@SuppressWarnings("unchecked")
 	public int compareTo(ComparableArray to) {
-		if (this.values.length < to.values.length){
-			return -1;
-		}else if (this.values.length > to.values.length){
+		if (to == null || this.values.length > to.values.length){
 			return 1;
+		}else if (this.values.length < to.values.length){
+			return -1;
 		}
 		
-		int result = 0;
-		int i = 0;
-		while (result == 0 && i < this.values.length){
-			if (this.values[i].compareTo(to.values[i]) < 0){
-				result = -1;
-			}else if (this.values[i].compareTo(to.values[i]) > 0){
-				result = 1;
-			}
-			i ++;
+		CompareToBuilder b = new CompareToBuilder();
+		for (int i = 0; i < this.values.length; i ++){
+			b.append(this.values[i], to.values[i]);
 		}
-		return result;
+		return b.toComparison();
 	}
 	
 	@Override

@@ -37,8 +37,14 @@ public class ComparableArrayTest {
 		ComparableArray c6 = new ComparableArray("new 1", l1, new Long(9));
 		
 		Assert.assertTrue(c4.compareTo(c6) == -1);
-		Assert.assertFalse(c4.equals(c5));
 		
+	}
+	
+	@Test(expected = ClassCastException.class)
+	public void testUncompatible(){
+		ComparableArray c4 = new ComparableArray("new 1", new Long(0), new Long(8));
+		ComparableArray c5 = new ComparableArray("new 1", "String 1", "String 3");
+		Assert.assertFalse(c4.equals(c5));
 	}
 
 }
