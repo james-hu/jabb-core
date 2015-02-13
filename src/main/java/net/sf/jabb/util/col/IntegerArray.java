@@ -19,6 +19,7 @@ package net.sf.jabb.util.col;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Encapsulates multiple int type values into one object, which
@@ -96,12 +97,11 @@ public class IntegerArray implements Comparable<IntegerArray>, Serializable{
 	 */
 	@Override
 	public int hashCode(){
-		long result = 0;
-		for (long l: values){
-			result += l << 32;
-			result ^= l * 31;
+		HashCodeBuilder builder = new HashCodeBuilder(11, 13);
+		for (int o: values){
+			builder.append(o);
 		}
-		return (int) result;
+		return builder.toHashCode();
 	}
 
 	/**

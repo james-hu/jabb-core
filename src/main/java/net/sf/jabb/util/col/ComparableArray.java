@@ -18,6 +18,7 @@ package net.sf.jabb.util.col;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Encapsulates multiple Comparable (implements Comparable Interface) values into one object, which
@@ -82,15 +83,11 @@ public class ComparableArray implements Comparable<ComparableArray>, Serializabl
 	 */
 	@Override
 	public int hashCode(){
-		long result = 0;
+		HashCodeBuilder builder = new HashCodeBuilder(11, 11);
 		for (Object o: values){
-			if (o != null){
-				long h = o.hashCode();
-				result += h << 32;
-				result ^= h * 31;
-			}
+			builder.append(o);
 		}
-		return (int) result;
+		return builder.toHashCode();
 	}
 
 	public int compareTo(ComparableArray to) {

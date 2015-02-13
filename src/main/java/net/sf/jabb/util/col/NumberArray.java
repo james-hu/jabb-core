@@ -19,6 +19,7 @@ package net.sf.jabb.util.col;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Encapsulates multiple objects of Number(such as Integer, Long, Double) into one object,
@@ -142,14 +143,11 @@ public class NumberArray<T extends Number> implements Comparable<NumberArray<? e
 	 */
 	@Override
 	public int hashCode(){
-		long result = 0;
-		for (T l: values){
-			if (l != null){
-				result += l.hashCode();
-				result ^= l.hashCode() * 31;
-			}
+		HashCodeBuilder builder = new HashCodeBuilder(11, 19);
+		for (Number o: values){
+			builder.append(o);
 		}
-		return (int) result;
+		return builder.toHashCode();
 	}
 
 

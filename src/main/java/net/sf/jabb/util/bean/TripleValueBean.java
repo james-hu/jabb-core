@@ -19,6 +19,7 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * @author Zhengmao Hu
@@ -77,17 +78,11 @@ public class TripleValueBean<V1, V2, V3>  implements Serializable, Comparable<Tr
 
 	@Override
 	public int hashCode(){
-		int result = 0;
-		if (value1 != null){
-			result += value1.hashCode();
-		}
-		if (value2 != null){
-			result += 10 * value2.hashCode();
-		}
-		if (value3 != null){
-			result += 10 * value3.hashCode();
-		}
-		return result;
+		return new HashCodeBuilder(3, 7)
+		.append(value1)
+		.append(value2)
+		.append(value3)
+		.toHashCode();
 	}
 	
 	@Override

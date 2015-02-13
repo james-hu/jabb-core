@@ -19,6 +19,7 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * @author Zhengmao Hu
@@ -65,14 +66,10 @@ public class DoubleValueBean<V1, V2>  implements Serializable, Comparable<Double
 	
 	@Override
 	public int hashCode(){
-		int result = 0;
-		if (value1 != null){
-			result += value1.hashCode();
-		}
-		if (value2 != null){
-			result += 10 * value2.hashCode();
-		}
-		return result;
+		return new HashCodeBuilder(2, 7)
+			.append(value1)
+			.append(value2)
+			.toHashCode();
 	}
 	
 	@Override
@@ -88,7 +85,7 @@ public class DoubleValueBean<V1, V2>  implements Serializable, Comparable<Double
 		}
 		DoubleValueBean<?, ?> rhs = (DoubleValueBean<?, ?>) obj;
 		return new EqualsBuilder()
-				.appendSuper(super.equals(obj))
+				//.appendSuper(super.equals(obj))
 				.append(value1, rhs.value1)
 				.append(value2, rhs.value2)
 				.isEquals();
