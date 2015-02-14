@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+#set -e
 CURRENT_VERSION=`mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | sed -n -e '/^\[.*\]/ !{ /^[0-9]/ { p; q } }'`
 TIMESTAMP=`date -u +%Y%m%d%k%M`
 RELEASE_VERSION=${CURRENT_VERSION%%SNAPSHOT}$TIMESTAMP
