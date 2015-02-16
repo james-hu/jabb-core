@@ -12,9 +12,14 @@ git checkout -b "release/$RELEASE_VERSION"
 mvn versions:set "-DnewVersion=$RELEASE_VERSION" -DgenerateBackupPoms=false
 git add pom.xml
 git commit -m "Update version number for release"
-mvn -DskipTests clean package install deploy
-#gpg --delete-keys james.hu.ustc@hotmail.com
-gpg --delete-secret-keys james.hu.ustc@hotmail.com
+
+
+mvn -DskipTests clean deploy
+
+gpg --batch --delete-secret-keys james.hu.ustc@hotmail.com
+cat ~/.m2/settings.xml | sed 's/<servers>.*<\/settings>/<\/settings>/g' > settings.xml
+cp settings.xml ~/.m2/settings.xml
+rm settings.xml
 
 git tag -l "release/v$RELEASE_VERSION"
 git push origin --tags
