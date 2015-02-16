@@ -1,8 +1,9 @@
 #!/bin/bash
 
-#set -e
+set -o nounset
+
 CURRENT_VERSION=`mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | sed -n -e '/^\[.*\]/ !{ /^[0-9]/ { p; q } }'`
-TIMESTAMP=`date -u +%Y%m%d%k%M`
+TIMESTAMP=`date -u +%Y%m%d%H%M`
 RELEASE_VERSION=${CURRENT_VERSION%%SNAPSHOT}$TIMESTAMP
 
 echo "Switching to release branch: $CURRENT_VERSION -> $RELEASE_VERSION"
