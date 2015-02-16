@@ -10,8 +10,12 @@ echo "Switching to release branch: $CURRENT_VERSION -> $RELEASE_VERSION"
 git checkout -b "release/$RELEASE_VERSION"
 
 mvn versions:set "-DnewVersion=$RELEASE_VERSION" -DgenerateBackupPoms=false
+git add pom.xml
 git commit -m "Update version number for release"
 mvn -DskipTests clean package install deploy
+#gpg --delete-keys james.hu.ustc@hotmail.com
+gpg --delete-secret-keys james.hu.ustc@hotmail.com
+
 git tag -l "release/v$RELEASE_VERSION"
 git push origin --tags
 
