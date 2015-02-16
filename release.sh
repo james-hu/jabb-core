@@ -12,6 +12,7 @@ git checkout -b "release/$RELEASE_VERSION"
 mvn versions:set "-DnewVersion=$RELEASE_VERSION" -DgenerateBackupPoms=false
 git add pom.xml
 git commit -m "Update version number for release"
+git tag -l "release/v$RELEASE_VERSION"
 
 
 mvn -DskipTests clean deploy
@@ -21,8 +22,8 @@ cat ~/.m2/settings.xml | sed 's/<servers>.*<\/settings>/<\/settings>/g' > settin
 cp settings.xml ~/.m2/settings.xml
 rm settings.xml
 
-git tag -l "release/v$RELEASE_VERSION"
-git push origin --tags
+git remote set-url origin git@github.com:james-hu/jabb-core.git
 
+git push origin --tags
 echo "Switching back to master branch"
 git checkout master
