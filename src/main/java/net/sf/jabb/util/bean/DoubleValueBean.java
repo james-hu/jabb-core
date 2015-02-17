@@ -66,7 +66,7 @@ public class DoubleValueBean<V1, V2>  implements Serializable, Comparable<Double
 	
 	@Override
 	public int hashCode(){
-		return new HashCodeBuilder(2, 7)
+		return new HashCodeBuilder(13, 7)
 			.append(value1)
 			.append(value2)
 			.toHashCode();
