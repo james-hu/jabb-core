@@ -23,6 +23,6 @@ cat ~/.m2/settings.xml | sed 's/<servers>.*<\/settings>/<\/settings>/g' > settin
 cp settings.xml ~/.m2/settings.xml
 rm settings.xml
 
-
+git push -u origin "release/$RELEASE_VERSION"
 git push origin --tags
 git status
