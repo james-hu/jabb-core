@@ -303,6 +303,11 @@
 			<version>6.0.1.Final</version>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>18.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
