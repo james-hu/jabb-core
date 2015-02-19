@@ -5,12 +5,16 @@ package net.sf.jabb.spring.profile;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
+import net.sf.jabb.util.bean.KeyValueBean;
 import net.sf.jabb.util.bean.StringKeyValueBean;
 
 import org.apache.commons.lang3.StringUtils;
@@ -88,7 +92,7 @@ class ActiveProfilesChooser {
 	 * @return the configuration with all-matching wild card at the bottom.
 	 */
 	private List<StringKeyValueBean> loadConfiguration(){
-		LinkedList<StringKeyValueBean> result = new LinkedList<StringKeyValueBean>();
+		List<StringKeyValueBean> result = new LinkedList<StringKeyValueBean>();
 		Resource resource = null;
 		if (primaryConfigFileLocation == null){
 			return result;		// fail silently because we must be in test
@@ -106,15 +110,26 @@ class ActiveProfilesChooser {
 		try {
 			properties = PropertiesLoaderUtils.loadProperties(resource);
 			
+			// sort them, make the more specific ones at the top, and "*"/".*" at the bottom
+			List<StringKeyValueBean> sorted = new ArrayList<StringKeyValueBean>(properties.size());
 			for (Entry<Object, Object> entry: properties.entrySet()){
-				String key = entry.getKey().toString();
-				String value = entry.getValue().toString();
-				if ("*".equals(key) || ".*".equals(key)){		// put it to the tail of the list
-					result.addLast(new StringKeyValueBean(key, value));
-				}else{	// Properties is not sorted
-					result.addFirst(new StringKeyValueBean(key, value));
-				}
+				sorted.add(new StringKeyValueBean(entry.getKey().toString(), entry.getValue().toString()));
 			}
+			Collections.sort(sorted, new Comparator<StringKeyValueBean>(){
+				@Override
+				public int compare(StringKeyValueBean b0,	StringKeyValueBean b1) {
+					if (b0.getKey().equals(b1.getKey())){
+						return 0;
+					}
+					if ("*".equals(b0) || ".*".equals(b0)){
+						return 1;
+					}else if ("*".equals(b1) || ".*".equals(b1)){
+						return -1;
+					}
+					return b1.getKey().compareTo(b0.getKey());
+				}
+			});
+			result.addAll(sorted);
 		} catch (Exception e) {
 			logger.warn("Cannot load environments configuration file from class path: " + 
 					(resource == null ? "<null>" : resource.getDescription()), e);
