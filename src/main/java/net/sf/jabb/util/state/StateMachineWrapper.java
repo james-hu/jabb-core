@@ -3,13 +3,18 @@
  */
 package net.sf.jabb.util.state;
 
+import java.io.Serializable;
+import java.util.Set;
+
 
 /**
  * Wrapper of a state machine that can be applied to specific use case.
  * @author James Hu
  *
  */
-public abstract class StateMachineWrapper<S, T> {
+public abstract class StateMachineWrapper<S, T> implements Serializable{
+	private static final long serialVersionUID = -2873965028262709114L;
+
 	protected  StateMachine<S, T> stateMachine;
 	
 	abstract protected void setup(StateMachine<S, T> stateMachine);
@@ -43,6 +48,16 @@ public abstract class StateMachineWrapper<S, T> {
 	public boolean transit(T transition){
 		return stateMachine.transit(transition);
 	}
+	
+	/**
+	 * Get all transitions valid for specified state
+	 * @param state the state
+	 * @return  all transitions valid for the state
+	 */
+	public Set<T> getTransitions(S state) {
+		return stateMachine.getTransitions(state);
+	}
+
 	
 	@Override
 	public String toString(){

@@ -9,6 +9,8 @@ package net.sf.jabb.util.state;
  *
  */
 public class StartStopStateMachine extends StateMachineWrapper<Integer, Integer>{
+	private static final long serialVersionUID = 4646150130797002922L;
+
 	static public final Integer STOPPED = 0;
 	static public final Integer STARTING = 1;
 	static public final Integer RUNNING = 2;
@@ -21,17 +23,18 @@ public class StartStopStateMachine extends StateMachineWrapper<Integer, Integer>
 	
 	@Override
 	protected void setup(StateMachine<Integer, Integer> stateMachine) {
-		stateMachine.addState(STOPPED);
-		stateMachine.addState(STARTING);
-		stateMachine.addState(RUNNING);
-		stateMachine.addState(STOPPING);
+		stateMachine
+			.addState(STOPPED)
+			.addState(STARTING)
+			.addState(RUNNING)
+			.addState(STOPPING)
 		
-		stateMachine.addTransition(START, STOPPED, STARTING);
-		stateMachine.addTransition(FINISH_STARTING, STARTING, RUNNING);
-		stateMachine.addTransition(STOP, RUNNING, STOPPING);
-		stateMachine.addTransition(FINISH_STOPPING, STOPPING, STOPPED);
+			.addTransition(START, STOPPED, STARTING)
+			.addTransition(FINISH_STARTING, STARTING, RUNNING)
+			.addTransition(STOP, RUNNING, STOPPING)
+			.addTransition(FINISH_STOPPING, STOPPING, STOPPED)
 		
-		stateMachine.setState(STOPPED);
+			.start(STOPPED);
 	}
 	
 	public boolean start(){
