@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2011 Zhengmao HU (James)
+Copyright 2010-2011, 2015 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,62 +16,102 @@ limitations under the License.
 
 package net.sf.jabb.util.stat;
 
+import java.io.Serializable;
+import java.util.concurrent.atomic.AtomicLong;
+
 
 /**
- * The parent class for AtomicMinLong and AtomicMaxLong.<br>
+ * Holder of the minimum and maximum BigInteger values.
+ * It is also the parent class for AtomicMinLong and AtomicMaxLong.<br>
  * AtomicMinLong和AtomicMaxLong的公共的父类。
+ * <p>It is thread-safe.</p>
  * 
  * @author Zhengmao HU (James)
  *
  */
-abstract class AtomicMinMaxLong {
-	protected long value;
-	protected Object updateLock;
+public class AtomicMinMaxLong  implements Serializable{
+	private static final long serialVersionUID = -2426326997756055169L;
 	
-	protected AtomicMinMaxLong(long initialValue){
-		value = initialValue;
-		updateLock = new Object();
+	AtomicLong minRef;
+	AtomicLong maxRef;
+	
+	public AtomicMinMaxLong(){
 	}
 	
-	/**
-	 * getCurrent value.<br>
-	 * 获得当前值。
-	 * 
-	 * @return Current value.
-	 */
-	public long get(){
-		return value;
+	public AtomicMinMaxLong(long min, long max){
+		reset(min, max);
 	}
+
 	
 	/**
-	 * getCurrent value.<br>
-	 * 获得当前值。
-	 * 
-	 * @return Current value.
+	 * Compare current minimum and maximum values with a new value and update the minimum and/or 
+	 * maximum values if needed. If previously both minimum and maximum values are set set, both
+	 * of them will be set to the input value.
+	 * @param x the new value to be compared
 	 */
-	public long longValue(){
-		return value;
+	public void minMax(long x){
+		if (minRef == null){
+			minRef = new AtomicLong(x);
+			maxRef = new AtomicLong(x);
+			return;
+		}
+
+		long min = minRef.get();
+		if (min == x){
+			return;
+		}else if (min < x){
+			long max;
+			do {
+				max = maxRef.get();
+			} while (max < x && !maxRef.compareAndSet(max, x));
+		}else{ // min > x
+			while (min > x && !minRef.compareAndSet(min, x)){
+				min = minRef.get();
+			}
+		}
 	}
 	
+	public void reset(){
+		minRef = null;
+	}
+	
+	public void reset(long min, long max){
+		if (min > max){
+			throw new IllegalArgumentException("min value must not be greater than max value");
+		}
+		minRef = new AtomicLong(min);
+		maxRef = new AtomicLong(max);
+	}
+
+	
 	/**
-	 * getCurrent value as int.<br>
-	 * 以int类型获得当前值。
-	 * 
-	 * @return Current value as int.
+	 * Merge the min/max value from another instance into this one.
+	 * @param another   another instance of AtomicMinMaxLong
 	 */
-	public int intValue(){
-		return (int) value;
+	public void merge(AtomicMinMaxLong another){
+		Long anotherMin = another.getMin();
+		if (anotherMin != null){
+			minMax(anotherMin);
+		}
+		Long anotherMax = another.getMax();
+		if (anotherMax != null){
+			minMax(anotherMax);
+		}
+	}
+	
+	public Long getMin(){
+		return minRef == null ? null : minRef.get();
+	}
+	
+	public Long getMax(){
+		return maxRef == null ? null : maxRef.get();
 	}
 	
 	@Override
 	public String toString(){
-		return String.valueOf(value);
+		return "(" + getMin() + ", " + getMax() + ")";
 	}
 	
-	/**
-	 * Reset to initial status.<br>
-	 * 回复到初始状态。
-	 */
-	abstract public void reset();
+	
 
 }

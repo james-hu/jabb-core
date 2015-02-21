@@ -25,13 +25,14 @@ package net.sf.jabb.util.stat;
  *
  */
 public class AtomicMaxLong extends AtomicMinMaxLong {
-	
+	private static final long serialVersionUID = 8925676360071717966L;
+
 	/**
 	 * Constructs an instance to store the maximum value.<br>
 	 * 创建一个实例，用来保存最大值。
 	 */
 	public AtomicMaxLong(){
-		super(Long.MIN_VALUE);
+		super();
 	}
 	
 	/**
@@ -42,13 +43,9 @@ public class AtomicMaxLong extends AtomicMinMaxLong {
 	 * @param newValue	拿来作比较的值。
 	 * @return		New maximum value after comparison<br>比较之后的新的最大值
 	 */
-	public long maxAndGet(long newValue){
-		synchronized(updateLock){
-			if (newValue > value){
-				value = newValue;
-			}
-			return value;
-		}
+	public Long maxAndGet(long newValue){
+		minMax(newValue);
+		return getMax();
 	}
 
 	/**
@@ -59,15 +56,10 @@ public class AtomicMaxLong extends AtomicMinMaxLong {
 	 * @param newValue	拿来作比较的值。
 	 * @return		Previous maximum value before comparison<br>比较之前的老的最大值
 	 */
-	public long getAndMax(long newValue){
-		long oldValue;
-		synchronized(updateLock){
-			oldValue = value;
-			if (newValue > value){
-				value = newValue;
-			}
-			return oldValue;
-		}
+	public Long getAndMax(long newValue){
+		Long oldValue = getMax();
+		minMax(newValue);
+		return oldValue;
 	}
 	
 	/**
@@ -77,17 +69,18 @@ public class AtomicMaxLong extends AtomicMinMaxLong {
 	 * @param newValue	拿来作比较的值。
 	 */
 	public void max(long newValue){
-		maxAndGet(newValue);
+		minMax(newValue);
 	}
 
 	/**
-	 * Reset to initial status.<br>
-	 * 回复到初始状态。
+	 * getCurrent value.<br>
+	 * 获得当前值。
+	 * 
+	 * @return Current value.
 	 */
-	@Override
-	public void reset() {
-		value = Long.MIN_VALUE;
+	public Long get(){
+		return getMax();
 	}
-
+	
 
 }
