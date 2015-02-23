@@ -11,7 +11,7 @@ import java.math.BigInteger;
  * @author James Hu
  *
  */
-public class AtomicMinMaxBigInteger implements Serializable{
+public class AtomicMinMaxBigInteger implements Serializable, MinMaxBigInteger{
 	private static final long serialVersionUID = 8080025480251400931L;
 
 	static final BigInteger MAX_LONG_VALUE = BigInteger.valueOf(Long.MAX_VALUE);
@@ -27,12 +27,10 @@ public class AtomicMinMaxBigInteger implements Serializable{
 		reset(min, max);
 	}
 	
-	/**
-	 * Compare current minimum and maximum values with a new value and update the minimum and/or 
-	 * maximum values if needed. If previously both minimum and maximum values are set set, both
-	 * of them will be set to the input value.
-	 * @param x the new value to be compared
+	/* (non-Javadoc)
+	 * @see net.sf.jabb.util.stat.MinMaxBigInteger#minMax(java.math.BigInteger)
 	 */
+	@Override
 	public void minMax(BigInteger x){
 		if (minRef == null){
 			minRef = new AtomicBigInteger(x);
@@ -57,12 +55,25 @@ public class AtomicMinMaxBigInteger implements Serializable{
 		}
 	}
 	
+	@Override
+	public void minMax(long x) {
+		minMax(BigInteger.valueOf(x));
+	}
+
 	
+	/* (non-Javadoc)
+	 * @see net.sf.jabb.util.stat.MinMaxBigInteger#reset()
+	 */
+	@Override
 	public void reset(){
 		minRef = null;
 		maxRef = null;
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.sf.jabb.util.stat.MinMaxBigInteger#reset(java.math.BigInteger, java.math.BigInteger)
+	 */
+	@Override
 	public void reset(BigInteger min, BigInteger max){
 		if (min.compareTo(max) > 0){
 			throw new IllegalArgumentException("min value must not be greater than max value");
@@ -71,11 +82,18 @@ public class AtomicMinMaxBigInteger implements Serializable{
 		maxRef = new AtomicBigInteger(max);
 	}
 	
+	@Override
+	public void reset(long min, long max) {
+		reset(BigInteger.valueOf(min), BigInteger.valueOf(max));
+	}
+
+
 
 	/**
 	 * Merge the min/max value from another instance into this one.
 	 * @param another   another instance of AtomicMinMaxLong
 	 */
+	@Override
 	public void merge(AtomicMinMaxBigInteger another){
 		BigInteger anotherMin = another.getMin();
 		if (anotherMin != null){
@@ -86,6 +104,19 @@ public class AtomicMinMaxBigInteger implements Serializable{
 			minMax(anotherMax);
 		}
 	}
+	
+	@Override
+	public void merge(AtomicMinMaxLong another) {
+		Long anotherMin = another.getMin();
+		if (anotherMin != null){
+			minMax(anotherMin);
+		}
+		Long anotherMax = another.getMax();
+		if (anotherMax != null){
+			minMax(anotherMax);
+		}
+	}
+
 	
 	public BigInteger getMin(){
 		return minRef == null ? null : minRef.get();
@@ -99,5 +130,26 @@ public class AtomicMinMaxBigInteger implements Serializable{
 	public String toString(){
 		return "(" + getMin() + ", " + getMax() + ")";
 	}
+
+	@Override
+	public Long getLongMin() {
+		return minRef == null ? null : minRef.get().longValue();
+	}
+
+	@Override
+	public Long getLongMax() {
+		return maxRef == null ? null : maxRef.get().longValue();
+	}
+
+	@Override
+	public BigInteger getBigIntegerMin() {
+		return minRef == null ? null : minRef.get();
+	}
+
+	@Override
+	public BigInteger getBigIntegerMax() {
+		return maxRef == null ? null : maxRef.get();
+	}
+
 
 }

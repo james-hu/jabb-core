@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author Zhengmao HU (James)
  *
  */
-public class AtomicMinMaxLong  implements Serializable{
+public class AtomicMinMaxLong  implements Serializable, MinMaxLong{
 	private static final long serialVersionUID = -2426326997756055169L;
 	
 	AtomicLong minRef;
@@ -43,12 +43,10 @@ public class AtomicMinMaxLong  implements Serializable{
 	}
 
 	
-	/**
-	 * Compare current minimum and maximum values with a new value and update the minimum and/or 
-	 * maximum values if needed. If previously both minimum and maximum values are set set, both
-	 * of them will be set to the input value.
-	 * @param x the new value to be compared
+	/* (non-Javadoc)
+	 * @see net.sf.jabb.util.stat.MinMaxLong#minMax(long)
 	 */
+	@Override
 	public void minMax(long x){
 		if (minRef == null){
 			minRef = new AtomicLong(x);
@@ -71,10 +69,18 @@ public class AtomicMinMaxLong  implements Serializable{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.sf.jabb.util.stat.MinMaxLong#reset()
+	 */
+	@Override
 	public void reset(){
 		minRef = null;
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.sf.jabb.util.stat.MinMaxLong#reset(long, long)
+	 */
+	@Override
 	public void reset(long min, long max){
 		if (min > max){
 			throw new IllegalArgumentException("min value must not be greater than max value");
@@ -88,6 +94,7 @@ public class AtomicMinMaxLong  implements Serializable{
 	 * Merge the min/max value from another instance into this one.
 	 * @param another   another instance of AtomicMinMaxLong
 	 */
+	@Override
 	public void merge(AtomicMinMaxLong another){
 		Long anotherMin = another.getMin();
 		if (anotherMin != null){
@@ -110,6 +117,16 @@ public class AtomicMinMaxLong  implements Serializable{
 	@Override
 	public String toString(){
 		return "(" + getMin() + ", " + getMax() + ")";
+	}
+
+	@Override
+	public Long getLongMin() {
+		return minRef == null ? null : minRef.get();
+	}
+
+	@Override
+	public Long getLongMax() {
+		return maxRef == null ? null : maxRef.get();
 	}
 	
 	
