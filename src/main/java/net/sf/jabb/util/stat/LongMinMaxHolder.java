@@ -5,7 +5,7 @@ package net.sf.jabb.util.stat;
  * @author James Hu
  *
  */
-public interface MinMaxLong {
+public interface LongMinMaxHolder {
 
 	/**
 	 * Compare current minimum and maximum values with a new value and update the minimum and/or 
@@ -28,6 +28,9 @@ public interface MinMaxLong {
 	 */
 	public Long getLongMax();
 
+	/**
+	 * Reset to the initial status - no min/max values.
+	 */
 	public void reset();
 	
 	/**
@@ -37,6 +40,10 @@ public interface MinMaxLong {
 	 */
 	public void reset(long min, long max);
 	
-	public void merge(AtomicMinMaxLong another);
+	/**
+	 * Merge the min/max values from another instance to this one.
+	 * @param another another instance
+	 */
+	public void merge(ConcurrentLongMinMaxHolder another);
 
 }

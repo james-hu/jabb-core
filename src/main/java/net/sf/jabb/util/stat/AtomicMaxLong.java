@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2011 Zhengmao HU (James)
+Copyright 2010-2011, 2015 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ package net.sf.jabb.util.stat;
  * 存放最大值，“比较然后交换”的过程是同步的，所以它是多线程安全的。
  * 
  * @author Zhengmao HU (James)
- *
+ * @deprecated use AtomicLongMinMaxHolder instead
  */
-public class AtomicMaxLong extends AtomicMinMaxLong {
+public class AtomicMaxLong extends ConcurrentLongMinMaxHolder {
 	private static final long serialVersionUID = 8925676360071717966L;
 
 	/**

@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2011 Zhengmao HU (James)
+Copyright 2010-2011, 2015 Zhengmao HU (James)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,8 +21,9 @@ package net.sf.jabb.util.stat;
  * the compare-and-change procedure is synchronized so that multi-thread safe is ensured.<br>
  * 存放最小值，“比较然后交换”的过程是同步的，所以它是多线程安全的。
  *
+ * @deprecated use AtomicLongMinMaxHolder instead
  */
-public class AtomicMinLong extends AtomicMinMaxLong {
+public class AtomicMinLong extends ConcurrentLongMinMaxHolder {
 	private static final long serialVersionUID = -4205157325645405437L;
 
 	/**

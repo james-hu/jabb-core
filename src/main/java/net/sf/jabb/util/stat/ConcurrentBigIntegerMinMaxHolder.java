@@ -7,23 +7,27 @@ import java.io.Serializable;
 import java.math.BigInteger;
 
 /**
- * Holder of the minimum and maximum BigInteger values.
+ * Holder of the minimum and maximum BigInteger values. It is thread-safe.
  * @author James Hu
  *
  */
-public class AtomicMinMaxBigInteger implements Serializable, MinMaxBigInteger{
+public class ConcurrentBigIntegerMinMaxHolder implements Serializable, BigIntegerMinMaxHolder{
 	private static final long serialVersionUID = 8080025480251400931L;
 
-	static final BigInteger MAX_LONG_VALUE = BigInteger.valueOf(Long.MAX_VALUE);
-	static final BigInteger MIN_LONG_VALUE = BigInteger.valueOf(Long.MIN_VALUE);
+	static protected final BigInteger MAX_LONG_VALUE = BigInteger.valueOf(Long.MAX_VALUE);
+	static protected final BigInteger MIN_LONG_VALUE = BigInteger.valueOf(Long.MIN_VALUE);
 
-	AtomicBigInteger minRef;
-	AtomicBigInteger maxRef;
+	protected AtomicBigInteger minRef;
+	protected AtomicBigInteger maxRef;
 	
-	public AtomicMinMaxBigInteger(){
+	public ConcurrentBigIntegerMinMaxHolder(){
 	}
 	
-	public AtomicMinMaxBigInteger(BigInteger min, BigInteger max){
+	public ConcurrentBigIntegerMinMaxHolder(long min, long max){
+		reset(min, max);
+	}
+	
+	public ConcurrentBigIntegerMinMaxHolder(BigInteger min, BigInteger max){
 		reset(min, max);
 	}
 	
@@ -40,19 +44,18 @@ public class AtomicMinMaxBigInteger implements Serializable, MinMaxBigInteger{
 
 		BigInteger min = minRef.get();
 		int c = min.compareTo(x);
-		if (c == 0){
-			return;
-		}else if (c < 0){
+		if (c < 0){
 			BigInteger max;
 			do {
 				max = maxRef.get();
 			} while (max.compareTo(x) < 0 && !maxRef.compareAndSet(max, x));
-		}else{ // c > 0
+		}else if (c > 0){ // c > 0
 			while (c > 0 && !minRef.compareAndSet(min, x)){
 				min = minRef.get();
 				c = min.compareTo(x);
 			}
 		}
+		// if c == 0 do nothing
 	}
 	
 	@Override
@@ -67,7 +70,6 @@ public class AtomicMinMaxBigInteger implements Serializable, MinMaxBigInteger{
 	@Override
 	public void reset(){
 		minRef = null;
-		maxRef = null;
 	}
 	
 	/* (non-Javadoc)
@@ -94,7 +96,7 @@ public class AtomicMinMaxBigInteger implements Serializable, MinMaxBigInteger{
 	 * @param another   another instance of AtomicMinMaxLong
 	 */
 	@Override
-	public void merge(AtomicMinMaxBigInteger another){
+	public void merge(ConcurrentBigIntegerMinMaxHolder another){
 		BigInteger anotherMin = another.getMin();
 		if (anotherMin != null){
 			minMax(anotherMin);
@@ -106,7 +108,7 @@ public class AtomicMinMaxBigInteger implements Serializable, MinMaxBigInteger{
 	}
 	
 	@Override
-	public void merge(AtomicMinMaxLong another) {
+	public void merge(ConcurrentLongMinMaxHolder another) {
 		Long anotherMin = another.getMin();
 		if (anotherMin != null){
 			minMax(anotherMin);
@@ -127,11 +129,6 @@ public class AtomicMinMaxBigInteger implements Serializable, MinMaxBigInteger{
 	}
 	
 	@Override
-	public String toString(){
-		return "(" + getMin() + ", " + getMax() + ")";
-	}
-
-	@Override
 	public Long getLongMin() {
 		return minRef == null ? null : minRef.get().longValue();
 	}
@@ -149,6 +146,11 @@ public class AtomicMinMaxBigInteger implements Serializable, MinMaxBigInteger{
 	@Override
 	public BigInteger getBigIntegerMax() {
 		return maxRef == null ? null : maxRef.get();
+	}
+
+	@Override
+	public String toString(){
+		return "(" + getMin() + ", " + getMax() + ")";
 	}
 
 

@@ -21,24 +21,21 @@ import java.util.concurrent.atomic.AtomicLong;
 
 
 /**
- * Holder of the minimum and maximum BigInteger values.
- * It is also the parent class for AtomicMinLong and AtomicMaxLong.<br>
- * AtomicMinLong和AtomicMaxLong的公共的父类。
- * <p>It is thread-safe.</p>
+ * Holder of the minimum and maximum Long values. It is thread-safe.
  * 
  * @author Zhengmao HU (James)
  *
  */
-public class AtomicMinMaxLong  implements Serializable, MinMaxLong{
+public class ConcurrentLongMinMaxHolder  implements Serializable, LongMinMaxHolder{
 	private static final long serialVersionUID = -2426326997756055169L;
 	
-	AtomicLong minRef;
-	AtomicLong maxRef;
+	protected AtomicLong minRef;
+	protected AtomicLong maxRef;
 	
-	public AtomicMinMaxLong(){
+	public ConcurrentLongMinMaxHolder(){
 	}
 	
-	public AtomicMinMaxLong(long min, long max){
+	public ConcurrentLongMinMaxHolder(long min, long max){
 		reset(min, max);
 	}
 
@@ -55,18 +52,17 @@ public class AtomicMinMaxLong  implements Serializable, MinMaxLong{
 		}
 
 		long min = minRef.get();
-		if (min == x){
-			return;
-		}else if (min < x){
+		if (min < x){
 			long max;
 			do {
 				max = maxRef.get();
 			} while (max < x && !maxRef.compareAndSet(max, x));
-		}else{ // min > x
+		}else if (min > x){ // min > x
 			while (min > x && !minRef.compareAndSet(min, x)){
 				min = minRef.get();
 			}
 		}
+		// if min == x do nothing
 	}
 	
 	/* (non-Javadoc)
@@ -95,7 +91,7 @@ public class AtomicMinMaxLong  implements Serializable, MinMaxLong{
 	 * @param another   another instance of AtomicMinMaxLong
 	 */
 	@Override
-	public void merge(AtomicMinMaxLong another){
+	public void merge(ConcurrentLongMinMaxHolder another){
 		Long anotherMin = another.getMin();
 		if (anotherMin != null){
 			minMax(anotherMin);
@@ -115,11 +111,6 @@ public class AtomicMinMaxLong  implements Serializable, MinMaxLong{
 	}
 	
 	@Override
-	public String toString(){
-		return "(" + getMin() + ", " + getMax() + ")";
-	}
-
-	@Override
 	public Long getLongMin() {
 		return minRef == null ? null : minRef.get();
 	}
@@ -129,6 +120,11 @@ public class AtomicMinMaxLong  implements Serializable, MinMaxLong{
 		return maxRef == null ? null : maxRef.get();
 	}
 	
+	@Override
+	public String toString(){
+		return "(" + getMin() + ", " + getMax() + ")";
+	}
+
 	
 
 }
