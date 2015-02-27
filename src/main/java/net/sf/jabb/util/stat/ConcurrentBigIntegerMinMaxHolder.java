@@ -1,9 +1,22 @@
-/**
- * 
- */
+/*
+Copyright 2015 Zhengmao HU (James)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package net.sf.jabb.util.stat;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
@@ -11,11 +24,8 @@ import java.math.BigInteger;
  * @author James Hu
  *
  */
-public class ConcurrentBigIntegerMinMaxHolder implements Serializable, BigIntegerMinMaxHolder{
+public class ConcurrentBigIntegerMinMaxHolder implements Serializable, MinMaxHolder{
 	private static final long serialVersionUID = 8080025480251400931L;
-
-	static protected final BigInteger MAX_LONG_VALUE = BigInteger.valueOf(Long.MAX_VALUE);
-	static protected final BigInteger MIN_LONG_VALUE = BigInteger.valueOf(Long.MIN_VALUE);
 
 	protected AtomicBigInteger minRef;
 	protected AtomicBigInteger maxRef;
@@ -23,19 +33,12 @@ public class ConcurrentBigIntegerMinMaxHolder implements Serializable, BigIntege
 	public ConcurrentBigIntegerMinMaxHolder(){
 	}
 	
-	public ConcurrentBigIntegerMinMaxHolder(long min, long max){
+	public ConcurrentBigIntegerMinMaxHolder(Number min, Number max){
 		reset(min, max);
 	}
 	
-	public ConcurrentBigIntegerMinMaxHolder(BigInteger min, BigInteger max){
-		reset(min, max);
-	}
-	
-	/* (non-Javadoc)
-	 * @see net.sf.jabb.util.stat.MinMaxBigInteger#minMax(java.math.BigInteger)
-	 */
 	@Override
-	public void minMax(BigInteger x){
+	public void evaluate(BigInteger x){
 		if (minRef == null){
 			minRef = new AtomicBigInteger(x);
 			maxRef = new AtomicBigInteger(x);
@@ -59,24 +62,38 @@ public class ConcurrentBigIntegerMinMaxHolder implements Serializable, BigIntege
 	}
 	
 	@Override
-	public void minMax(long x) {
-		minMax(BigInteger.valueOf(x));
-	}
-
-	
-	/* (non-Javadoc)
-	 * @see net.sf.jabb.util.stat.MinMaxBigInteger#reset()
-	 */
-	@Override
 	public void reset(){
 		minRef = null;
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.sf.jabb.util.stat.MinMaxBigInteger#reset(java.math.BigInteger, java.math.BigInteger)
+	/**
+	 * Convert a number to a big integer and try the best to preserve precision
+	 * @param number	the number
+	 * @return	the big integer, can be null if the number is null
 	 */
+	protected BigInteger toBigInteger(Number number){
+		if (number == null){
+			return null;
+		}
+		Class<?> claz = number.getClass();
+		if (claz == BigInteger.class){
+			return (BigInteger)number;
+		}else if (claz == BigDecimal.class){
+			return ((BigDecimal)number).toBigInteger();
+		}else if (claz == Double.class){
+			return new BigDecimal((Double)number).toBigInteger();
+		}else if (claz == Float.class){
+			return new BigDecimal((Float)number).toBigInteger();
+		}else{
+			return BigInteger.valueOf(number.longValue());
+		}
+	}
+	
 	@Override
-	public void reset(BigInteger min, BigInteger max){
+	public void reset(Number minNumber, Number maxNumber){
+		BigInteger min = toBigInteger(minNumber);
+		BigInteger max = toBigInteger(maxNumber);
+		
 		if (min.compareTo(max) > 0){
 			throw new IllegalArgumentException("min value must not be greater than max value");
 		}
@@ -84,41 +101,23 @@ public class ConcurrentBigIntegerMinMaxHolder implements Serializable, BigIntege
 		maxRef = new AtomicBigInteger(max);
 	}
 	
-	@Override
-	public void reset(long min, long max) {
-		reset(BigInteger.valueOf(min), BigInteger.valueOf(max));
-	}
-
-
 
 	/**
 	 * Merge the min/max value from another instance into this one.
-	 * @param another   another instance of AtomicMinMaxLong
+	 * @param another   another instance of MinMaxHolder
 	 */
 	@Override
-	public void merge(ConcurrentBigIntegerMinMaxHolder another){
-		BigInteger anotherMin = another.getMin();
+	public void merge(MinMaxHolder another){
+		BigInteger anotherMin = toBigInteger(another.getMin());
 		if (anotherMin != null){
-			minMax(anotherMin);
+			evaluate(anotherMin);
 		}
-		BigInteger anotherMax = another.getMax();
+		BigInteger anotherMax = toBigInteger(another.getMax());
 		if (anotherMax != null){
-			minMax(anotherMax);
+			evaluate(anotherMax);
 		}
 	}
 	
-	@Override
-	public void merge(ConcurrentLongMinMaxHolder another) {
-		Long anotherMin = another.getMin();
-		if (anotherMin != null){
-			minMax(anotherMin);
-		}
-		Long anotherMax = another.getMax();
-		if (anotherMax != null){
-			minMax(anotherMax);
-		}
-	}
-
 	
 	public BigInteger getMin(){
 		return minRef == null ? null : minRef.get();
@@ -129,28 +128,98 @@ public class ConcurrentBigIntegerMinMaxHolder implements Serializable, BigIntege
 	}
 	
 	@Override
-	public Long getLongMin() {
+	public String toString(){
+		return "(" + getMin() + ", " + getMax() + ")";
+	}
+
+	@Override
+	public void evaluate(long x) {
+		evaluate(BigInteger.valueOf(x));
+	}
+
+	@Override
+	public void evaluate(Long x) {
+		evaluate(BigInteger.valueOf(x));
+	}
+
+	@Override
+	public void evaluate(float x) {
+		evaluate(new BigDecimal(x).toBigInteger());
+	}
+
+	@Override
+	public void evaluate(Float x) {
+		evaluate(new BigDecimal(x).toBigInteger());
+	}
+
+	@Override
+	public void evaluate(double x) {
+		evaluate(new BigDecimal(x).toBigInteger());
+	}
+
+	@Override
+	public void evaluate(Double x) {
+		evaluate(new BigDecimal(x).toBigInteger());
+	}
+
+	@Override
+	public void evaluate(BigDecimal x) {
+		evaluate(x.toBigInteger());
+	}
+
+	@Override
+	public void evaluate(Number x) {
+		evaluate(toBigInteger(x));
+	}
+
+	@Override
+	public Long getMinAsLong() {
 		return minRef == null ? null : minRef.get().longValue();
 	}
 
 	@Override
-	public Long getLongMax() {
+	public Long getMaxAsLong() {
 		return maxRef == null ? null : maxRef.get().longValue();
 	}
 
 	@Override
-	public BigInteger getBigIntegerMin() {
+	public Float getMinAsFloat() {
+		return minRef == null ? null : new BigDecimal(minRef.get()).floatValue();
+	}
+
+	@Override
+	public Float getMaxAsFloat() {
+		return maxRef == null ? null : new BigDecimal(maxRef.get()).floatValue();
+	}
+
+	@Override
+	public Double getMinAsDouble() {
+		return minRef == null ? null : new BigDecimal(minRef.get()).doubleValue();
+	}
+
+	@Override
+	public Double getMaxAsDouble() {
+		return maxRef == null ? null : new BigDecimal(maxRef.get()).doubleValue();
+	}
+
+	@Override
+	public BigInteger getMinAsBigInteger() {
 		return minRef == null ? null : minRef.get();
 	}
 
 	@Override
-	public BigInteger getBigIntegerMax() {
+	public BigInteger getMaxAsBigInteger() {
 		return maxRef == null ? null : maxRef.get();
 	}
 
 	@Override
-	public String toString(){
-		return "(" + getMin() + ", " + getMax() + ")";
+	public BigDecimal getMinAsBigDecimal() {
+		return minRef == null ? null : new BigDecimal(minRef.get());
+	}
+
+	@Override
+	public BigDecimal getMaxAsBigDecimal() {
+		return maxRef == null ? null : new BigDecimal(maxRef.get());
 	}
 
 

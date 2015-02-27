@@ -43,8 +43,8 @@ public class AtomicMinLong extends ConcurrentLongMinMaxHolder {
 	 * @return		New minimum value after comparison<br>比较之后的新的最小值
 	 */
 	public Long minAndGet(long newValue){
-		minMax(newValue);
-		return getMin();
+		evaluate(newValue);
+		return getMinAsLong();
 	}
 	
 	/**
@@ -56,8 +56,8 @@ public class AtomicMinLong extends ConcurrentLongMinMaxHolder {
 	 * @return		Old minimum value before comparison<br>比较之前的旧的最小值
 	 */
 	public Long getAndMin(long newValue){
-		Long oldValue = getMin();
-		minMax(newValue);
+		Long oldValue = getMinAsLong();
+		evaluate(newValue);
 		return oldValue;
 	}
 	
@@ -68,7 +68,7 @@ public class AtomicMinLong extends ConcurrentLongMinMaxHolder {
 	 * @param newValue	拿来作比较的值。
 	 */
 	public void min(long newValue){
-		minMax(newValue);
+		evaluate(newValue);
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class AtomicMinLong extends ConcurrentLongMinMaxHolder {
 	 * @return Current value.
 	 */
 	public Long get(){
-		return getMin();
+		return getMinAsLong();
 	}
 	
 }

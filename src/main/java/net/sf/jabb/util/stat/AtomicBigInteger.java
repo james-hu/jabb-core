@@ -182,9 +182,9 @@ public class AtomicBigInteger extends Number implements Serializable {
      */
     public BigInteger addAndGet(BigInteger delta) {
         for (;;) {
-        	BigInteger current = get();
+        	BigInteger current = valueHolder.get();
         	BigInteger next = current.add(delta);
-            if (compareAndSet(current, next))
+            if (valueHolder.compareAndSet(current, next))
                 return next;
         }
     }

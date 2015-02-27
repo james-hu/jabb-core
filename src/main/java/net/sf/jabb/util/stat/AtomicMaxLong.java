@@ -44,8 +44,8 @@ public class AtomicMaxLong extends ConcurrentLongMinMaxHolder {
 	 * @return		New maximum value after comparison<br>比较之后的新的最大值
 	 */
 	public Long maxAndGet(long newValue){
-		minMax(newValue);
-		return getMax();
+		evaluate(newValue);
+		return getMaxAsLong();
 	}
 
 	/**
@@ -57,8 +57,8 @@ public class AtomicMaxLong extends ConcurrentLongMinMaxHolder {
 	 * @return		Previous maximum value before comparison<br>比较之前的老的最大值
 	 */
 	public Long getAndMax(long newValue){
-		Long oldValue = getMax();
-		minMax(newValue);
+		Long oldValue = getMaxAsLong();
+		evaluate(newValue);
 		return oldValue;
 	}
 	
@@ -69,7 +69,7 @@ public class AtomicMaxLong extends ConcurrentLongMinMaxHolder {
 	 * @param newValue	拿来作比较的值。
 	 */
 	public void max(long newValue){
-		minMax(newValue);
+		evaluate(newValue);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class AtomicMaxLong extends ConcurrentLongMinMaxHolder {
 	 * @return Current value.
 	 */
 	public Long get(){
-		return getMax();
+		return getMaxAsLong();
 	}
 	
 

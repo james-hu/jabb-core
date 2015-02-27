@@ -259,8 +259,8 @@ public class RunTime {
 			sb.append(String.format("%,d", statistics.getSum())).append('\t');
 			sb.append(' ').append(DurationFormatter.format(totalRunTime/1000000)).append('\t');
 			sb.append(String.format("%,d", totalRunTime)).append('\t');
-			sb.append(' ').append(DurationFormatter.format((long)statistics.getAvg()/1000000)).append('\t');
-			sb.append(String.format("%,d", (long)statistics.getAvg())).append('\t');
+			sb.append(' ').append(DurationFormatter.format((long)(statistics.getAvg()/1000000))).append('\t');
+			sb.append(String.format("%,d", (long)(double)statistics.getAvg())).append('\t');
 			sb.append(' ').append(DurationFormatter.format((long)statistics.getMin()/1000000)).append('\t');
 			sb.append(String.format("%,d", (long)statistics.getMin())).append('\t');
 			sb.append(' ').append(DurationFormatter.format((long)statistics.getMax()/1000000)).append('\t');
