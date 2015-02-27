@@ -31,60 +31,51 @@ import java.util.concurrent.atomic.AtomicLong;
 public class AtomicLongStatistics implements NumberStatistics<Long>, Serializable {
 	private static final long serialVersionUID = 2001318020408834046L;
 
-	protected ConcurrentLongMinMaxHolder minMax;
-	protected AtomicLong sum;
 	protected AtomicLong count;
+	protected AtomicLong sum;
+	protected ConcurrentLongMinMaxHolder minMax;
 	
 	public AtomicLongStatistics(){
-		minMax = new ConcurrentLongMinMaxHolder();
-		sum = new AtomicLong();
 		count = new AtomicLong();
+		sum = new AtomicLong();
+		minMax = new ConcurrentLongMinMaxHolder();
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.sf.jabb.util.stat.NumberStatistics#merge(net.sf.jabb.util.stat.BasicNumberStatistics)
-	 */
 	@Override
 	public void merge(NumberStatistics<? extends Number> other){
 		if (other != null){
 			long otherCount = other.getCount();
 			if (otherCount  > 0){
+				count.addAndGet(otherCount);
+				sum.addAndGet(other.getSum().longValue());
 				minMax.evaluate(other.getMin().longValue());
 				minMax.evaluate(other.getMax().longValue());
-				sum.addAndGet(other.getSum().longValue());
-				count.addAndGet(otherCount);
 			}
 		}
 	}
 	
 	@Override
 	public void put(int value) {
-		minMax.evaluate(value);
-		sum.addAndGet(value);
 		count.incrementAndGet();
+		sum.addAndGet(value);
+		minMax.evaluate(value);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sf.jabb.util.stat.NumberStatistics#put(long)
-	 */
 	@Override
 	public void put(long value){
-		minMax.evaluate(value);
-		sum.addAndGet(value);
 		count.incrementAndGet();
+		sum.addAndGet(value);
+		minMax.evaluate(value);
 	}
 	
 	@Override
 	public void put(BigInteger value) {
 		long x = value.longValue();
-		minMax.evaluate(x);
-		sum.addAndGet(x);
 		count.incrementAndGet();
+		sum.addAndGet(x);
+		minMax.evaluate(x);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sf.jabb.util.stat.NumberStatistics#getAvg()
-	 */
 	@Override
 	public Double getAvg(){
 		long countValue = count.get();
@@ -100,53 +91,38 @@ public class AtomicLongStatistics implements NumberStatistics<Long>, Serializabl
 		return new BigDecimal(getAvg()).setScale(scale, BigDecimal.ROUND_HALF_UP);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sf.jabb.util.stat.NumberStatistics#getMin()
-	 */
 	@Override
 	public Long getMin() {
 		return minMax.getMinAsLong();
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.sf.jabb.util.stat.NumberStatistics#getMax()
-	 */
 	@Override
 	public Long getMax() {
 		return minMax.getMaxAsLong();
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.sf.jabb.util.stat.NumberStatistics#getSum()
-	 */
 	@Override
 	public Long getSum() {
 		return sum.get();
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.sf.jabb.util.stat.NumberStatistics#getCount()
-	 */
 	@Override
 	public long getCount() {
 		return count.get();
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.sf.jabb.util.stat.NumberStatistics#reset()
-	 */
 	@Override
 	public void reset(){
-		minMax.reset();
-		sum.set(0);
 		count.set(0);
+		sum.set(0);
+		minMax.reset();
 	}
 
 	@Override
 	public void reset(Long newCount, Long newSum, Long newMin, Long newMax) {
-		minMax.reset(newMin, newMax);
-		sum.set(newSum);
 		count.set(newCount);
+		sum.set(newSum);
+		minMax.reset(newMin, newMax);
 	}
 
 	@Override
