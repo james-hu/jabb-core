@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.sf.jabb.util.state;
+package net.sf.jabb.util.stat;
 
 import static org.junit.Assert.*;
 import net.sf.jabb.util.stat.TimePeriod;
@@ -29,6 +29,9 @@ public class TimePeriodTest {
 		assertIsDivisorOf("30 minutes", "1 week", true);
 		assertIsDivisorOf("40 minutes", "2 hour", true);
 		assertIsDivisorOf("40 minutes", "1 week", true);
+		assertIsDivisorOf("1000 milliseconds", "1 second", true);
+		assertIsDivisorOf("1000 milliseconds", "2 second", true);
+		assertIsDivisorOf("2000 milliseconds", "1 second", false);
 	}
 	protected void assertIsDivisorOf(String divisor, String divident, boolean expectedResult){
 		assertIsDivisorOf(TimePeriod.of(divisor), TimePeriod.of(divident), expectedResult);
