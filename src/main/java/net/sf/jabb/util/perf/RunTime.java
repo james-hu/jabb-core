@@ -170,7 +170,7 @@ public class RunTime {
 	 * The pair of start() and end() must be called from the same thread.
 	 */
 	public void end(){
-		statistics.put(System.nanoTime() - lastRunStartTime);
+		statistics.evaluate(System.nanoTime() - lastRunStartTime);
 	}
 	
 	/**
@@ -182,7 +182,7 @@ public class RunTime {
 	 */
 	public void add(long milliStartTime, long nanoDurationTime){
 		firstRunStartTime.compareAndSet(0, milliStartTime);
-		statistics.put(nanoDurationTime);
+		statistics.evaluate(nanoDurationTime);
 	}
 	
 	/**

@@ -21,19 +21,19 @@ public interface NumberStatistics<T extends Number> {
 	 * 把一个值提供给统计
 	 * @param value		需要提供给统计的值
 	 */
-	public void put(int value);
+	public void evaluate(int value);
 
 	/**
 	 * 把一个值提供给统计
 	 * @param value		需要提供给统计的值
 	 */
-	public void put(long value);
+	public void evaluate(long value);
 	
 	/**
 	 * 把一个值提供给统计
 	 * @param value		需要提供给统计的值
 	 */
-	public void put(BigInteger value);
+	public void evaluate(BigInteger value);
 
 	/**
 	 * 取得平均值。如果此前并没有提供任何值给统计用，则return null。

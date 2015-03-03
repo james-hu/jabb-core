@@ -189,6 +189,15 @@ public class AtomicBigInteger extends Number implements Serializable {
         }
     }
 
+    public void add(BigInteger delta) {
+        for (;;) {
+        	BigInteger current = valueHolder.get();
+        	BigInteger next = current.add(delta);
+            if (valueHolder.compareAndSet(current, next))
+                return;
+        }
+    }
+
     /**
      * Returns the String representation of the current value.
      * @return the String representation of the current value.

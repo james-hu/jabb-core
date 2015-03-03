@@ -46,6 +46,34 @@ public class NumberGenerator {
 	}
 
 	/**
+	 * Generate random int values
+	 * @param start	the minimum value of the generated numbers, inclusive
+	 * @param end  the maximum value of the generated numbers, inclusive
+	 * @param size  number of random numbers to return. a.k.a. the size of the returned array.
+	 * @return  the random values in an array. The values are guaranteed to be within [start, end] range.
+	 */
+	static public int[] randomIntegers(int start, int end, int size){
+		Preconditions.checkArgument(start < end, "Start must be less than end.");
+		
+		Random random = new Random();
+		random.setSeed(System.currentTimeMillis());
+		int[] result = new int[size];
+		for (int i = 0; i < size; i ++){
+			int l = random.nextInt();
+			double d = (double)(end - start) / (Integer.MAX_VALUE - Integer.MIN_VALUE) * l + start;
+			if (d <= start){
+				l = start;
+			}else if (d >= end){
+				l = end;
+			}else{
+				l = (int)d;
+			}
+			result[i] = l;
+		}
+		return result;
+	}
+
+	/**
 	 * Generate random BigInteger values in double range
 	 * @param start	the minimum value of the generated numbers, inclusive
 	 * @param end  the maximum value of the generated numbers, inclusive

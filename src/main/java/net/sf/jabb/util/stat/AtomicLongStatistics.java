@@ -55,21 +55,21 @@ public class AtomicLongStatistics implements NumberStatistics<Long>, Serializabl
 	}
 	
 	@Override
-	public void put(int value) {
+	public void evaluate(int value) {
 		count.incrementAndGet();
 		sum.addAndGet(value);
 		minMax.evaluate(value);
 	}
 
 	@Override
-	public void put(long value){
+	public void evaluate(long value){
 		count.incrementAndGet();
 		sum.addAndGet(value);
 		minMax.evaluate(value);
 	}
 	
 	@Override
-	public void put(BigInteger value) {
+	public void evaluate(BigInteger value) {
 		long x = value.longValue();
 		count.incrementAndGet();
 		sum.addAndGet(x);
