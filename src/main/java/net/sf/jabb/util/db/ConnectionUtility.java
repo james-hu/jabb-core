@@ -32,6 +32,7 @@ import javax.sql.DataSource;
 import net.sf.jabb.util.col.MapLister;
 import net.sf.jabb.util.prop.PropertiesLoader;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -150,7 +151,6 @@ public class ConnectionUtility {
 	 * @return the DataSource created
 	 */
 	public static DataSource createDataSource(String source){
-		DataSource ds = null;
 		String typeAndConfig = configuration.getProperty(source);
 		if (typeAndConfig == null){
 			log.warn("No configuration for data source: " + source);
@@ -163,13 +163,24 @@ public class ConnectionUtility {
 		}
 		String type = typeAndConfigArray[0];
 		String config = typeAndConfigArray[1];
-		
+		return createDataSource(source, type, config);
+	}
+	
+	/**
+	 * Create a data source
+	 * @param source	name of the data source, can be anything
+	 * @param type		type of the data source
+	 * @param config	configurations, normally path to configuration files
+	 * @return
+	 */
+	public static DataSource createDataSource(String source, String type, String config){
 		DataSourceProvider dsp = dataSourceProviders.get(type);
 		if (dsp == null){
 			log.warn("Unknown data source type found for '" + source + "': " + type);
 			return null;
 		}
 		
+		DataSource ds = null;
 		ds = dsp.createDataSource(source, config);
 		if (ds != null){
 			log.info("Data source created for: " + source);
@@ -178,6 +189,18 @@ public class ConnectionUtility {
 		}
 		
 		return ds;
+	}
+	
+	/**
+	 * Create a data source
+	 * @param source	name of the data source, can be anything
+	 * @param type		type of the data source
+	 * @param configs	configurations, normally paths to configuration files
+	 * @return
+	 */
+	public static DataSource createDataSource(String source, String type, String... configs){
+		String config = StringUtils.join(configs, " ");
+		return createDataSource(source, type, config);
 	}
 	
 	/**
