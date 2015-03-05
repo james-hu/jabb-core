@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class NameDeduplicatorTest {
-	static final int NUMBER_OF_THREADS = 100;
+	static final int NUMBER_OF_THREADS = 50;
 	
 	NameDeduplicator nd;
 	boolean stopNow = false;
