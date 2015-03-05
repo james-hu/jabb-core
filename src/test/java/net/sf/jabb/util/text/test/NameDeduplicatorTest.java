@@ -5,7 +5,6 @@ import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicLong;
 
 import junit.framework.Assert;
-
 import net.sf.jabb.util.stat.BasicFrequencyCounter;
 import net.sf.jabb.util.text.NameDeduplicator;
 
@@ -42,6 +41,11 @@ public class NameDeduplicatorTest {
 					while (!stopNow){
 						long l = nd.nextId("The Name");
 						fc.count(l);
+						try {
+							Thread.sleep(2);
+						} catch (InterruptedException e) {
+							Thread.interrupted();
+						}
 					}
 					
 				}
