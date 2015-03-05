@@ -32,9 +32,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.listener.CommonsLoggingListener;
-import org.apache.tools.ant.taskdefs.SQLExec;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -247,56 +244,6 @@ public class StartAndStopSQL implements Lifecycle, InitializingBean, DisposableB
 		context = appContext;
 	}
 	
-	static class AntSqlExec extends SQLExec{
-		private DataSource dataSource;
-		private Connection conn;
-		
-		public AntSqlExec(DataSource dataSource, String sql, String delimiter, String delimiterType){
-			super();
-			Project project = new Project();
-            project.init();
-            project.addBuildListener(new CommonsLoggingListener());
-            setProject(project);
-            setTaskType("sql");
-            setTaskName("sql");
-            
-            if (delimiter != null){
-            	this.setDelimiter(delimiter);
-            }
-            if (delimiterType != null){
-            	this.setDelimiterType((DelimiterType)DelimiterType.getInstance(DelimiterType.class, delimiterType));
-            }
-            
-            this.dataSource = dataSource;
-            this.setAutocommit(true);
-            this.addText(sql);
-		}
-		
-		@Override
-		protected Connection getConnection() throws BuildException{
-			try {
-		        if (conn == null) {
-		            conn = dataSource.getConnection();
-		            conn.setAutoCommit(isAutocommit());
-		            if (!isValidRdbms(conn)) {
-		                conn = null;
-		            }
-		        }
-		        return conn;
-			} catch (SQLException e) {
-				throw new BuildException("Unable to get database connection (" + e.getMessage() + ")", e);
-			}
-		}
-		
-		@Override
-		public void execute() throws BuildException{
-			getProject().fireBuildStarted();
-			super.execute();
-			getProject().fireBuildFinished(null);
-		}
-		
-	}
-
 	public DataSource getDataSource() {
 		return dataSource;
 	}
