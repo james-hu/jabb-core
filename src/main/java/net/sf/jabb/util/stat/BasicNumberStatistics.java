@@ -16,6 +16,8 @@ limitations under the License.
 
 package net.sf.jabb.util.stat;
 
+import java.math.BigInteger;
+
 
 
 /**
@@ -28,4 +30,13 @@ package net.sf.jabb.util.stat;
  */
 public class BasicNumberStatistics extends AtomicLongStatistics {
 	private static final long serialVersionUID = 2323607693923649800L;
+	
+	public void put(int value) {
+		evaluate(value);
+	}
+
+	public void put(long value){
+		evaluate(value);
+	}
+	
 }
