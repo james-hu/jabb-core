@@ -89,6 +89,7 @@ public class ConcurrentLongMinMaxHolder  implements Serializable, MinMaxHolder{
 	@Override
 	public void reset(){
 		minRef = null;
+		maxRef = null;
 	}
 	
 	@Override

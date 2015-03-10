@@ -64,6 +64,7 @@ public class ConcurrentBigIntegerMinMaxHolder implements Serializable, MinMaxHol
 	@Override
 	public void reset(){
 		minRef = null;
+		maxRef = null;
 	}
 	
 	/**
