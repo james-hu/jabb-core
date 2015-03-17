@@ -311,6 +311,14 @@
 	</dependencies>
 	<build>
 		<plugins>
+	        <plugin>
+	            <groupId>external.atlassian.jgitflow</groupId>
+	            <artifactId>jgitflow-maven-plugin</artifactId>
+	            <version>1.0-m4.3</version>
+	            <configuration>
+	                <!-- see goals wiki page for configuration options -->
+	            </configuration>
+	        </plugin>
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
