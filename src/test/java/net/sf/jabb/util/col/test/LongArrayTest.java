@@ -1,11 +1,17 @@
 package net.sf.jabb.util.col.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
 import java.util.TreeSet;
 
 import junit.framework.Assert;
 import net.sf.jabb.util.col.LongArray;
 
 import org.junit.Test;
+
+import com.google.common.collect.Iterables;
 
 
 public class LongArrayTest {
@@ -44,17 +50,17 @@ public class LongArrayTest {
 		Assert.assertTrue(l3.compareTo(l4) == -1);
 		Assert.assertTrue(l5.compareTo(l4) == 1);
 		
-		System.out.println(l1.getValue(3));
-		System.out.println(l1.getIntValue(3));
+		assertEquals(9223372036854775807l, l1.getValue(3));
+		assertEquals(-1, l1.getIntValue(3));
 		
-		System.out.println(l1.hashCode());
-		System.out.println(l2.hashCode());
-		System.out.println(l3.hashCode());
-		System.out.println(l4.hashCode());
-		System.out.println(l5.hashCode());
-		System.out.println(l6.hashCode());
-		System.out.println(l7.hashCode());
-		System.out.println(l8.hashCode());
+		assertEquals(-2146548937, l1.hashCode());
+		assertEquals(939630, l2.hashCode());
+		assertEquals(-2146548937, l3.hashCode());
+		assertEquals(-2146548920, l4.hashCode());
+		assertEquals(-2146548648, l5.hashCode());
+		assertEquals(934711, l6.hashCode());
+		assertEquals(934711, l7.hashCode());
+		assertEquals(-2146548548, l8.hashCode());
 		
 		TreeSet<LongArray> s = new TreeSet<LongArray>();
 		s.add(l1);
@@ -65,8 +71,7 @@ public class LongArrayTest {
 		s.add(l6);
 		s.add(l7);
 		s.add(l8);
-		System.out.println("****************");
-		System.out.println(s);
+		assertTrue(Iterables.elementsEqual(Arrays.asList(new LongArray[]{l6, l7, l1, l4, l8, l5, l2}), s));
 	}
 
 }

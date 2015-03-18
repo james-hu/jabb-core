@@ -1,6 +1,10 @@
 package net.sf.jabb.util.col.test;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -41,7 +45,7 @@ public class PutIfAbsentMapTest {
 	public void createInstance(){
 		PutIfAbsentMap<Long, String> map = new PutIfAbsentMap<Long, String>(HashMap.class, String.class);
 		for (int i = 0; i < 10; i ++){
-			System.out.println(i + " - '" + map.get(i) + "'");
+			assertEquals("", map.get(i));
 		}
 	}
 	
@@ -49,7 +53,7 @@ public class PutIfAbsentMapTest {
 	public void createInstance2(){
 		PutIfAbsentMap<Long, AtomicInteger> map = new PutIfAbsentMap<Long, AtomicInteger>(TreeMap.class, AtomicInteger.class);
 		for (int i = 0; i < 10; i ++){
-			System.out.println(i + " - '" + map.get(i) + "'");
+			assertEquals(0, map.get(i).get());
 		}
 	}
 	
@@ -58,7 +62,7 @@ public class PutIfAbsentMapTest {
 	public void createInstance4(){
 		PutIfAbsentMap<Long, AtomicInteger> map = new PutIfAbsentMap<Long, AtomicInteger>(TreeMap.class, AtomicInteger.class);
 		for (int i = 0; i < 10; i ++){
-			System.out.println(i + " - '" + map.get(i).addAndGet(4) + "'");
+			assertEquals(4, map.get(i).addAndGet(4));
 		}
 	}
 	
@@ -66,7 +70,7 @@ public class PutIfAbsentMapTest {
 	public void createInstance5(){
 		PutIfAbsentMap<Long, AtomicInteger> map = new PutIfAbsentMap<Long, AtomicInteger>(Map.class, AtomicInteger.class);
 		for (int i = 0; i < 10; i ++){
-			System.out.println(i + " - '" + map.get(i).addAndGet(5) + "'");
+			assertEquals(5, map.get(i).addAndGet(5));
 		}
 	}
 	
@@ -74,7 +78,7 @@ public class PutIfAbsentMapTest {
 	public void createInstance6(){
 		PutIfAbsentMap<Long, AtomicInteger> map = new PutIfAbsentMap<Long, AtomicInteger>(ConcurrentSkipListMap.class, AtomicInteger.class);
 		for (int i = 0; i < 10; i ++){
-			System.out.println(i + " - '" + map.get(i).addAndGet(6) + "'");
+			assertEquals(6, map.get(i).addAndGet(6));
 		}
 	}
 	
@@ -84,7 +88,8 @@ public class PutIfAbsentMapTest {
 		PutIfAbsentMap<Integer, BasicFrequencyCounter> map = 
 			new PutIfAbsentMap<Integer, BasicFrequencyCounter>(HashMap.class, BasicFrequencyCounter.class, def);
 		for (int i = 0; i < 3; i ++){
-			System.out.println(i + " - '" + map.get(i) + "'");
+			assertTrue(map.get(i).toString().contains("granularity=600000(ms)"));
+			assertTrue(map.get(i).toString().contains("purgeBefore=3600000(ms)"));
 		}
 	}
 	
@@ -99,7 +104,9 @@ public class PutIfAbsentMapTest {
 						new FrequencyCounterDefinition("her", 45, TimeUnit.MINUTES, 2, TimeUnit.HOURS),
 						});
 		for (int i = 0; i < 3; i ++){
-			System.out.println(i + " - '" + map.get(i) + "'");
+			assertTrue(map.get(i).toString().contains("me"));
+			assertTrue(map.get(i).toString().contains("him"));
+			assertTrue(map.get(i).toString().contains("her"));
 		}
 	}
 }
