@@ -7,7 +7,7 @@ import org.junit.Test;
 
 
 public class TempDirTest {
-	@Test
+	//@Test
 	public void tempDir() throws IOException{
 		File f = File.createTempFile("myhead", "myext");
 		System.out.println(f.getCanonicalPath());
