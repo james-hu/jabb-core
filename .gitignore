@@ -1,2 +1,5 @@
 /target/
 *.sh~
+.classpath
+.project
+.settings/*
