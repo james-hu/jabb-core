@@ -22,6 +22,16 @@ public class ImmutableNumberStatistics<T extends Number> implements NumberStatis
 	protected T min;
 	protected T max;
 	
+	/**
+	 * Create an immutable copy of another NumberStatistics
+	 * @param statistics  the original object
+	 * @return 	the immutable copy
+	 */
+	public static <T extends Number> ImmutableNumberStatistics<T> copyOf(NumberStatistics<? extends T> statistics){
+		return new ImmutableNumberStatistics<T>(statistics.getCount(), statistics.getSum(), 
+				statistics.getMin(), statistics.getMax());
+	}
+	
 	public ImmutableNumberStatistics(long count, T sum, T min, T max){
 		Validate.notNull(sum);
 		this.count = count;
