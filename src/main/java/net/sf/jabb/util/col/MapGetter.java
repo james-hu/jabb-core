@@ -1,5 +1,5 @@
 /*
-Copyright 2012 James Hu
+Copyright 2012, 2015 James Hu
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@ limitations under the License.
 */
 package net.sf.jabb.util.col;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -30,11 +30,8 @@ public class MapGetter<V> {
 		this.keys = keys;
 	}
 	
-	public MapGetter(List<Object> keyList){
-		keys = new Object[keyList.size()];
-		for (int i = 0; i < keyList.size(); i ++){
-			keys[i] = keyList.get(i);
-		}
+	public MapGetter(Collection<? extends Object> keyList){
+		keys = keyList.toArray();
 	}
 	
 	/**
