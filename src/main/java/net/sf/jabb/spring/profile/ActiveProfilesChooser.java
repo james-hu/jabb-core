@@ -73,15 +73,27 @@ class ActiveProfilesChooser {
         String hostnameOverride = System.getProperty(hostnamePropertyName);
         if (hostnameOverride != null && hostnameOverride.length() > 0){
         	hostname = hostnameOverride;
-            logger.info("Overriden hostname will be used to choose Spring profile: " + hostname);
+            logger.info("Overriden hostname '{}' defined in system property '{}' will be used to choose Spring profile", hostname, hostnamePropertyName);
         }else{
-            logger.info("The hostname that will be used to choose Spring profile is: " + hostname);
+        	hostnameOverride = System.getenv(hostnamePropertyName.toUpperCase());
+            if (hostnameOverride != null && hostnameOverride.length() > 0){
+            	hostname = hostnameOverride;
+                logger.info("Overriden hostname '{}' defined in environment variable '{}' will be used to choose Spring profile", hostname, hostnamePropertyName.toUpperCase());
+            }else{
+                logger.info("The hostname '{}' will be used to choose Spring profile", hostname);
+            }
         }
         
         String subHostnameOverride = System.getProperty(subHostnamePropertyName);
         if (subHostnameOverride != null && subHostnameOverride.length() > 0){
         	hostname += "/" + subHostnameOverride;
-            logger.info("Sub-hostname appended. The full hostname that will be used to choose Spring profile is: " + hostname);
+            logger.info("Sub-hostname defined in system property '{}' appended. The full hostname that will be used to choose Spring profile is: {}", subHostnamePropertyName, hostname);
+        }else{
+        	subHostnameOverride = System.getenv(subHostnamePropertyName.toUpperCase());
+            if (subHostnameOverride != null && subHostnameOverride.length() > 0){
+            	hostname += "/" + subHostnameOverride;
+                logger.info("Sub-hostname defined in environment variable '{}' appended. The full hostname that will be used to choose Spring profile is: {}", subHostnamePropertyName.toUpperCase(), hostname);
+            }
         }
 
         return hostname;
