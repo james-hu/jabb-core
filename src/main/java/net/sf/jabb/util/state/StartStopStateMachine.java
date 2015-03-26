@@ -20,6 +20,8 @@ public class StartStopStateMachine extends StateMachineWrapper<Integer, Integer>
 	static public final Integer STOP = 5;
 	static public final Integer FINISH_STARTING = 6;
 	static public final Integer FINISH_STOPPING = 7;
+	static public final Integer FAIL_STARTING = 8;
+	static public final Integer FAIL_STOPPING = 9;
 	
 	@Override
 	protected void setup(StateMachine<Integer, Integer> stateMachine) {
@@ -34,6 +36,8 @@ public class StartStopStateMachine extends StateMachineWrapper<Integer, Integer>
 			.addTransition(STOP, RUNNING, STOPPING)
 			.addTransition(FINISH_STOPPING, STOPPING, STOPPED)
 		
+			.addTransition(FAIL_STARTING, STARTING, STOPPED)
+			.addTransition(FAIL_STOPPING, STOPPING, RUNNING)
 			.start(STOPPED);
 	}
 	
@@ -51,6 +55,14 @@ public class StartStopStateMachine extends StateMachineWrapper<Integer, Integer>
 	
 	public boolean finishStopping(){
 		return transit(FINISH_STOPPING);
+	}
+	
+	public boolean failStarting(){
+		return transit(FAIL_STARTING);
+	}
+	
+	public boolean failStopping(){
+		return transit(FAIL_STOPPING);
 	}
 	
 	
