@@ -15,6 +15,8 @@ limitations under the License.
 */
 package net.sf.jabb.util.stat;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
@@ -23,7 +25,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
  * @author James Hu
  *
  */
-public class TimePeriod implements Comparable<TimePeriod>{
+public class TimePeriod implements Comparable<TimePeriod>, Serializable{
+	private static final long serialVersionUID = -8484184854908788494L;
+
 	protected long amount;
 	protected TimePeriodUnit unit;
 	
