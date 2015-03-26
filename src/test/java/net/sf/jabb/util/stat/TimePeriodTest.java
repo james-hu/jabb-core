@@ -43,4 +43,11 @@ public class TimePeriodTest {
 				expectedResult, result);
 	}
 
+	@Test
+	public void testFromString(){
+		assertEquals(TimePeriod.from(" 1 hour"), TimePeriod.from("1h"));
+		assertEquals(TimePeriod.from(" 1 hour"), TimePeriod.from("1 h"));
+		assertEquals(TimePeriod.from("9 days "), TimePeriod.from(" 9d"));
+		assertEquals(TimePeriod.from("2 days "), TimePeriod.from("2 D "));
+	}
 }

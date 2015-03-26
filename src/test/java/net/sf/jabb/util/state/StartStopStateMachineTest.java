@@ -17,6 +17,7 @@ public class StartStopStateMachineTest {
 		StartStopStateMachine s = new StartStopStateMachine();
 		doTestTransitionsFromStopped(s);
 		doTestTransitionsFromRunning(s);
+		doTestFailStartingAndStoppoing(s);
 	}
 	
 	@Test
@@ -63,4 +64,23 @@ public class StartStopStateMachineTest {
 		assertFalse(s.finishStopping());
 	}
 
+	protected void doTestFailStartingAndStoppoing(StartStopStateMachine s){
+		s.setState(StartStopStateMachine.STOPPED);
+		assertTrue(s.isStopped());
+		assertTrue(s.start());
+		assertTrue(s.isStarting());
+		assertTrue(s.failStarting());
+		assertTrue(s.isStopped());
+		
+		s.start();
+		s.finishStarting();
+		
+		assertTrue(s.isRunning());
+		assertTrue(s.stop());
+		assertTrue(s.isStopping());
+		
+		assertTrue(s.failStopping());
+		assertTrue(s.isRunning());
+		
+	}
 }
