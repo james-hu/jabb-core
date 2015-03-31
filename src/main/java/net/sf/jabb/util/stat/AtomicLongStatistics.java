@@ -21,6 +21,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 /**
  * 提供基本的统计信息，包括：
  * 最大值、最小值、平均值、总计、个数。
@@ -40,6 +42,24 @@ public class AtomicLongStatistics implements NumberStatistics<Long>, Serializabl
 		sum = new AtomicLong();
 		minMax = new ConcurrentLongMinMaxHolder();
 	}
+	
+	@Override
+	public boolean equals(Object other){
+		if (other == this){
+			return true;
+		}
+		if (other == null || !(other instanceof NumberStatistics<?>)){
+			return false;
+		}
+		NumberStatistics<?> that = (NumberStatistics<?>) other;
+		return new EqualsBuilder()
+			.append(this.getCount(), that.getCount())
+			.append(this.getSum(), that.getSum() == null ? null : Long.valueOf(that.getSum().longValue()))
+			.append(this.getMin(), that.getMin() == null ? null : Long.valueOf(that.getMin().longValue()))
+			.append(this.getMax(), that.getMax() == null ? null : Long.valueOf(that.getMax().longValue()))
+			.isEquals();
+	}
+
 	
 	@Override
 	public void merge(NumberStatistics<? extends Number> other){
