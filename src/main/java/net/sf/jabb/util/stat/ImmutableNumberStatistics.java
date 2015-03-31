@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 /**
  * Immutable statistics holder.
@@ -28,8 +29,7 @@ public class ImmutableNumberStatistics<T extends Number> implements NumberStatis
 	 * @return 	the immutable copy
 	 */
 	public static <T extends Number> ImmutableNumberStatistics<T> copyOf(NumberStatistics<? extends T> statistics){
-		return new ImmutableNumberStatistics<T>(statistics.getCount(), statistics.getSum(), 
-				statistics.getMin(), statistics.getMax());
+		return new ImmutableNumberStatistics<T>(statistics);
 	}
 	
 	public ImmutableNumberStatistics(long count, T sum, T min, T max){
@@ -43,6 +43,29 @@ public class ImmutableNumberStatistics<T extends Number> implements NumberStatis
 	public ImmutableNumberStatistics(T count, T sum, T min, T max){
 		this(count.longValue(), sum, min, max);
 	}
+	
+	public ImmutableNumberStatistics(NumberStatistics<? extends T> statistics){
+		this(statistics.getCount(), statistics.getSum(), 
+				statistics.getMin(), statistics.getMax());
+	}
+	
+	@Override
+	public boolean equals(Object other){
+		if (other == this){
+			return true;
+		}
+		if (other == null || !(other instanceof NumberStatistics<?>)){
+			return false;
+		}
+		NumberStatistics<?> that = (NumberStatistics<?>) other;
+		return new EqualsBuilder()
+			.append(this.count, that.getCount())
+			.append(this.sum, that.getSum())
+			.append(this.min, that.getMin())
+			.append(this.max, that.getMax())
+			.isEquals();
+	}
+
 
 	@Override
 	public String toString(){
