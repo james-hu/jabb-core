@@ -50,7 +50,7 @@ public class AutowiringSpringBeanJobFactory extends SpringBeanJobFactory impleme
 		if (f != null){
 			f.autowireBean(job);
 		}else{
-			log.error("Didn't do autowiring because ApplicationContext has not been injected.");
+			log.error("Failed to do autowiring because ApplicationContext has not been injected.");
 		}
 		return job;
 	}
