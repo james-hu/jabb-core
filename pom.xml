@@ -308,6 +308,31 @@
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
 		</dependency>
+		<dependency>
+			<groupId>myschedule</groupId>
+			<artifactId>myschedule-web</artifactId>
+			<version>3.2.1.1.0</version>
+			<classifier>classes</classifier>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>myschedule</groupId>
+			<artifactId>myschedule-web-config</artifactId>
+			<version>3.2.1.1.0</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>myschedule</groupId>
+			<artifactId>myschedule-quartz-extra</artifactId>
+			<version>3.2.1.1.0</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-server</artifactId>
+			<version>7.4.3</version>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
