@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.jabb</groupId>
 	<artifactId>jabb-core</artifactId>
-	<version>1.0.70</version>
+	<version>1.0.71</version>
 	<name>JABB</name>
 	<url>http://jabb.sourceforge.net/</url>
 	<description>JABB is a collection of reusable Java components. </description>
@@ -307,6 +307,31 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
+		</dependency>
+		<dependency>
+			<groupId>myschedule</groupId>
+			<artifactId>myschedule-web</artifactId>
+			<version>3.2.1.1.0</version>
+			<classifier>classes</classifier>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>myschedule</groupId>
+			<artifactId>myschedule-web-config</artifactId>
+			<version>3.2.1.1.0</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>myschedule</groupId>
+			<artifactId>myschedule-quartz-extra</artifactId>
+			<version>3.2.1.1.0</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-server</artifactId>
+			<version>7.4.3</version>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 	<build>
