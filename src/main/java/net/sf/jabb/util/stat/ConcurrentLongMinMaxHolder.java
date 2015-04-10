@@ -40,13 +40,22 @@ public class ConcurrentLongMinMaxHolder  implements Serializable, MinMaxHolder{
 	public ConcurrentLongMinMaxHolder(Number min, Number max){
 		reset(min, max);
 	}
+	
+	
+	synchronized protected void initializeRefs(long x){
+		if (minRef == null){
+			minRef = new AtomicLong(x);
+		}
+		if (maxRef == null){
+			maxRef = new AtomicLong(x);
+		}
+	}
 
 	
 	@Override
 	public void evaluate(long x){
-		if (minRef == null){
-			minRef = new AtomicLong(x);
-			maxRef = new AtomicLong(x);
+		if (minRef == null || maxRef == null){
+			initializeRefs(x);
 			return;
 		}
 
@@ -67,8 +76,7 @@ public class ConcurrentLongMinMaxHolder  implements Serializable, MinMaxHolder{
 	@Override
 	public void evaluate(Long x) {
 		if (minRef == null){
-			minRef = new AtomicLong(x);
-			maxRef = new AtomicLong(x);
+			initializeRefs(x);
 			return;
 		}
 

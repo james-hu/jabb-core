@@ -18,6 +18,7 @@ package net.sf.jabb.util.stat;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Holder of the minimum and maximum BigInteger values. It is thread-safe.
@@ -37,11 +38,19 @@ public class ConcurrentBigIntegerMinMaxHolder implements Serializable, MinMaxHol
 		reset(min, max);
 	}
 	
-	@Override
-	public void evaluate(BigInteger x){
+	synchronized protected void initializeRefs(BigInteger x){
 		if (minRef == null){
 			minRef = new AtomicBigInteger(x);
+		}
+		if (maxRef == null){
 			maxRef = new AtomicBigInteger(x);
+		}
+	}
+
+	@Override
+	public void evaluate(BigInteger x){
+		if (minRef == null || maxRef == null){
+			initializeRefs(x);
 			return;
 		}
 
