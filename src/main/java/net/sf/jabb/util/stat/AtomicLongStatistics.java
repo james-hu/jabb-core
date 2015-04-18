@@ -62,19 +62,6 @@ public class AtomicLongStatistics implements NumberStatistics<Long>, Serializabl
 
 	
 	@Override
-	public void merge(NumberStatistics<? extends Number> other){
-		if (other != null){
-			long otherCount = other.getCount();
-			if (otherCount  > 0){
-				count.addAndGet(otherCount);
-				sum.addAndGet(other.getSum().longValue());
-				minMax.evaluate(other.getMin().longValue());
-				minMax.evaluate(other.getMax().longValue());
-			}
-		}
-	}
-	
-	@Override
 	public void evaluate(int value) {
 		count.incrementAndGet();
 		sum.addAndGet(value);
@@ -149,5 +136,27 @@ public class AtomicLongStatistics implements NumberStatistics<Long>, Serializabl
 	public String toString(){
 		return "(" + count.get() + ", " + sum.get() + ", " + getMin() + "/" + getMax() + ")";
 	}
+
+	@Override
+	public void merge(long count, Long sum, Long min, Long max) {
+		this.count.addAndGet(count);
+		if (sum != null){
+			this.sum.addAndGet(sum);
+		}
+		if (min != null){
+			this.minMax.evaluate(min);
+		}
+		if (max != null){
+			this.minMax.evaluate(max);
+		}
+	}
+	
+	@Override
+	public void merge(NumberStatistics<? extends Number> other){
+		if (other != null){
+			merge(other.getCount(), other.getSum().longValue(), other.getMin().longValue(), other.getMax().longValue());
+		}
+	}
+	
 
 }
