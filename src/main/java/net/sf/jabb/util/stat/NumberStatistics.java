@@ -13,9 +13,18 @@ public interface NumberStatistics<T extends Number> {
 
 	/**
 	 * Merge the statistics from another object into this one
-	 * @param other
+	 * @param other  another statistics
 	 */
 	public void merge(NumberStatistics<? extends Number> other);
+	
+	/**
+	 * Merge another statistics into this one
+	 * @param count	the count to be merged, can be zero or negative.
+	 * @param sum	the sum to be merged, can be zero or negative, but never be null.
+	 * @param min	the min to be merged, can be null.
+	 * @param max	the max to be merged, can be null.
+	 */
+	public void merge(long count, T sum, T min, T max);
 
 	/**
 	 * 把一个值提供给统计

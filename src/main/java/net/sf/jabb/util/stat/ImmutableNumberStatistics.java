@@ -76,6 +76,12 @@ public class ImmutableNumberStatistics<T extends Number> implements NumberStatis
 	public void merge(NumberStatistics<? extends Number> other) {
 		throw new UnsupportedOperationException("This object is immutable");
 	}
+	
+	@Override
+	public void merge(long count, T sum, T min, T max) {
+		throw new UnsupportedOperationException("This object is immutable");
+	}
+
 
 	@Override
 	public void evaluate(int value) {
@@ -154,5 +160,6 @@ public class ImmutableNumberStatistics<T extends Number> implements NumberStatis
 		this.min = newMin;
 		this.max = newMax;
 	}
+
 
 }
