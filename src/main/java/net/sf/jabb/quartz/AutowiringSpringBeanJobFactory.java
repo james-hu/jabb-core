@@ -27,10 +27,20 @@ public class AutowiringSpringBeanJobFactory extends SpringBeanJobFactory impleme
 	private static final Log log = LogFactory.getLog(AutowiringSpringBeanJobFactory.class);
 
 	static private AutowireCapableBeanFactory beanFactory;
+	static private ApplicationContext appContext;
+	
+	/**
+	 * This is a convenient method for getting the application context
+	 * @return	the application context
+	 */
+	static public ApplicationContext getApplicationContenxt(){
+		return appContext;
+	}
 	
 	@Override
 	public void setApplicationContext(ApplicationContext appContext)
 			throws BeansException {
+		AutowiringSpringBeanJobFactory.appContext = appContext;
 		setBeanFacotry(appContext.getAutowireCapableBeanFactory());
 	}
 	
