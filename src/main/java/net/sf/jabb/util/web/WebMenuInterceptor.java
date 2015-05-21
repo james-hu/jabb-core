@@ -3,7 +3,6 @@
  */
 package net.sf.jabb.util.web;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,13 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jabb.stdr.StdrUtil;
-import net.sf.jabb.util.bean.DoubleValueBean;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -28,7 +25,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  *
  */
 public class WebMenuInterceptor extends HandlerInterceptorAdapter {
-	private static final Log log = LogFactory.getLog(HandlerInterceptor.class);
+	private static final Log log = LogFactory.getLog(WebMenuInterceptor.class);
 	
 	protected static WebMenuItem NOT_FOUND = new WebMenuItem();	// use this instance to represent "found a null value"
 	
@@ -93,7 +90,9 @@ public class WebMenuInterceptor extends HandlerInterceptorAdapter {
 			}
 			
 		}else{
-			log.warn("The handler is not of type HandlerMethod. WebMenuInterceptor ignores it.");
+			if (log.isDebugEnabled()){
+				log.debug("The handler is not of type HandlerMethod. WebMenuInterceptor ignores it.");
+			}
 		}
 		
 		return menuItem;
