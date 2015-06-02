@@ -53,4 +53,9 @@ public class DirectDataSourceProvider implements DataSourceProvider {
 		return ds;
 	}
 
+	@Override
+	public boolean destroyDataSource(DataSource dataSource) {
+		return false;
+	}
+
 }

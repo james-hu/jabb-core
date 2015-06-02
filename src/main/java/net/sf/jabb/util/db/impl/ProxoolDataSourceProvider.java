@@ -72,4 +72,19 @@ public class ProxoolDataSourceProvider implements DataSourceProvider {
 		return ds;
 	}
 
+
+	@Override
+	public boolean destroyDataSource(DataSource dataSource) {
+		if (dataSource instanceof DriverManagerDataSource){
+			try {
+				String url = ((DriverManagerDataSource) dataSource).getUrl();
+				ProxoolFacade.removeConnectionPool(url, 1000 * 120);
+				return true;
+			} catch (Exception e) {
+				log.warn("Error destroying proxool data source: " + dataSource, e);
+			}
+		}
+		return false;
+	}
+
 }
