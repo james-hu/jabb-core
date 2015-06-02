@@ -33,6 +33,12 @@ public class ConnectionTest {
 	}
 	
 	@Test
+	public void destroy(){
+		ConnectionUtility cu = new ConnectionUtility();
+		cu.destroyDataSources();
+	}
+	
+	@Test
 	public void none(){
 		try{
 			Connection conn = ConnectionUtility.getConnection("myTry");

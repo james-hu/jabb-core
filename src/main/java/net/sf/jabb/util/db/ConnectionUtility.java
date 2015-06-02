@@ -23,6 +23,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.naming.InitialContext;
@@ -222,6 +223,30 @@ public class ConnectionUtility {
 		}
 		return ds;
 	}	
+	
+	/**
+	 * Destroy all the data sources created before
+	 */
+	public static void destroyDataSources(){
+		synchronized (dataSourcesStructureLock){
+			for (Map.Entry<String, DataSource> dsEntry: dataSources.entrySet()){
+				String dsName = dsEntry.getKey();
+				DataSource ds = dsEntry.getValue();
+				for (Map.Entry<String, DataSourceProvider> dspEntry: dataSourceProviders.entrySet()){		// try them one by one
+					String dspName = dspEntry.getKey();
+					DataSourceProvider dsp = dspEntry.getValue();
+					try{
+						if (dsp.destroyDataSource(ds)){
+							break;
+						}
+					}catch(Exception e){
+						log.error("Error when destroying data source '" + dsName + "' using provider '" + dspName + "'", e);
+					}
+				}
+			}
+			dataSources.clear();
+		}
+	}
 	
 	/**
 	 * 获得Statement.executeBatch()所修改的总记录数。
