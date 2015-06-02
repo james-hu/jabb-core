@@ -83,4 +83,17 @@ public class OracleCachedDataSourceProvider implements DataSourceProvider {
 		return ds;
 	}
 
+	@Override
+	public boolean destroyDataSource(DataSource dataSource) {
+		if (dataSource instanceof OracleDataSource){
+			try {
+				((OracleDataSource) dataSource).close();
+				return true;
+			} catch (Exception e) {
+				log.warn("Error destroying oracle data source: " + dataSource, e);
+			}
+		}
+		return false;
+	}
+
 }

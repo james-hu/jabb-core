@@ -24,4 +24,5 @@ import javax.sql.DataSource;
  */
 public interface DataSourceProvider {
 	public DataSource createDataSource(String source, String config);
+	public boolean destroyDataSource(DataSource dataSource);
 }
