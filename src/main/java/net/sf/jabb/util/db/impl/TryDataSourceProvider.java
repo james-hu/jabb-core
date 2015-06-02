@@ -44,4 +44,9 @@ public class TryDataSourceProvider implements DataSourceProvider {
 		return null;
 	}
 
+	@Override
+	public boolean destroyDataSource(DataSource dataSource) {
+		return false;
+	}
+
 }

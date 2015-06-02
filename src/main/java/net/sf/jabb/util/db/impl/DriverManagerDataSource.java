@@ -101,4 +101,8 @@ public class DriverManagerDataSource implements DataSource {
 		throw new SQLFeatureNotSupportedException("Not supported.");
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
 }

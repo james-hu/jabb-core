@@ -26,6 +26,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.mchange.v2.c3p0.DataSources;
+import com.mchange.v2.c3p0.PooledDataSource;
 
 import net.sf.jabb.util.db.DataSourceProvider;
 import net.sf.jabb.util.prop.PropertiesLoader;
@@ -66,6 +67,19 @@ public class C3p0DataSourceProvider implements DataSourceProvider {
 			log.warn("Error creating data source for '" + source + "' with configuration: " + config, e);
 		}
 		return ds;
+	}
+
+	@Override
+	public boolean destroyDataSource(DataSource dataSource) {
+		if (dataSource instanceof PooledDataSource){
+			try {
+				DataSources.destroy(dataSource);
+				return true;
+			} catch (Exception e) {
+				log.warn("Error destroying c3p0 data source: " + dataSource, e);
+			}
+		}
+		return false;
 	}
 
 }

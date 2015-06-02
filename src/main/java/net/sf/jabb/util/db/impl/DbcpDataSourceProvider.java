@@ -17,12 +17,14 @@ limitations under the License.
 package net.sf.jabb.util.db.impl;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.dbcp.BasicDataSourceFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -90,6 +92,19 @@ public class DbcpDataSourceProvider implements DataSourceProvider {
 		}
         
 		return ds;
+	}
+
+	@Override
+	public boolean destroyDataSource(DataSource dataSource) {
+		if (dataSource instanceof BasicDataSource){
+			try {
+				((BasicDataSource) dataSource).close();
+				return true;
+			} catch (Exception e) {
+				log.warn("Error destroying dbcp data source: " + dataSource, e);
+			}
+		}
+		return false;
 	}
 
 }
