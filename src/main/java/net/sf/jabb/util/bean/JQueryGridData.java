@@ -149,7 +149,6 @@ public class JQueryGridData {
 	}
 	/**
 	 * Set number of records according to current size of the rows list.
-	 * @param records
 	 */
 	public void setRecords() {
 		this.records = rows.size();

@@ -27,9 +27,9 @@ public class StdrUtil {
     static public final String PAGE_ATTR_NAME_PREFIX_FOR_SPRING_BEAN = "net_sf_jabb_stdr_springBean_";
 
     /**
-     * Get parameters from the attribute of HTTP request.
-     * @param request
-     * @return
+     * Get parameters from the attribute of servlet request.
+     * @param request	the servlet request
+     * @return	StdrUtil template parameters retrieved from request context
      */
     @SuppressWarnings("unchecked")
 	static public Map<String, Object> getParameters(ServletRequest request){

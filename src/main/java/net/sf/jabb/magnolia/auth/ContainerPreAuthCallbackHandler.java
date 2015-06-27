@@ -18,17 +18,15 @@ import info.magnolia.cms.security.auth.callback.CredentialsCallbackHandler;
 public class ContainerPreAuthCallbackHandler extends CredentialsCallbackHandler {
 
 	/**
-	 * @param name
-	 * @param pswd
+	 * @param name the remote user name
 	 */
 	public ContainerPreAuthCallbackHandler(String name) {
 		super(name, null);
 	}
 
 	/**
-	 * @param name
-	 * @param pswd
-	 * @param realm
+	 * @param name  the remote user name
+	 * @param realm	the realm that the remote user name belongs to
 	 */
 	public ContainerPreAuthCallbackHandler(String name, String realm) {
 		super(name, null, realm);

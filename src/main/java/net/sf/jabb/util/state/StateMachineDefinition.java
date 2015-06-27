@@ -151,7 +151,7 @@ public class StateMachineDefinition<S, T> implements Serializable {
 
 	/**
 	 * Add a transition to the state machine. Transition from a state to itself is allowed.
-	 * @param transition	the transition to be added, must not be null.
+	 * @param newTransition	the transition to be added, must not be null.
 	 * @param fromState		from state of the transition, must have been defined already
 	 * @param toState		to state of the transition, must have been defined already
 	 */

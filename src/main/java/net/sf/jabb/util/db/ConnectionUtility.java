@@ -172,7 +172,7 @@ public class ConnectionUtility {
 	 * @param source	name of the data source, can be anything
 	 * @param type		type of the data source
 	 * @param config	configurations, normally path to configuration files
-	 * @return
+	 * @return	the newly created data source
 	 */
 	public static DataSource createDataSource(String source, String type, String config){
 		DataSourceProvider dsp = dataSourceProviders.get(type);
@@ -197,7 +197,7 @@ public class ConnectionUtility {
 	 * @param source	name of the data source, can be anything
 	 * @param type		type of the data source
 	 * @param configs	configurations, normally paths to configuration files
-	 * @return
+	 * @return	the newly created data source
 	 */
 	public static DataSource createDataSource(String source, String type, String... configs){
 		String config = StringUtils.join(configs, " ");

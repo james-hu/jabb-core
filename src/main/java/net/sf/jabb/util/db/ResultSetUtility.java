@@ -53,8 +53,8 @@ public class ResultSetUtility {
 	
 	/**
 	 * Convert current row of the ResultSet to a Map. The keys of the Map are property names transformed from column names.
-	 * @param rs
-	 * @return
+	 * @param rs	the result set
+	 * @return	a Map representation of current row
 	 * @throws SQLException
 	 */
 	public Map<String, Object> convertToMap(ResultSet rs) throws SQLException{
@@ -85,8 +85,8 @@ public class ResultSetUtility {
 	
 	/**
 	 * Convert all rows of the ResultSet to a Map. The keys of the Map are property names transformed from column names.
-	 * @param rs
-	 * @return
+	 * @param rs	the result set
+	 * @return	A list of Map representations of all the rows in the result set
 	 * @throws SQLException
 	 */
 	public List<Map<String, Object>> convertAllToMaps(ResultSet rs) throws SQLException{
@@ -95,9 +95,9 @@ public class ResultSetUtility {
 	
 	/**
 	 * Convert all rows of the ResultSet to a Map. The keys of the Map are property names transformed from column names.
-	 * @param rs
-	 * @param alreadyDeterminedMappings
-	 * @return
+	 * @param rs the result set
+	 * @param alreadyDeterminedMappings	the mapping of column label/name and column meta data
+	 * @return	A list of Map representations of all the rows in the result set
 	 * @throws SQLException
 	 */
 	public List<Map<String, Object>> convertAllToMaps(ResultSet rs, Map<String, ColumnMetaData> alreadyDeterminedMappings) throws SQLException{
@@ -163,9 +163,9 @@ public class ResultSetUtility {
 
 	/**
 	 * 
-	 * @param rsmd
+	 * @param rsmd result set meta data
 	 * @param columnToPropertyMappings	It must have already been populated for all the columns
-	 * @return
+	 * @return		the bean class
 	 * @throws SQLException
 	 */
 	protected Class<?> reuseOrBuildBeanClass(ResultSetMetaData rsmd, Map<String, ColumnMetaData> columnToPropertyMappings) throws SQLException {
@@ -184,9 +184,9 @@ public class ResultSetUtility {
 
 	/**
 	 * 
-	 * @param rsmd
+	 * @param rsmd result set meta data
 	 * @param columnToPropertyMappings	It must have already been populated for all the columns
-	 * @return
+	 * @return  the newly built bean class
 	 * @throws SQLException
 	 */
 	protected Class<?> buildBeanClass(final ResultSetMetaData rsmd, Map<String, ColumnMetaData> columnToPropertyMappings) throws SQLException {
@@ -303,7 +303,7 @@ public class ResultSetUtility {
 	 * Get the label or name of a column
 	 * @param rsmd
 	 * @param col
-	 * @return
+	 * @return	label or name of the column
 	 * @throws SQLException
 	 */
 	public String columnLabelOrName(ResultSetMetaData rsmd, int col) throws SQLException{
