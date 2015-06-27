@@ -4,31 +4,14 @@
 package net.sf.jabb.util.state;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.persistence.Transient;
-
-import net.sf.jabb.util.col.MapValueFactory;
-import net.sf.jabb.util.col.PutIfAbsentMap;
-import net.sf.jabb.util.thread.Sequencer;
-
-import com.google.common.base.Preconditions;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.ImmutableBiMap;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
 
 /**
  * State machine with states and actions defined.
- * Definition methods addState and addTransition must be called before other methods and they are not multi-thread safe.
- * Other methods are multi-thread safe.
+ * Definition methods addState(...) and addTransition(...) must be called before other methods and they are not thread safe.
+ * Other methods are thread safe.
  * Internally Integer type is used for the state identifiers so the number of states allowed is quite huge.
  * However, there are overheads, so if you need a really big and fast state machine, you'd better create your own lookup array based one.
  * @author James Hu
@@ -39,18 +22,36 @@ import com.google.common.collect.Maps;
 public class StateMachine<S, T> implements Serializable{
 	private static final long serialVersionUID = -2875478874027002800L;
 
-	@Transient		// we only need this when defining the states and transitions
-	private Sequencer sequencer = new Sequencer();
-	
-	private BiMap<S, Integer> states = Maps.synchronizedBiMap(HashBiMap.<S, Integer>create());
-	private Map<T, Transition<S, T>> transitions = new ConcurrentHashMap<T, Transition<S, T>>();
-	private Map<S, Set<T>> validTransitions = new PutIfAbsentMap<S, Set<T>>(new HashMap<S, Set<T>>(), new MapValueFactory<S, Set<T>>(){
-		@Override
-		public Set<T> createValue(S key) {
-			return Collections.newSetFromMap(new ConcurrentHashMap<T, Boolean>());
-		}
-	});
+	private StateMachineDefinition<S, T> definition;
 	private AtomicInteger currentStateId;
+	
+	/**
+	 * Constructor with an undefined state machine definition
+	 */
+	public StateMachine(){
+		definition = new StateMachineDefinition<S, T>();
+		definition.startDefinition();
+	}
+	
+	/**
+	 * Constructor with an already defined state machine definition and an initial state
+	 * @param definition		the state machine definition
+	 * @param initialState		the initial state of this state machine
+	 */
+	public StateMachine(StateMachineDefinition<S, T> definition, S initialState){
+		this.definition = definition;
+		this.currentStateId = new AtomicInteger(definition.getStateId(initialState));
+	}
+
+	/**
+	 * Constructor with an already defined state machine definition and the first defined state as the initial state
+	 * @param definition		the state machine definition
+	 */
+	public StateMachine(StateMachineDefinition<S, T> definition){
+		this.definition = definition;
+		this.currentStateId = new AtomicInteger(definition.getFirstStateId());
+	}
+
 	
 	static public class Transition<SN, TN> implements Serializable{
 		private static final long serialVersionUID = 6386811695284573346L;
@@ -78,15 +79,7 @@ public class StateMachine<S, T> implements Serializable{
 	 * @param newState the state to be added, must not be null, and must have not been defined before.
 	 */
 	public StateMachine<S, T> addState(S newState){
-		Preconditions.checkArgument(newState != null, "State name cannot be null");
-		Integer id = Integer.valueOf((int)sequencer.next());
-		Integer previousValue = states.put(newState, id);
-		if (previousValue != null){
-			throw new IllegalArgumentException("State '" + newState + "' has already been defined.");
-		}
-		if (currentStateId == null){
-			currentStateId = new AtomicInteger(id);
-		}
+		definition.addState(newState);
 		return this;
 	}
 	
@@ -97,21 +90,7 @@ public class StateMachine<S, T> implements Serializable{
 	 * @param toState		to state of the transition, must have been defined already
 	 */
 	public StateMachine<S, T> addTransition(T newTransition, S fromState, S toState){
-		Preconditions.checkArgument(newTransition != null, "Transition name cannot be empty");
-		Integer fromStateId = getStateId(fromState);
-		Integer toStateId = getStateId(toState);
-		
-		Transition<S, T> transition = new Transition<S, T>();
-		transition.fromStateId = fromStateId;
-		transition.toStateId = toStateId;
-		transition.fromState = fromState;
-		transition.toState = toState;
-		
-		Transition<S, T> previousValue = transitions.put(newTransition, transition);
-		if (previousValue != null){
-			throw new IllegalArgumentException("Transition '" + transition + "' has already been defined.");
-		}
-		validTransitions.get(fromState).add(newTransition);
+		definition.addTransition(newTransition, fromState, toState);
 		return this;
 	}
 	
@@ -121,8 +100,8 @@ public class StateMachine<S, T> implements Serializable{
 	 * @param initialState	the start state
 	 */
 	public void start(S initialState){
-		setState(initialState);
 		start();
+		setState(initialState);
 	}
 	
 	/**
@@ -130,13 +109,8 @@ public class StateMachine<S, T> implements Serializable{
 	 * After calling this method, addSate(...) and addTransition(...) will cause exceptions to be thrown.
 	 */
 	public void start(){
-		sequencer = null;
-		states = ImmutableBiMap.copyOf(states);
-		Map<S, Set<T>> validTransitionsCopied = new HashMap<S, Set<T>>();
-		for (Map.Entry<S, Set<T>> entry: validTransitions.entrySet()){
-			validTransitionsCopied.put(entry.getKey(), ImmutableSet.copyOf(entry.getValue()));
-		}
-		validTransitions = ImmutableMap.copyOf(validTransitions);
+		definition.finishDefinition();
+		currentStateId = new AtomicInteger(definition.getFirstStateId());
 	}
 	
 	/**
@@ -145,7 +119,7 @@ public class StateMachine<S, T> implements Serializable{
 	 */
 	public S getState(){
 		Integer id = currentStateId.get();
-		return states.inverse().get(id);
+		return definition.getState(id);
 	}
 	
 	/**
@@ -153,7 +127,7 @@ public class StateMachine<S, T> implements Serializable{
 	 * @param state  the current state to be, must have already been defined.
 	 */
 	public void setState(S state){
-		Integer id = getStateId(state);
+		Integer id = definition.getStateId(state);
 		currentStateId.set(id);
 	}
 	
@@ -163,31 +137,16 @@ public class StateMachine<S, T> implements Serializable{
 	 * @return  true if successful. False return indicates that the specified transition does not apply to current state.
 	 */
 	public boolean transit(T transition){
-		Transition<S, T> transitionDef = getTransition(transition);
+		Transition<S, T> transitionDef = definition.getTransition(transition);
 		return currentStateId.compareAndSet(transitionDef.fromStateId, transitionDef.toStateId);
 	}
 	
-	protected Integer getStateId(S state){
-		Integer id = states.get(state);
-		if (id == null){
-			throw new IllegalArgumentException("State '" + state + "' has not been defined.");
-		}
-		return id;
-	}
-	
-	protected Transition<S, T> getTransition(T transition){
-		Transition<S, T> transitionDef = transitions.get(transition);
-		if (transitionDef == null){
-			throw new IllegalArgumentException("Transition '" + transition + "' has not been defined.");
-		}
-		return transitionDef;
-	}
 	/**
 	 * Get all states defined.
 	 * @return	all the states
 	 */
 	public Set<S> getStates() {
-		return states.keySet();
+		return definition.getStates().keySet();
 	}
 	
 	/**
@@ -195,7 +154,7 @@ public class StateMachine<S, T> implements Serializable{
 	 * @return  the map of (transition - transition detail)
 	 */
 	public Map<T, Transition<S, T>> getTransitions() {
-		return transitions;
+		return definition.getTransitions();
 	}
 	
 	/**
@@ -204,8 +163,11 @@ public class StateMachine<S, T> implements Serializable{
 	 * @return  all transitions valid for the state
 	 */
 	public Set<T> getTransitions(S state) {
-		getStateId(state);
-		return validTransitions.get(state);
+		return definition.getTransitions(state);
+	}
+
+	public StateMachineDefinition<S, T> getDefinition() {
+		return definition;
 	}
 	
 	
