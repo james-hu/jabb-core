@@ -51,10 +51,10 @@ public class ConnectionUtility {
 	public static final String DELIMITORS 			= PropertiesLoader.DELIMITERS;
 	
 	protected static Properties configuration;
-	protected static HashMap<String, DataSource> dataSources;
+	protected static Map<String, DataSource> dataSources;
 	protected static Object dataSourcesStructureLock;
 	
-	protected static HashMap<String, DataSourceProvider> dataSourceProviders;
+	protected static Map<String, DataSourceProvider> dataSourceProviders;
 	
 	static{
 		readConfiguration();
@@ -172,7 +172,7 @@ public class ConnectionUtility {
 	 * @param source	name of the data source, can be anything
 	 * @param type		type of the data source
 	 * @param config	configurations, normally path to configuration files
-	 * @return
+	 * @return	the newly created data source
 	 */
 	public static DataSource createDataSource(String source, String type, String config){
 		DataSourceProvider dsp = dataSourceProviders.get(type);
@@ -197,7 +197,7 @@ public class ConnectionUtility {
 	 * @param source	name of the data source, can be anything
 	 * @param type		type of the data source
 	 * @param configs	configurations, normally paths to configuration files
-	 * @return
+	 * @return	the newly created data source
 	 */
 	public static DataSource createDataSource(String source, String type, String... configs){
 		String config = StringUtils.join(configs, " ");
@@ -225,7 +225,39 @@ public class ConnectionUtility {
 	}	
 	
 	/**
-	 * Destroy all the data sources created before
+	 * Destroy a data source created before.
+	 * If any exception occurred, it will be logged but never propagated.
+	 * @param dataSource the data source to be destroyed
+	 */
+	public static void destroyDataSource(DataSource dataSource){
+		synchronized (dataSourcesStructureLock){
+			String dsName = null;
+			for (Map.Entry<String, DataSource> dsEntry: dataSources.entrySet()){
+				DataSource ds = dsEntry.getValue();
+				if (ds == dataSource){
+					dsName = dsEntry.getKey();
+				}
+			}
+			if (dsName != null){
+				for (Map.Entry<String, DataSourceProvider> dspEntry: dataSourceProviders.entrySet()){		// try them one by one
+					String dspName = dspEntry.getKey();
+					DataSourceProvider dsp = dspEntry.getValue();
+					try{
+						if (dsp.destroyDataSource(dataSource)){
+							dataSources.remove(dsName);
+							break;
+						}
+					}catch(Exception e){
+						log.error("Error when destroying data source '" + dsName + "' using provider '" + dspName + "'", e);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Destroy all the data sources created before.
+	 * If any exception occurred, it will be logged but never propagated.
 	 */
 	public static void destroyDataSources(){
 		synchronized (dataSourcesStructureLock){

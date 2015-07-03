@@ -79,7 +79,7 @@ public class ColumnMetaData {
 	/**
 	 * Get all the column meta data and put them into a map keyed by column label or name
 	 * @param m the result set meta data
-	 * @return
+	 * @return the map of column label/name and column meta data
 	 * @throws SQLException
 	 */
 	static public Map<String, ColumnMetaData> createMapByLabelOrName(ResultSetMetaData m) throws SQLException{
@@ -94,7 +94,7 @@ public class ColumnMetaData {
 	/**
 	 * Get all the column meta data and put them into a list in their default order
 	 * @param m the result set meta data
-	 * @return
+	 * @return	a list of column meta data
 	 * @throws SQLException
 	 */
 	static public List<ColumnMetaData> createList(ResultSetMetaData m) throws SQLException{

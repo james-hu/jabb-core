@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * description of the properties of atomic variables. An
  * {@code AtomicBigInteger} is used in applications such as atomically
  * incremented sequence numbers, and cannot be used as a replacement
- * for a {@link java.match.BigInteger}. However, this class does extend
+ * for a {@link java.math.BigInteger}. However, this class does extend
  * {@code Number} to allow uniform access by tools and utilities that
  * deal with numerically-based classes.
 
