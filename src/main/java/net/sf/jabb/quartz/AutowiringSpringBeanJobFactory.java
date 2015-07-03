@@ -66,16 +66,16 @@ public class AutowiringSpringBeanJobFactory extends SpringBeanJobFactory impleme
 	}
 	
 	/**
-	 * Subclass should override this method to set beanFactory to somewhere globally.
-	 * @param beanFactory
+	 * Subclass can override this method to set beanFactory to somewhere globally.
+	 * @param beanFactory	the bean factory from Spring context
 	 */
 	protected void setBeanFacotry(AutowireCapableBeanFactory beanFactory){
 		AutowiringSpringBeanJobFactory.beanFactory = beanFactory;
 	}
 	
 	/**
-	 * Subclass should override this method to set beanFactory to somewhere globally.
-	 * @return
+	 * Subclass can override this method to get beanFactory to somewhere globally.
+	 * @return	the bean factory previously saved by setBeanFacotry(...)
 	 */
 	protected AutowireCapableBeanFactory getBeanFactory(){
 		return AutowiringSpringBeanJobFactory.beanFactory;

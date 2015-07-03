@@ -75,7 +75,7 @@ public class WebMenuItem implements Serializable, Comparable<WebMenuItem>{
 	
 	/**
 	 * Get the highest level of menu items.
-	 * @return
+	 * @return a list of top level menu items
 	 */
 	public List<WebMenuItem> getTopMenuItems(){
 		return breadcrumbs.get(0).subMenu;
@@ -83,7 +83,7 @@ public class WebMenuItem implements Serializable, Comparable<WebMenuItem>{
 	
 	/**
 	 * Is this menu item a leaf node in the menu tree?
-	 * @return
+	 * @return true if the menu item does not have any child, false otherwise
 	 */
 	public boolean isLeaf(){
 		return subMenu == null || subMenu.size() == 0;
@@ -91,7 +91,7 @@ public class WebMenuItem implements Serializable, Comparable<WebMenuItem>{
 
 	/**
 	 * Is this menu item a leaf node in the menu tree?
-	 * @return
+	 * @return true if the menu item does not have any child, false otherwise
 	 */
 	public boolean getIsLeaf(){
 		return isLeaf();

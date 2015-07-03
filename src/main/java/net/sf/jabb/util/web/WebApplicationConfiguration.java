@@ -188,7 +188,7 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 	/**
 	 * Get the menu tree by the menu's name
 	 * @param menuName
-	 * @return
+	 * @return	the menu item with the matching name
 	 */
 	public WebMenuItem getMenu(String menuName){
 		return menus.get(menuName);
@@ -196,7 +196,7 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 	
 	/**
 	 * Get the default menu tree
-	 * @return
+	 * @return the menu tree with an empty name
 	 */
 	public WebMenuItem getMenu(){
 		return getMenu("");
@@ -206,7 +206,7 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 	 * Get the menu item by menu and path
 	 * @param menuName
 	 * @param path
-	 * @return
+	 * @return the menu item within the specified menu tree with the matching path/name
 	 */
 	public WebMenuItem getMenuItem(String menuName, String path){
 		try{
@@ -220,7 +220,7 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 	/**
 	 * Get the menu item by path in default menu
 	 * @param path
-	 * @return
+	 * @return the menu item within the default menu tree (the menu tree with an empty name) with the matching path/name
 	 */
 	public WebMenuItem getMenuItem(String path){
 		return getMenuItem("", path);
@@ -228,7 +228,7 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 
 	/**
 	 * @deprecated
-	 * @return
+	 * @return a list of the names of menu items
 	 */
 	public List<String> getMainMenuItems() {
 		return mainMenuItems;

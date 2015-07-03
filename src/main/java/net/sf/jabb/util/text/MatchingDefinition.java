@@ -135,7 +135,7 @@ public class MatchingDefinition {
 	 * <br>name2.attachment=...
 	 * <br>...
 	 * @param props
-	 * @return
+	 * @return	a list of MatchingDefinition objects
 	 */
 	static public List<MatchingDefinition> load(Map<? extends Object, ? extends Object> props){
 		List<MatchingDefinition> result = new LinkedList<MatchingDefinition>();

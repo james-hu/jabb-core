@@ -108,7 +108,7 @@ public class LongArray implements Comparable<LongArray>, Serializable{
 	 * Compare.<br>
 	 * 比较。
 	 * 
-	 * @param obj	The object to be compared with
+	 * @param to	The object to be compared with
 	 * @return	-1 if little than obj, 0 if equals, 1 if greater than.
 	 */
 	public int compareTo(LongArray to) {

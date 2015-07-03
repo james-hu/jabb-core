@@ -112,8 +112,8 @@ public class TemplateJstlView extends JstlView {
 	
 	/**
 	 * Parse the template descriptor to extract template parameters
-	 * @param viewName
-	 * @return
+	 * @param viewName	structs view name
+	 * @return	template parameters retrieved from the vew name
 	 */
 	static protected Map<String, String> extractTemplateParameters(String viewName){
 		int i1 = -1;

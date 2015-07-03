@@ -4,24 +4,59 @@
 package net.sf.jabb.util.state;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+
+import net.sf.jabb.util.bean.DoubleValueBean;
 
 
 /**
  * Wrapper of a state machine that can be applied to specific use case.
+ * Definitions of the state machines defined by subclasses are cached in memory.
  * @author James Hu
  *
  */
 public abstract class StateMachineWrapper<S, T> implements Serializable{
 	private static final long serialVersionUID = -2873965028262709114L;
 
+	private static Map<Object, StateMachineDefinition<?, ?>> definitions = new HashMap<Object, StateMachineDefinition<?, ?>>();
+	
 	protected  StateMachine<S, T> stateMachine;
 	
-	abstract protected void setup(StateMachine<S, T> stateMachine);
+	/**
+	 * The method to define the state machine.
+	 * Inside this method should call addState(...) and addTransition(...) method and should not call finishDefinition() method.
+	 * The initial state of the state  machine must be added as the first state.
+	 * 
+	 * @param definition	The StateMachineDefinition instance for which the method startDefinition() had already been called.
+	 */
+	abstract protected void define(StateMachineDefinition<S, T> definition);
 	
+	@SuppressWarnings("unchecked")
 	public StateMachineWrapper(){
-		stateMachine = new StateMachine<S, T>();
-		setup(stateMachine);
+		//Class<?> type = this.getClass();
+		Type superClass = this.getClass().getGenericSuperclass();
+		Type[] typeArguments  = ((ParameterizedType)superClass).getActualTypeArguments();
+		
+		Object key = new DoubleValueBean<Type, Type[]>(superClass, typeArguments);
+		StateMachineDefinition<?, ?> definition = definitions.get(key);
+		if (definition == null){
+			synchronized(definitions){
+				definition = definitions.get(key);
+				if (definition == null){
+					definition = new StateMachineDefinition<S, T>();
+					definition.startDefinition();
+					define((StateMachineDefinition<S, T>)definition);
+					definition.finishDefinition();
+					definitions.put(key, definition);
+				}
+			}
+		}
+		
+		stateMachine = new StateMachine<S, T>((StateMachineDefinition<S, T>)definition);
 	}
 	
 	/**
