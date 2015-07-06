@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import net.sf.jabb.util.bean.DoubleValueBean;
+
 /**
  * State machine with states and actions defined.
  * Definition methods addState(...) and addTransition(...) must be called before other methods and they are not thread safe.
@@ -53,7 +55,7 @@ public class StateMachine<S, T> implements Serializable{
 	}
 
 	
-	static public class Transition<SN, TN> implements Serializable{
+	static public class Transition<SN> implements Serializable{
 		private static final long serialVersionUID = 6386811695284573346L;
 		int fromStateId;
 		int toStateId;
@@ -137,8 +139,18 @@ public class StateMachine<S, T> implements Serializable{
 	 * @return  true if successful. False return indicates that the specified transition does not apply to current state.
 	 */
 	public boolean transit(T transition){
-		Transition<S, T> transitionDef = definition.getTransition(transition);
-		return currentStateId.compareAndSet(transitionDef.fromStateId, transitionDef.toStateId);
+		S currentState = definition.getState(currentStateId.get());
+		if (currentState != null){
+			try{
+				Transition<S> transitionDef = definition.getTransition(currentState, transition);
+				return currentStateId.compareAndSet(transitionDef.fromStateId, transitionDef.toStateId);
+			}catch(IllegalArgumentException iae){
+				return false;
+			}catch(NullPointerException npe){
+				return false;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -153,7 +165,7 @@ public class StateMachine<S, T> implements Serializable{
 	 * Get all transitions defined
 	 * @return  the map of (transition - transition detail)
 	 */
-	public Map<T, Transition<S, T>> getTransitions() {
+	public Map<DoubleValueBean<S, T>, Transition<S>> getTransitions() {
 		return definition.getTransitions();
 	}
 	

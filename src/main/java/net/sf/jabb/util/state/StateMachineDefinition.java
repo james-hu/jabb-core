@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.Transient;
 
+import net.sf.jabb.util.bean.DoubleValueBean;
 import net.sf.jabb.util.col.MapValueFactory;
 import net.sf.jabb.util.col.PutIfAbsentMap;
 import net.sf.jabb.util.state.StateMachine.Transition;
@@ -39,7 +40,7 @@ public class StateMachineDefinition<S, T> implements Serializable {
 	private Sequencer sequencer = new Sequencer();
 
 	private BiMap<S, Integer> states;
-	private Map<T, Transition<S, T>> transitions;
+	private Map<DoubleValueBean<S, T>, Transition<S>> transitions;
 	private Map<S, Set<T>> validTransitions;
 	
 	/**
@@ -65,7 +66,7 @@ public class StateMachineDefinition<S, T> implements Serializable {
 	public void startDefinition(){
 		sequencer = new Sequencer();
 		states = Maps.synchronizedBiMap(HashBiMap.<S, Integer>create());
-		transitions = new ConcurrentHashMap<T, Transition<S, T>>();
+		transitions = new ConcurrentHashMap<DoubleValueBean<S, T>, Transition<S>>();
 		validTransitions = new PutIfAbsentMap<S, Set<T>>(new HashMap<S, Set<T>>(), new MapValueFactory<S, Set<T>>(){
 			@Override
 			public Set<T> createValue(S key) {
@@ -114,10 +115,10 @@ public class StateMachineDefinition<S, T> implements Serializable {
 	 * @param transition	the transition
 	 * @return	the definitions
 	 */
-	public Transition<S, T> getTransition(T transition){
-		Transition<S, T> transitionDef = transitions.get(transition);
+	public Transition<S> getTransition(S fromState, T transition){
+		Transition<S> transitionDef = transitions.get(new DoubleValueBean<S, T>(fromState, transition));
 		if (transitionDef == null){
-			throw new IllegalArgumentException("Transition '" + transition + "' has not been defined.");
+			throw new IllegalArgumentException("Transition '" + transition + "' from state '" + fromState + "' has not been defined.");
 		}
 		return transitionDef;
 	}
@@ -160,15 +161,15 @@ public class StateMachineDefinition<S, T> implements Serializable {
 		Integer fromStateId = getStateId(fromState);
 		Integer toStateId = getStateId(toState);
 		
-		Transition<S, T> transition = new Transition<S, T>();
+		Transition<S> transition = new Transition<S>();
 		transition.fromStateId = fromStateId;
 		transition.toStateId = toStateId;
 		transition.fromState = fromState;
 		transition.toState = toState;
 		
-		Transition<S, T> previousValue = transitions.put(newTransition, transition);
+		Transition<S> previousValue = transitions.put(new DoubleValueBean<S, T>(fromState, newTransition), transition);
 		if (previousValue != null){
-			throw new IllegalArgumentException("Transition '" + transition + "' has already been defined.");
+			throw new IllegalArgumentException("Transition '" + transition + "' from state '" + fromState + "' has already been defined.");
 		}
 		validTransitions.get(fromState).add(newTransition);
 		return this;
@@ -191,7 +192,7 @@ public class StateMachineDefinition<S, T> implements Serializable {
 	public BiMap<S, Integer> getStates() {
 		return states;
 	}
-	public Map<T, Transition<S, T>> getTransitions() {
+	public Map<DoubleValueBean<S, T>, Transition<S>> getTransitions() {
 		return transitions;
 	}
 	public Map<S, Set<T>> getValidTransitions() {
