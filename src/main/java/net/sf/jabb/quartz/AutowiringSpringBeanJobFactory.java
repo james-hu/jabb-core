@@ -33,7 +33,7 @@ public class AutowiringSpringBeanJobFactory extends SpringBeanJobFactory impleme
 	 * This is a convenient method for getting the application context
 	 * @return	the application context
 	 */
-	static public ApplicationContext getApplicationContenxt(){
+	static public ApplicationContext getApplicationContext(){
 		return appContext;
 	}
 	
