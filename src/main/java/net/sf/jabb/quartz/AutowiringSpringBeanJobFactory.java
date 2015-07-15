@@ -14,6 +14,7 @@ import org.springframework.scheduling.quartz.SpringBeanJobFactory;
  * <br>To use it, configure this for Quartz: 
  * org.quartz.scheduler.jobFactory.class = net.sf.jabb.quartz.AutowiringSpringBeanJobFactory
  * <br> And, configure this for Spring: &lt;bean id=... class="net.sf.jabb.quartz.AutowiringSpringBeanJobFactory"/&gt;
+ * . Or just have a class extend this class, annotate that class and enable it for component scan.
  * 
  * <br>If there are multiple ApplicationContext instances and you need to choose one from them, then you need
  * to extend this class and override setter and setter methods of beanFactory.
@@ -34,6 +35,14 @@ public class AutowiringSpringBeanJobFactory extends SpringBeanJobFactory impleme
 	 * @return	the application context
 	 */
 	public ApplicationContext getApplicationContext(){
+		return AutowiringSpringBeanJobFactory.appContext;
+	}
+	
+	/**
+	 * This is a convenient method for getting the application context without the need to access an instance
+	 * @return	the application context
+	 */
+	static public ApplicationContext getApplicationContextStatic(){
 		return AutowiringSpringBeanJobFactory.appContext;
 	}
 	
