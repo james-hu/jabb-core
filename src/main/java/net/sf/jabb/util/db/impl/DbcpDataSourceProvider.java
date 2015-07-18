@@ -26,8 +26,11 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.dbcp.BasicDataSourceFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.mchange.v2.c3p0.DataSources;
 
 import net.sf.jabb.util.db.DataSourceProvider;
 import net.sf.jabb.util.prop.PropertiesLoader;
@@ -42,53 +45,84 @@ public class DbcpDataSourceProvider implements DataSourceProvider {
 	private static final Log log = LogFactory.getLog(DbcpDataSourceProvider.class);
 	protected static PropertiesLoader propLoader = new PropertiesLoader();
 
+	@Override
+	public DataSource createDataSource(String source, Properties configurationProperties, String config) {
+		if (StringUtils.isBlank(config)){
+			log.error("Blank configuration string for '" + source);
+			return null;
+		}
+		
+		Properties props1 = configurationProperties;
+		
+		DataSource ds = null;
+		try {
+			DirectDataSourceConfiguration lowerConfig = new DirectDataSourceConfiguration(props1);
+			Class.forName(lowerConfig.getDriverClassName());
+
+			Properties props2 = propLoader.load(config);
+			if (props2 == null){
+				log.error("Cannot find configuration resource for '" + source + "' at location: " + config);
+			}else{
+				Properties connProps = lowerConfig.getConnectionProperties();
+				props2.put("username", connProps.get("user"));
+				connProps.remove("user");
+				props2.put("password", connProps.get("password"));
+				connProps.remove("password");
+				props2.put("url", lowerConfig.getUrl());
+				props2.put("driverClassName", lowerConfig.getDriverClassName());
+				
+				StringBuilder sb = new StringBuilder();
+				String oldConnProp = props2.getProperty("connectionProperties");
+				if (oldConnProp != null){
+					sb.append(oldConnProp.trim());
+				}
+				for (Map.Entry<Object, Object> p: connProps.entrySet()){
+					if (sb.length() > 0 && sb.charAt(sb.length() - 1) != ';'){
+						sb.append(';');
+					}
+					sb.append(p.getKey().toString());
+					sb.append('=');
+					sb.append(p.getValue().toString());
+				}
+				props2.put("connectionProperties", sb.toString());
+				
+				ds = BasicDataSourceFactory.createDataSource(props2);
+			}
+		} catch (InvalidPropertiesFormatException e) {
+			log.error("Wrong configuration properties file format for '" + source + "' with configuration: " + config, e);
+		} catch (IOException e) {
+			log.error("Error loading configuration file for '" + source + "' with configuration: " + config, e);
+		} catch (ClassNotFoundException e) {
+			log.error("Driver class not found for '" + source + "' with configuration: " + config, e);
+		} catch (Exception e) {
+			log.error("Error creating data source for '" + source + "' with configuration: " + config, e);
+		}
+        
+		return ds;
+	}
+
+	@Override
 	public DataSource createDataSource(String source, String config) {
 		String[] cfgs = config.split(PropertiesLoader.DELIMITERS, 2);
 		if (cfgs.length != 2){
-			log.warn("Wrong configuration format for '" + source + "' : " + config);
+			log.error("Wrong configuration format for '" + source + "' : " + config);
 			return null;
 		}
 
 		DataSource ds = null;
-		
 		try {
-			DirectDataSourceConfiguration lowerConfig = new DirectDataSourceConfiguration(cfgs[0]);
-			Class.forName(lowerConfig.getDriverClassName());
-
-			Properties props = propLoader.load(cfgs[1]);
-			Properties connProps = lowerConfig.getConnectionProperties();
-			props.put("username", connProps.get("user"));
-			connProps.remove("user");
-			props.put("password", connProps.get("password"));
-			connProps.remove("password");
-			props.put("url", lowerConfig.getUrl());
-			props.put("driverClassName", lowerConfig.getDriverClassName());
-			
-			StringBuilder sb = new StringBuilder();
-			String oldConnProp = props.getProperty("connectionProperties");
-			if (oldConnProp != null){
-				sb.append(oldConnProp.trim());
+			Properties props1 = propLoader.load(cfgs[0]);
+			if (props1 == null){
+				log.error("Cannot find configuration resource for '" + source + "' at location: " + cfgs[0]);
+			}else{
+				ds = createDataSource(source, props1, cfgs[1]);
 			}
-			for (Map.Entry<Object, Object> p: connProps.entrySet()){
-				if (sb.length() > 0 && sb.charAt(sb.length() - 1) != ';'){
-					sb.append(';');
-				}
-				sb.append(p.getKey().toString());
-				sb.append('=');
-				sb.append(p.getValue().toString());
-			}
-			props.put("connectionProperties", sb.toString());
-			
-			ds = BasicDataSourceFactory.createDataSource(props);
-			
 		} catch (InvalidPropertiesFormatException e) {
-			log.warn("Wrong configuration properties file format for '" + source + "' with configuration: " + config, e);
+			log.error("Wrong configuration properties file format for '" + source + "' with configuration: " + config, e);
 		} catch (IOException e) {
-			log.warn("Error loading configuration file for '" + source + "' with configuration: " + config, e);
-		} catch (ClassNotFoundException e) {
-			log.warn("Driver class not found for '" + source + "' with configuration: " + config, e);
+			log.error("Error loading configuration file for '" + source + "' with configuration: " + config, e);
 		} catch (Exception e) {
-			log.warn("Error creating data source for '" + source + "' with configuration: " + config, e);
+			log.error("Error creating data source for '" + source + "' with configuration: " + config, e);
 		}
         
 		return ds;

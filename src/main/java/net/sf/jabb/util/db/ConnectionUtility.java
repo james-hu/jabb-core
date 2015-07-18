@@ -154,12 +154,12 @@ public class ConnectionUtility {
 	public static DataSource createDataSource(String source){
 		String typeAndConfig = configuration.getProperty(source);
 		if (typeAndConfig == null){
-			log.warn("No configuration for data source: " + source);
+			log.error("No configuration for data source: " + source);
 			return null;
 		}
 		String[] typeAndConfigArray = typeAndConfig.split(DELIMITORS, 2);
 		if (typeAndConfigArray.length < 2){
-			log.warn("Wrong configuration format for data source '" + source + "': " + typeAndConfig);
+			log.error("Wrong configuration format for data source '" + source + "': " + typeAndConfig);
 			return null;
 		}
 		String type = typeAndConfigArray[0];
@@ -177,7 +177,7 @@ public class ConnectionUtility {
 	public static DataSource createDataSource(String source, String type, String config){
 		DataSourceProvider dsp = dataSourceProviders.get(type);
 		if (dsp == null){
-			log.warn("Unknown data source type found for '" + source + "': " + type);
+			log.error("Unknown data source type for '" + source + "': " + type);
 			return null;
 		}
 		
@@ -186,7 +186,7 @@ public class ConnectionUtility {
 		if (ds != null){
 			log.info("Data source created for: " + source);
 		}else{
-			log.warn("Creation of data source failed for: " + source);
+			log.error("Creation of data source failed for: " + source);
 		}
 		
 		return ds;
@@ -202,6 +202,38 @@ public class ConnectionUtility {
 	public static DataSource createDataSource(String source, String type, String... configs){
 		String config = StringUtils.join(configs, " ");
 		return createDataSource(source, type, config);
+	}
+	
+	/**
+	 * Create a data source directly backed by the JDBC driver
+	 * @param source	name of the data source
+	 * @param properties	properties for the JDBC driver
+	 * @return	the data source
+	 */
+	public static DataSource createDataSource(String source, Properties properties){
+		return createDataSource(source, "direct", properties);
+	}
+	
+	public static DataSource createDataSource(String source, String type, Properties properties){
+		return createDataSource(source, type, properties, (String[]) null);
+	}
+	
+	public static DataSource createDataSource(String source, String type, Properties properties, String... configs){
+		DataSourceProvider dsp = dataSourceProviders.get(type);
+		if (dsp == null){
+			log.error("Unknown data source type for '" + source + "': " + type);
+			return null;
+		}
+		
+		DataSource ds = null;
+		ds = dsp.createDataSource(source, properties, StringUtils.join(configs, " "));
+		if (ds != null){
+			log.info("Data source created for: " + source);
+		}else{
+			log.error("Creation of data source failed for: " + source);
+		}
+		
+		return ds;
 	}
 	
 	/**

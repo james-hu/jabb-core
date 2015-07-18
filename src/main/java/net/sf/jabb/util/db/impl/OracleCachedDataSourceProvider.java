@@ -25,7 +25,6 @@ import javax.sql.DataSource;
 
 import net.sf.jabb.util.db.DataSourceProvider;
 import net.sf.jabb.util.prop.PropertiesLoader;
-
 import oracle.jdbc.pool.OracleDataSource;
 
 import org.apache.commons.logging.Log;
@@ -40,11 +39,12 @@ public class OracleCachedDataSourceProvider implements DataSourceProvider {
 	private static final Log log = LogFactory.getLog(OracleCachedDataSourceProvider.class);
 	protected static PropertiesLoader propLoader = new PropertiesLoader();
 
-	public DataSource createDataSource(String source, String config) {
+	@Override
+	public DataSource createDataSource(String source, Properties configurationProperties, String config) {
 		DataSource ds = null;
-		Properties props;
+		Properties props = new Properties();
+		props.putAll(configurationProperties);
 		try {
-			props = propLoader.load(config);
 			OracleDataSource ods = new OracleDataSource();
 			
 			// see http://download.oracle.com/docs/cd/B28359_01/java.111/b31224/urls.htm
@@ -70,16 +70,29 @@ public class OracleCachedDataSourceProvider implements DataSourceProvider {
 			ods.setConnectionCacheName(source);
 			 
 			ds = ods;
+		} catch (SQLException e) {
+			log.error("Error creating Oracle cached data source for '" + source + "' with configuration: " + configurationProperties, e);
+		} catch (Exception e) {
+			log.error("Error creating data source for '" + source + "' with configuration: " + configurationProperties, e);
+		}
+		
+		return ds;
+	}
+
+	public DataSource createDataSource(String source, String config) {
+		DataSource ds = null;
+		try {
+			Properties props = propLoader.load(config);
+			if (props == null){
+				log.error("Cannot find configuration resource for '" + source + "' at location: " + config);
+			}else{
+				ds = createDataSource(source, props, null);
+			}
 		} catch (InvalidPropertiesFormatException e) {
 			log.error("Wrong configuration properties file format for '" + source + "' with configuration: " + config, e);
 		} catch (IOException e) {
 			log.error("Error loading configuration file for '" + source + "' with configuration: " + config, e);
-		} catch (SQLException e) {
-			log.error("Error creating Oracle cached data source for '" + source + "' with configuration: " + config, e);
-		} catch (Exception e) {
-			log.error("Error creating data source for '" + source + "' with configuration: " + config, e);
 		}
-		
 		return ds;
 	}
 

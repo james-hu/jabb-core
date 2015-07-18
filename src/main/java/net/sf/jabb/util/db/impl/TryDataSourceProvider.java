@@ -16,6 +16,8 @@ limitations under the License.
 
 package net.sf.jabb.util.db.impl;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import net.sf.jabb.util.db.ConnectionUtility;
@@ -32,6 +34,13 @@ import org.apache.commons.logging.LogFactory;
 public class TryDataSourceProvider implements DataSourceProvider {
 	private static final Log log = LogFactory.getLog(TryDataSourceProvider.class);
 
+	@Override
+	public DataSource createDataSource(String source, Properties configurationProperties, String config) {
+		log.warn("Properties argument ignored for: " + source);
+		return createDataSource(source, config);
+	}
+
+	@Override
 	public DataSource createDataSource(String source, String config) {
 		for (String subSource: config.split(ConnectionUtility.DELIMITORS)){
 			DataSource ds = ConnectionUtility.getDataSource(subSource);
@@ -40,7 +49,7 @@ public class TryDataSourceProvider implements DataSourceProvider {
 				return ds;
 			}
 		}
-		log.warn("No usable data source found for '" + source + "'.");
+		log.error("No usable data source found for '" + source + "'.");
 		return null;
 	}
 
