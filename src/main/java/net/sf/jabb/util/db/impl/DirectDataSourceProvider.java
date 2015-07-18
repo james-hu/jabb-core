@@ -18,6 +18,7 @@ package net.sf.jabb.util.db.impl;
 
 import java.io.IOException;
 import java.util.InvalidPropertiesFormatException;
+import java.util.Properties;
 
 import javax.sql.DataSource;
 
@@ -36,19 +37,33 @@ public class DirectDataSourceProvider implements DataSourceProvider {
 	private static final Log log = LogFactory.getLog(DirectDataSourceProvider.class);
 	//protected static PropertiesLoader propLoader = new PropertiesLoader();
 
+	@Override
+	public DataSource createDataSource(String source, Properties configurationProperties, String config) {
+		DataSource ds = null;
+		try {
+			DirectDataSourceConfiguration cfg = new DirectDataSourceConfiguration(configurationProperties);
+			ds = new DriverManagerDataSource(cfg.getDriverClassName(), cfg.getUrl(), cfg.getConnectionProperties()); 
+		} catch (ClassNotFoundException e) {
+			log.error("Driver class not found for '" + source + "' with configuration: " + configurationProperties, e);
+		} catch (Exception e) {
+			log.error("Error creating data source for '" + source + "' with configuration: " + configurationProperties, e);
+		}
+		return ds;
+	}
+
 	public DataSource createDataSource(String source, String config) {
 		DataSource ds = null;
 		try {
 			DirectDataSourceConfiguration cfg = new DirectDataSourceConfiguration(config);
 			ds = new DriverManagerDataSource(cfg.getDriverClassName(), cfg.getUrl(), cfg.getConnectionProperties()); 
 		} catch (InvalidPropertiesFormatException e) {
-			log.warn("Wrong configuration properties file format for '" + source + "' with configuration: " + config, e);
+			log.error("Wrong configuration properties file format for '" + source + "' with configuration: " + config, e);
 		} catch (ClassNotFoundException e) {
-			log.warn("Driver class not found for '" + source + "' with configuration: " + config, e);
+			log.error("Driver class not found for '" + source + "' with configuration: " + config, e);
 		} catch (IOException e) {
-			log.warn("Error loading configuration file for '" + source + "' with configuration: " + config, e);
+			log.error("Error loading configuration file for '" + source + "' with configuration: " + config, e);
 		} catch (Exception e) {
-			log.warn("Error creating data source for '" + source + "' with configuration: " + config, e);
+			log.error("Error creating data source for '" + source + "' with configuration: " + config, e);
 		}
 		return ds;
 	}

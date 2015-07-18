@@ -16,6 +16,8 @@ limitations under the License.
 
 package net.sf.jabb.util.db.impl;
 
+import java.util.Properties;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -32,6 +34,12 @@ import net.sf.jabb.util.db.DataSourceProvider;
  */
 public class JndiDataSourceProvider implements DataSourceProvider {
 	private static final Log log = LogFactory.getLog(JndiDataSourceProvider.class);
+
+	@Override
+	public DataSource createDataSource(String source, Properties configurationProperties, String config) {
+		log.warn("Properties argument ignored for: " + source);
+		return createDataSource(source, config);
+	}
 
 	public DataSource createDataSource(String source, String config) {
 		DataSource ds = null;

@@ -22,6 +22,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.logicalcobwebs.proxool.ProxoolException;
@@ -40,26 +41,32 @@ public class ProxoolDataSourceProvider implements DataSourceProvider {
 	protected static PropertiesLoader propLoader = new PropertiesLoader();
 	
 
-	public DataSource createDataSource(String source, String config) {
-		String[] cfgs = config.split(PropertiesLoader.DELIMITERS, 2);
-		if (cfgs.length != 2){
-			log.warn("Wrong configuration format for '" + source + "' : " + config);
+	@Override
+	public DataSource createDataSource(String source, Properties configurationProperties, String config) {
+		if (StringUtils.isBlank(config)){
+			log.error("Blank configuration string for '" + source);
 			return null;
 		}
-
+		
+		Properties props1 = configurationProperties;
+		
 		DataSource ds = null;
 		try {
-			DirectDataSourceConfiguration lowerConfig = new DirectDataSourceConfiguration(cfgs[0]);
+			DirectDataSourceConfiguration lowerConfig = new DirectDataSourceConfiguration(props1);
 			Class.forName(lowerConfig.getDriverClassName());
 
-			Properties props = propLoader.load(cfgs[1]);
-			props.put("proxool.url", lowerConfig.getUrl());
-			props.put("proxool.driver", lowerConfig.getDriverClassName());
-			props.putAll(lowerConfig.getConnectionProperties());
+			Properties props2 = propLoader.load(config);
+			if (props2 == null){
+				log.error("Cannot find configuration resource for '" + source + "' at location: " + config);
+			}else{
+				props2.put("proxool.url", lowerConfig.getUrl());
+				props2.put("proxool.driver", lowerConfig.getDriverClassName());
+				props2.putAll(lowerConfig.getConnectionProperties());
 
-			String url = "proxool." + source;
-			ProxoolFacade.registerConnectionPool(url, props);
-			ds = new DriverManagerDataSource(url);
+				String url = "proxool." + source;
+				ProxoolFacade.registerConnectionPool(url, props2);
+				ds = new DriverManagerDataSource(url);
+			}
 		} catch (InvalidPropertiesFormatException e) {
 			log.error("Wrong configuration properties file format for '" + source + "' with configuration: " + config, e);
 		} catch (IOException e) {
@@ -68,6 +75,31 @@ public class ProxoolDataSourceProvider implements DataSourceProvider {
 			log.error("Error creating Proxool connection pool for '" + source + "' with configuration: " + config, e);
 		} catch (Exception e) {
 			log.error("Error creating data source for '" + source + "' with configuration: " + config, e);
+		}
+		return ds;
+		
+	}
+
+	@Override
+	public DataSource createDataSource(String source, String config) {
+		String[] cfgs = config.split(PropertiesLoader.DELIMITERS, 2);
+		if (cfgs.length != 2){
+			log.error("Wrong configuration format for '" + source + "' : " + config);
+			return null;
+		}
+
+		DataSource ds = null;
+		try {
+			Properties props1 = propLoader.load(cfgs[0]);
+			if (props1 == null){
+				log.error("Cannot find configuration resource for '" + source + "' at location: " + cfgs[0]);
+			}else{
+				ds = createDataSource(source, props1, cfgs[1]);
+			}
+		} catch (InvalidPropertiesFormatException e) {
+			log.error("Wrong configuration properties file format for '" + source + "' with configuration: " + config, e);
+		} catch (IOException e) {
+			log.error("Error loading configuration file for '" + source + "' with configuration: " + config, e);
 		}
 		return ds;
 	}
@@ -86,5 +118,6 @@ public class ProxoolDataSourceProvider implements DataSourceProvider {
 		}
 		return false;
 	}
+
 
 }

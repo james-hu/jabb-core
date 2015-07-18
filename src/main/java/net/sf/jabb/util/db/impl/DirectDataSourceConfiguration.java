@@ -33,15 +33,26 @@ public class DirectDataSourceConfiguration {
 	protected String driverClassName;
 	protected String url;
 	
-	public DirectDataSourceConfiguration(String config) throws InvalidPropertiesFormatException, IOException{
-		connectionProperties = propLoader.load(config);
-		if (connectionProperties == null){
-			throw new IOException("Configuration resource not found: " + config);
-		}
+	protected void initialize(Properties props){
+		connectionProperties = new Properties();
+		connectionProperties.putAll(props);
+		
 		driverClassName = connectionProperties.getProperty("_driver");
 		connectionProperties.remove("_driver");
 		url = connectionProperties.getProperty("_url");
 		connectionProperties.remove("_url");
+	}
+	
+	public DirectDataSourceConfiguration(Properties configProperties){
+		initialize(configProperties);
+	}
+	
+	public DirectDataSourceConfiguration(String config) throws InvalidPropertiesFormatException, IOException{
+		Properties props = propLoader.load(config);
+		if (props == null){
+			throw new IOException("Configuration resource not found: " + config);
+		}
+		initialize(props);
 	}
 
 	public Properties getConnectionProperties() {
