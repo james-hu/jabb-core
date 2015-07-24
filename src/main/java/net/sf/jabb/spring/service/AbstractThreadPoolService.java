@@ -23,7 +23,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.PropertyResolver;
 
 /**
- * The service to provide thread pools
+ * The service to provide thread pools.
+ * TODO: 
+ * 1) setters to reconfigure the pools, including changing the reject policies; 
+ * 2) configure queue type; 
+ * 3) configure reject policy; 
+ * 4) register custom created pool
+ * 5) decorate BlockingQueue to limit the number of elements allowed in the queue, and use that in the pools
+ * 6) do we need clear()?
+ * 7) get default configurations from configurationsResolver when start so that subclasses don't need to have such code
  * @author James Hu
  *
  */
@@ -182,7 +190,6 @@ public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleSe
 		}
 		return result;
 	}
-
 	
 	/**
 	 * Do a two-phase/two-attempts shutdown
@@ -236,7 +243,7 @@ public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleSe
 
 						ThreadPoolExecutor pool = new ThreadPoolExecutor(coreSize, maxSize, 
 								keepAliveSeconds, TimeUnit.SECONDS, queueSize < 10000000 ? new ArrayBlockingQueue<Runnable>(queueSize) : new LinkedBlockingQueue<Runnable>(queueSize),
-								new BasicThreadFactory.Builder().namingPattern(key + "-%d").build());
+								new BasicThreadFactory.Builder().namingPattern(key + "-%04d").build());
 						pool.allowCoreThreadTimeOut(allowCoreThreadTimeout);
 						logger.debug("Created thread pool '{}': coreSize={}, maxSize={}, keepAliveSeconds={}, queueSize={}, allowCoreThreadTimeout={}", 
 								new Object[]{key, coreSize, maxSize, keepAliveSeconds, queueSize, allowCoreThreadTimeout});
