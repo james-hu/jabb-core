@@ -31,28 +31,28 @@ public class BackoffStrategiesTest {
 
 
     @Test
-    public void testNoWait() {
-        BackoffStrategy noWait = BackoffStrategies.noWait();
+    public void testNoBackoff() {
+        BackoffStrategy noWait = BackoffStrategies.noBackoff();
         assertEquals(0L, noWait.computeBackoffMilliseconds(failedAttempt(18, 9879L)));
     }
 
     @Test
-    public void testFixedWait() {
-        BackoffStrategy fixedWait = BackoffStrategies.fixedWait(1000L, TimeUnit.MILLISECONDS);
+    public void testFixedBackoff() {
+        BackoffStrategy fixedWait = BackoffStrategies.fixedBackoff(1000L, TimeUnit.MILLISECONDS);
         assertEquals(1000L, fixedWait.computeBackoffMilliseconds(failedAttempt(12, 6546L)));
     }
 
     @Test
-    public void testIncrementingWait() {
-        BackoffStrategy incrementingWait = BackoffStrategies.incrementingWait(500L, TimeUnit.MILLISECONDS, 100L, TimeUnit.MILLISECONDS);
+    public void testIncrementingBackoff() {
+        BackoffStrategy incrementingWait = BackoffStrategies.linearBackoff(500L, TimeUnit.MILLISECONDS, 100L, TimeUnit.MILLISECONDS);
         assertEquals(500L, incrementingWait.computeBackoffMilliseconds(failedAttempt(1, 6546L)));
         assertEquals(600L, incrementingWait.computeBackoffMilliseconds(failedAttempt(2, 6546L)));
         assertEquals(700L, incrementingWait.computeBackoffMilliseconds(failedAttempt(3, 6546L)));
     }
 
     @Test
-    public void testRandomWait() {
-        BackoffStrategy randomWait = BackoffStrategies.randomWait(1000L, TimeUnit.MILLISECONDS, 2000L, TimeUnit.MILLISECONDS);
+    public void testRandomBackoff() {
+        BackoffStrategy randomWait = BackoffStrategies.randomBackoff(1000L, TimeUnit.MILLISECONDS, 2000L, TimeUnit.MILLISECONDS);
         Set<Long> times = Sets.newHashSet();
         times.add(randomWait.computeBackoffMilliseconds(failedAttempt(1, 6546L)));
         times.add(randomWait.computeBackoffMilliseconds(failedAttempt(1, 6546L)));
@@ -67,7 +67,7 @@ public class BackoffStrategiesTest {
 
     @Test
     public void testRandomWaitWithoutMinimum() {
-        BackoffStrategy randomWait = BackoffStrategies.randomWait(2000L, TimeUnit.MILLISECONDS);
+        BackoffStrategy randomWait = BackoffStrategies.randomBackoff(2000L, TimeUnit.MILLISECONDS);
         Set<Long> times = Sets.newHashSet();
         times.add(randomWait.computeBackoffMilliseconds(failedAttempt(1, 6546L)));
         times.add(randomWait.computeBackoffMilliseconds(failedAttempt(1, 6546L)));
@@ -82,7 +82,7 @@ public class BackoffStrategiesTest {
 
     @Test
     public void testExponential() {
-        BackoffStrategy exponentialWait = BackoffStrategies.exponentialWait();
+        BackoffStrategy exponentialWait = BackoffStrategies.exponentialBackoff();
         assertTrue(exponentialWait.computeBackoffMilliseconds(failedAttempt(1, 0)) == 2);
         assertTrue(exponentialWait.computeBackoffMilliseconds(failedAttempt(2, 0)) == 4);
         assertTrue(exponentialWait.computeBackoffMilliseconds(failedAttempt(3, 0)) == 8);
@@ -92,8 +92,8 @@ public class BackoffStrategiesTest {
     }
 
     @Test
-    public void testExponentialWithMaximumWait() {
-        BackoffStrategy exponentialWait = BackoffStrategies.exponentialWait(40, TimeUnit.MILLISECONDS);
+    public void testExponentialWithMaximumBackoff() {
+        BackoffStrategy exponentialWait = BackoffStrategies.exponentialBackoff(40, TimeUnit.MILLISECONDS);
         assertTrue(exponentialWait.computeBackoffMilliseconds(failedAttempt(1, 0)) == 2);
         assertTrue(exponentialWait.computeBackoffMilliseconds(failedAttempt(2, 0)) == 4);
         assertTrue(exponentialWait.computeBackoffMilliseconds(failedAttempt(3, 0)) == 8);
@@ -105,8 +105,8 @@ public class BackoffStrategiesTest {
     }
 
     @Test
-    public void testExponentialWithMultiplierAndMaximumWait() {
-        BackoffStrategy exponentialWait = BackoffStrategies.exponentialWait(1000, 50000, TimeUnit.MILLISECONDS);
+    public void testExponentialWithMultiplierAndMaximumBackoff() {
+        BackoffStrategy exponentialWait = BackoffStrategies.exponentialBackoff(1000, 50000, TimeUnit.MILLISECONDS);
         assertTrue(exponentialWait.computeBackoffMilliseconds(failedAttempt(1, 0)) == 2000);
         assertTrue(exponentialWait.computeBackoffMilliseconds(failedAttempt(2, 0)) == 4000);
         assertTrue(exponentialWait.computeBackoffMilliseconds(failedAttempt(3, 0)) == 8000);
@@ -119,7 +119,7 @@ public class BackoffStrategiesTest {
 
     @Test
     public void testFibonacci() {
-        BackoffStrategy fibonacciWait = BackoffStrategies.fibonacciWait();
+        BackoffStrategy fibonacciWait = BackoffStrategies.fibonacciBackoff();
         assertTrue(fibonacciWait.computeBackoffMilliseconds(failedAttempt(1, 0L)) == 1L);
         assertTrue(fibonacciWait.computeBackoffMilliseconds(failedAttempt(2, 0L)) == 1L);
         assertTrue(fibonacciWait.computeBackoffMilliseconds(failedAttempt(3, 0L)) == 2L);
@@ -129,8 +129,8 @@ public class BackoffStrategiesTest {
     }
 
     @Test
-    public void testFibonacciWithMaximumWait() {
-        BackoffStrategy fibonacciWait = BackoffStrategies.fibonacciWait(10L, TimeUnit.MILLISECONDS);
+    public void testFibonacciWithMaximumBackoff() {
+        BackoffStrategy fibonacciWait = BackoffStrategies.fibonacciBackoff(10L, TimeUnit.MILLISECONDS);
         assertTrue(fibonacciWait.computeBackoffMilliseconds(failedAttempt(1, 0L)) == 1L);
         assertTrue(fibonacciWait.computeBackoffMilliseconds(failedAttempt(2, 0L)) == 1L);
         assertTrue(fibonacciWait.computeBackoffMilliseconds(failedAttempt(3, 0L)) == 2L);
@@ -142,8 +142,8 @@ public class BackoffStrategiesTest {
     }
 
     @Test
-    public void testFibonacciWithMultiplierAndMaximumWait() {
-        BackoffStrategy fibonacciWait = BackoffStrategies.fibonacciWait(1000L, 50000L, TimeUnit.MILLISECONDS);
+    public void testFibonacciWithMultiplierAndMaximumBackoff() {
+        BackoffStrategy fibonacciWait = BackoffStrategies.fibonacciBackoff(1000L, 50000L, TimeUnit.MILLISECONDS);
         assertTrue(fibonacciWait.computeBackoffMilliseconds(failedAttempt(1, 0L)) == 1000L);
         assertTrue(fibonacciWait.computeBackoffMilliseconds(failedAttempt(2, 0L)) == 1000L);
         assertTrue(fibonacciWait.computeBackoffMilliseconds(failedAttempt(3, 0L)) == 2000L);
