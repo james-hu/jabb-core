@@ -61,7 +61,7 @@ public class ProcessorStressing {
 		System.out.println("********* All done. ********");
 	}
 
-	@Test
+	//@Test
 	public void stressSpeed(){
 		ArrayBlockingQueue<String> stringQueue  = new ArrayBlockingQueue<String>(600000);
 		QueueConsumerGroup<String> consumers = new QueueConsumerGroup<String>(stringQueue,

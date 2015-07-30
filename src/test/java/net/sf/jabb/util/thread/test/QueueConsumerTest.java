@@ -42,7 +42,7 @@ public class QueueConsumerTest {
 		}
 	}
 	
-	@Test
+	//@Test
 	public void sample() {
 		ArrayList<QueueConsumer<String>> processors = new ArrayList<QueueConsumer<String>>(20);
 		for (int i = 0; i < 20; i ++){
@@ -67,7 +67,7 @@ public class QueueConsumerTest {
 
 	
 	//@Ignore
-	@Test
+	//@Test
 	public void simple(){
 		ArrayBlockingQueue<String> stringQueue  = new ArrayBlockingQueue<String>(100);
 		TestStringProcessor stringConsumer  = new TestStringProcessor(stringQueue);
@@ -110,7 +110,7 @@ public class QueueConsumerTest {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Test
+	//@Test
 	public void complex(){
 		QueueConsumerGroup<String> consumers = new QueueConsumerGroup<String>(200,
 				new TestStringProcessor(),
@@ -155,7 +155,7 @@ public class QueueConsumerTest {
 		System.out.println("EXIT");
 	}
 
-	@Test
+	//@Test
 	public void batchNoWait(){
 		ArrayBlockingQueue<String> stringQueue  = new ArrayBlockingQueue<String>(200);
 		TestStringBatchUniqueProcessor stringConsumer  = new TestStringBatchUniqueProcessor(stringQueue);
@@ -199,7 +199,7 @@ public class QueueConsumerTest {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Test
+	//@Test
 	public void batchWait(){
 		ArrayBlockingQueue<String> stringQueue  = new ArrayBlockingQueue<String>(200);
 		QueueConsumerGroup<String> consumers = new QueueConsumerGroup<String>(stringQueue,

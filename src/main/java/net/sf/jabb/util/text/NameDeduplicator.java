@@ -19,7 +19,7 @@ package net.sf.jabb.util.text;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.jabb.util.col.PutIfAbsentMap;
-import net.sf.jabb.util.thread.Sequencer;
+import net.sf.jabb.util.parallel.Sequencer;
 
 
 /**
