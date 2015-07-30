@@ -16,8 +16,8 @@ import javax.persistence.Transient;
 import net.sf.jabb.util.bean.DoubleValueBean;
 import net.sf.jabb.util.col.MapValueFactory;
 import net.sf.jabb.util.col.PutIfAbsentMap;
+import net.sf.jabb.util.parallel.Sequencer;
 import net.sf.jabb.util.state.StateMachine.Transition;
-import net.sf.jabb.util.thread.Sequencer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.BiMap;

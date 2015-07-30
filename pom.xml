@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.jabb</groupId>
 	<artifactId>jabb-core</artifactId>
-	<version>1.0.84</version>
+	<version>1.0.85</version>
 	<name>JABB</name>
 	<url>http://jabb.sourceforge.net/</url>
 	<description>JABB is a collection of reusable Java components. </description>
@@ -333,6 +333,12 @@
 			<version>7.4.3</version>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>co.paralleluniverse</groupId>
+			<artifactId>quasar-core</artifactId>
+			<version>0.7.2</version>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -407,8 +413,12 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.18.1</version>
-				<configuration>
+		        <version>2.18.1</version>
+		        <configuration>
+					<excludes>
+						<exclude>**/*RateTest.java</exclude>
+						<exclude>**/*PerformanceTest.java</exclude>
+					</excludes>
 					<argLine>-Xmx2048m</argLine>
 				</configuration>
 			</plugin>

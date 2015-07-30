@@ -1,8 +1,8 @@
-package net.sf.jabb.util.misctest;
+package net.sf.jabb.util.parallel;
 
 import static org.junit.Assert.*;
-import net.sf.jabb.util.thread.Sequencer;
-import net.sf.jabb.util.thread.RangedSequencer;
+import net.sf.jabb.util.parallel.RangedSequencer;
+import net.sf.jabb.util.parallel.Sequencer;
 
 import org.junit.Test;
 

@@ -19,7 +19,7 @@ package net.sf.jabb.camel;
 import java.nio.charset.Charset;
 
 import net.sf.jabb.netty.XmlDecoder;
-import net.sf.jabb.util.thread.Sequencer;
+import net.sf.jabb.util.parallel.Sequencer;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
