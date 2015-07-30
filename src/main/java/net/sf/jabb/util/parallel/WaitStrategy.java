@@ -34,7 +34,7 @@ public interface WaitStrategy {
     
     /**
      * This method will be called once an InterruptedException is thrown from within {@link #await(long)} method
-     * @param    the InterruptedException thrown from within {@link #await(long)} method
+     * @param e    the InterruptedException thrown from within {@link #await(long)} method
      */
     void handleInterruptedException(InterruptedException e);
 }
