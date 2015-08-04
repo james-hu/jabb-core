@@ -17,6 +17,7 @@
 
 package net.sf.jabb.util.parallel;
 
+import co.paralleluniverse.fibers.Fiber;
 import co.paralleluniverse.fibers.SuspendExecution;
 import co.paralleluniverse.strands.Strand;
 
@@ -30,6 +31,7 @@ public final class WaitStrategies {
 
     private static final WaitStrategy THREAD_SLEEP_STRATEGY = new ThreadSleepWaitStrategy();
     private static WaitStrategy STRAND_SLEEP_STRATEGY;
+    private static WaitStrategy FIBER_SLEEP_STRATEGY;
 
     private WaitStrategies() {
     }
@@ -60,11 +62,30 @@ public final class WaitStrategies {
         return STRAND_SLEEP_STRATEGY;
     }
 
+    /**
+     * Returns a wait strategy that puts the current {@link co.paralleluniverse.fibers.Fiber} to sleep while waiting.
+     * This makes it suitable for being called from {@link co.paralleluniverse.fibers.Fiber}s.
+     *
+     * @return a wait strategy that puts the current {@link co.paralleluniverse.fibers.Fiber} to sleep while waiting
+     */
+    public static WaitStrategy fiberSleepStrategy() {
+    	if (FIBER_SLEEP_STRATEGY == null){
+    		synchronized(WaitStrategies.class){
+    			if (FIBER_SLEEP_STRATEGY == null){
+    				FIBER_SLEEP_STRATEGY = new FiberSleepWaitStrategy();
+    			}
+    		}
+    	}
+        return FIBER_SLEEP_STRATEGY;
+    }
+
     private static class ThreadSleepWaitStrategy implements WaitStrategy {
 
         @Override
         public void await(long timeInMilliseconds) throws InterruptedException {
-            Thread.sleep(timeInMilliseconds);
+        	if(timeInMilliseconds > 0){
+        		Thread.sleep(timeInMilliseconds);
+        	}
         }
 
 		@Override
@@ -77,17 +98,40 @@ public final class WaitStrategies {
 
     	@Override
     	public void await(long timeInMilliseconds) throws InterruptedException {
-    		try {
-    			Strand.sleep(timeInMilliseconds);
-    		} catch (SuspendExecution e) {
-    			// this is not a real exception
-    			// leave this method without instrumentation should be fine
-    		}
+        	if(timeInMilliseconds > 0){
+        		try {
+        			Strand.sleep(timeInMilliseconds);
+        		} catch (SuspendExecution e) {
+        			// this is not a real exception
+        			// leave this method without instrumentation should be fine
+        		}
+        	}
     	}
 
     	@Override
     	public void handleInterruptedException(InterruptedException e) {
     		Strand.currentStrand().interrupt();
+    	}
+    	
+    }
+    
+    private static class FiberSleepWaitStrategy implements WaitStrategy{
+
+    	@Override
+    	public void await(long timeInMilliseconds) throws InterruptedException {
+        	if(timeInMilliseconds > 0){
+        		try {
+        			Fiber.sleep(timeInMilliseconds);
+        		} catch (SuspendExecution e) {
+        			// this is not a real exception
+        			// leave this method without instrumentation should be fine
+        		}
+        	}
+    	}
+
+    	@Override
+    	public void handleInterruptedException(InterruptedException e) {
+    		Fiber.currentFiber().interrupt();
     	}
     	
     }
