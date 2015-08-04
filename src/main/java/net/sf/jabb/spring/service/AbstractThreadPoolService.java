@@ -35,7 +35,7 @@ import org.springframework.core.env.PropertyResolver;
  * @author James Hu
  *
  */
-public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleService {
+public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleService implements ThreadPoolService {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractThreadPoolService.class);
 	
 	protected PropertyResolver configurationsResolver;
@@ -148,12 +148,10 @@ public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleSe
 		this.setShutdownWaitSeconds(shutdownWaitSeconds);
 	}
 	
-	/**
-	 * Get a thread pool by its name.
-	 * If the thread pool has no configuration, default configurations will be used to creat it.
-	 * @param name  name of the thread pool
-	 * @return the thread pool
+	/* (non-Javadoc)
+	 * @see net.sf.jabb.spring.service.ThreadPoolService#get(java.lang.String)
 	 */
+	@Override
 	public ExecutorService get(String name){
 		if (!state.isRunning()){
 			throw new IllegalStateException("Thread pool service is not in running state");
@@ -163,6 +161,7 @@ public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleSe
 	
 	/**
 	 * Clear all the thread pools so that if any of them are needed later, they will be recreated.
+	 * However, no thread pool will be terminated inside this method.
 	 */
 	public void clear(){
 		if (threadPools != null){
@@ -223,6 +222,17 @@ public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleSe
 		}
 	}
 
+	@Override
+	public boolean shutdownAndAwaitTermination(String name, long waitSeconds){
+		ExecutorService pool = get(name);
+		boolean succeeded = shutdownAndAwaitTermination(pool, waitSeconds);
+		return succeeded;
+	}
+
+	@Override
+	public boolean shutdownAndAwaitTermination(String name){
+		return shutdownAndAwaitTermination(name, shutdownWaitSeconds);
+	}
 
 	/* (non-Javadoc)
 	 * @see net.sf.jabb.spring.service.AbstractSmartLifecycleService#doStart()
