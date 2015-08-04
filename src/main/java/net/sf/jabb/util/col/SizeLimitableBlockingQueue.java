@@ -16,16 +16,16 @@ import java.util.concurrent.locks.ReentrantLock;
  * whether the soft size limit has been reached, the underlying BlockingQueue instance is expected to have a <code>size()</code>
  * method with constant execution time. This assumption is valid for the following classes:
  * <ul>
- * 	<li>{@link ArrayBlockingQueue</li>
- * 	<li>{@link DelayQueue</li>
- * 	<li>{@link LinkedBlockingDeque</li>
- * 	<li>{@link LinkedBlockingQueue</li>
- * 	<li>{@link PriorityBlockingQueue</li>
- * 	<li>{@link SynchronousQueue</li>
+ * 	<li>{@link ArrayBlockingQueue}</li>
+ * 	<li>{@link DelayQueue}</li>
+ * 	<li>{@link LinkedBlockingDeque}</li>
+ * 	<li>{@link LinkedBlockingQueue}</li>
+ * 	<li>{@link PriorityBlockingQueue}</li>
+ * 	<li>{@link SynchronousQueue}</li>
  * </ul>
  * but not these:
  * <ul>
- * 	<li>{@link LinkedTransferQueue</li>
+ * 	<li>{@link LinkedTransferQueue}</li>
  * </ul>
  * However, it only adds performance overhead.
  * 
