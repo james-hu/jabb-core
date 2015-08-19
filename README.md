@@ -1,7 +1,7 @@
-jabb-core
-=========
+# jabb-core [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.sf.jabb/jabb-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.sf.jabb/jabb-core)
 
-Java Application Building Blocks (migrated from sf.net)
+
+Collection of reusable application building blocks that require Java 6. (migrated from sf.net)
 
 
 Before build
