@@ -22,7 +22,7 @@ public class JmsUtility {
 	 * @param e		the exception
 	 * @return		summary of the exception in one line
 	 */
-	static protected String exceptionSummary(JMSException e){
+	static public String exceptionSummary(JMSException e){
 		Throwable cause = e.getCause();
 		Exception linked = e.getLinkedException();
 		return "JMSException: " + e.getMessage() 
