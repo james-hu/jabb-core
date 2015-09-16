@@ -21,6 +21,7 @@ import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.PropertyResolver;
+import org.springframework.core.env.PropertySourcesPropertyResolver;
 
 /**
  * The service to provide thread pools.
@@ -148,6 +149,25 @@ public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleSe
 		this.setShutdownWaitSeconds(shutdownWaitSeconds);
 	}
 	
+	/**
+	 * Set configurations. This methods sets/overrides both the default configurations and the per-pool configurations.
+	 * @param commonPrefix	the common prefix in the keys, for example, "threadPools."
+	 * @param resolver		the configuration properties resolver
+	 */
+	protected void setConfigurations(String commonPrefix, PropertySourcesPropertyResolver resolver){
+		setConfigurationsCommonPrefix(commonPrefix);
+		setConfigurations(resolver);
+		
+		setDefaultCoreSize(resolver.getProperty(commonPrefix + "defaultCoreSize", Integer.class, defaultCoreSize));
+		setDefaultMaxSize(resolver.getProperty(commonPrefix + "defaultMaxSize", Integer.class, defaultMaxSize));
+		setDefaultKeepAliveSeconds(resolver.getProperty(commonPrefix + "defaultKeepAliveSeconds", Long.class, defaultKeepAliveSeconds));
+		setDefaultQueueSize(resolver.getProperty(commonPrefix + "defaultQueueSize", Integer.class, defaultQueueSize));
+		setDefaultAllowCoreThreadTimeout(resolver.getProperty(commonPrefix + "defaultAllowCoreThreadTimeout", Boolean.class, defaultAllowCoreThreadTimeout));
+		setShutdownWaitSeconds(resolver.getProperty(commonPrefix + "shutdownWaitSeconds", Long.class, shutdownWaitSeconds));
+	}
+
+
+	
 	/* (non-Javadoc)
 	 * @see net.sf.jabb.spring.service.ThreadPoolService#get(java.lang.String)
 	 */
@@ -245,11 +265,11 @@ public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleSe
 				new MapValueFactory<String, ThreadPoolExecutor>(){
 					@Override
 					public ThreadPoolExecutor createValue(String key) {
-						int coreSize = configurationsResolver.getProperty(key + ".coreSize", Integer.class, defaultCoreSize);
-						int maxSize = configurationsResolver.getProperty(key + ".maxSize", Integer.class, defaultMaxSize);
-						long keepAliveSeconds = configurationsResolver.getProperty(key + ".keepAliveSeconds", Long.class, defaultKeepAliveSeconds);
-						int queueSize = configurationsResolver.getProperty(key + ".queueSize", Integer.class, defaultQueueSize);
-						boolean allowCoreThreadTimeout = configurationsResolver.getProperty(key + ".allowCoreThreadTimeout", Boolean.class, defaultAllowCoreThreadTimeout);
+						int coreSize = configurationsResolver.getProperty(configurationsCommonPrefix + key + ".coreSize", Integer.class, defaultCoreSize);
+						int maxSize = configurationsResolver.getProperty(configurationsCommonPrefix + key + ".maxSize", Integer.class, defaultMaxSize);
+						long keepAliveSeconds = configurationsResolver.getProperty(configurationsCommonPrefix + key + ".keepAliveSeconds", Long.class, defaultKeepAliveSeconds);
+						int queueSize = configurationsResolver.getProperty(configurationsCommonPrefix + key + ".queueSize", Integer.class, defaultQueueSize);
+						boolean allowCoreThreadTimeout = configurationsResolver.getProperty(configurationsCommonPrefix + key + ".allowCoreThreadTimeout", Boolean.class, defaultAllowCoreThreadTimeout);
 
 						ThreadPoolExecutor pool = new ThreadPoolExecutor(coreSize, maxSize, 
 								keepAliveSeconds, TimeUnit.SECONDS, queueSize < 10000000 ? new ArrayBlockingQueue<Runnable>(queueSize) : new LinkedBlockingQueue<Runnable>(queueSize),
