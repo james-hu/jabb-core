@@ -5,6 +5,7 @@ package net.sf.jabb.spring.service;
 
 import net.sf.jabb.util.state.StartStopStateMachine;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.SmartLifecycle;
@@ -38,7 +39,23 @@ public abstract class AbstractSmartLifecycleService implements SmartLifecycle {
 	 * @param configResolver	the PropertyResolver (normally the Environment) containing the configurations
 	 */
 	protected void setLifecycleConfigurations(PropertyResolver configResolver){
-		setLifecycleConfigurations(configResolver, null);
+		setLifecycleConfigurations(configResolver, DEFAULT_CONFIG_PREFIX, null);
+	}
+	
+	/**
+	 * Configure isAutoStart and phase from properties.
+	 * For example, if the class name of the service is a.b.Xyz, then the properties will be some thing like:
+	 * <ul>
+	 * 	<li>lifecycle.a.b.Xyz.phase=3</li>
+	 * 	<li>lifecycle.a.b.Xyz.autoStart=true</li>
+	 * </ul>
+	 * This method is typically called from subclass after an instance of Environment is injected.
+	 * @param configResolver	the PropertyResolver (normally the Environment) containing the configurations
+	 * @param interfaceClass	the interface implemented. If it is not null, properties named after the interface will be get first,
+	 * 							and then the values can be overridden by the properties named after the implementation.
+	 */
+	protected void setLifecycleConfigurations(PropertyResolver configResolver, Class<?> interfaceClass){
+		setLifecycleConfigurations(configResolver, DEFAULT_CONFIG_PREFIX, interfaceClass);
 	}
 	
 	/**
@@ -51,15 +68,26 @@ public abstract class AbstractSmartLifecycleService implements SmartLifecycle {
 	 * This method is typically called from subclass after an instance of Environment is injected.
 	 * @param configResolver	the PropertyResolver (normally the Environment) containing the configurations
 	 * @param configurationsCommonPrefix	the common prefix of those configuration items, for example 'myapp.common.lifecycle.'.
-	 * 										If it is null, then the default one 'lifecycle.' will be used.
+	 * 										If it is null, then there will be no prefix prepended.
+	 * @param interfaceClass	the interface implemented. If it is not null, properties with the following names will be tried:
+	 * 							<ol>
+	 * 								<li>configurationsCommonPrefix + StringUtils.uncapitalize(interfaceClass.getSimpleName()) + ".autoStart"</li>
+	 * 								<li>configurationsCommonPrefix + interfaceClass.getName() + ".autoStart"</li>
+	 * 								<li>configurationsCommonPrefix + this.getClass().getName() + ".autoStart"</li>
+	 * 							</ol>
+	 * 							and the latter ones override the former ones.
 	 */
-	protected void setLifecycleConfigurations(PropertyResolver configResolver, String configurationsCommonPrefix){
+	protected void setLifecycleConfigurations(PropertyResolver configResolver, String configurationsCommonPrefix, Class<?> interfaceClass){
 		String className = this.getClass().getName();
 		if (configurationsCommonPrefix == null){
-			configurationsCommonPrefix = DEFAULT_CONFIG_PREFIX;
+			configurationsCommonPrefix = "";
 		}
-		this.phase = configResolver.getProperty(configurationsCommonPrefix + className + ".phase", Integer.class, 0);
-		this.isAutoStart = configResolver.getProperty(configurationsCommonPrefix + className + ".autoStart", Boolean.class, false);
+		this.phase = configResolver.getProperty(configurationsCommonPrefix + className + ".phase", Integer.class, 
+				interfaceClass == null ? 0 : configResolver.getProperty(configurationsCommonPrefix + interfaceClass.getName() + ".phase", Integer.class, 
+						configResolver.getProperty(configurationsCommonPrefix + StringUtils.uncapitalize(interfaceClass.getSimpleName()) + ".phase", Integer.class, 0)));
+		this.isAutoStart = configResolver.getProperty(configurationsCommonPrefix + className + ".autoStart", Boolean.class, 
+				interfaceClass == null ? false : configResolver.getProperty(configurationsCommonPrefix + interfaceClass.getName() + ".autoStart", Boolean.class, 
+						configResolver.getProperty(configurationsCommonPrefix + StringUtils.uncapitalize(interfaceClass.getSimpleName()) + ".autoStart", Boolean.class, false)));
 	}
 
 
