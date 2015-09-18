@@ -191,14 +191,14 @@
 		</dependency>
 		<dependency>
 			<groupId>com.chenlb.mmseg4j</groupId>
-			<artifactId>mmseg4j-core</artifactId>
-			<version>1.9.0</version>
+			<artifactId>mmseg4j-core-with-dic</artifactId>
+			<version>1.8.6</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc14</artifactId>
-			<version>10.2.0.1.0</version>
+			<version>10.2.0.4.0</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
