@@ -517,4 +517,16 @@
 			</properties>
 		</profile>
 	</profiles>
+	<repositories>
+		<repository>
+			<id>project.local</id>
+			<name>project local repo</name>
+			<url>file:${project.basedir}/repo</url>
+		</repository>
+		<repository>
+			<id>bintray.james-hu</id>
+			<name>bintray james-hu</name>
+			<url>http://dl.bintray.com/james-hu/maven</url>
+		</repository>
+	</repositories>
 </project>
