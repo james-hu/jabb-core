@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.jabb</groupId>
 	<artifactId>jabb-core</artifactId>
-	<version>1.0.93</version>
+	<version>1.0.94</version>
 	<name>JABB</name>
 	<url>http://jabb.sourceforge.net/</url>
 	<description>JABB is a collection of reusable Java components. </description>
@@ -517,4 +517,16 @@
 			</properties>
 		</profile>
 	</profiles>
+	<repositories>
+		<repository>
+			<id>project.local</id>
+			<name>project local repo</name>
+			<url>file:${project.basedir}/repo</url>
+		</repository>
+		<repository>
+			<id>bintray.james-hu</id>
+			<name>bintray james-hu</name>
+			<url>http://dl.bintray.com/james-hu/maven</url>
+		</repository>
+	</repositories>
 </project>
