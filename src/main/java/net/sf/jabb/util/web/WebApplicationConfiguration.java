@@ -212,7 +212,7 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 		try{
 			return menuItemPaths.get(menuName).get(path);
 		}catch(Exception e){
-			log.error("Error when getting menu item for: menuName='" + menuName + "', path='" + path + "'");
+			log.error("Error when getting menu item for: menuName='" + menuName + "', path='" + path + "'", e);
 			return null;
 		}
 	}
