@@ -107,7 +107,7 @@ public class WebApplicationConfiguration implements InitializingBean, Applicatio
 				}
 				
 				// Then look into all the methods
-				for(Method method : beanClass.getDeclaredMethods()) {
+				for(Method method : beanClass.getMethods()) {
 					RequestMapping methodRequestMapping = method.getAnnotation(RequestMapping.class);
 					WebMenu methodWebMenu = method.getAnnotation(WebMenu.class);
 					if (methodWebMenu != null && methodWebMenu.value().length() != 0){	// not hidden
