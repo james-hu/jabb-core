@@ -13,6 +13,7 @@ import net.sf.jabb.stdr.StdrUtil;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -68,10 +69,10 @@ public class WebMenuInterceptor extends HandlerInterceptorAdapter {
 			WebMenu methodWebMenu = handlerMethod.getMethodAnnotation(WebMenu.class);
 			
 			if (methodRequestMapping != null && methodWebMenu != null){
-				Class<?> controllerClass = handlerMethod.getMethod().getDeclaringClass();
+				Class<?> controllerClass = handlerMethod.getBeanType();	// in case the method is declared in parent class, the child class is got here
 
-				RequestMapping classRequestMapping = controllerClass.getAnnotation(RequestMapping.class);
-				WebMenu classWebMenu = controllerClass.getAnnotation(WebMenu.class);
+				RequestMapping classRequestMapping = AnnotationUtils.findAnnotation(controllerClass, RequestMapping.class);
+				WebMenu classWebMenu = AnnotationUtils.findAnnotation(controllerClass, WebMenu.class);
 				
 				
 				MenuItemExt classMenuItem = new MenuItemExt(classWebMenu, classRequestMapping);
