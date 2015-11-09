@@ -144,6 +144,10 @@
 					<artifactId>asm</artifactId>
 					<groupId>asm</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>jta</artifactId>
+					<groupId>javax.transaction</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
