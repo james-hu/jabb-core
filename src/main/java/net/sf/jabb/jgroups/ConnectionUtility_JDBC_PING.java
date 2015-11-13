@@ -28,7 +28,7 @@ public class ConnectionUtility_JDBC_PING extends JDBC_PING {
 		DataSource ds = ConnectionUtility.getDataSource(name);
 		if (ds == null){
 			throw new IllegalArgumentException(
-                    "Data source name defined in 'datasource_jndi_name' property is not bound: " + name);
+                    "Data source name defined in 'datasource_jndi_name' property is not found: " + name);
 		}
 		return ds;
     }
