@@ -279,7 +279,9 @@ public class ConnectionUtility {
 							dataSources.remove(dsName);
 							break;
 						}
-					}catch(Exception e){
+					}catch(NoClassDefFoundError e){
+						// ignore
+					}catch(Throwable e){
 						log.error("Error when destroying data source '" + dsName + "' using provider '" + dspName + "'", e);
 					}
 				}
@@ -303,7 +305,9 @@ public class ConnectionUtility {
 						if (dsp.destroyDataSource(ds)){
 							break;
 						}
-					}catch(Exception e){
+					}catch(NoClassDefFoundError e){
+						// ignore
+					}catch(Throwable e){
 						log.error("Error when destroying data source '" + dsName + "' using provider '" + dspName + "'", e);
 					}
 				}
