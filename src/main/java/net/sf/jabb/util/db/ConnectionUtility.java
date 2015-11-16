@@ -36,6 +36,7 @@ import net.sf.jabb.util.prop.PropertiesLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.DisposableBean;
 
 /**
  * 数据库连接工具，它提供有关数据库连接获取、关闭的方法。
@@ -464,5 +465,23 @@ public class ConnectionUtility {
 			}
 		}
 		return total;
+	}
+	
+	/**
+	 * This class handles the disposal of data sources created by Connection Utility
+	 * @author James Hu
+	 *
+	 */
+	public static class DataSourceLifecycleManager implements DisposableBean{
+		@Override
+		public void destroy() throws Exception {
+			log.debug("Destroying all data sources.");
+			try{
+				destroyDataSources();
+			}catch(Throwable t){
+				log.warn("Error when destroying all data sources.", t);
+			}
+		}
+		
 	}
 }
