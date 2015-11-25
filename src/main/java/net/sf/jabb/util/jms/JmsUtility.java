@@ -58,6 +58,23 @@ public class JmsUtility {
 		}
 	}
 
+	static public void closeSilently(MessageProducer sender, Session session){
+		if (sender != null){
+			try{
+				sender.close();
+			}catch(Exception e){
+				// ignore
+			}
+		}
+		if (session != null){
+			try{
+				session.close();
+			}catch(Exception e){
+				// ignore
+			}
+		}
+	}
+
 	static public void closeSilently(MessageConsumer consumer, Session session){
 		if (consumer != null){
 			try{
