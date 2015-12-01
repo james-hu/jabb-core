@@ -44,7 +44,7 @@ public class SimpleBigIntegerStatistics implements NumberStatistics<BigInteger>,
 	@SuppressWarnings("unchecked")
 	@Override
 	public void merge(NumberStatistics<? extends Number> other) {
-		if (other != null){
+		if (other != null && other.getCount() > 0){
 			if (other.getSum() instanceof BigInteger){
 				mergeBigInteger((NumberStatistics<? extends BigInteger>)other);
 			}else{
