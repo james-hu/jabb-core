@@ -153,9 +153,8 @@ public class ImmutableNumberStatistics<T extends Number> implements NumberStatis
 	}
 
 	@Override
-	public void reset(T newCount, T newSum, T newMin, T newMax) {
-		Validate.notNull(newCount);
-		this.count = newCount.longValue();
+	public void reset(long newCount, T newSum, T newMin, T newMax) {
+		this.count = newCount;
 		this.sum = newSum;
 		this.min = newMin;
 		this.max = newMax;
