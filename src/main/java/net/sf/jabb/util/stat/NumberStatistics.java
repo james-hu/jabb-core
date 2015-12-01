@@ -70,7 +70,7 @@ public interface NumberStatistics<T extends Number> {
 
 	/**
 	 * 取得加总值。如果此前并没有提供任何值给统计用，则返回0。
-	 * @return	累加值
+	 * @return	累加值. It can be null only in the case that the implementation cannot initialize a return value representing zero.
 	 */
 	public T getSum();
 
@@ -90,6 +90,6 @@ public interface NumberStatistics<T extends Number> {
 	 * Reset to initial status.<br>
 	 * 回复到初始状态。
 	 */
-	public void reset(T newCount, T newSum, T newMin, T newMax);
+	public void reset(long newCount, T newSum, T newMin, T newMax);
 
 }

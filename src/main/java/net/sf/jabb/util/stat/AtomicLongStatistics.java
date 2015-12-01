@@ -126,7 +126,7 @@ public class AtomicLongStatistics implements NumberStatistics<Long>, Serializabl
 	}
 
 	@Override
-	public void reset(Long newCount, Long newSum, Long newMin, Long newMax) {
+	public void reset(long newCount, Long newSum, Long newMin, Long newMax) {
 		count.set(newCount);
 		sum.set(newSum);
 		minMax.reset(newMin, newMax);
@@ -154,7 +154,9 @@ public class AtomicLongStatistics implements NumberStatistics<Long>, Serializabl
 	@Override
 	public void merge(NumberStatistics<? extends Number> other){
 		if (other != null){
-			merge(other.getCount(), other.getSum().longValue(), other.getMin().longValue(), other.getMax().longValue());
+			if (other.getCount() > 0){
+				merge(other.getCount(), other.getSum().longValue(), other.getMin().longValue(), other.getMax().longValue());
+			}
 		}
 	}
 	
