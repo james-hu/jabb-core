@@ -1,16 +1,25 @@
 package net.sf.jabb.spring.service;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
 
 public interface ThreadPoolService {
 
 	/**
 	 * Get a thread pool by its name.
 	 * If the thread pool has no configuration, default configurations will be used to create it.
-	 * @param name  name of the thread pool
+	 * @param name  name of the thread pool. If the name contains "Scheduled" or "Schd" then a ScheduledExecutorService will be created and/or returned.
 	 * @return the thread pool, never null
 	 */
 	public ExecutorService get(String name);
+
+	/**
+	 * get a ScheduledExecutorService thread pool by its name.
+	 * If the thread pool has no configuration, default configurations will be used to create it.
+	 * @param name name of the thread pool, must contain "Scheduled" or "Schd".
+	 * @return	the thread pool, never null
+	 */
+	public ScheduledExecutorService getScheduled(String name);
 
 	/**
 	 * Do a two-phase/two-attempts shutdown of a thread pool.
