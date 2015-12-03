@@ -10,6 +10,9 @@ import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -39,10 +42,14 @@ import org.springframework.core.env.PropertySourcesPropertyResolver;
 public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleService implements ThreadPoolService {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractThreadPoolService.class);
 	
+	public static final String KEYWORD_SCHEDULED = "Scheduled";
+	public static final String KEYWORD_SCHD = "Schd";
+	
+	
 	protected PropertyResolver configurationsResolver;
 	protected String configurationsCommonPrefix;
 	
-	protected Map<String, ThreadPoolExecutor> threadPools;
+	protected Map<String, ? extends ThreadPoolExecutor> threadPools;
 	protected int defaultCoreSize;
 	protected int defaultMaxSize;
 	protected long defaultKeepAliveSeconds;
@@ -179,6 +186,16 @@ public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleSe
 		return threadPools.get(name);
 	}
 	
+	@Override
+	public ScheduledExecutorService getScheduled(String name){
+		ExecutorService svc = get(name);
+		if (svc instanceof ScheduledExecutorService){
+			return (ScheduledExecutorService)svc;
+		}else{
+			throw new IllegalArgumentException("The thread pool named '" + name + "'is not of type ScheduledExecutorService: " + svc);
+		}
+	}
+	
 	/**
 	 * Clear all the thread pools so that if any of them are needed later, they will be recreated.
 	 * However, no thread pool will be terminated inside this method.
@@ -195,7 +212,7 @@ public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleSe
 	 */
 	public Map<String, ThreadPoolStatus> getStatusOfThreadPools(){
 		Map<String, ThreadPoolStatus> result = new TreeMap<String, ThreadPoolStatus>();
-		for (Map.Entry<String, ThreadPoolExecutor> entry: threadPools.entrySet()){
+		for (Map.Entry<String, ? extends ThreadPoolExecutor> entry: threadPools.entrySet()){
 			ThreadPoolStatus status = new ThreadPoolStatus();
 			status.setName(entry.getKey());
 			ThreadPoolExecutor pool = entry.getValue();
@@ -271,12 +288,18 @@ public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleSe
 						int queueSize = configurationsResolver.getProperty(configurationsCommonPrefix + key + ".queueSize", Integer.class, defaultQueueSize);
 						boolean allowCoreThreadTimeout = configurationsResolver.getProperty(configurationsCommonPrefix + key + ".allowCoreThreadTimeout", Boolean.class, defaultAllowCoreThreadTimeout);
 
-						ThreadPoolExecutor pool = new ThreadPoolExecutor(coreSize, maxSize, 
-								keepAliveSeconds, TimeUnit.SECONDS, queueSize < 10000000 ? new ArrayBlockingQueue<Runnable>(queueSize) : new LinkedBlockingQueue<Runnable>(queueSize),
-								new BasicThreadFactory.Builder().namingPattern(key + "-%04d").build());
-						pool.allowCoreThreadTimeOut(allowCoreThreadTimeout);
-						logger.debug("Created thread pool '{}': coreSize={}, maxSize={}, keepAliveSeconds={}, queueSize={}, allowCoreThreadTimeout={}", 
-								new Object[]{key, coreSize, maxSize, keepAliveSeconds, queueSize, allowCoreThreadTimeout});
+						ThreadFactory threadFactory = new BasicThreadFactory.Builder().namingPattern(key + "-%04d").build();
+						ThreadPoolExecutor pool;
+						if (key.contains(KEYWORD_SCHEDULED) || key.contains(KEYWORD_SCHD)){
+							pool = new ScheduledThreadPoolExecutor(coreSize, threadFactory);
+						}else{
+							pool = new ThreadPoolExecutor(coreSize, maxSize, 
+									keepAliveSeconds, TimeUnit.SECONDS, queueSize < 10000000 ? new ArrayBlockingQueue<Runnable>(queueSize) : new LinkedBlockingQueue<Runnable>(queueSize),
+									threadFactory);
+							pool.allowCoreThreadTimeOut(allowCoreThreadTimeout);
+							logger.debug("Created thread pool '{}': coreSize={}, maxSize={}, keepAliveSeconds={}, queueSize={}, allowCoreThreadTimeout={}", 
+									new Object[]{key, coreSize, maxSize, keepAliveSeconds, queueSize, allowCoreThreadTimeout});
+						}
 						return pool;
 					}
 		});
