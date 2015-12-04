@@ -42,39 +42,39 @@ public class SimpleLongStatistics implements NumberStatistics<Long>, Serializabl
 
 	@Override
 	public void merge(long count, Long sum, Long min, Long max) {
-		this.count += count;
-		if (sum != null){
-			this.sum += sum;
-		}
 		if (min != null){
 			evaluateMinMax(min);
 		}
 		if (max != null){
 			evaluateMinMax(max);
 		}
+		this.count += count;
+		if (sum != null){
+			this.sum += sum;
+		}
 	}
 
 	@Override
 	public void evaluate(int value) {
+		evaluateMinMax(value);
 		count ++;
 		sum += value;
-		evaluateMinMax(value);
 	}
 
 	@Override
 	public void evaluate(long value) {
+		evaluateMinMax(value);
 		count ++;
 		sum += value;
-		evaluateMinMax(value);
 	}
 
 	@Override
 	public void evaluate(BigInteger value) {
 		if (value != null){
 			long x = value.longValue();
+			evaluateMinMax(x);
 			count ++;
 			sum += x;
-			evaluateMinMax(x);
 		}
 	}
 

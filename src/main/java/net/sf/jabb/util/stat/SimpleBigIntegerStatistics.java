@@ -17,8 +17,8 @@ public class SimpleBigIntegerStatistics implements NumberStatistics<BigInteger>,
 
 	protected BigInteger min;
 	protected BigInteger max;
-	protected long count;
-	protected BigInteger sum;
+	protected long count = 0;
+	protected BigInteger sum = BigInteger.ZERO;
 	
 	protected void evaluateMinMax(BigInteger x){
 		if (count <= 0){
@@ -50,10 +50,10 @@ public class SimpleBigIntegerStatistics implements NumberStatistics<BigInteger>,
 			}else{
 				long otherCount = other.getCount();
 				if (otherCount > 0){
-					count += otherCount;
-					sum.add(BigInteger.valueOf(other.getSum().longValue()));
 					evaluateMinMax(BigInteger.valueOf(other.getMin().longValue()));
 					evaluateMinMax(BigInteger.valueOf(other.getMax().longValue()));
+					count += otherCount;
+					sum = sum.add(BigInteger.valueOf(other.getSum().longValue()));
 				}
 			}
 		}
@@ -61,16 +61,14 @@ public class SimpleBigIntegerStatistics implements NumberStatistics<BigInteger>,
 
 	@Override
 	public void merge(long count, BigInteger sum, BigInteger min, BigInteger max) {
-		this.count += count;
-		if (sum != null){
-			this.sum = this.sum.add(sum);
-		}
 		if (min != null){
 			evaluateMinMax(min);
 		}
 		if (max != null){
 			evaluateMinMax(max);
 		}
+		this.count += count;
+		this.sum = this.sum.add(sum);
 	}
 
 	@Override
@@ -86,9 +84,9 @@ public class SimpleBigIntegerStatistics implements NumberStatistics<BigInteger>,
 	@Override
 	public void evaluate(BigInteger value) {
 		if (value != null){
+			evaluateMinMax(value);
 			count ++;
 			sum = sum.add(value);
-			evaluateMinMax(value);
 		}
 	}
 
