@@ -9,6 +9,7 @@ import java.math.BigInteger;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Immutable statistics holder.
@@ -66,6 +67,16 @@ public class ImmutableNumberStatistics<T extends Number> implements NumberStatis
 			.isEquals();
 	}
 
+	@Override
+	public int hashCode(){
+		return new HashCodeBuilder()
+				.append(count)
+				.append(sum)
+				.append(min)
+				.append(max)
+				.toHashCode();
+	}
+	
 
 	@Override
 	public String toString(){

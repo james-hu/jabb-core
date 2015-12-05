@@ -22,6 +22,7 @@ import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * 提供基本的统计信息，包括：
@@ -41,6 +42,15 @@ public class AtomicLongStatistics implements NumberStatistics<Long>, Serializabl
 		count = new AtomicLong();
 		sum = new AtomicLong();
 		minMax = new ConcurrentLongMinMaxHolder();
+	}
+	
+	@Override
+	public int hashCode(){
+		return new HashCodeBuilder()
+				.append(count)
+				.append(sum)
+				.append(minMax)
+				.toHashCode();
 	}
 	
 	@Override
