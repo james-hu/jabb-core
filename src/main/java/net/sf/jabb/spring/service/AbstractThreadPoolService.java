@@ -277,7 +277,7 @@ public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleSe
 	@Override
 	protected void doStart() throws Exception {
 		logger.debug("Start with configuration: defaultCoreSize={}, defaultMaxSize={}, defaultKeepAliveSeconds={}, defaultQueueSize={}, defaultAllowCoreThreadTimeout={}, shutdownWaitSeconds={}", 
-				new Object[]{defaultCoreSize, defaultMaxSize, defaultKeepAliveSeconds, defaultQueueSize, defaultAllowCoreThreadTimeout, shutdownWaitSeconds});
+				defaultCoreSize, defaultMaxSize, defaultKeepAliveSeconds, defaultQueueSize, defaultAllowCoreThreadTimeout, shutdownWaitSeconds);
 		this.threadPools = new PutIfAbsentMap<String, ThreadPoolExecutor>(new HashMap<String, ThreadPoolExecutor>(),
 				new MapValueFactory<String, ThreadPoolExecutor>(){
 					@Override
@@ -292,13 +292,14 @@ public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleSe
 						ThreadPoolExecutor pool;
 						if (key.contains(KEYWORD_SCHEDULED) || key.contains(KEYWORD_SCHD)){
 							pool = new ScheduledThreadPoolExecutor(coreSize, threadFactory);
+							logger.debug("Created scheduled thread pool '{}': size={}",key, coreSize);
 						}else{
 							pool = new ThreadPoolExecutor(coreSize, maxSize, 
 									keepAliveSeconds, TimeUnit.SECONDS, queueSize < 10000000 ? new ArrayBlockingQueue<Runnable>(queueSize) : new LinkedBlockingQueue<Runnable>(queueSize),
 									threadFactory);
 							pool.allowCoreThreadTimeOut(allowCoreThreadTimeout);
 							logger.debug("Created thread pool '{}': coreSize={}, maxSize={}, keepAliveSeconds={}, queueSize={}, allowCoreThreadTimeout={}", 
-									new Object[]{key, coreSize, maxSize, keepAliveSeconds, queueSize, allowCoreThreadTimeout});
+									key, coreSize, maxSize, keepAliveSeconds, queueSize, allowCoreThreadTimeout);
 						}
 						return pool;
 					}
