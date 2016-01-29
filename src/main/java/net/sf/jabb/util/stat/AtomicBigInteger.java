@@ -33,6 +33,32 @@ public class AtomicBigInteger extends Number implements Serializable {
     	this(BigInteger.ZERO);
     }
     
+	@Override
+	public int hashCode(){
+		BigInteger value = valueHolder.get();
+		return value == null ? (int)serialVersionUID : value.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o){
+		if (o == this){
+			return true;
+		}
+		
+		if (o instanceof AtomicBigInteger){
+			BigInteger x = ((AtomicBigInteger)o).get();
+			if (x == null){
+				return valueHolder.get() == null;
+			}else{
+				return x.equals(valueHolder.get());
+			}
+		/*}else if (o instanceof BigInteger){
+			return ((BigInteger)o).equals(valueHolder.get()); */
+		}else{
+			return false;
+		}
+	}
+    
     /**
      * Gets the current value.
      *
