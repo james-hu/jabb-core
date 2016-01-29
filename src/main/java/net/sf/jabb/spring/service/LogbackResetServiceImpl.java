@@ -13,19 +13,16 @@ import ch.qos.logback.classic.util.ContextInitializer;
 import org.springframework.beans.factory.BeanNameAware;
 
 /**
- * Implementation of LogbackResetService as a spring service.
+ * Implementation of LoggerResetService as a spring service for Logback.
  * When the setBeanName(...) method is called by Spring context, Logback context will be reset.
  * @author James Hu
  *
  */
-public class LogbackResetServiceImpl implements LogbackResetService, BeanNameAware {
+public class LogbackResetServiceImpl implements LoggerResetService, BeanNameAware {
 	static private final Logger logger = LoggerFactory.getLogger(LogbackResetServiceImpl.class);
 
-	/* (non-Javadoc)
-	 * @see net.sf.jabb.spring.service.LogbackResetService#resetLogback()
-	 */
 	@Override
-	public void resetLogback() {
+	public void resetLogger() {
 		logger.debug("Resetting Logback...");
 		ILoggerFactory lcObject = LoggerFactory.getILoggerFactory();
 		if(lcObject instanceof LoggerContext) {
@@ -46,7 +43,7 @@ public class LogbackResetServiceImpl implements LogbackResetService, BeanNameAwa
 	@Override
 	public void setBeanName(String name) {
 		// setBeanName(...) method will called the earliest.
-		resetLogback();
+		resetLogger();
 	}
 
 }

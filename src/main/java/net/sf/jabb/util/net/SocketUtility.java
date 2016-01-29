@@ -15,8 +15,12 @@ limitations under the License.
 */
 package net.sf.jabb.util.net;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
+import java.net.URL;
+import java.util.regex.Pattern;
 
 /**
  * Utility for Socket related functions.
@@ -24,7 +28,29 @@ import java.net.ServerSocket;
  * @author James Hu
  *
  */
-public class SocketUtility {
+public abstract class SocketUtility {
+	static public final String[] CHECK_IP_ENDPOINTS = new String[]{
+			"http://whatismyip.akamai.com", 
+			"http://checkip.amazonaws.com",
+			"http://curlmyip.com",
+			"http://ipinfo.io/ip",
+			"http://www.trackip.net/ip",
+			"http://icanhazip.com"
+	};
+	static public final String IPv4_ADDRESS_PATTERN = 
+			"^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+			"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+			"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+			"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+	
+	/**
+	 * Check if the address string is a valid IPv4 address
+	 * @param address	the address string to be tested, can be null
+	 * @return	true if it is a valid IPv4 address, false otherwise
+	 */
+	static public boolean isIPv4Address(String address){
+		return address != null && Pattern.matches(IPv4_ADDRESS_PATTERN, address);
+	}
 	/**
 	 * Check whether the specified server socket port is free or not. 
 	 * Be aware that this method is not safe if there are so many programs trying to open server sockets.
@@ -96,6 +122,35 @@ public class SocketUtility {
 	 */
 	static public int getFreeServerPort(int... ports){
 		return getFreeServerPort(true, ports);
+	}
+	
+	/**
+	 * Get external ip address that the machine is exposed to internet
+	 * @return	the ip address or null if unable to determin
+	 */
+	static public String getExternalIpAddress(){
+		String ip = null;
+		URL url = null;
+		BufferedReader in = null;
+		
+		for (int i = 0; !isIPv4Address(ip) && i < CHECK_IP_ENDPOINTS.length; i ++, url = null, in = null){
+			try{
+				url = new URL(CHECK_IP_ENDPOINTS[i]);
+				in = new BufferedReader(new InputStreamReader(url.openStream()));
+				ip = in.readLine(); //you get the IP as a String
+			}catch(Exception e){
+				System.err.println("Unable to find out external IP address through end point '" + CHECK_IP_ENDPOINTS[i] + "': " + e.getMessage());
+				if (in != null){
+					try{
+						in.close();
+					}catch(Exception e2){
+						// ignore
+					}
+				}
+			}
+		}
+		return ip;
+		
 	}
 
 }

@@ -21,6 +21,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 
 /**
  * Holder of the minimum and maximum Long values. It is thread-safe.
@@ -41,7 +44,30 @@ public class ConcurrentLongMinMaxHolder  implements Serializable, MinMaxHolder{
 		reset(min, max);
 	}
 	
+	@Override
+	public int hashCode(){
+		return new HashCodeBuilder()
+				.append(minRef == null ? null : minRef.get())
+				.append(maxRef == null ? null : maxRef.get())
+				.toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object o){
+		if (o == this){
+			return true;
+		}
+		if (!(o instanceof ConcurrentLongMinMaxHolder)){
+			return false;
+		}
+		ConcurrentLongMinMaxHolder that = (ConcurrentLongMinMaxHolder)o;
+		return new EqualsBuilder()
+				.append(this.minRef == null ? null : this.minRef.get(), that.minRef == null ? null : that.minRef.get())
+				.append(this.maxRef == null ? null : this.maxRef.get(), that.maxRef == null ? null : that.maxRef.get())
+				.isEquals();
+	}
 	
+
 	synchronized protected void initializeRefs(long x){
 		if (minRef == null){
 			minRef = new AtomicLong(x);
