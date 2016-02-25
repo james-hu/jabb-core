@@ -81,4 +81,25 @@ public class StartStopStateMachine extends StateMachineWrapper<Integer, Integer>
 		return getState().equals(STOPPING);
 	}
 	
+	/**
+	 * Get the name of current state
+	 * @return	Stopped/Starting/Running/Stopping
+	 */
+	public String getStateAsString(){
+		Integer state = getState();
+		if (STOPPED.equals(state)){
+			return "Stopped";
+		}
+		if (STARTING.equals(state)){
+			return "Starting";
+		}
+		if (RUNNING.equals(state)){
+			return "Running";
+		}
+		if (STOPPING.equals(state)){
+			return "Stopping";
+		}
+		throw new IllegalStateException("Unknown state: " + state);
+	}
+	
 }
