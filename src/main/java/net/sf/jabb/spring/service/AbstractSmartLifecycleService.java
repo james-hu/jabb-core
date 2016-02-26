@@ -3,9 +3,13 @@
  */
 package net.sf.jabb.spring.service;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import net.sf.jabb.util.state.StartStopStateMachine;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.SmartLifecycle;
@@ -27,6 +31,8 @@ public abstract class AbstractSmartLifecycleService implements SmartLifecycle {
 	
 	abstract protected void doStart() throws Exception;
 	abstract protected void doStop() throws Exception;
+	
+	protected static ExecutorService serviceThreadPool = Executors.newCachedThreadPool(new BasicThreadFactory.Builder().namingPattern("SmartLifecycleService-%04d").build()); 
 	
 	/**
 	 * Configure isAutoStart and phase from properties.
@@ -71,25 +77,77 @@ public abstract class AbstractSmartLifecycleService implements SmartLifecycle {
 	 * 										If it is null, then there will be no prefix prepended.
 	 * @param interfaceClass	the interface implemented. If it is not null, properties with the following names will be tried:
 	 * 							<ol>
-	 * 								<li>configurationsCommonPrefix + StringUtils.uncapitalize(interfaceClass.getSimpleName()) + ".autoStart"</li>
-	 * 								<li>configurationsCommonPrefix + interfaceClass.getName() + ".autoStart"</li>
-	 * 								<li>configurationsCommonPrefix + this.getClass().getName() + ".autoStart"</li>
+	 * 								<li>configurationsCommonPrefix + this.getClass().getName() + ".phase"</li>
+	 * 								<li>configurationsCommonPrefix + this.getClass().getSimpleName() + ".phase"</li>
+	 * 								<li>configurationsCommonPrefix + StringUtils.uncapitalize(this.getClass().getSimpleName()) + ".phase"</li>
+	 * 								<li>configurationsCommonPrefix + interfaceClass.getName() + ".phase"</li>
+	 * 								<li>configurationsCommonPrefix + interfaceClass.getSimpleName() + ".phase"</li>
+	 * 								<li>configurationsCommonPrefix + StringUtils.uncapitalize(interfaceClass.getSimpleName()) + ".phase"</li>
 	 * 							</ol>
-	 * 							and the latter ones override the former ones.
+	 * 							for the phase, and
+	 * 							<ol>
+	 * 								<li>configurationsCommonPrefix + this.getClass().getName() + ".autoStart"</li>
+	 * 								<li>configurationsCommonPrefix + this.getClass().getSimpleName() + ".autoStart"</li>
+	 * 								<li>configurationsCommonPrefix + StringUtils.uncapitalize(this.getClass().getSimpleName()) + ".autoStart"</li>
+	 * 								<li>configurationsCommonPrefix + interfaceClass.getName() + ".autoStart"</li>
+	 * 								<li>configurationsCommonPrefix + interfaceClass.getSimpleName() + ".autoStart"</li>
+	 * 								<li>configurationsCommonPrefix + StringUtils.uncapitalize(interfaceClass.getSimpleName()) + ".autoStart"</li>
+	 * 							</ol>
+	 * 							for the auto-start.
+	 * 							<p>The first one with non-null value wins.</p>
 	 */
 	protected void setLifecycleConfigurations(PropertyResolver configResolver, String configurationsCommonPrefix, Class<?> interfaceClass){
+		Integer phase = getConfigProperty(configResolver, configurationsCommonPrefix, ".phase", Integer.class, interfaceClass);
+		if (phase == null){
+			logger.warn("No configuration found for the phase of SmartLifecycle service '{}', 0 will be used.", this.getClass().getName());
+			phase = 0;
+		}
+		
+		Boolean isAutoStart = getConfigProperty(configResolver, configurationsCommonPrefix, ".autoStart", Boolean.class, interfaceClass);
+		if (isAutoStart == null){
+			logger.warn("No configuration found for the auto-start of SmartLifecycle service '{}', false will be used.", this.getClass().getName());
+			isAutoStart = false;
+		}
+
+		this.phase = phase;
+		this.isAutoStart = isAutoStart;
+	}
+	
+	protected <T> T getConfigProperty(PropertyResolver configResolver, String configurationsCommonPrefix, String suffix, Class<T> propertyClass, Class<?> interfaceClass){
 		String className = this.getClass().getName();
+		String simpleClassName = this.getClass().getSimpleName();
 		if (configurationsCommonPrefix == null){
 			configurationsCommonPrefix = "";
 		}
-		this.phase = configResolver.getProperty(configurationsCommonPrefix + className + ".phase", Integer.class, 
-				interfaceClass == null ? 0 : configResolver.getProperty(configurationsCommonPrefix + interfaceClass.getName() + ".phase", Integer.class, 
-						configResolver.getProperty(configurationsCommonPrefix + StringUtils.uncapitalize(interfaceClass.getSimpleName()) + ".phase", Integer.class, 0)));
-		this.isAutoStart = configResolver.getProperty(configurationsCommonPrefix + className + ".autoStart", Boolean.class, 
-				interfaceClass == null ? false : configResolver.getProperty(configurationsCommonPrefix + interfaceClass.getName() + ".autoStart", Boolean.class, 
-						configResolver.getProperty(configurationsCommonPrefix + StringUtils.uncapitalize(interfaceClass.getSimpleName()) + ".autoStart", Boolean.class, false)));
+
+		T result = configResolver.getProperty(configurationsCommonPrefix + className + suffix, propertyClass);
+		if (result == null){
+			result = configResolver.getProperty(configurationsCommonPrefix + simpleClassName + suffix, propertyClass);
+		}
+		if (result == null){
+			result = configResolver.getProperty(configurationsCommonPrefix + StringUtils.uncapitalize(simpleClassName) + suffix, propertyClass);
+		}
+		if (interfaceClass != null){
+			className = interfaceClass.getName();
+			simpleClassName = interfaceClass.getSimpleName();
+
+			if (result == null){
+				result = configResolver.getProperty(configurationsCommonPrefix + className + suffix, propertyClass);
+			}
+			if (result == null){
+				result = configResolver.getProperty(configurationsCommonPrefix + simpleClassName + suffix, propertyClass);
+			}
+			if (result == null){
+				result = configResolver.getProperty(configurationsCommonPrefix + StringUtils.uncapitalize(simpleClassName) + suffix, propertyClass);
+			}
+		}
+		
+		return result;
 	}
 
+	public String getServiceState(){
+		return state.getStateAsString();
+	}
 
 	/* (non-Javadoc)
 	 * @see org.springframework.context.Lifecycle#isRunning()
@@ -154,9 +212,22 @@ public abstract class AbstractSmartLifecycleService implements SmartLifecycle {
 	 * @see org.springframework.context.SmartLifecycle#stop(java.lang.Runnable)
 	 */
 	@Override
-	public void stop(Runnable callback) {
-		stop();
-		callback.run();
+	public void stop(final Runnable callback) {
+		if (state.stop()){
+			serviceThreadPool.execute(new Runnable(){
+				@Override
+				public void run() {
+					try{
+						doStop();
+						state.finishStopping();
+						callback.run();
+					}catch(Exception e){
+						state.failStopping();
+						logger.warn("Failed to stop {}", this.getClass().getName(), e);
+					}
+				}
+			});
+		}
 	}
 
 }
