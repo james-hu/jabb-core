@@ -44,6 +44,11 @@ public class AtomicLongStatistics implements NumberStatistics<Long>, Serializabl
 		minMax = new ConcurrentLongMinMaxHolder();
 	}
 	
+	public AtomicLongStatistics(long count, Long sum, Long min, Long max){
+		this();
+		reset(count, sum, min, max);
+	}
+	
 	@Override
 	public int hashCode(){
 		return new HashCodeBuilder()
@@ -97,7 +102,11 @@ public class AtomicLongStatistics implements NumberStatistics<Long>, Serializabl
 	public Double getAvg(){
 		long countValue = count.get();
 		if (countValue > 0){
-			return sum.doubleValue()/countValue;
+			if (minMax.getMinAsLong() == minMax.getMaxAsLong()){
+				return minMax.getMinAsLong().doubleValue();
+			}else{
+				return sum.doubleValue()/countValue;
+			}
 		}else{
 			return null;
 		}

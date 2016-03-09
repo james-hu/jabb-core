@@ -20,6 +20,14 @@ public class SimpleLongStatistics implements NumberStatistics<Long>, Serializabl
 	protected long count;
 	protected long sum;
 	
+	public SimpleLongStatistics(){
+		
+	}
+	
+	public SimpleLongStatistics(long count, Long sum, Long min, Long max){
+		reset(count, sum, min, max);
+	}
+	
 	protected void evaluateMinMax(long x){
 		if (count <= 0){
 			min = x;
@@ -81,7 +89,11 @@ public class SimpleLongStatistics implements NumberStatistics<Long>, Serializabl
 	@Override
 	public Double getAvg() {
 		if (count > 0){
-			return (double)sum/count;
+			if (min == max){
+				return (double)min;
+			}else{
+				return (double)sum/count;
+			}
 		}else{
 			return null;
 		}
