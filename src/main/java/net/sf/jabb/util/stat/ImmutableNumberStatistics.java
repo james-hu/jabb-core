@@ -120,8 +120,23 @@ public class ImmutableNumberStatistics<T extends Number> implements NumberStatis
 		if (count > 0 && sum != null){
 			BigDecimal avg;
 			Class<?> sumClass = sum.getClass();
+			
+			if (min.equals(max)){
+				if (sumClass == BigInteger.class ){
+					avg = new BigDecimal((BigInteger)min);
+				}else if (sumClass == Long.class || sumClass == Integer.class){
+					avg = BigDecimal.valueOf(min.longValue());
+				}else if (sumClass == BigDecimal.class){
+					avg = (BigDecimal)min;
+				}else{
+					avg = BigDecimal.valueOf(min.doubleValue());
+				}
+				avg = avg.setScale(scale, BigDecimal.ROUND_HALF_UP);
+				return avg;
+			}
+			
 			if (sumClass == BigInteger.class ){
-				avg = new BigDecimal((BigInteger)sum, scale);
+				avg = new BigDecimal((BigInteger)sum);
 			}else if (sumClass == Long.class || sumClass == Integer.class){
 				avg = BigDecimal.valueOf(sum.longValue());
 			}else if (sumClass == BigDecimal.class){
@@ -129,7 +144,7 @@ public class ImmutableNumberStatistics<T extends Number> implements NumberStatis
 			}else{
 				avg = BigDecimal.valueOf(sum.doubleValue());
 			}
-			return avg.divide(new BigDecimal(count), BigDecimal.ROUND_HALF_UP);
+			return avg.divide(new BigDecimal(count), scale, BigDecimal.ROUND_HALF_UP);
 		}else{
 			return null;
 		}

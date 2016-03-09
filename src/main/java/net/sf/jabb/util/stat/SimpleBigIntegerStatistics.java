@@ -20,6 +20,14 @@ public class SimpleBigIntegerStatistics implements NumberStatistics<BigInteger>,
 	protected long count = 0;
 	protected BigInteger sum = BigInteger.ZERO;
 	
+	public SimpleBigIntegerStatistics(){
+		
+	}
+	
+	public SimpleBigIntegerStatistics(long count, BigInteger sum, BigInteger min, BigInteger max){
+		reset(count, sum, min, max);
+	}
+	
 	protected void evaluateMinMax(BigInteger x){
 		if (count <= 0){
 			min = x;
@@ -99,8 +107,13 @@ public class SimpleBigIntegerStatistics implements NumberStatistics<BigInteger>,
 	@Override
 	public BigDecimal getAvg(int scale) {
 		if (count > 0){
-			BigDecimal avg = new BigDecimal(sum, scale);
-			return avg.divide(new BigDecimal(count), BigDecimal.ROUND_HALF_UP);
+			if (min.equals(max)){
+				BigDecimal avg = new BigDecimal(min).setScale(scale, BigDecimal.ROUND_HALF_UP);
+				return avg;
+			}else{
+				BigDecimal avg = new BigDecimal(sum);
+				return avg.divide(new BigDecimal(count), scale, BigDecimal.ROUND_HALF_UP);
+			}
 		}else{
 			return null;
 		}
