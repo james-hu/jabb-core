@@ -27,4 +27,16 @@ public class SimpleBigIntegerStatisticsTest {
 		assertEquals(23, s.getAvg(20).toString().length());
 	}
 
+	@Test
+	public void testMerge(){
+		SimpleBigIntegerStatistics s0 = new SimpleBigIntegerStatistics();
+		s0.evaluate(-1);
+		s0.evaluate(2);
+		SimpleBigIntegerStatistics s = new SimpleBigIntegerStatistics();
+		s.merge(s0);
+		assertEquals(-1, s.getMin().intValue());
+		assertEquals(2, s.getMax().intValue());
+		assertEquals(1, s.getSum().intValue());
+		assertEquals(2L, s.getCount());
+	}
 }

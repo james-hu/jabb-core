@@ -56,13 +56,10 @@ public class SimpleBigIntegerStatistics implements NumberStatistics<BigInteger>,
 			if (other.getSum() instanceof BigInteger){
 				mergeBigInteger((NumberStatistics<? extends BigInteger>)other);
 			}else{
-				long otherCount = other.getCount();
-				if (otherCount > 0){
-					evaluateMinMax(BigInteger.valueOf(other.getMin().longValue()));
-					evaluateMinMax(BigInteger.valueOf(other.getMax().longValue()));
-					count += otherCount;
-					sum = sum.add(BigInteger.valueOf(other.getSum().longValue()));
-				}
+				evaluateMinMax(BigInteger.valueOf(other.getMin().longValue()));
+				count += other.getCount();
+				evaluateMinMax(BigInteger.valueOf(other.getMax().longValue()));
+				sum = sum.add(BigInteger.valueOf(other.getSum().longValue()));
 			}
 		}
 	}
@@ -72,10 +69,10 @@ public class SimpleBigIntegerStatistics implements NumberStatistics<BigInteger>,
 		if (min != null){
 			evaluateMinMax(min);
 		}
+		this.count += count;
 		if (max != null){
 			evaluateMinMax(max);
 		}
-		this.count += count;
 		this.sum = this.sum.add(sum);
 	}
 

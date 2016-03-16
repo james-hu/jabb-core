@@ -25,4 +25,16 @@ public class SimpleLongStatisticsTest {
 		assertEquals(23, s.getAvg(20).toString().length());
 	}
 
+	@Test
+	public void testMerge(){
+		SimpleLongStatistics s0 = new SimpleLongStatistics();
+		s0.evaluate(-1);
+		s0.evaluate(2);
+		SimpleLongStatistics s = new SimpleLongStatistics();
+		s.merge(s0);
+		assertEquals(-1, s.getMin().intValue());
+		assertEquals(2, s.getMax().intValue());
+		assertEquals(1, s.getSum().intValue());
+		assertEquals(2L, s.getCount());
+	}
 }

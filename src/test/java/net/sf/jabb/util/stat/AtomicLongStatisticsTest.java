@@ -25,4 +25,17 @@ public class AtomicLongStatisticsTest {
 		assertEquals(23, s.getAvg(20).toString().length());
 	}
 
+	@Test
+	public void testMerge(){
+		AtomicLongStatistics s0 = new AtomicLongStatistics();
+		s0.evaluate(-1);
+		s0.evaluate(2);
+		AtomicLongStatistics s = new AtomicLongStatistics();
+		s.merge(s0);
+		assertEquals(-1, s.getMin().intValue());
+		assertEquals(2, s.getMax().intValue());
+		assertEquals(1, s.getSum().intValue());
+		assertEquals(2L, s.getCount());
+	}
+
 }
