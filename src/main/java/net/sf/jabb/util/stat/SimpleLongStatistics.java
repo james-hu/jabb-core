@@ -53,10 +53,10 @@ public class SimpleLongStatistics implements NumberStatistics<Long>, Serializabl
 		if (min != null){
 			evaluateMinMax(min);
 		}
+		this.count += count;
 		if (max != null){
 			evaluateMinMax(max);
 		}
-		this.count += count;
 		if (sum != null){
 			this.sum += sum;
 		}
