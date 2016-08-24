@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.jabb</groupId>
 	<artifactId>jabb-core</artifactId>
-	<version>1.0.113</version>
+	<version>1.0.114-SNAPSHOT</version>
 	<name>JABB</name>
 	<url>http://jabb.sourceforge.net/</url>
 	<description>JABB is a collection of reusable Java components. </description>
