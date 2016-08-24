@@ -37,7 +37,7 @@ public class ConcurrentMinMaxHoldersTest {
 		}
 		
 		start = true;
-		Thread.sleep(10000L);
+		Thread.sleep(20000L);
 		stop = true;
 		assertNotNull(holder);
 		assertNotNull(holder.getMin());
