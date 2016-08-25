@@ -1,7 +1,0 @@
-jar:      mvn -DskipTests clean package
-deploy:   mvn -DskipTests deploy
-web site: ssh -t james-hu,jabb@shell.sourceforge.net create
-          mvn -DskipTests javadoc:javadoc site:site site:deploy
-zip:      mvn -DskipTests javadoc:javadoc site:site assembly:single
-all:      mvn -DskipTests clean package deploy javadoc:javadoc site:site site:deploy assembly:single
-
