@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Ehcache based implementation of CachedKeyValueRepository.
  * Before the subclass can be used, it must first populate {@link #cacheManager} and {@link #threadPool}, 
- * then call the {@link #initialize()} method.
+ * then call the {@link #initializeCache()} method.
  * 
  * @author James Hu
  *
