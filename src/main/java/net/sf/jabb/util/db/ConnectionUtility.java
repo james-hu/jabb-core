@@ -258,26 +258,43 @@ public class ConnectionUtility {
 	}	
 	
 	/**
-	 * Destroy a data source created before.
+	 * Destroy a data source got from ConnectionUtility before.
+	 * If the data source was created using createDataSource(...) method rather than getDataSource(...) method, 
+	 * calling this method will have no effect.
 	 * If any exception occurred, it will be logged but never propagated.
 	 * @param dataSource the data source to be destroyed
 	 */
 	public static void destroyDataSource(DataSource dataSource){
+		destroyDataSource(dataSource, false);
+	}
+	
+	/**
+	 * Destroy a data source got from or created by ConnectionUtility before.
+	 * If any exception occurred, it will be logged but never propagated.
+	 * @param dataSource the data source to be destroyed
+	 * @param force  Whether try to destroy the data source even if it was created using createDataSource(...) method rather than getDataSource(...) method.
+	 * 		If it is true, the data source will always be destroyed, if it is false, the data source will be destroyed only if it
+	 * 		was got using getDataSource(...) method.
+	 */
+	public static void destroyDataSource(DataSource dataSource, boolean force){
 		synchronized (dataSourcesStructureLock){
 			String dsName = null;
 			for (Map.Entry<String, DataSource> dsEntry: dataSources.entrySet()){
 				DataSource ds = dsEntry.getValue();
 				if (ds == dataSource){
 					dsName = dsEntry.getKey();
+					break;
 				}
 			}
-			if (dsName != null){
+			if (force || dsName != null){
 				for (Map.Entry<String, DataSourceProvider> dspEntry: dataSourceProviders.entrySet()){		// try them one by one
 					String dspName = dspEntry.getKey();
 					DataSourceProvider dsp = dspEntry.getValue();
 					try{
 						if (dsp.destroyDataSource(dataSource)){
-							dataSources.remove(dsName);
+							if (dsName != null){
+								dataSources.remove(dsName);
+							}
 							break;
 						}
 					}catch(NoClassDefFoundError e){
