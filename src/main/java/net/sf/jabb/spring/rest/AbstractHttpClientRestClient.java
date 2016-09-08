@@ -146,6 +146,11 @@ public class AbstractHttpClientRestClient {
 		// do nothing
 	}
 	
+	/**
+	 * Initialize the RestTemplate internally.
+	 * When running inside a Spring context, subclass should typically call this method 
+	 * from within {@link org.springframework.beans.factory.InitializingBean#afterPropertiesSet()} method.
+	 */
 	protected void initializeRestTemplate(){
 		if (connectionManager instanceof PoolingHttpClientConnectionManager){
 			configureConnectionManager((PoolingHttpClientConnectionManager)connectionManager);
@@ -343,26 +348,74 @@ public class AbstractHttpClientRestClient {
 	}
 	
 
+	/**
+	 * Build a ClientHttpRequestInterceptor that adds a query parameter.
+	 * @param name	name of the parameter
+	 * @param value	value of the parameter
+	 * @return	the ClientHttpRequestInterceptor built
+	 */
 	protected ClientHttpRequestInterceptor buildAddQueryParameterRequestInterceptor(String name, String value){
 		return new AddQueryParameterRequestInterceptor(name, value);
 	}
 
+	/**
+	 * Build a ClientHttpRequestInterceptor that adds a request header.
+	 * @param header	name of the header
+	 * @param value		value of the header
+	 * @return	the ClientHttpRequestInterceptor built
+	 */
 	protected ClientHttpRequestInterceptor buildAddHeaderRequestInterceptor(String header, String value){
 		return new AddHeaderRequestInterceptor(header, value);
 	}
 
+	/**
+	 * Build a ClientHttpRequestInterceptor that adds two request headers
+	 * @param header1	name of header 1
+	 * @param value1	value of header 1
+	 * @param header2	name of header 2
+	 * @param value2	value of header 2
+	 * @return the ClientHttpRequestInterceptor built
+	 */
 	protected ClientHttpRequestInterceptor buildAddHeadersRequestInterceptor(String header1, String value1, String header2, String value2){
 		return new AddHeadersRequestInterceptor(new String[]{header1, header2}, new String[]{value1, value2});
 	}
 
+	/**
+	 * Build a ClientHttpRequestInterceptor that adds three request headers
+	 * @param header1	name of header 1
+	 * @param value1	value of header 1
+	 * @param header2	name of header 2
+	 * @param value2	value of header 2
+	 * @param header3	name of header 3
+	 * @param value3	value of header 3
+	 * @return the ClientHttpRequestInterceptor built
+	 */
 	protected ClientHttpRequestInterceptor buildAddHeadersRequestInterceptor(String header1, String value1, String header2, String value2, String header3, String value3){
 		return new AddHeadersRequestInterceptor(new String[]{header1, header2, header3}, new String[]{value1, value2, value3});
 	}
-
+	
+	/**
+	 * Build a ClientHttpRequestInterceptor that adds three request headers
+	 * @param header1	name of header 1
+	 * @param value1	value of header 1
+	 * @param header2	name of header 2
+	 * @param value2	value of header 2
+	 * @param header3	name of header 3
+	 * @param value3	value of header 3
+	 * @param header4	name of the header 4
+	 * @param value4	value of the header 4
+	 * @return the ClientHttpRequestInterceptor built
+	 */
 	protected ClientHttpRequestInterceptor buildAddHeadersRequestInterceptor(String header1, String value1, String header2, String value2, String header3, String value3, String header4, String value4){
 		return new AddHeadersRequestInterceptor(new String[]{header1, header2, header3, header4}, new String[]{value1, value2, value3, value4});
 	}
 
+	/**
+	 * Build a ClientHttpRequestInterceptor that adds BasicAuth header
+	 * @param user		user name
+	 * @param password	password
+	 * @return	the ClientHttpRequestInterceptor built
+	 */
 	protected ClientHttpRequestInterceptor buildAddBasicAuthHeaderRequestInterceptor(String user, String password){
 		StringBuilder sb = new StringBuilder();
 		if (StringUtils.isNotEmpty(user)){
@@ -385,8 +438,16 @@ public class AbstractHttpClientRestClient {
 
 	
 	protected URIBuilder uriBuilder(String partialUri){
+		String p1 = StringUtils.trimToEmpty(baseUrl);
+		String p2 = StringUtils.trimToEmpty(partialUri);
+		String url;
+		if (p1.length() > 0 && p1.charAt(p1.length() - 1) == '/' && p2.length() > 0 && p2.charAt(p2.length() - 1) == '/'){
+			url = p1 + p2.substring(1);
+		}else{
+			url = p1 + p2;
+		}
 		try {
-			return new URIBuilder(partialUri.charAt(0) == '/' ? (baseUrl + partialUri) : (baseUrl + "/" + partialUri));
+			return new URIBuilder(url);
 		} catch(URISyntaxException e) {
 			throw new IllegalArgumentException(e.getMessage(), e);
 		}
