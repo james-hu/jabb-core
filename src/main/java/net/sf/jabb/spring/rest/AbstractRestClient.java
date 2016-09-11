@@ -9,38 +9,38 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import javax.net.ssl.SSLException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpRequest;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpRequestRetryHandler;
-import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.support.HttpRequestWrapper;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
+import net.sf.jabb.spring.rest.CustomHttpRequestRetryHandler.IdempotentPredicate;
 import net.sf.jabb.util.parallel.BackoffStrategy;
 import net.sf.jabb.util.parallel.WaitStrategy;
 
@@ -51,6 +51,7 @@ import net.sf.jabb.util.parallel.WaitStrategy;
  * 	<li>{@link #configureConnectionManager(PoolingHttpClientConnectionManager)}</li>
  * 	<li>{@link #configureHttpClient(HttpClientBuilder)}</li>
  * 	<li>{@link #configureRequestFactory(HttpComponentsClientHttpRequestFactory)}</li>
+ *  <li>{@link #configureRequestFactory(ClientHttpRequestFactory)}</li>
  * 	<li>{@link #buildRequestRetryHandler()}</li>
  * 	<li>{@link #configureRestTemplate(RestTemplate)}</li>
  * </ul>
@@ -59,8 +60,21 @@ import net.sf.jabb.util.parallel.WaitStrategy;
  * @author James Hu (Zhengmao Hu)
  *
  */
-public class AbstractHttpClientRestClient {
-	private static final Logger logger = LoggerFactory.getLogger(AbstractHttpClientRestClient.class);
+public abstract class AbstractRestClient {
+	private static final Logger logger = LoggerFactory.getLogger(AbstractRestClient.class);
+	
+	protected static final String HEADER_AUTHORIZATION = "Authorization";
+	protected static final HttpHeaders ACCEPT_JSON;
+	protected static final HttpHeaders ACCEPT_AND_OFFER_JSON;
+	
+	static{
+		HttpHeaders tmpHeaders = new HttpHeaders();
+		tmpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		ACCEPT_JSON = HttpHeaders.readOnlyHttpHeaders(tmpHeaders);
+		
+		tmpHeaders.setContentType(MediaType.APPLICATION_JSON);
+		ACCEPT_AND_OFFER_JSON = HttpHeaders.readOnlyHttpHeaders(tmpHeaders);
+	}
 
 	/**
 	 * The RestTemplate that will be available after {@link #initializeRestTemplate()} is called.
@@ -73,7 +87,9 @@ public class AbstractHttpClientRestClient {
 	protected String baseUrl;
 
 	/**
-	 * The HttpClientConnectionManager behind the {@link #restTemplate}
+	 * The HttpClientConnectionManager behind the {@link #restTemplate}. 
+	 * It may be null when the instance is created through {@link #AbstractRestClient(HttpClientConnectionManager)} with null argument
+	 * - in that case the instance relies on standard JDK facilities to establish HTTP connections.  
 	 */
 	protected HttpClientConnectionManager connectionManager;
 	
@@ -81,20 +97,21 @@ public class AbstractHttpClientRestClient {
 	 * Constructor. 
 	 * A <code>PoolingHttpClientConnectionManager</code> will be created and used for HTTP connections initiated by the constructed instance.
 	 */
-	protected AbstractHttpClientRestClient(){
+	protected AbstractRestClient(){
 		this(new PoolingHttpClientConnectionManager());
 	}
 	
 	/**
-	 * Constructor
-	 * @param connectionManager	the <code>HttpClientConnectionManager</code> to be used for HTTP connections initiated by the constructed instance.
+	 * Constructor.
+	 * @param connectionManager	The <code>HttpClientConnectionManager</code> to be used for HTTP connections initiated by the constructed instance.
+	 * 							If it is null, then the instance created will rely on standard JDK facilities to establish HTTP connections.  
 	 */
-	protected AbstractHttpClientRestClient(HttpClientConnectionManager connectionManager){
+	protected AbstractRestClient(HttpClientConnectionManager connectionManager){
 		this.connectionManager = connectionManager;
 	}
 	
 	/**
-	 * Subclass should override this method to configure PoolingHttpClientConnectionManager
+	 * Subclass may override this method to configure PoolingHttpClientConnectionManager.
 	 * @param connectionManager the PoolingHttpClientConnectionManager to be configured
 	 */
 	protected void configureConnectionManager(PoolingHttpClientConnectionManager connectionManager){
@@ -102,7 +119,7 @@ public class AbstractHttpClientRestClient {
 	}
 	
 	/**
-	 * Subclass should override this method to configure HttpClientBuilder
+	 * Subclass may override this method to configure HttpClientBuilder.
 	 * @param httpClientBuilder the HttpClientBuilder to be configured
 	 */
 	protected void configureHttpClient(HttpClientBuilder httpClientBuilder){
@@ -110,7 +127,8 @@ public class AbstractHttpClientRestClient {
 	}
 	
 	/**
-	 * Subclass should override this method to configure HttpComponentsClientHttpRequestFactory
+	 * Subclass may override this method to configure HttpComponentsClientHttpRequestFactory
+	 * Please note that after this method is called, {@link #configureRequestFactory(ClientHttpRequestFactory)} will also be called.
 	 * @param requestFactory the HttpComponentsClientHttpRequestFactory to be configured
 	 */
 	protected void configureRequestFactory(HttpComponentsClientHttpRequestFactory requestFactory){
@@ -118,7 +136,18 @@ public class AbstractHttpClientRestClient {
 	}
 	
 	/**
-	 * Subclass should override this method to provide a HttpRequestRetryHandler.
+	 * Subclass may override this method to configure ClientHttpRequestFactory.
+	 * Please note that if the request factory is an instance of PoolingHttpClientConnectionManager, both
+	 * {@link #configureRequestFactory(HttpComponentsClientHttpRequestFactory)} and this method will be called.
+	 * @param requestFactory the HttpComponentsClientHttpRequestFactory to be configured
+	 */
+	protected void configureRequestFactory(ClientHttpRequestFactory requestFactory){
+		// do nothing
+	}
+	
+	/**
+	 * Subclass may override this method to provide a HttpRequestRetryHandler.
+	 * Please note that HttpRequestRetryHandler applies to Apache HttpClient only.
 	 * {@link #buildRequestRetryHandler(int, BackoffStrategy, WaitStrategy, boolean, boolean, boolean, IdempotentPredicate, Class...)} method 
 	 * can be used to create a quite practical HttpRequestRetryHandler
 	 * @return  the HttpRequestRetryHandler or null if no retry is desired
@@ -128,7 +157,15 @@ public class AbstractHttpClientRestClient {
 	}
 	
 	/**
-	 * Subclass should override this method to configure RestTemplate.
+	 * Subclass may override this method to configure message converters used by the RestTemplate.
+	 * @param converters	message converters used by the RestTemplate
+	 */
+	protected void configureMessageConverters(List<HttpMessageConverter<?>> converters){
+		// do nothing
+	}
+	
+	/**
+	 * Subclass may override this method to configure RestTemplate.
 	 * You may find these methods helpful:
 	 * <ul>
 	 * 	<li>{@link #buildAddBasicAuthHeaderRequestInterceptor(String, String)}</li>
@@ -152,74 +189,28 @@ public class AbstractHttpClientRestClient {
 	 * from within {@link org.springframework.beans.factory.InitializingBean#afterPropertiesSet()} method.
 	 */
 	protected void initializeRestTemplate(){
-		if (connectionManager instanceof PoolingHttpClientConnectionManager){
-			configureConnectionManager((PoolingHttpClientConnectionManager)connectionManager);
+		if (connectionManager == null){
+			restTemplate = new RestTemplate();
+		}else{
+			if (connectionManager instanceof PoolingHttpClientConnectionManager){
+				configureConnectionManager((PoolingHttpClientConnectionManager)connectionManager);
+			}
+			HttpRequestRetryHandler retryHandler = buildRequestRetryHandler();
+			HttpClientBuilder clientBuilder = HttpClients.custom().setConnectionManager(connectionManager);
+			configureHttpClient(clientBuilder);
+			clientBuilder.setRetryHandler(retryHandler);
+			CloseableHttpClient httpClient = clientBuilder.build();
+			
+			HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+			configureRequestFactory(requestFactory);
+			
+			restTemplate = new RestTemplate(requestFactory);
 		}
-		HttpRequestRetryHandler retryHandler = buildRequestRetryHandler();
-		HttpClientBuilder clientBuilder = HttpClients.custom().setConnectionManager(connectionManager);
-		configureHttpClient(clientBuilder);
-		clientBuilder.setRetryHandler(retryHandler);
-		CloseableHttpClient httpClient = clientBuilder.build();
-		
-		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
-		configureRequestFactory(requestFactory);
-		
-		restTemplate = new RestTemplate(requestFactory);
+		configureRequestFactory(restTemplate.getRequestFactory());
+		configureMessageConverters(restTemplate.getMessageConverters());
 		configureRestTemplate(restTemplate);
 	}
 	
-	static protected interface IdempotentPredicate{
-		public boolean handleAsIdempotent(HttpRequest request);
-	}
-	
-	static protected class CustomHttpRequestRetryHandler extends DefaultHttpRequestRetryHandler{
-		protected IdempotentPredicate idempotentPredicate;
-		protected BackoffStrategy backoffStrategy;
-		protected WaitStrategy waitStrategy;
-		
-		protected CustomHttpRequestRetryHandler(int retryCount, boolean requestSentRetryEnabled, 
-				Collection<Class<? extends IOException>> excludeExceptions,
-				BackoffStrategy backoffStrategy, WaitStrategy waitStrategy, 
-				IdempotentPredicate idempotentPredicate){
-			super(retryCount, requestSentRetryEnabled, excludeExceptions);
-			this.idempotentPredicate = idempotentPredicate;
-			this.backoffStrategy = backoffStrategy;
-			this.waitStrategy = waitStrategy;
-		}
-		
-	    @Override
-	    public boolean retryRequest(
-	            final IOException exception,
-	            final int executionCount,
-	            final HttpContext context) {
-	    	boolean retry = super.retryRequest(exception, executionCount, context);
-	        if (retry){
-	        	long delay = backoffStrategy.computeBackoffMilliseconds(executionCount);
-	        	logger.debug("IOException occurred: " + exception + "  Will do a retry in " + delay + " milliseconds for: " + HttpClientContext.adapt(context).getRequest());
-	        	try {
-					waitStrategy.await(delay);
-				} catch(InterruptedException e) {
-					waitStrategy.handleInterruptedException(e);
-				}
-	        }
-	    	return retry;
-	    }
-	    
-	    @Override
-	    protected boolean handleAsIdempotent(final HttpRequest request) {
-	    	if (idempotentPredicate != null){
-		    	return idempotentPredicate.handleAsIdempotent(request);
-	    	}
-	    	/*
-	    	if (request instanceof HttpEntityEnclosingRequest){
-	    		return false;
-	    	}*/
-	        final String method = request.getRequestLine().getMethod().toUpperCase(Locale.ROOT);
-	        return "GET".equals(method);
-	    }
-		
-	}
-
 	/**
 	 * Build a <code>HttpRequestRetryHandler</code>.
 	 * The returned <code>HttpRequestRetryHandler</code> will not retry on <code>InterruptedIOException</code> and <code>SSLException</code>.
@@ -253,6 +244,27 @@ public class AbstractHttpClientRestClient {
 			}
 		}
 		return new CustomHttpRequestRetryHandler(retryCount, requestSentRetryEnabled, excluded, backoffStrategy, waitStrategy, idempotentPredicate);
+	}
+	
+	/**
+	 * Build a <code>HttpRequestRetryHandler</code>.
+	 * The returned <code>HttpRequestRetryHandler</code> will not retry on <code>InterruptedIOException</code> and <code>SSLException</code>.
+	 * @param retryCount		how many times to retry; 0 means no retries
+	 * @param backoffStrategy	how should retries to backoff from previous ones
+	 * @param waitStrategy		how should the delay between retries to be implemented
+	 * @param requestSentRetryEnabled	true if it's OK to retry requests that have been sent
+	 * @param retryUnknownHostException	true if retry should happen after UnknownHostException
+	 * @param retryConnectException		true if retry should happen after ConnectException
+	 * @param idempotentPredicate		Predicate to decide which requests are considered to be retry-able, 
+	 * 									if it is null, only <code>GET</code> requests are considered to be retry-able.
+	 * @return	the <code>HttpRequestRetryHandler</code>
+	 */
+	protected HttpRequestRetryHandler buildRequestRetryHandler(int retryCount, 
+			boolean requestSentRetryEnabled, boolean retryUnknownHostException, boolean retryConnectException, 
+			BackoffStrategy backoffStrategy, WaitStrategy waitStrategy,
+			IdempotentPredicate idempotentPredicate){
+		return buildRequestRetryHandler(retryCount, requestSentRetryEnabled, retryUnknownHostException, retryConnectException, backoffStrategy, waitStrategy, 
+				idempotentPredicate, (Class<? extends IOException>[])null);
 	}
 	
 	/**
@@ -412,11 +424,21 @@ public class AbstractHttpClientRestClient {
 
 	/**
 	 * Build a ClientHttpRequestInterceptor that adds BasicAuth header
-	 * @param user		user name
-	 * @param password	password
+	 * @param user			the user name, may be null or empty
+	 * @param password		the password, may be null or empty
 	 * @return	the ClientHttpRequestInterceptor built
 	 */
 	protected ClientHttpRequestInterceptor buildAddBasicAuthHeaderRequestInterceptor(String user, String password){
+		return new AddHeaderRequestInterceptor(HEADER_AUTHORIZATION, buildBasicAuthValue(user, password));
+	}
+
+	/**
+	 * Build the value to be used in HTTP Basic Authentication header
+	 * @param user			the user name, may be null or empty
+	 * @param password		the password, may be null or empty
+	 * @return	the value to be used for header 'Authorization'
+	 */
+	protected String buildBasicAuthValue(String user, String password){
 		StringBuilder sb = new StringBuilder();
 		if (StringUtils.isNotEmpty(user)){
 			sb.append(user);
@@ -427,15 +449,23 @@ public class AbstractHttpClientRestClient {
 			}
 			sb.append(password);
 		}
+		return buildBasicAuthValue(sb.toString());
+	}
+	
+	/**
+	 * Build the value to be used in HTTP Basic Authentication header
+	 * @param key			the API key
+	 * @return	the value to be used for header 'Authorization'
+	 */
+	protected String buildBasicAuthValue(String key){
 		String base64Creds;
 		try {
-			base64Creds = Base64.encodeBase64String(sb.toString().getBytes("UTF-8"));
+			base64Creds = key == null ? "" : Base64.encodeBase64String(key.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			throw new IllegalStateException("Failed to encode", e);
 		}
-		return new AddHeaderRequestInterceptor("Authorization", "Basic " + base64Creds);
+		return "Basic " + base64Creds;
 	}
-
 	
 	protected URIBuilder uriBuilder(String partialUri){
 		String p1 = StringUtils.trimToEmpty(baseUrl);
@@ -493,5 +523,35 @@ public class AbstractHttpClientRestClient {
 				.addParameter(name3, value3)
 				.addParameter(name4, value4));
 	}
-
+	
+	/**
+	 * Make a writable copy of an existing HttpHeaders
+	 * @param headers	existing HttpHeaders to be copied
+	 * @return	a new HttpHeaders that contains all the entries from the existing HttpHeaders
+	 */
+	protected HttpHeaders copy(HttpHeaders headers){
+		HttpHeaders newHeaders = new HttpHeaders();
+		newHeaders.putAll(headers);
+		return newHeaders;
+	}
+	
+	/**
+	 * Add HTTP Basic Auth header
+	 * @param headers	the headers, it must not be a read-only one, if it is, use {@link #copy(HttpHeaders)} to make a writable copy first
+	 * @param user			the user name, may be null or empty
+	 * @param password		the password, may be null or empty
+	 */
+	protected void addBasicAuthHeader(HttpHeaders headers, String user, String password){
+		headers.add(HEADER_AUTHORIZATION, buildBasicAuthValue(user, password));
+	}
+	
+	/**
+	 * Add HTTP Basic Auth header
+	 * @param headers	the headers, it must not be a read-only one, if it is, use {@link #copy(HttpHeaders)} to make a writable copy first
+	 * @param key		the API key
+	 */
+	protected void addBasicAuthHeader(HttpHeaders headers, String key){
+		headers.add(HEADER_AUTHORIZATION, buildBasicAuthValue(key));
+	}
+	
 }
