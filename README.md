@@ -11,4 +11,4 @@ For those require Java 8, see [jabb-core-java8](https://github.com/james-hu/jabb
 Mirrors:
 
 * On [coding.net](https://coding.net/u/james-hu/p/jabb-core/)
-
+* On [GitHub](https://github.com/james-hu/jabb-core)
