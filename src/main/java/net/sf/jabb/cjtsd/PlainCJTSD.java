@@ -34,6 +34,23 @@ public class PlainCJTSD {
 	}
 	
 	/**
+	 * Shallow copy constructor
+	 * @param other	another instance from which the properties will be copied
+	 */
+	public PlainCJTSD(PlainCJTSD other){
+		this.u = other.u;
+		this.t = other.t;
+		this.d = other.d;
+		this.c = other.c;
+		this.s = other.s;
+		this.a = other.a;
+		this.m = other.m;
+		this.x = other.x;
+		this.n = other.n;
+		this.o = other.o;
+	}
+	
+	/**
 	 * Convert into raw list form.
 	 * @return	the list containing entries of data points
 	 */
