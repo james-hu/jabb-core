@@ -433,6 +433,15 @@ public abstract class AbstractRestClient {
 	}
 
 	/**
+	 * Build a ClientHttpRequestInterceptor that adds BasicAuth header
+	 * @param apiKey			the api key
+	 * @return	the ClientHttpRequestInterceptor built
+	 */
+	protected ClientHttpRequestInterceptor buildAddBasicAuthHeaderRequestInterceptor(String apiKey){
+		return new AddHeaderRequestInterceptor(HEADER_AUTHORIZATION, buildBasicAuthValue(apiKey));
+	}
+
+	/**
 	 * Build the value to be used in HTTP Basic Authentication header
 	 * @param user			the user name, may be null or empty
 	 * @param password		the password, may be null or empty
