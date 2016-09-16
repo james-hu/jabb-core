@@ -24,9 +24,10 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -36,6 +37,7 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.support.HttpRequestWrapper;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
@@ -61,7 +63,7 @@ import net.sf.jabb.util.parallel.WaitStrategy;
  *
  */
 public abstract class AbstractRestClient {
-	private static final Logger logger = LoggerFactory.getLogger(AbstractRestClient.class);
+	//private static final Logger logger = LoggerFactory.getLogger(AbstractRestClient.class);
 	
 	protected static final String HEADER_AUTHORIZATION = "Authorization";
 	protected static final HttpHeaders ACCEPT_JSON;
@@ -561,6 +563,54 @@ public abstract class AbstractRestClient {
 	 */
 	protected void addBasicAuthHeader(HttpHeaders headers, String key){
 		headers.add(HEADER_AUTHORIZATION, buildBasicAuthValue(key));
+	}
+	
+	protected <T, D> T postForObject(URI uri, D data, MultiValueMap<String, String> headers, Class<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<D>(data, headers), responseType).getBody();
+	}
+	
+	protected <T, D> T postForObject(URI uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<D>(data, headers), responseType).getBody();
+	}
+	
+	protected <T> T getForObject(URI uri, MultiValueMap<String, String> headers, Class<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), responseType).getBody();
+	}
+	
+	protected <T> T getForObject(URI uri, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), responseType).getBody();
+	}
+	
+	protected <T, D> T patchForObject(URI uri, D data, MultiValueMap<String, String> headers, Class<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), responseType).getBody();
+	}
+	
+	protected <T, D> T patchForObject(URI uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), responseType).getBody();
+	}
+	
+	protected <T, D> T putForObject(URI uri, D data, MultiValueMap<String, String> headers, Class<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), responseType).getBody();
+	}
+	
+	protected <T, D> T putForObject(URI uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), responseType).getBody();
+	}
+	
+	protected <D> void patch(URI uri, D data, MultiValueMap<String, String> headers){
+		restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), Void.class);
+	}
+	
+	protected <D> void put(URI uri, D data, MultiValueMap<String, String> headers){
+		restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), Void.class);
+	}
+	
+	protected void delete(URI uri, MultiValueMap<String, String> headers){
+		restTemplate.exchange(uri, HttpMethod.DELETE, new HttpEntity<Void>(headers), Void.class);
+	}
+	
+	protected void get(URI uri, MultiValueMap<String, String> headers){
+		restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), Void.class);
 	}
 	
 }
