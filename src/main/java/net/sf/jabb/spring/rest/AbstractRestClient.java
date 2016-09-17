@@ -569,7 +569,15 @@ public abstract class AbstractRestClient {
 		return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
+	protected <T, D> T postForObject(String uri, D data, MultiValueMap<String, String> headers, Class<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<D>(data, headers), responseType).getBody();
+	}
+	
 	protected <T, D> T postForObject(URI uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<D>(data, headers), responseType).getBody();
+	}
+	
+	protected <T, D> T postForObject(String uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
 		return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
@@ -577,7 +585,15 @@ public abstract class AbstractRestClient {
 		return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), responseType).getBody();
 	}
 	
+	protected <T> T getForObject(String uri, MultiValueMap<String, String> headers, Class<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), responseType).getBody();
+	}
+	
 	protected <T> T getForObject(URI uri, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), responseType).getBody();
+	}
+	
+	protected <T> T getForObject(String uri, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
 		return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), responseType).getBody();
 	}
 	
@@ -585,7 +601,15 @@ public abstract class AbstractRestClient {
 		return restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
+	protected <T, D> T patchForObject(String uri, D data, MultiValueMap<String, String> headers, Class<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), responseType).getBody();
+	}
+	
 	protected <T, D> T patchForObject(URI uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), responseType).getBody();
+	}
+	
+	protected <T, D> T patchForObject(String uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
 		return restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
@@ -593,7 +617,15 @@ public abstract class AbstractRestClient {
 		return restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
+	protected <T, D> T putForObject(String uri, D data, MultiValueMap<String, String> headers, Class<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), responseType).getBody();
+	}
+	
 	protected <T, D> T putForObject(URI uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
+		return restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), responseType).getBody();
+	}
+	
+	protected <T, D> T putForObject(String uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
 		return restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
@@ -601,7 +633,15 @@ public abstract class AbstractRestClient {
 		restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), Void.class);
 	}
 	
+	protected <D> void patch(String uri, D data, MultiValueMap<String, String> headers){
+		restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), Void.class);
+	}
+	
 	protected <D> void put(URI uri, D data, MultiValueMap<String, String> headers){
+		restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), Void.class);
+	}
+	
+	protected <D> void put(String uri, D data, MultiValueMap<String, String> headers){
 		restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), Void.class);
 	}
 	
@@ -609,7 +649,15 @@ public abstract class AbstractRestClient {
 		restTemplate.exchange(uri, HttpMethod.DELETE, new HttpEntity<Void>(headers), Void.class);
 	}
 	
+	protected void delete(String uri, MultiValueMap<String, String> headers){
+		restTemplate.exchange(uri, HttpMethod.DELETE, new HttpEntity<Void>(headers), Void.class);
+	}
+	
 	protected void get(URI uri, MultiValueMap<String, String> headers){
+		restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), Void.class);
+	}
+	
+	protected void get(String uri, MultiValueMap<String, String> headers){
 		restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), Void.class);
 	}
 	
