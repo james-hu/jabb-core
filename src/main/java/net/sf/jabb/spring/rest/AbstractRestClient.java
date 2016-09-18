@@ -478,7 +478,7 @@ public abstract class AbstractRestClient {
 		return "Basic " + base64Creds;
 	}
 	
-	protected URIBuilder uriBuilder(String partialUri){
+	protected String buildUriString(String partialUri){
 		String p1 = StringUtils.trimToEmpty(baseUrl);
 		String p2 = StringUtils.trimToEmpty(partialUri);
 		String url;
@@ -487,6 +487,11 @@ public abstract class AbstractRestClient {
 		}else{
 			url = p1 + p2;
 		}
+		return url;
+	}
+	
+	protected URIBuilder uriBuilder(String partialUri){
+		String url = buildUriString(partialUri);
 		try {
 			return new URIBuilder(url);
 		} catch(URISyntaxException e) {
@@ -569,96 +574,96 @@ public abstract class AbstractRestClient {
 		return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
-	protected <T, D> T post(String uri, D data, MultiValueMap<String, String> headers, Class<T> responseType){
-		return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<D>(data, headers), responseType).getBody();
+	protected <T, D> T post(String partialUri, D data, MultiValueMap<String, String> headers, Class<T> responseType){
+		return restTemplate.exchange(buildUriString(partialUri), HttpMethod.POST, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
 	protected <T, D> T post(URI uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
 		return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
-	protected <T, D> T post(String uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
-		return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<D>(data, headers), responseType).getBody();
+	protected <T, D> T post(String partialUri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
+		return restTemplate.exchange(buildUriString(partialUri), HttpMethod.POST, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
 	protected <T> T get(URI uri, MultiValueMap<String, String> headers, Class<T> responseType){
 		return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), responseType).getBody();
 	}
 	
-	protected <T> T get(String uri, MultiValueMap<String, String> headers, Class<T> responseType){
-		return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), responseType).getBody();
+	protected <T> T get(String partialUri, MultiValueMap<String, String> headers, Class<T> responseType){
+		return restTemplate.exchange(buildUriString(partialUri), HttpMethod.GET, new HttpEntity<Void>(headers), responseType).getBody();
 	}
 	
 	protected <T> T get(URI uri, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
 		return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), responseType).getBody();
 	}
 	
-	protected <T> T get(String uri, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
-		return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), responseType).getBody();
+	protected <T> T get(String partialUri, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
+		return restTemplate.exchange(buildUriString(partialUri), HttpMethod.GET, new HttpEntity<Void>(headers), responseType).getBody();
 	}
 	
 	protected <T, D> T patch(URI uri, D data, MultiValueMap<String, String> headers, Class<T> responseType){
 		return restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
-	protected <T, D> T patch(String uri, D data, MultiValueMap<String, String> headers, Class<T> responseType){
-		return restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), responseType).getBody();
+	protected <T, D> T patch(String partialUri, D data, MultiValueMap<String, String> headers, Class<T> responseType){
+		return restTemplate.exchange(buildUriString(partialUri), HttpMethod.PATCH, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
 	protected <T, D> T patch(URI uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
 		return restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
-	protected <T, D> T patch(String uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
-		return restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), responseType).getBody();
+	protected <T, D> T patch(String partialUri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
+		return restTemplate.exchange(buildUriString(partialUri), HttpMethod.PATCH, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
 	protected <T, D> T put(URI uri, D data, MultiValueMap<String, String> headers, Class<T> responseType){
 		return restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
-	protected <T, D> T put(String uri, D data, MultiValueMap<String, String> headers, Class<T> responseType){
-		return restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), responseType).getBody();
+	protected <T, D> T put(String partialUri, D data, MultiValueMap<String, String> headers, Class<T> responseType){
+		return restTemplate.exchange(buildUriString(partialUri), HttpMethod.PUT, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
 	protected <T, D> T put(URI uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
 		return restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
-	protected <T, D> T put(String uri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
-		return restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), responseType).getBody();
+	protected <T, D> T put(String partialUri, D data, MultiValueMap<String, String> headers, ParameterizedTypeReference<T> responseType){
+		return restTemplate.exchange(buildUriString(partialUri), HttpMethod.PUT, new HttpEntity<D>(data, headers), responseType).getBody();
 	}
 	
 	protected <D> void patch(URI uri, D data, MultiValueMap<String, String> headers){
 		restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), Void.class);
 	}
 	
-	protected <D> void patch(String uri, D data, MultiValueMap<String, String> headers){
-		restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<D>(data, headers), Void.class);
+	protected <D> void patch(String partialUri, D data, MultiValueMap<String, String> headers){
+		restTemplate.exchange(buildUriString(partialUri), HttpMethod.PATCH, new HttpEntity<D>(data, headers), Void.class);
 	}
 	
 	protected <D> void put(URI uri, D data, MultiValueMap<String, String> headers){
 		restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), Void.class);
 	}
 	
-	protected <D> void put(String uri, D data, MultiValueMap<String, String> headers){
-		restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<D>(data, headers), Void.class);
+	protected <D> void put(String partialUri, D data, MultiValueMap<String, String> headers){
+		restTemplate.exchange(buildUriString(partialUri), HttpMethod.PUT, new HttpEntity<D>(data, headers), Void.class);
 	}
 	
 	protected void delete(URI uri, MultiValueMap<String, String> headers){
 		restTemplate.exchange(uri, HttpMethod.DELETE, new HttpEntity<Void>(headers), Void.class);
 	}
 	
-	protected void delete(String uri, MultiValueMap<String, String> headers){
-		restTemplate.exchange(uri, HttpMethod.DELETE, new HttpEntity<Void>(headers), Void.class);
+	protected void delete(String partialUri, MultiValueMap<String, String> headers){
+		restTemplate.exchange(buildUriString(partialUri), HttpMethod.DELETE, new HttpEntity<Void>(headers), Void.class);
 	}
 	
 	protected void get(URI uri, MultiValueMap<String, String> headers){
 		restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), Void.class);
 	}
 	
-	protected void get(String uri, MultiValueMap<String, String> headers){
-		restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<Void>(headers), Void.class);
+	protected void get(String partialUri, MultiValueMap<String, String> headers){
+		restTemplate.exchange(buildUriString(partialUri), HttpMethod.GET, new HttpEntity<Void>(headers), Void.class);
 	}
 	
 }
