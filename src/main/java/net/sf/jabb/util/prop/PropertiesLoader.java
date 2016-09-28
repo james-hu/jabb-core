@@ -23,6 +23,8 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 import java.util.Set;
 
+import com.google.common.base.CaseFormat;
+
 /**
  * Utility to load properties from file; It supports both classic text properties file 
  * (.properties) format and new {@link Properties#loadFromXML(InputStream) xml} properties file (.xml) format; 
@@ -51,6 +53,64 @@ public class PropertiesLoader {
 	protected Class<?> baseClass;
 	
 	protected boolean replacePlaceHolders;
+
+	/**
+	 * Try to get property value in the following order:
+	 * <ol>
+	 * 	<li>JVM system property with the same name</li>
+	 * 	<li>JVM system property with the converted upper underscore name (e.g. converting nameOfTheProperty to NAME_OF_THE_PROPERTY)</li>
+	 * 	<li>OS environment variable with the same name</li>
+	 * 	<li>OS environment variable with the converted upper underscore name (e.g. converting nameOfTheProperty to NAME_OF_THE_PROPERTY)</li>
+	 * 	<li>null</li>
+	 * </ol>
+	 * @param lowerCamelCaseName	name of the property in lower camel case (e.g. nameOfTheProperty)
+	 * @return	the value of the property found, or null
+	 */
+	static public String getPropertyFromSystemOrEnv(String lowerCamelCaseName){
+		return getPropertyFromSystemOrEnv(lowerCamelCaseName, null);
+	}
+	
+	/**
+	 * Try to get property value in the following order:
+	 * <ol>
+	 * 	<li>JVM system property with the same name</li>
+	 * 	<li>JVM system property with the converted upper underscore name (e.g. converting nameOfTheProperty to NAME_OF_THE_PROPERTY)</li>
+	 * 	<li>OS environment variable with the same name</li>
+	 * 	<li>OS environment variable with the converted upper underscore name (e.g. converting nameOfTheProperty to NAME_OF_THE_PROPERTY)</li>
+	 * 	<li>the default value specified</li>
+	 * </ol>
+	 * @param lowerCamelCaseName	name of the property in lower camel case (e.g. nameOfTheProperty)
+	 * @param defaultValue			default value to be returned if the property cannot be found
+	 * @return	the value of the property found, or the default value
+	 */
+	static public String getPropertyFromSystemOrEnv(String lowerCamelCaseName, String defaultValue){
+		String upperCaseName = lowerCamelCaseName;
+		try{
+			upperCaseName = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_UNDERSCORE).convert(lowerCamelCaseName);
+		}catch(Exception e){ // could there be any error during the conversion?
+			// ignore
+		}
+		
+		String tmp;
+		String result = defaultValue;
+		
+		tmp = System.getenv().get(lowerCamelCaseName);
+		if (tmp == null){
+			tmp = System.getenv().get(upperCaseName);
+			if (tmp == null){
+				// no change
+			}else{
+				result = tmp;
+			}
+		}else{
+			result = tmp;
+		}
+		
+		result = System.getProperty(upperCaseName, result);
+		result = System.getProperty(lowerCamelCaseName, result);
+
+		return result;
+	}
 	
 	/**
 	 * Create a new instance that locates properties files via relative path.<br>
