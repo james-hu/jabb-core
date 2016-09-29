@@ -3,6 +3,7 @@
  */
 package net.sf.jabb.spring.service;
 
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,15 +17,15 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import net.sf.jabb.spring.env.PropertiesPropertyResolver;
-import net.sf.jabb.util.col.MapValueFactory;
-import net.sf.jabb.util.col.PutIfAbsentMap;
-
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
+
+import net.sf.jabb.spring.env.PropertiesPropertyResolver;
+import net.sf.jabb.util.col.MapValueFactory;
+import net.sf.jabb.util.col.PutIfAbsentMap;
 
 /**
  * The service to provide thread pools.
@@ -291,7 +292,9 @@ public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleSe
 						ThreadFactory threadFactory = new BasicThreadFactory.Builder().namingPattern(key + "-%04d").build();
 						ThreadPoolExecutor pool;
 						if (key.contains(KEYWORD_SCHEDULED) || key.contains(KEYWORD_SCHD)){
-							pool = new ScheduledThreadPoolExecutor(coreSize, threadFactory);
+							ScheduledThreadPoolExecutor p = new ScheduledThreadPoolExecutor(coreSize, threadFactory);
+							setRemoveOnCancelPolicy(p, true);
+							pool = p;
 							logger.debug("Created scheduled thread pool '{}': size={}",key, coreSize);
 						}else{
 							pool = new ThreadPoolExecutor(coreSize, maxSize, 
@@ -304,6 +307,15 @@ public abstract class AbstractThreadPoolService extends AbstractSmartLifecycleSe
 						return pool;
 					}
 		});
+	}
+	
+	protected static void setRemoveOnCancelPolicy(ScheduledThreadPoolExecutor pool, boolean value){
+		try {
+			Method method = pool.getClass().getDeclaredMethod("setRemoveOnCancelPolicy", boolean.class);
+			method.invoke(pool, value);
+		} catch (Exception e) {
+			logger.debug("Unable to setRemoveOnCancelPolicy({}): {}:{}", value, e.getClass().getSimpleName(), e.getMessage());
+		}
 	}
 
 	/* (non-Javadoc)
