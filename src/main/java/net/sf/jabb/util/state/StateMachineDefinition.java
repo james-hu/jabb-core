@@ -37,7 +37,7 @@ public class StateMachineDefinition<S, T> implements Serializable {
 	private static final long serialVersionUID = -5541843518717440091L;
 
 	@Transient		// we only need this when defining the states and transitions
-	private Sequencer sequencer = new Sequencer();
+	transient private Sequencer sequencer = new Sequencer();
 
 	private BiMap<S, Integer> states;
 	private Map<DoubleValueBean<S, T>, Transition<S>> transitions;
