@@ -339,7 +339,10 @@ public final class BackoffStrategies {
 
         @Override
         public long computeBackoffMilliseconds(int n) {
-            long t = Math.abs(RANDOM.nextLong()) % (maximum - minimum);
+            long t = RANDOM.nextLong() % (maximum - minimum);
+            if (t < 0){
+            	t = -t;
+            }
             return t + minimum;
         }
     }
