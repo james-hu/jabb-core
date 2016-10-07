@@ -8,8 +8,6 @@ class MenuItemExt extends WebMenuItem {
 	String path;
 	String menuName;
 	int order;
-	boolean dynamic;
-	String authority;
 
 	/**
 	 * Construct an instance from annotations on method level.
