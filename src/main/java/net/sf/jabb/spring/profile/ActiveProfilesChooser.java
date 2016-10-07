@@ -133,9 +133,9 @@ class ActiveProfilesChooser {
 					if (b0.getKey().equals(b1.getKey())){
 						return 0;
 					}
-					if ("*".equals(b0) || ".*".equals(b0)){
+					if ("*".equals(b0.getKey()) || ".*".equals(b0.getKey())){
 						return 1;
-					}else if ("*".equals(b1) || ".*".equals(b1)){
+					}else if ("*".equals(b1.getKey()) || ".*".equals(b1.getKey())){
 						return -1;
 					}
 					return b1.getKey().compareTo(b0.getKey());
