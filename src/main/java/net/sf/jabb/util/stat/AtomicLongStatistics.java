@@ -102,7 +102,8 @@ public class AtomicLongStatistics implements NumberStatistics<Long>, Serializabl
 	public Double getAvg(){
 		long countValue = count.get();
 		if (countValue > 0){
-			if (minMax.getMinAsLong() == minMax.getMaxAsLong()){
+			if (minMax.getMinAsLong() == null && minMax.getMaxAsLong() == null 
+					|| minMax.getMinAsLong() != null && minMax.getMinAsLong().equals(minMax.getMaxAsLong())){
 				return minMax.getMinAsLong().doubleValue();
 			}else{
 				return sum.doubleValue()/countValue;
