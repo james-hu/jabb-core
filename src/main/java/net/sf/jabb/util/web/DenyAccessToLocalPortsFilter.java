@@ -45,8 +45,8 @@ import org.apache.commons.lang3.StringUtils;
  *
  */
 public class DenyAccessToLocalPortsFilter implements Filter {
-	static protected final int MODE_ALLOW = 1;
-	static protected final int MODE_DENY = 2;
+	static public final int MODE_ALLOW = 1;
+	static public final int MODE_DENY = 2;
 	protected int mode;
 	protected int[] ports;
 	protected int statusCode;
@@ -136,6 +136,38 @@ public class DenyAccessToLocalPortsFilter implements Filter {
 		}
 		
 		message = config.getInitParameter("message");
+	}
+
+	public int getMode() {
+		return mode;
+	}
+
+	public void setMode(int mode) {
+		this.mode = mode;
+	}
+
+	public int[] getPorts() {
+		return ports;
+	}
+
+	public void setPorts(int[] ports) {
+		this.ports = ports;
+	}
+
+	public int getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 }

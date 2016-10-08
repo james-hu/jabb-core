@@ -314,7 +314,7 @@ public final class BackoffStrategies {
         private final long sleepTime;
 
         public FixedBackoffStrategy(long sleepTime) {
-            Preconditions.checkArgument(sleepTime >= 0L, "sleepTime must be >= 0 but is %d", sleepTime);
+            Preconditions.checkArgument(sleepTime >= 0L, "sleepTime must be >= 0 but is %s", sleepTime);
             this.sleepTime = sleepTime;
         }
 
@@ -330,8 +330,8 @@ public final class BackoffStrategies {
         private final long maximum;
 
         public RandomBackoffStrategy(long minimum, long maximum) {
-            Preconditions.checkArgument(minimum >= 0, "minimum must be >= 0 but is %d", minimum);
-            Preconditions.checkArgument(maximum > minimum, "maximum must be > minimum but maximum is %d and minimum is", maximum, minimum);
+            Preconditions.checkArgument(minimum >= 0, "minimum must be >= 0 but is %s", minimum);
+            Preconditions.checkArgument(maximum > minimum, "maximum must be > minimum but maximum is %s and minimum is", maximum, minimum);
 
             this.minimum = minimum;
             this.maximum = maximum;
@@ -339,7 +339,10 @@ public final class BackoffStrategies {
 
         @Override
         public long computeBackoffMilliseconds(int n) {
-            long t = Math.abs(RANDOM.nextLong()) % (maximum - minimum);
+            long t = RANDOM.nextLong() % (maximum - minimum);
+            if (t < 0){
+            	t = -t;
+            }
             return t + minimum;
         }
     }
@@ -350,7 +353,7 @@ public final class BackoffStrategies {
 
         public LinearBackoffStrategy(long initialSleepTime,
                                         long increment) {
-            Preconditions.checkArgument(initialSleepTime >= 0L, "initialSleepTime must be >= 0 but is %d", initialSleepTime);
+            Preconditions.checkArgument(initialSleepTime >= 0L, "initialSleepTime must be >= 0 but is %s", initialSleepTime);
             this.initialSleepTime = initialSleepTime;
             this.increment = increment;
         }
@@ -368,9 +371,9 @@ public final class BackoffStrategies {
 
         public ExponentialBackoffStrategy(long multiplier,
                                        long maximumWait) {
-            Preconditions.checkArgument(multiplier > 0L, "multiplier must be > 0 but is %d", multiplier);
-            Preconditions.checkArgument(maximumWait >= 0L, "maximumWait must be >= 0 but is %d", maximumWait);
-            Preconditions.checkArgument(multiplier < maximumWait, "multiplier must be < maximumWait but is %d", multiplier);
+            Preconditions.checkArgument(multiplier > 0L, "multiplier must be > 0 but is %s", multiplier);
+            Preconditions.checkArgument(maximumWait >= 0L, "maximumWait must be >= 0 but is %s", maximumWait);
+            Preconditions.checkArgument(multiplier < maximumWait, "multiplier must be < maximumWait but is %s", multiplier);
             this.multiplier = multiplier;
             this.maximumWait = maximumWait;
         }
@@ -391,9 +394,9 @@ public final class BackoffStrategies {
         private final long maximumWait;
 
         public FibonacciBackoffStrategy(long multiplier, long maximumWait) {
-            Preconditions.checkArgument(multiplier > 0L, "multiplier must be > 0 but is %d", multiplier);
-            Preconditions.checkArgument(maximumWait >= 0L, "maximumWait must be >= 0 but is %d", maximumWait);
-            Preconditions.checkArgument(multiplier < maximumWait, "multiplier must be < maximumWait but is %d", multiplier);
+            Preconditions.checkArgument(multiplier > 0L, "multiplier must be > 0 but is %s", multiplier);
+            Preconditions.checkArgument(maximumWait >= 0L, "maximumWait must be >= 0 but is %s", maximumWait);
+            Preconditions.checkArgument(multiplier < maximumWait, "multiplier must be < maximumWait but is %s", multiplier);
             this.multiplier = multiplier;
             this.maximumWait = maximumWait;
         }

@@ -154,8 +154,11 @@ public class InitialContextFinder {
 		// setup for auto-deletion of files
 		Reference ref = new Reference(Object.class.getName());
 		ic.rebind(InitialContextFinder.class.getName() + "/test", ref);
-		for (File f: tempDir.listFiles()){
-			f.deleteOnExit();
+		File[] files = tempDir.listFiles();
+		if (files != null){
+			for (File f: files){
+				f.deleteOnExit();
+			}
 		}
 
 		return ic;

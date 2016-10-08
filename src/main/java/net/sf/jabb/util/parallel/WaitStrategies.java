@@ -30,9 +30,15 @@ import co.paralleluniverse.strands.Strand;
 public final class WaitStrategies {
 
     private static final WaitStrategy THREAD_SLEEP_STRATEGY = new ThreadSleepWaitStrategy();
-    private static WaitStrategy STRAND_SLEEP_STRATEGY;
-    private static WaitStrategy FIBER_SLEEP_STRATEGY;
 
+    static class STRAND_SLEEP_STRATEGY_Holder{
+    	static final WaitStrategy STRAND_SLEEP_STRATEGY = new StrandSleepWaitStrategy();
+    }
+    
+    static class FIBER_SLEEP_STRATEGY_Holder{
+    	static final WaitStrategy FIBER_SLEEP_STRATEGY = new FiberSleepWaitStrategy();
+    }
+    
     private WaitStrategies() {
     }
 
@@ -52,14 +58,7 @@ public final class WaitStrategies {
      * @return a wait strategy that puts the current {@link co.paralleluniverse.strands.Strand} to sleep while waiting
      */
     public static WaitStrategy strandSleepStrategy() {
-    	if (STRAND_SLEEP_STRATEGY == null){
-    		synchronized(WaitStrategies.class){
-    			if (STRAND_SLEEP_STRATEGY == null){
-    				STRAND_SLEEP_STRATEGY = new StrandSleepWaitStrategy();
-    			}
-    		}
-    	}
-        return STRAND_SLEEP_STRATEGY;
+        return STRAND_SLEEP_STRATEGY_Holder.STRAND_SLEEP_STRATEGY;
     }
 
     /**
@@ -69,14 +68,7 @@ public final class WaitStrategies {
      * @return a wait strategy that puts the current {@link co.paralleluniverse.fibers.Fiber} to sleep while waiting
      */
     public static WaitStrategy fiberSleepStrategy() {
-    	if (FIBER_SLEEP_STRATEGY == null){
-    		synchronized(WaitStrategies.class){
-    			if (FIBER_SLEEP_STRATEGY == null){
-    				FIBER_SLEEP_STRATEGY = new FiberSleepWaitStrategy();
-    			}
-    		}
-    	}
-        return FIBER_SLEEP_STRATEGY;
+        return FIBER_SLEEP_STRATEGY_Holder.FIBER_SLEEP_STRATEGY;
     }
 
     private static class ThreadSleepWaitStrategy implements WaitStrategy {
