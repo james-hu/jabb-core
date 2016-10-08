@@ -1,6 +1,7 @@
 package net.sf.jabb.spring.rest;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
@@ -8,10 +9,18 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 
 import org.apache.commons.codec.binary.Base64;
@@ -19,11 +28,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.ssl.SSLContexts;
+import org.apache.http.ssl.TrustStrategy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -42,6 +57,8 @@ import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.common.base.Throwables;
+
 import net.sf.jabb.spring.rest.CustomHttpRequestRetryHandler.IdempotentPredicate;
 import net.sf.jabb.util.parallel.BackoffStrategy;
 import net.sf.jabb.util.parallel.WaitStrategy;
@@ -50,6 +67,7 @@ import net.sf.jabb.util.parallel.WaitStrategy;
  * Template class for REST API client using Spring's <code>RestTemplate</code>.
  * This class is intended to be inherited. Subclass should override the following methods if needed:
  * <ul>
+ * 	<li>{@link #buildConnectionManager()}</li>
  * 	<li>{@link #configureConnectionManager(PoolingHttpClientConnectionManager)}</li>
  * 	<li>{@link #configureHttpClient(HttpClientBuilder)}</li>
  * 	<li>{@link #configureRequestFactory(HttpComponentsClientHttpRequestFactory)}</li>
@@ -97,19 +115,18 @@ public abstract class AbstractRestClient {
 	
 	/**
 	 * Constructor. 
-	 * A <code>PoolingHttpClientConnectionManager</code> will be created and used for HTTP connections initiated by the constructed instance.
 	 */
 	protected AbstractRestClient(){
-		this(new PoolingHttpClientConnectionManager());
 	}
 	
 	/**
-	 * Constructor.
-	 * @param connectionManager	The <code>HttpClientConnectionManager</code> to be used for HTTP connections initiated by the constructed instance.
-	 * 							If it is null, then the instance created will rely on standard JDK facilities to establish HTTP connections.  
+	 * Create the HttpClientConnectionManager. Subclass may override this method to create a
+	 * customized HttpClientConnectionManager. If the subclass returns null from this method,
+	 * then the REST client will rely on standard JDK facilities to establish HTTP connections.
+	 * @return	the HttpClientConnectionManager created
 	 */
-	protected AbstractRestClient(HttpClientConnectionManager connectionManager){
-		this.connectionManager = connectionManager;
+	protected HttpClientConnectionManager buildConnectionManager(){
+		return new PoolingHttpClientConnectionManager();
 	}
 	
 	/**
@@ -186,12 +203,14 @@ public abstract class AbstractRestClient {
 	}
 	
 	/**
-	 * Initialize the RestTemplate internally.
-	 * When running inside a Spring context, subclass should typically call this method 
+	 * Initialize the RestTemplate internally. In simple usage scenarios, this method
+	 * should be called from within the constructor of the subclass.
+	 * Or, if running inside a Spring context, subclass may call this method 
 	 * from within {@link org.springframework.beans.factory.InitializingBean#afterPropertiesSet()} method.
 	 */
 	protected void initializeRestTemplate(){
-		if (connectionManager == null){
+		connectionManager = buildConnectionManager();
+		if (connectionManager == null){			// should use JDK rather than HttpClient
 			restTemplate = new RestTemplate();
 		}else{
 			if (connectionManager instanceof PoolingHttpClientConnectionManager){
@@ -212,7 +231,74 @@ public abstract class AbstractRestClient {
 		configureMessageConverters(restTemplate.getMessageConverters());
 		configureRestTemplate(restTemplate);
 	}
+
+	/**
+	 * Load X509 certificate from resources.
+	 * Certificates can be in binary or base64 DER/.crt format.
+	 * @param resource	the resource name
+	 * @return	X509 certificate
+	 * @throws CertificateException	if the certificate couldn't be loaded
+	 */
+	protected X509Certificate loadX509CertificateFromResource(String resource) throws CertificateException{
+		InputStream derInputStream = this.getClass().getClassLoader().getResourceAsStream(resource);
+		CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+		X509Certificate cert = (X509Certificate) certificateFactory.generateCertificate(derInputStream);
+		try {
+			derInputStream.close();
+		} catch (IOException e) {
+			// ignore
+		}
+		return cert;
+	}
 	
+	/**
+	 * Build a keystore with certificates loaded from resource
+	 * Certificates can be in binary or base64 DER/.crt format.
+	 * @param certResources	the resource names
+	 * @return	the key store
+	 * @throws KeyStoreException		if the key store couldn't be created
+	 * @throws CertificateException		if the certificate couldn't be loaded
+	 * @throws NoSuchAlgorithmException	if the algorithm required does not exist
+	 * @throws IOException				if the key store cannot be initialized
+	 */
+	protected KeyStore buildKeyStoreFromResources(String... certResources) throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException{
+		KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+		keyStore.load(null);
+		for (String res: certResources){
+			X509Certificate cert = loadX509CertificateFromResource(res);
+			String alias = cert.getSubjectX500Principal().getName();
+			keyStore.setCertificateEntry(alias, cert);
+		}
+		return keyStore;
+	}
+	
+	/**
+	 * Build a PoolingHttpClientConnectionManager that trusts certificates loaded from specified resource with specified trust strategy.
+	 * If you want the REST client to trust some specific server certificates, you can override {@link #buildConnectionManager()} method
+	 * and use this method to build a custom connection manager.
+	 * @param trustStrategy	The trust strategy, can be null if the default one should be used. 
+	 * 			To always trust self-signed server certificates, use <code>TrustSelfSignedStrategy</code>.
+	 * @param hostnameVerifier	The verifier of hostnames, can be null if the default one should be used.
+	 * 			To skip hostname verification, use <code>NoopHostnameVerifier</code>
+	 * @param certResources	Resources that contains certificates in binary or base64 DER/.crt format.
+	 * @return	a PoolingHttpClientConnectionManager
+	 */
+	protected PoolingHttpClientConnectionManager buildConnectionManager(TrustStrategy trustStrategy, HostnameVerifier hostnameVerifier, String... certResources){
+		try {
+			KeyStore trustStore = certResources == null || certResources.length == 0 ? null : buildKeyStoreFromResources(certResources);
+			SSLContext sslContext = SSLContexts.custom()
+					.loadTrustMaterial(trustStore, trustStrategy)
+			        .build();
+			SSLConnectionSocketFactory sslsf = hostnameVerifier == null ? 
+					new SSLConnectionSocketFactory(sslContext) : new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
+			Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory> create().register("https", sslsf).build();
+			return new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+		} catch (Exception e) {
+			throw Throwables.propagate(e);
+		}
+	}
+	
+
 	/**
 	 * Build a <code>HttpRequestRetryHandler</code>.
 	 * The returned <code>HttpRequestRetryHandler</code> will not retry on <code>InterruptedIOException</code> and <code>SSLException</code>.
