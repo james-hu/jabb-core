@@ -32,6 +32,7 @@ import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -291,7 +292,10 @@ public abstract class AbstractRestClient {
 			        .build();
 			SSLConnectionSocketFactory sslsf = hostnameVerifier == null ? 
 					new SSLConnectionSocketFactory(sslContext) : new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
-			Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory> create().register("https", sslsf).build();
+			Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory> create()
+					.register("https", sslsf)
+					.register("http", PlainConnectionSocketFactory.getSocketFactory())
+					.build();
 			return new PoolingHttpClientConnectionManager(socketFactoryRegistry);
 		} catch (Exception e) {
 			throw Throwables.propagate(e);
