@@ -27,7 +27,7 @@
 		</developer>
 	</developers>
 	<properties>
-		<struts2.version>2.3.7</struts2.version>
+		<struts2.version>2.5.22</struts2.version>
 		<spring.version>3.2.2.RELEASE</spring.version>
 		<camel.version>2.9.2</camel.version>
 		<hibernate.version>4.1.8.Final</hibernate.version>
