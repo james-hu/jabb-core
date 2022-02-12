@@ -31,7 +31,7 @@
 		<spring.version>3.2.2.RELEASE</spring.version>
 		<camel.version>2.9.2</camel.version>
 		<hibernate.version>5.4.24.Final</hibernate.version>
-		<jetty.version>8.1.4.v20120524</jetty.version>
+		<jetty.version>9.4.41.v20210516</jetty.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<target.java.version>1.6</target.java.version>
 		<struts2-jquery.version>3.4.0</struts2-jquery.version>
